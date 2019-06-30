@@ -25,7 +25,7 @@ package Dominio{
         -siniestros: Integer
     }
     
-    class Cobrador {
+    /'class Cobrador {
         +registrarPago(Poliza): Void
     }
     
@@ -44,7 +44,7 @@ package Dominio{
         generarPropuestasRenovacion(): Void
         generarInforme(): Void
     }
-        
+    '/
     class Cliente {
         -idCliente: Integer
         -nombre: String
@@ -135,16 +135,37 @@ package Dominio{
     }
     
     class Cuota {
-        -importe: Float
-        -fechaPago: Date
-        -coutaPaga: Boolean
+        -importe: MonetaryAmount
+		-mesCorrespondiente: Mes
+		-anio: Integer
+        -cuotaPaga: Boolean
         +registarPago(): Void
     }
     
-    class Localidad {
-        -localidad: String
-        -provincia: String
-    }
+
+	class Localidad {
+		-nombre: String
+		-CPA: Integer
+		-factorRiegoActual: Float
+	}
+	
+	class FactorRiesgo{
+		-valor: Float
+	}
+	
+	class VigenciaFactorRiesgo{
+		-fechaInicio: Timestamp
+		-fechaFin: Timestamp
+	}
+	Localidad "1" -  "1..n" FactorRiesgo
+	(Localidad, FactorRiesgo) . VigenciaFactorRiesgo
+
+	class Provincia {
+		-nombre: String
+	}
+	class Pais {
+		-nombre: String
+	}
 
     class Usuario {
 	    -nombreUsuario: String
@@ -154,6 +175,29 @@ package Dominio{
 	    -apellido: String
 	    -email: String
     }
+	
+	class TipoCobertura{
+		-nombre: String
+		-descripcion: String
+		-valor: Float
+	}
+	
+	class Pago{
+		-fechaHora: Timestamp
+		-premio: MonetaryAmount
+		-recargoMora: MonetaryAmount
+		-bonificacionPagoAdelantado: MonetaryAmount
+		+importe(): MonetaryAmount
+	}
+	
+	class Recibo{
+		-numeroRecibo: Integer
+		+emitir(): ReciboDTO
+	}
+	
+
+	
+	
     
     enum EstadoPoliza {
         Generada
@@ -192,13 +236,6 @@ package Dominio{
         PeqContribuyenteSocial
     }
 
-    enum TipoCobertura {
-        ResponsabilidadCivil
-        RoboIncendio
-        TodoTotal
-        TercerosCompletos
-        TodoRiesgo
-    }
 
     enum EstadoCivil{
         Soltero
@@ -211,18 +248,20 @@ package Dominio{
         Femenino
     }
     
-    Cliente "1" -- "0..n" Poliza
+    Cliente "1" -up- "0..n" Poliza
     Cliente "1..n" -- "1" Domicilio
     
-    Usuario <-- Cobrador: <<is role of>>
+    /'Usuario <-- Cobrador: <<is role of>>
     Usuario <-- ProductorSeguros: <<is role of>>
     Usuario <-- Gerente: <<is role of>>
+	'/
    
     Poliza "0..n" o-- "1" Localidad
     Poliza "1..n" o-- "0..n" HijoDeclarado
     Poliza "1..n" o-- "1" Vehiculo
     Poliza "1" o-- "1" FormaPago
     Poliza "1" -- "1..n" ModificacionPoliza
+	Poliza "n" -right- "1" TipoCobertura
     
     ModificacionPoliza "1" -- "0..n" HijoDeclarado
     ModificacionPoliza "1" -- "1" Vehiculo
@@ -241,7 +280,14 @@ package Dominio{
     PagoMensual "1" *-- "6" Cuota
     PagoSemestral "1" *-- "1" Cuota
 
-    Domicilio "1..n" o-- "1" Localidad
+    Domicilio "1..n" -- "1" Localidad
+	Localidad "1..n" -- "1" Provincia
+	Provincia "1..n" -- "1" Pais
+	
+	Pago "1" -- "1..n" Cuota
+	Pago "1" -- "1" Recibo
+	Poliza "1" -- "1" Pago
+	Usuario "1" -- "1" Pago
 }
 
 package "Acceso a Datos"{
@@ -276,10 +322,26 @@ package "Acceso a Datos"{
         +getAll(): ArrayList<Usuario> //<<Override>>//
     }
     
-    class ValorAutomovil {
-        +{static} calcularValor(String[]): Float
-    }
-    
+    class ReciboDTO {
+		-nroCliente: Integer
+		-nombreCliente: String
+		-apellidoCliente: String
+		-domicilioRiesgo: String
+		-marca: String
+		-modelo: String
+		-anioFabricacion: Integer
+		-patente: String
+		-nroPoliza: Integer
+		-inicioVigencia: Date
+		-finVigencia: Date
+		-tipoCobertura: String
+		-sumaAsegurada: MonetaryAmount
+		-fechaPago: Date
+		-premio: MonetaryAmount
+		-recargosMora: MonetaryAmount
+		-bonificacionPagoAdelantado: MonetaryAmount
+	}
+	
     "DAO<T>" <|.. DaoPoliza: <<implements>>
     "DAO<T>" <|.. DaoCliente: <<implements>>
     "DAO<T>" <|.. DaoUsuario: <<implements>>
@@ -327,17 +389,43 @@ package Logica{
         -GestorSistemaFinanciero()
         +{static} getInstance(): GestorSistemaFinanciero
     }
+	class GestorGeografico <<(S, #FF7700) Singleton>>{
+		-{static} singleton: GestorGeografico
+		-GestorGeografico()
+		+{static} getInstance(): GestorGeografico
+	}
+	class GestorPagos <<(S, #FF7700) Singleton>>{
+		-{static} singleton: GestorPagos
+		-GestorPagos()
+		+{static} getInstance(): GestorPagos
+	}
+	class GestorDocumentos <<(S, #FF7700) Singleton>>{
+		-{static} singleton: GestorDocumentos
+		-GestorDocumentos()
+		+{static} getInstance(): GestorDocumentos
+	}
 
     GestorPoliza .. GestorCliente
 }
 
-package Presentacion{
 
-}
-
-DaoCliente .. GestorCliente
-DaoPoliza .. GestorPoliza
-DaoUsuario .. GestorUsuario
+DaoCliente -- GestorCliente
+DaoPoliza -- GestorPoliza
+DaoUsuario -- GestorUsuario
 'Poliza -- ValorAutomovil'
+
+'Relaciones entre clases y gestores'
+
+Cliente "n" -- "1" GestorCliente
+Localidad "n" -- "1" GestorGeografico
+Provincia "n" -- "1" GestorGeografico
+Pais "n" -- "1" GestorGeografico
+
+'Relaciones entredistintos gestores'
+
+GestorPagos "1" -- "1" GestorDocumentos
+GestorPoliza "1" -- "1" GestorPagos
+GestorPagos "1" -- "1" GestorSubSistemaDeSiniestros
+Gestor
 
 @endUML
