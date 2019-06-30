@@ -311,6 +311,7 @@ package "Acceso a Datos"{
     "DAO<T>" <|.. DaoLocalidad: <<implements>>
     "DAO<T>" <|.. DaoProvincia: <<implements>>
     "DAO<T>" <|.. DaoPais: <<implements>>
+    "DAO<T>" <|.. DaoCuota: <<implements>>
 }
 
 package Logica{
