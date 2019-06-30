@@ -13,6 +13,16 @@ package Dominio{
         -kmsAnuales: Integer
         -estado: EstadoPoliza
         -siniestros: Integer
+        -dominio: String
+        -chasis: String
+        -motor: String
+        -modelo: String
+        -marca: String
+        -fabricacion: Integer
+	    -seGuardaEnGarage: Boolean
+	    -poseeAlarma: Boolean
+	    -poseeRastreoVehicular: Boolean
+	    -poseeTuercasAntirrobo: Boolean
         +calcularSuma(): Float
         +polizaPaga(): Boolean
         +calcularPrima(): Float
@@ -106,22 +116,6 @@ package Dominio{
         +finalizada(): Boolean //<<Override>>//
     }'/
     
-    class Vehiculo {
-        -dominio: String
-        -chasis: String
-        -motor: String
-        -modelo: String
-        -marca: String
-        -fabricacion: Integer
-    }
-
-    class MedidaSeguridad {
-	  -seGuardaEnGarage: Boolean
-	  -poseeAlarma: Boolean
-	  -poseeRastreoVehicular: Boolean
-	  -poseeTuercasAntirrobo: Boolean
-    }
-    
     abstract FormaPago {
         +{abstract}polizaPaga(): Boolean
     }
@@ -195,9 +189,6 @@ package Dominio{
 		+emitir(): ReciboDTO
 	}
 	
-
-	
-	
     
     enum EstadoPoliza {
         Generada
@@ -258,16 +249,12 @@ package Dominio{
    
     Poliza "0..n" o-- "1" Localidad
     Poliza "1..n" o-- "0..n" HijoDeclarado
-    Poliza "1..n" o-- "1" Vehiculo
     Poliza "1" o-- "1" FormaPago
     Poliza "1" -- "1..n" ModificacionPoliza
 	Poliza "n" -right- "1" TipoCobertura
     
     ModificacionPoliza "1" -- "0..n" HijoDeclarado
-    ModificacionPoliza "1" -- "1" Vehiculo
-    
-    Vehiculo "1..n" *-- "1" MedidaSeguridad
-    
+
     /'Poliza .. EstadoPoliza
     EstadoPoliza <|-- PolizaVigente
     EstadoPoliza <|-- PolizaGenerada
@@ -293,13 +280,12 @@ package Dominio{
 package "Acceso a Datos"{
     interface "DAO<T>" {
         +guardar(<T>): Void
-        +modifcar(<T>, String[]): Void
+        +modificar(<T>, String[]): Void
         +eliminar(<T>): Void
         +getAll(): ArrayList<T>
     }
     
     class DaoCliente{
-        -clientes: ArrayList<Cliente>
         +guardar(Cliente): Void //<<Override>>//
         +modificar(Cliente, String[]): Void //<<Override>>//
         +eliminar(Cliente): Void //<<Override>>//
@@ -307,7 +293,6 @@ package "Acceso a Datos"{
     }
     
     class DaoPoliza{
-        -polizas: ArrayList<Poliza>
         +guardar(Poliza): Void //<<Override>>//
         +modificar(Poliza, String[]): Void //<<Override>>//
         +eliminar(Poliza): Void //<<Override>>//
@@ -315,11 +300,31 @@ package "Acceso a Datos"{
     }
     
     class DaoUsuario{
-        -usuarios: ArrayList<Usuario>
         +guardar(Usuario): Void //<<Override>>//
         +modificar(Usuario, String[]): Void //<<Override>>//
         +eliminar(Usuario): Void //<<Override>>//
         +getAll(): ArrayList<Usuario> //<<Override>>//
+    }
+
+    class DaoLocalidad{
+        +guardar(Localidad): Void //<<Override>>//
+        +modificar(Localidad, String[]): Void //<<Override>>//
+        +eliminar(Localidad): Void //<<Override>>//
+        +getAll(): ArrayList<Localidad> //<<Override>>//
+    }
+    
+    class DaoProvincia{
+        +guardar(Provincia): Void //<<Override>>//
+        +modificar(Provincia, String[]): Void //<<Override>>//
+        +eliminar(Provincia): Void //<<Override>>//
+        +getAll(): ArrayList<Provincia> //<<Override>>//
+    }
+    
+    class DaoPais{
+        +guardar(Pais): Void //<<Override>>//
+        +modificar(Pais, String[]): Void //<<Override>>//
+        +eliminar(Pais): Void //<<Override>>//
+        +getAll(): ArrayList<Pais> //<<Override>>//
     }
     
     class ReciboDTO {
@@ -345,6 +350,9 @@ package "Acceso a Datos"{
     "DAO<T>" <|.. DaoPoliza: <<implements>>
     "DAO<T>" <|.. DaoCliente: <<implements>>
     "DAO<T>" <|.. DaoUsuario: <<implements>>
+    "DAO<T>" <|.. DaoLocalidad: <<implements>>
+    "DAO<T>" <|.. DaoProvincia: <<implements>>
+    "DAO<T>" <|.. DaoPais: <<implements>>
 }
 
 package Logica{
@@ -374,7 +382,7 @@ package Logica{
         +{static} getInstance(): GestorUsuario
         +alta(String[]): Usuario
         +buscar(String[]): Usuario
-        +modifcar(Usuario, String[]): Void
+        +modificar(Usuario, String[]): Void
         +eliminar(Usuario): Void
     }
     
@@ -420,12 +428,18 @@ Cliente "n" -- "1" GestorCliente
 Localidad "n" -- "1" GestorGeografico
 Provincia "n" -- "1" GestorGeografico
 Pais "n" -- "1" GestorGeografico
+Pago "n" -- "1" GestorPagos
+Recibo "n" -- "1" GestorDocumentos
+Poliza "n" -- "1" GestorPoliza
 
 'Relaciones entredistintos gestores'
 
 GestorPagos "1" -- "1" GestorDocumentos
 GestorPoliza "1" -- "1" GestorPagos
-GestorPagos "1" -- "1" GestorSubSistemaDeSiniestros
-Gestor
+GestorPoliza "1" -- "1" GestorSubSistemaDeSiniestros
+GestorCliente "1" -- "1" GestorSubSistemaDeSiniestros
+GestorPagos "1" -- "1" GestorSistemaFinanciero
+
+Recibo "1" -- "1" ReciboDTO
 
 @endUML
