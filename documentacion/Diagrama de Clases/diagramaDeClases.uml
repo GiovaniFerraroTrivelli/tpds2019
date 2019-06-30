@@ -133,7 +133,7 @@ package Dominio{
 		-mesCorrespondiente: Mes
 		-anio: Integer
         -cuotaPaga: Boolean
-        +registarPago(): Void
+        +registrarPago(): Void
     }
     
 
@@ -189,56 +189,6 @@ package Dominio{
 		+emitir(): ReciboDTO
 	}
 	
-    
-    enum EstadoPoliza {
-        Generada
-        Vigente
-        Supendida
-        Finalizada
-    }
-
-    enum TipoDocumento {
-        DNI
-        LU
-        LC
-        LE
-    }
-    
-    enum TipoCliente {
-        Normal
-        Activo
-        Plata
-    }
-
-    enum CondicionIva {
-        ResponsableInscripto
-        ResponsableNoInscripto
-        NoResponsable
-        SujetoExento
-        ConsumidorFinal
-        ResponsableMonotributo
-        NoCategorizado
-        ProveedorExterior
-        ClienteExterior
-        Liberado
-        ResponsableInscriptoPercepcion
-        PeqContribuyente
-        MonotributistaSocial
-        PeqContribuyenteSocial
-    }
-
-
-    enum EstadoCivil{
-        Soltero
-        Casado
-        Viudo
-    }
-
-    enum Sexo {
-        Masculino
-        Femenino
-    }
-    
     Cliente "1" -up- "0..n" Poliza
     Cliente "1..n" -- "1" Domicilio
     
@@ -327,6 +277,14 @@ package "Acceso a Datos"{
         +getAll(): ArrayList<Pais> //<<Override>>//
     }
     
+    class DaoCuota
+    {
+        +guardar(Cuota): Void //<<Override>>//
+        +modificar(Cuota, String[]): Void //<<Override>>//
+        +eliminar(Cuota): Void //<<Override>>//
+        +getAll(): ArrayList<Cuota> //<<Override>>//
+    }
+    
     class ReciboDTO {
 		-nroCliente: Integer
 		-nombreCliente: String
@@ -412,14 +370,82 @@ package Logica{
 		-GestorDocumentos()
 		+{static} getInstance(): GestorDocumentos
 	}
+}
 
-    GestorPoliza .. GestorCliente
+package Enumeradores
+{
+    enum CondicionIva {
+        ResponsableInscripto
+        ResponsableNoInscripto
+        NoResponsable
+        SujetoExento
+        ConsumidorFinal
+        ResponsableMonotributo
+        NoCategorizado
+        ProveedorExterior
+        ClienteExterior
+        Liberado
+        ResponsableInscriptoPercepcion
+        PeqContribuyente
+        MonotributistaSocial
+        PeqContribuyenteSocial
+    }
+    
+    enum EstadoPoliza {
+        Generada
+        Vigente
+        Supendida
+        Finalizada
+    }
+
+    enum TipoDocumento {
+        DNI
+        LU
+        LC
+        LE
+    }
+    
+    enum TipoCliente {
+        Normal
+        Activo
+        Plata
+    }
+
+    enum EstadoCivil{
+        Soltero
+        Casado
+        Viudo
+    }
+
+    enum Sexo {
+        Masculino
+        Femenino
+    }
+    
+    enum Mes {
+        Enero,
+        Febrero,
+        Marzo,
+        Abril,
+        Mayo,
+        Junio,
+        Julio,
+        Agosto,
+        Septiembre,
+        Octubre,
+        Noviembre,
+        Diciembre
+    }
 }
 
 
 DaoCliente -- GestorCliente
 DaoPoliza -- GestorPoliza
 DaoUsuario -- GestorUsuario
+DaoLocalidad -- GestorGeografico
+DaoProvincia -- GestorGeografico
+DaoPais -- GestorGeografico
+DaoCuota -- GestorPagos
 'Poliza -- ValorAutomovil'
 
 'Relaciones entre clases y gestores'
