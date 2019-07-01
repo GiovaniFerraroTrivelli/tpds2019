@@ -1,5 +1,15 @@
 @startUML
 
+title Diagrama de Clases Grupo 4A
+
+note as N1
+Grupo 4A:
+Matías Bode,
+Francisco Busso,
+Giovani Ferraro Trivelli,
+Miguel Storani
+end note
+
 hide enum methods
 hide interface attributes
 
@@ -296,7 +306,7 @@ package "Acceso a Datos"{
         +getAll(): ArrayList<Cuota> //<<Override>>//
     }
     
-    class ReciboDTO {
+    /'class ReciboDTO {
 		-nroCliente: Integer
 		-nombreCliente: String
 		-apellidoCliente: String
@@ -314,7 +324,7 @@ package "Acceso a Datos"{
 		-premio: MonetaryAmount
 		-recargosMora: MonetaryAmount
 		-bonificacionPagoAdelantado: MonetaryAmount
-	}
+	}'/
 	
     "DAO<T>" <|.. DaoPoliza: <<implements>>
     "DAO<T>" <|.. DaoCliente: <<implements>>
