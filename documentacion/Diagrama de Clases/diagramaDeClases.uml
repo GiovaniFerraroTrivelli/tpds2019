@@ -30,9 +30,20 @@ package Dominio{
     }
     
     class ModificacionPoliza {
+		-idSucursal: Integer
         -cobertura: TipoCobertura
         -kmsAnuales: Integer
         -siniestros: Integer
+        -dominio: String
+        -chasis: String
+        -motor: String
+        -modelo: String
+        -marca: String
+        -fabricacion: Integer
+	    -seGuardaEnGarage: Boolean
+	    -poseeAlarma: Boolean
+	    -poseeRastreoVehicular: Boolean
+	    -poseeTuercasAntirrobo: Boolean
     }
     
     /'class Cobrador {
@@ -467,6 +478,5 @@ GestorPoliza "1" -- "1" GestorSubSistemaDeSiniestros
 GestorCliente "1" -- "1" GestorSubSistemaDeSiniestros
 GestorPagos "1" -- "1" GestorSistemaFinanciero
 
-Recibo "1" -- "1" ReciboDTO
 
 @endUML
