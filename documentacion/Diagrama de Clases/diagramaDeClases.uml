@@ -211,7 +211,7 @@ package Dominio{
 	}
 	
     Cliente "1" -up- "0..n" Poliza
-    Cliente "1..n" -- "1" Domicilio
+    Cliente "1..n" --> "1" Domicilio
     
     /'Usuario <-- Cobrador: <<is role of>>
     Usuario <-- ProductorSeguros: <<is role of>>
@@ -220,7 +220,7 @@ package Dominio{
    
     Poliza "0..n" o-- "1" Localidad
     Poliza "1..n" o-- "0..n" HijoDeclarado
-    Poliza "1" o-- "1" FormaPago
+    Poliza "1" o--> "1" FormaPago
     Poliza "1" -- "1..n" ModificacionPoliza
 	Poliza "n" -right- "1" TipoCobertura
     
@@ -235,8 +235,8 @@ package Dominio{
     FormaPago <|-- PagoMensual
     FormaPago <|-- PagoSemestral
     
-    PagoMensual "1" *-- "6" Cuota
-    PagoSemestral "1" *-- "1" Cuota
+    PagoMensual "1" *--> "6" Cuota
+    PagoSemestral "1" *--> "1" Cuota
 
     Domicilio "1..n" -- "1" Localidad
 	Localidad "1..n" -- "1" Provincia
@@ -461,32 +461,32 @@ package Enumeradores
 }
 
 
-DaoCliente -- GestorCliente
-DaoPoliza -- GestorPoliza
-DaoUsuario -- GestorUsuario
-DaoLocalidad -- GestorGeografico
-DaoProvincia -- GestorGeografico
-DaoPais -- GestorGeografico
-DaoCuota -- GestorPagos
+DaoCliente <.. GestorCliente
+DaoPoliza <.. GestorPoliza
+DaoUsuario <.. GestorUsuario
+DaoLocalidad <.. GestorGeografico
+DaoProvincia <.. GestorGeografico
+DaoPais <.. GestorGeografico
+DaoCuota <.. GestorPagos
 'Poliza -- ValorAutomovil'
 
 'Relaciones entre clases y gestores'
 
-Cliente "n" -- "1" GestorCliente
-Localidad "n" -- "1" GestorGeografico
-Provincia "n" -- "1" GestorGeografico
-Pais "n" -- "1" GestorGeografico
-Pago "n" -- "1" GestorPagos
-Recibo "n" -- "1" GestorDocumentos
-Poliza "n" -- "1" GestorPoliza
+Cliente "n" ..> "1" GestorCliente
+Localidad "n" ..> "1" GestorGeografico
+Provincia "n" ..> "1" GestorGeografico
+Pais "n" ..> "1" GestorGeografico
+Pago "n" ..> "1" GestorPagos
+Recibo "n" ..> "1" GestorDocumentos
+Poliza "n" ..> "1" GestorPoliza
 
 'Relaciones entredistintos gestores'
 
-GestorPagos "1" -- "1" GestorDocumentos
-GestorPoliza "1" -- "1" GestorPagos
-GestorPoliza "1" -- "1" GestorSubSistemaDeSiniestros
-GestorCliente "1" -- "1" GestorSubSistemaDeSiniestros
-GestorPagos "1" -- "1" GestorSistemaFinanciero
+GestorPagos "1" ..> "1" GestorDocumentos
+GestorPoliza "1" ..> "1" GestorPagos
+GestorPoliza "1" ..> "1" GestorSubSistemaDeSiniestros
+GestorCliente "1" ..> "1" GestorSubSistemaDeSiniestros
+GestorPagos "1" ..> "1" GestorSistemaFinanciero
 
 
 @endUML
