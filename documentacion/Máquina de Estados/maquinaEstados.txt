@@ -1,18 +1,24 @@
-@startuml
-
 Generada:
 Vigente:
 Suspendida:
 NoVigente:
 
 [*] --> Generada
-Generada --> Vigente: registrarPago()[fechaActual == inicioCobertura()]
+
+
+Generada --> Generada: realizarPago()[fechaActual() < inicioCobertura()]
+Generada --> Vigente: [tipoPago == PagoSemestral && \n polizaPaga() && \n fechaActual == inicioCobertura()]
+Generada --> Vigente: [tipoPago == PagoMensual && \n cuotas[0].cuotaPaga() && \n fechaActual == inicioCobertura()]
+Generada --> NoVigente: [tipoPago == PagoSemestral && \n !polizaPaga() && \n fechaActual == inicioCobertura()]
+Generada --> NoVigente: [tipoPago == PagoMensual && \n !cuotas[0].cuotaPaga() && \n fechaActual == inicioCobertura()]
+
 
 Vigente --> Vigente: registarPago()
 
 Vigente --> NoVigente: [fechaAcual > finCobertura()]
-Suspendida --> Vigente: registrarPago()
-Vigente --> Suspendida: [polizaPaga() == FALSE]
+Suspendida --> Vigente: registrarPago()[polizaPaga()]
+Suspendida --> Suspendida: registrarPago()[!polizaPaga()]
+Vigente --> Suspendida: [!polizaPaga()]
 Suspendida --> NoVigente: [fechaAcual > finCobertura()]
 NoVigente --> [*]
 
