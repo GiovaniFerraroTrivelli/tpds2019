@@ -6,10 +6,14 @@ Suspendida:
 NoVigente:
 
 [*] --> Generada
-Generada --> Vigente: registrarPago()[fechaActual == poliza->inicioCobertura()]
+Generada --> Vigente: registrarPago()[fechaActual == inicioCobertura()]
 
 Vigente --> Vigente: registarPago()
 
-Vigente --> NoVigente: [fechaAcual > poliza->finCobertura()]
+Vigente --> NoVigente: [fechaAcual > finCobertura()]
+Suspendida --> Vigente: registrarPago()
+Vigente --> Suspendida: [polizaPaga() == FALSE]
+Suspendida --> NoVigente: [fechaAcual > finCobertura()]
+NoVigente --> [*]
 
 @enduml
