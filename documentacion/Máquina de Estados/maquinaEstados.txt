@@ -1,0 +1,15 @@
+@startuml
+
+Generada:
+Vigente:
+Suspendida:
+NoVigente:
+
+[*] --> Generada
+Generada --> Vigente: registrarPago()[fechaActual == poliza->inicioCobertura()]
+
+Vigente --> Vigente: registarPago()
+
+Vigente --> NoVigente: [fechaAcual > poliza->finCobertura()]
+
+@enduml
