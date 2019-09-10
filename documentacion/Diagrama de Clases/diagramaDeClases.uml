@@ -26,6 +26,7 @@ package Dominio{
         -dominio: String
         -chasis: String
         -motor: String
+        -modelo: String
         -marca: String
         -fabricacion: Integer
 	    -seGuardaEnGarage: Boolean
@@ -99,21 +100,22 @@ package Dominio{
         +clienteActivo(): Boolean
         +clientePlata(): Boolean
     }
+    package "Tipo de dato HistorialValor" <<Rectangle>> {
+        class HistorialValor {
+        	-valor: Float
+        }
 
-    class HistorialValor {
-    	-valor: Float
+        class Vigencia {
+        	-fechaInicio: Date
+        	-fechaFin: Date
+        }
+
+        Class Valor {
+        	-valor: Float
+        }
+        HistorialValor "1" -right-> "n" Valor 
+        (HistorialValor, Valor) .. Vigencia
     }
-
-    class Vigencia {
-    	-fechaInicio: Date
-    	-fechaFin: Date
-    }
-
-    Class Valor {
-    	-valor: Float
-    }
-
-    (HistorialValor, Valor) . Vigencia
 
     class HijoDeclarado {
         -fechaNacimiento: Date
@@ -210,7 +212,7 @@ package Dominio{
 	class TipoCobertura{
 		-nombre: String
 		-descripcion: String
-		-valor: HistorialValor
+		-valor: Float
 	}
 	
 	class Pago{
@@ -244,7 +246,6 @@ package Dominio{
     Poliza "1" o--> "1" FormaPago
     Poliza "1" -- "1..n" ModificacionPoliza
 	Poliza "n" -right- "1" TipoCobertura
-	Poliza "n" -right- "1" Modelo
     
     ModificacionPoliza "1" -- "0..n" HijoDeclarado
     
