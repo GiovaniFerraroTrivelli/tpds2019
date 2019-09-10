@@ -26,7 +26,6 @@ package Dominio{
         -dominio: String
         -chasis: String
         -motor: String
-        -marca: String
         -fabricacion: Integer
 	    -seGuardaEnGarage: Boolean
 	    -poseeAlarma: Boolean
@@ -55,6 +54,7 @@ package Dominio{
     class Modelo {
     	-nombre: String
     	-marca: String
+    	-factorRiesgoRobo: HistorialValor
     }
 
     /'class Cobrador {
@@ -101,7 +101,8 @@ package Dominio{
     }
     package "Tipo de dato HistorialValor" <<Rectangle>> {
         class HistorialValor {
-        	-valor: Float
+        	-valorActual(): Float
+        	-valorEnFecha(Date): Float
         }
 
         class Vigencia {
@@ -174,24 +175,12 @@ package Dominio{
         +registrarPago(): Void
     }
     
-
 	class Localidad {
 		-nombre: String
 		-CPA: Integer
-		-factorRiegoActual: Float
+		-factorRiesgo: HistorialValor
 	}
 	
-	class FactorRiesgo{
-		-valor: Float
-	}
-	
-	class VigenciaFactorRiesgo{
-		-fechaInicio: Timestamp
-		-fechaFin: Timestamp
-	}
-	Localidad "1" -  "1..n" FactorRiesgo
-	(Localidad, FactorRiesgo) . VigenciaFactorRiesgo
-
 	class Provincia {
 		-nombre: String
 	}
@@ -211,9 +200,21 @@ package Dominio{
 	class TipoCobertura{
 		-nombre: String
 		-descripcion: String
-		-valor: HistorialValor
+		-factorCobertura: HistorialValor
 	}
 	
+	class FactoresCalculos<<(S, #FF7700) Singleton>> {
+		-factorGuardaGarage: HistorialValor
+		-factorAlarma: HistorialValor
+		-factorRastreoVehicular: HistorialValor
+		-factorTuercasAntirrobo: HistorialValor
+		-factorKmRealizados: HistorialValor
+		-factorSiniestros: List<HistorialValor>
+		-factorCantidadHijos: HistorialValor
+		-factorDerechosEmision: HistorialValor
+		-factorDescuentoUnidadAdicional: HistorialValor
+	}
+
 	class Pago{
 		-fechaHora: Timestamp
 		-premio: MonetaryAmount
@@ -243,7 +244,7 @@ package Dominio{
     Poliza "0..n" o-- "1" Localidad
     Poliza "1..n" o-- "0..n" HijoDeclarado
     Poliza "1" o--> "1" FormaPago
-    Poliza "1" -- "1..n" ModificacionPoliza
+    Poliza "1" --> "0..1" ModificacionPoliza
 	Poliza "n" -right- "1" TipoCobertura
 	Poliza "n" -right- "1" Modelo
     
@@ -268,7 +269,7 @@ package Dominio{
 	Pago "1" -- "1..n" Cuota
 	Pago "1" -- "1" Recibo
 	Poliza "1" -- "1" Pago
-	Usuario "1" -- "1" Pago
+	Usuario "1" --> "1..n" Pago
 }
 
 package "Acceso a Datos"{
@@ -502,6 +503,7 @@ Pais "n" ..> "1" GestorGeografico
 Pago "n" ..> "1" GestorPagos
 Recibo "n" ..> "1" GestorDocumentos
 Poliza "n" ..> "1" GestorPoliza
+FactoresCalculos "1" <.. "1" GestorPoliza
 
 'Relaciones entredistintos gestores'
 
