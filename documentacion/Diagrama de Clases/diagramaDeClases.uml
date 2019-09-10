@@ -50,6 +50,12 @@ package Dominio{
 	    -poseeRastreoVehicular: Boolean
 	    -poseeTuercasAntirrobo: Boolean
     }
+
+    class HistorialModificacionesPoliza {
+        FechaModificacion: Date
+    }
+
+
     
     class Modelo {
     	-nombre: String
@@ -101,8 +107,8 @@ package Dominio{
     }
     package "Tipo de dato HistorialValor" <<Rectangle>> {
         class HistorialValor {
-        	-valorActual(): Float
-        	-valorEnFecha(Date): Float
+        	+valorActual(): Float
+        	+valorEnFecha(Date): Float
         }
 
         class Vigencia {
@@ -244,10 +250,10 @@ package Dominio{
     Poliza "0..n" o-- "1" Localidad
     Poliza "1..n" o-- "0..n" HijoDeclarado
     Poliza "1" o--> "1" FormaPago
-    Poliza "1" --> "0..1" ModificacionPoliza
 	Poliza "n" -right- "1" TipoCobertura
 	Poliza "n" -right- "1" Modelo
-    
+    Usuario "1" <-- "n" ModificacionPoliza
+    (Poliza, ModificacionPoliza) .. HistorialModificacionesPoliza
     ModificacionPoliza "1" -- "0..n" HijoDeclarado
     
     /'Poliza .. EstadoPoliza
@@ -259,17 +265,18 @@ package Dominio{
     FormaPago <|-- PagoMensual
     FormaPago <|-- PagoSemestral
     
-    PagoMensual "1" *--> "6" Cuota
-    PagoSemestral "1" *--> "1" Cuota
+    PagoMensual "1" *-- "6" Cuota
+    PagoSemestral "1" *-- "1" Cuota
 
-    Domicilio "1..n" -- "1" Localidad
-	Localidad "1..n" -- "1" Provincia
-	Provincia "1..n" -- "1" Pais
+    Domicilio "1..n" --> "1" Localidad
+	Localidad "1..n" --> "1" Provincia
+	Provincia "1..n" --> "1" Pais
 	
-	Pago "1" -- "1..n" Cuota
+	Pago "1" --> "1..n" Cuota
 	Pago "1" -- "1" Recibo
 	Poliza "1" -- "1" Pago
-	Usuario "1" --> "1..n" Pago
+	Usuario "1" <-- "n" Pago
+    Usuario "1" <-- "n" Poliza
 }
 
 package "Acceso a Datos"{
