@@ -39,35 +39,25 @@ package Dominio{
         +calcularDescuentos(): Float
     }
 
-    class HistorialParametros {
-        - EstadisticaRobo: FactorRiesgo
-        - DomicilioRiesgo: Localidad
-        - AjusteCantHijos: Integer
-        - Descuentos: Float
-    }
-
     class ModificacionPoliza {
-		-idSucursal: Integer
         -cobertura: TipoCobertura
         -kmsAnuales: Integer
         -siniestros: Integer
         -dominio: String
         -chasis: String
         -motor: String
-        -modelo: String
-        -marca: String
         -fabricacion: Integer
 	    -seGuardaEnGarage: Boolean
 	    -poseeAlarma: Boolean
 	    -poseeRastreoVehicular: Boolean
 	    -poseeTuercasAntirrobo: Boolean
-	    -historialParametros: HistorialParametros
-        +calcularSuma(): Float
-        +polizaPaga(): Boolean
-        +calcularPrima(): Float
-        +calcularDescuentos(): Float
     }
     
+    class Modelo {
+    	-nombre: String
+    	-marca: String
+    }
+
     /'class Cobrador {
         +registrarPago(Poliza): Void
     }
@@ -110,6 +100,21 @@ package Dominio{
         +clienteActivo(): Boolean
         +clientePlata(): Boolean
     }
+
+    class HistorialValor {
+    	-valor: Float
+    }
+
+    class Vigencia {
+    	-fechaInicio: Date
+    	-fechaFin: Date
+    }
+
+    Class Valor {
+    	-valor: Float
+    }
+
+    (HistorialValor, Valor) . Vigencia
 
     class HijoDeclarado {
         -fechaNacimiento: Date
@@ -212,11 +217,16 @@ package Dominio{
 	class Pago{
 		-fechaHora: Timestamp
 		-premio: MonetaryAmount
-		-recargoMora: MonetaryAmount
-		-bonificacionPagoAdelantado: MonetaryAmount
 		+importe(): MonetaryAmount
 	}
 	
+	class PagoCuota {
+		-recargoMora: MonetaryAmount
+		-bonificacionPagoAdelantado: MonetaryAmount
+	}
+
+	(Pago, Cuota) . PagoCuota
+
 	class Recibo{
 		-numeroRecibo: Integer
 		+emitir(): ReciboDTO
@@ -235,11 +245,8 @@ package Dominio{
     Poliza "1" o--> "1" FormaPago
     Poliza "1" -- "1..n" ModificacionPoliza
 	Poliza "n" -right- "1" TipoCobertura
-    ModificacionPoliza "1" <---- "1 .. n" HistorialParametros
     
     ModificacionPoliza "1" -- "0..n" HijoDeclarado
-    HistorialParametros "n" -right- "1" Localidad
-    HistorialParametros "n" -right- "1" FactorRiesgo
     
     /'Poliza .. EstadoPoliza
     EstadoPoliza <|-- PolizaVigente
