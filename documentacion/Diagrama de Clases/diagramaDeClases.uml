@@ -38,7 +38,14 @@ package Dominio{
         +calcularPrima(): Float
         +calcularDescuentos(): Float
     }
-    
+
+    class HistorialParametros {
+        - EstadisticaRobo: FactorRiesgo
+        - DomicilioRiesgo: Localidad
+        - AjusteCantHijos: Integer
+        - Descuentos: Float
+    }
+
     class ModificacionPoliza {
 		-idSucursal: Integer
         -cobertura: TipoCobertura
@@ -54,6 +61,11 @@ package Dominio{
 	    -poseeAlarma: Boolean
 	    -poseeRastreoVehicular: Boolean
 	    -poseeTuercasAntirrobo: Boolean
+	    -historialParametros: HistorialParametros
+        +calcularSuma(): Float
+        +polizaPaga(): Boolean
+        +calcularPrima(): Float
+        +calcularDescuentos(): Float
     }
     
     /'class Cobrador {
@@ -223,9 +235,12 @@ package Dominio{
     Poliza "1" o--> "1" FormaPago
     Poliza "1" -- "1..n" ModificacionPoliza
 	Poliza "n" -right- "1" TipoCobertura
+    ModificacionPoliza "1" <---- "1 .. n" HistorialParametros
     
     ModificacionPoliza "1" -- "0..n" HijoDeclarado
-
+    HistorialParametros "n" -right- "1" Localidad
+    HistorialParametros "n" -right- "1" FactorRiesgo
+    
     /'Poliza .. EstadoPoliza
     EstadoPoliza <|-- PolizaVigente
     EstadoPoliza <|-- PolizaGenerada
