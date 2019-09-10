@@ -99,21 +99,22 @@ package Dominio{
         +clienteActivo(): Boolean
         +clientePlata(): Boolean
     }
+    package "Tipo de dato HistorialValor" <<Rectangle>> {
+        class HistorialValor {
+        	-valor: Float
+        }
 
-    class HistorialValor {
-    	-valor: Float
+        class Vigencia {
+        	-fechaInicio: Date
+        	-fechaFin: Date
+        }
+
+        Class Valor {
+        	-valor: Float
+        }
+        HistorialValor "1" -right-> "n" Valor 
+        (HistorialValor, Valor) . Vigencia
     }
-
-    class Vigencia {
-    	-fechaInicio: Date
-    	-fechaFin: Date
-    }
-
-    Class Valor {
-    	-valor: Float
-    }
-
-    (HistorialValor, Valor) . Vigencia
 
     class HijoDeclarado {
         -fechaNacimiento: Date
