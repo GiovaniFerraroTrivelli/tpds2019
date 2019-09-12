@@ -251,6 +251,7 @@ package Dominio{
     Poliza "1..n" o-- "0..n" HijoDeclarado
     Poliza "1" o--> "1" FormaPago
 	Poliza "n" -right- "1" TipoCobertura
+    ModificacionPoliza "n" -right- "1" TipoCobertura
 	Poliza "n" -right- "1" Modelo
     Usuario "1" <-- "n" ModificacionPoliza
     (Poliza, ModificacionPoliza) .. HistorialModificacionesPoliza
