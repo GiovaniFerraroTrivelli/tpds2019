@@ -1,0 +1,525 @@
+@startUML
+
+title Diagrama de Clases Grupo 4A
+
+note as N1
+Grupo 4A:
+Matías Bode,
+Francisco Busso,
+Giovani Ferraro Trivelli,
+Miguel Storani
+end note
+
+hide enum methods
+hide interface attributes
+
+package Dominio{
+    class Poliza {
+        -idSucursal: Integer
+        -numeroPoliza: Integer
+        -cobertura: TipoCobertura
+        -inicioVigencia: Date
+        -finVigencia: Date
+        -kmsAnuales: Integer
+        -estado: EstadoPoliza
+        -siniestros: Integer
+        -dominio: String
+        -chasis: String
+        -motor: String
+        -fabricacion: Integer
+	    -seGuardaEnGarage: Boolean
+	    -poseeAlarma: Boolean
+	    -poseeRastreoVehicular: Boolean
+	    -poseeTuercasAntirrobo: Boolean
+        +calcularSuma(): Float
+        +polizaPaga(): Boolean
+        +calcularPrima(): Float
+        +calcularDescuentos(): Float
+    }
+
+    class ModificacionPoliza {
+        -cobertura: TipoCobertura
+        -kmsAnuales: Integer
+        -siniestros: Integer
+        -dominio: String
+        -chasis: String
+        -motor: String
+        -fabricacion: Integer
+	    -seGuardaEnGarage: Boolean
+	    -poseeAlarma: Boolean
+	    -poseeRastreoVehicular: Boolean
+	    -poseeTuercasAntirrobo: Boolean
+    }
+
+    class HistorialModificacionesPoliza {
+        FechaModificacion: Date
+    }
+
+
+    
+    class Modelo {
+    	-nombre: String
+    	-marca: String
+    	-factorRiesgoRobo: HistorialValor
+    }
+
+    /'class Cobrador {
+        +registrarPago(Poliza): Void
+    }
+    
+    class ProductorSeguros {
+        +altaCliente(String[]): Cliente
+        +modificaCliente(String[], Cliente): Void
+        +buscarCliente(String[]): Cliente
+        +consultarCliente(Cliente): Void
+        +bajaCliente(Cliente): Void
+        +altaPoliza(String[]): Poliza
+        +modificarPoliza(String[], Poliza): Void
+        +bajaPoliza(Poliza): Void
+    }
+    
+    class Gerente {
+        generarPropuestasRenovacion(): Void
+        generarInforme(): Void
+    }
+    '/
+    class Cliente {
+        -idCliente: Integer
+        -nombre: String
+        -apellido: String
+        -tipoDocumento: TipoDocumento
+        -numeroDocumento: Integer
+        -cuil: Integer
+        -sexo: Sexo
+        -nacimiento: Date
+        -profesion: String
+        -estadoCivil: EstadoCivil
+        -email: String
+        -registro: Integer
+        -condicionIva: CondicionIva
+        -domicilio: Domicilio
+        +edad(): Integer
+        +enMora(): Boolean
+        +alDia(): Boolean
+        +clienteNormal(): Boolean
+        +clienteActivo(): Boolean
+        +clientePlata(): Boolean
+    }
+    package "Tipo de dato HistorialValor" <<Rectangle>> {
+        class HistorialValor {
+        	+valorActual(): Float
+        	+valorEnFecha(Date): Float
+        }
+
+        class Vigencia {
+        	-fechaInicio: Date
+        	-fechaFin: Date
+        }
+
+        Class Valor {
+        	-valor: Float
+        }
+        HistorialValor "1" -right-> "n" Valor 
+        (HistorialValor, Valor) . Vigencia
+    }
+
+    class HijoDeclarado {
+        -fechaNacimiento: Date
+        -estadoCivil: EstadoCivil
+        -sexo: Sexo
+        +edad(): Integer
+    }
+
+    class Domicilio {
+        -calle: String
+        -numero: Integer
+        -piso: Integer
+        -departamento: String
+    }
+
+    /'abstract EstadoPoliza {
+        +handle(): Void
+        +generada(): Boolean
+        +suspendida(): Boolean
+        +vigente(): Boolean
+        +finalizada(): Boolean
+    }
+
+    class PolizaGenerada {
+        +generada(): Boolean //<<Override>>// 
+    }
+    
+    class PolizaSuspendida{
+        +suspendida(): Boolean //<<Override>>//
+    }
+    
+    class PolizaVigente{
+        +vigente(): Boolean //<<Override>>//
+    }
+    
+    class PolizaFinalizada{
+        +finalizada(): Boolean //<<Override>>//
+    }'/
+    
+    abstract FormaPago {
+        +{abstract}polizaPaga(): Boolean
+    }
+    
+    class PagoMensual {
+        +polizaPaga(): Boolean //<<Override>>//
+    }
+    
+    class PagoSemestral {
+        +polizaPaga(): Boolean //<<Override>>//
+    }
+    
+    class Cuota {
+        -importe: MonetaryAmount
+		-mesCorrespondiente: Mes
+		-anio: Integer
+        -cuotaPaga: Boolean
+        +registrarPago(): Void
+    }
+    
+	class Localidad {
+		-nombre: String
+		-CPA: Integer
+		-factorRiesgo: HistorialValor
+	}
+	
+	class Provincia {
+		-nombre: String
+	}
+	class Pais {
+		-nombre: String
+	}
+
+    class Usuario {
+	    -nombreUsuario: String
+	    -passwordHash: byte[512]
+	    -salt: byte[16]
+	    -nombre: String
+	    -apellido: String
+	    -email: String
+    }
+	
+	class TipoCobertura{
+		-nombre: String
+		-descripcion: String
+		-factorCobertura: HistorialValor
+	}
+	
+	class FactoresCalculos<<(S, #FF7700) Singleton>> {
+		-factorGuardaGarage: HistorialValor
+		-factorAlarma: HistorialValor
+		-factorRastreoVehicular: HistorialValor
+		-factorTuercasAntirrobo: HistorialValor
+		-factorKmRealizados: HistorialValor
+		-factorSiniestros: List<HistorialValor>
+		-factorCantidadHijos: HistorialValor
+		-factorDerechosEmision: HistorialValor
+		-factorDescuentoUnidadAdicional: HistorialValor
+	}
+
+	class Pago{
+		-fechaHora: Timestamp
+		-premio: MonetaryAmount
+		+importe(): MonetaryAmount
+	}
+	
+	class PagoCuota {
+		-recargoMora: MonetaryAmount
+		-bonificacionPagoAdelantado: MonetaryAmount
+	}
+
+	(Pago, Cuota) . PagoCuota
+
+	class Recibo{
+		-numeroRecibo: Integer
+		+emitir(): ReciboDTO
+	}
+	
+    Cliente "1" -up- "0..n" Poliza
+    Cliente "1..n" --> "1" Domicilio
+    
+    /'Usuario <-- Cobrador: <<is role of>>
+    Usuario <-- ProductorSeguros: <<is role of>>
+    Usuario <-- Gerente: <<is role of>>
+	'/
+   
+    Poliza "0..n" o-- "1" Localidad
+    Poliza "1..n" o-- "0..n" HijoDeclarado
+    Poliza "1" o--> "1" FormaPago
+	Poliza "n" -right- "1" TipoCobertura
+    ModificacionPoliza "n" -right- "1" TipoCobertura
+	Poliza "n" -right- "1" Modelo
+    Usuario "1" <-- "n" ModificacionPoliza
+    (Poliza, ModificacionPoliza) .. HistorialModificacionesPoliza
+    ModificacionPoliza "1" -- "0..n" HijoDeclarado
+    
+    /'Poliza .. EstadoPoliza
+    EstadoPoliza <|-- PolizaVigente
+    EstadoPoliza <|-- PolizaGenerada
+    EstadoPoliza <|-- PolizaSuspendida
+    EstadoPoliza <|-- PolizaFinalizada'/
+    
+    FormaPago <|-- PagoMensual
+    FormaPago <|-- PagoSemestral
+    
+    PagoMensual "1" *-- "6" Cuota
+    PagoSemestral "1" *-- "1" Cuota
+
+    Domicilio "1..n" --> "1" Localidad
+	Localidad "1..n" --> "1" Provincia
+	Provincia "1..n" --> "1" Pais
+	
+	Pago "1" --> "1..n" Cuota
+	Pago "1" -- "1" Recibo
+	Poliza "1" -- "1" Pago
+	Usuario "1" <-- "n" Pago
+    Usuario "1" <-- "n" Poliza
+}
+
+package "Acceso a Datos"{
+    interface "DAO<T>" {
+        +guardar(<T>): Void
+        +modificar(<T>, String[]): Void
+        +eliminar(<T>): Void
+        +getAll(): ArrayList<T>
+    }
+    
+    class DaoCliente{
+        +guardar(Cliente): Void //<<Override>>//
+        +modificar(Cliente, String[]): Void //<<Override>>//
+        +eliminar(Cliente): Void //<<Override>>//
+        +getAll(): ArrayList<Cliente> //<<Override>>//
+    }
+    
+    class DaoPoliza{
+        +guardar(Poliza): Void //<<Override>>//
+        +modificar(Poliza, String[]): Void //<<Override>>//
+        +eliminar(Poliza): Void //<<Override>>//
+        +getAll(): ArrayList<Poliza> //<<Override>>//
+    }
+    
+    class DaoUsuario{
+        +guardar(Usuario): Void //<<Override>>//
+        +modificar(Usuario, String[]): Void //<<Override>>//
+        +eliminar(Usuario): Void //<<Override>>//
+        +getAll(): ArrayList<Usuario> //<<Override>>//
+    }
+
+    class DaoLocalidad{
+        +guardar(Localidad): Void //<<Override>>//
+        +modificar(Localidad, String[]): Void //<<Override>>//
+        +eliminar(Localidad): Void //<<Override>>//
+        +getAll(): ArrayList<Localidad> //<<Override>>//
+    }
+    
+    class DaoProvincia{
+        +guardar(Provincia): Void //<<Override>>//
+        +modificar(Provincia, String[]): Void //<<Override>>//
+        +eliminar(Provincia): Void //<<Override>>//
+        +getAll(): ArrayList<Provincia> //<<Override>>//
+    }
+    
+    class DaoPais{
+        +guardar(Pais): Void //<<Override>>//
+        +modificar(Pais, String[]): Void //<<Override>>//
+        +eliminar(Pais): Void //<<Override>>//
+        +getAll(): ArrayList<Pais> //<<Override>>//
+    }
+    
+    class DaoCuota
+    {
+        +guardar(Cuota): Void //<<Override>>//
+        +modificar(Cuota, String[]): Void //<<Override>>//
+        +eliminar(Cuota): Void //<<Override>>//
+        +getAll(): ArrayList<Cuota> //<<Override>>//
+    }
+    
+    /'class ReciboDTO {
+		-nroCliente: Integer
+		-nombreCliente: String
+		-apellidoCliente: String
+		-domicilioRiesgo: String
+		-marca: String
+		-modelo: String
+		-anioFabricacion: Integer
+		-patente: String
+		-nroPoliza: Integer
+		-inicioVigencia: Date
+		-finVigencia: Date
+		-tipoCobertura: String
+		-sumaAsegurada: MonetaryAmount
+		-fechaPago: Date
+		-premio: MonetaryAmount
+		-recargosMora: MonetaryAmount
+		-bonificacionPagoAdelantado: MonetaryAmount
+	}'/
+	
+    "DAO<T>" <|.. DaoPoliza: <<implements>>
+    "DAO<T>" <|.. DaoCliente: <<implements>>
+    "DAO<T>" <|.. DaoUsuario: <<implements>>
+    "DAO<T>" <|.. DaoLocalidad: <<implements>>
+    "DAO<T>" <|.. DaoProvincia: <<implements>>
+    "DAO<T>" <|.. DaoPais: <<implements>>
+    "DAO<T>" <|.. DaoCuota: <<implements>>
+}
+
+package Logica{
+    class GestorCliente <<(S, #FF7700) Singleton>> {
+        -{static} singleton: GestorCliente
+        -GestorCliente()
+        +{static} getInstance(): GestorCliente
+        +buscar(String[]): Cliente 
+        +modificar(Cliente, String[]): Void
+        +alta(String[]): Cliente
+        +calcularIdCliente(Cliente): Void
+    }
+    
+    class GestorPoliza <<(S, #FF7700) Singleton>> {
+        -{static} singleton: GestorPoliza
+        -GestorPoliza()
+        +{static} getInstance(): GestorPoliza
+        +alta(String[]): Poliza
+        +buscar(String[]): Poliza
+        +modificar(Poliza, String[]): Void
+        +registrarPago(Poliza): Void
+    }
+
+    class GestorUsuario <<(S, #FF7700) Singleton>> {
+        -{static} singleton: GestorUsuario
+        -GestorUsuario()
+        +{static} getInstance(): GestorUsuario
+        +alta(String[]): Usuario
+        +buscar(String[]): Usuario
+        +modificar(Usuario, String[]): Void
+        +eliminar(Usuario): Void
+    }
+    
+    class GestorSubSistemaDeSiniestros <<(S, #FF7700) Singleton>> {
+        -{static} singleton: GestorSubSistemaDeSiniestros
+        -GestorSubSistemaDeSiniestros()
+        +{static} getInstance(): GestorSubSistemaDeSiniestros 
+    }
+
+	class GestorSistemaFinanciero <<(S, #FF7700) Singleton>> {
+        -{static} singleton: GestorSistemaFinanciero
+        -GestorSistemaFinanciero()
+        +{static} getInstance(): GestorSistemaFinanciero
+    }
+	class GestorGeografico <<(S, #FF7700) Singleton>>{
+		-{static} singleton: GestorGeografico
+		-GestorGeografico()
+		+{static} getInstance(): GestorGeografico
+	}
+	class GestorPagos <<(S, #FF7700) Singleton>>{
+		-{static} singleton: GestorPagos
+		-GestorPagos()
+		+{static} getInstance(): GestorPagos
+	}
+	class GestorDocumentos <<(S, #FF7700) Singleton>>{
+		-{static} singleton: GestorDocumentos
+		-GestorDocumentos()
+		+{static} getInstance(): GestorDocumentos
+	}
+}
+
+package Enumeradores
+{
+    enum CondicionIva {
+        ResponsableInscripto
+        ResponsableNoInscripto
+        NoResponsable
+        SujetoExento
+        ConsumidorFinal
+        ResponsableMonotributo
+        NoCategorizado
+        ProveedorExterior
+        ClienteExterior
+        Liberado
+        ResponsableInscriptoPercepcion
+        PeqContribuyente
+        MonotributistaSocial
+        PeqContribuyenteSocial
+    }
+    
+    enum EstadoPoliza {
+        Generada
+        Vigente
+        Supendida
+        Finalizada
+    }
+
+    enum TipoDocumento {
+        DNI
+        LU
+        LC
+        LE
+    }
+    
+    enum TipoCliente {
+        Normal
+        Activo
+        Plata
+    }
+
+    enum EstadoCivil{
+        Soltero
+        Casado
+        Viudo
+    }
+
+    enum Sexo {
+        Masculino
+        Femenino
+    }
+    
+    enum Mes {
+        Enero,
+        Febrero,
+        Marzo,
+        Abril,
+        Mayo,
+        Junio,
+        Julio,
+        Agosto,
+        Septiembre,
+        Octubre,
+        Noviembre,
+        Diciembre
+    }
+}
+
+
+DaoCliente <.. GestorCliente
+DaoPoliza <.. GestorPoliza
+DaoUsuario <.. GestorUsuario
+DaoLocalidad <.. GestorGeografico
+DaoProvincia <.. GestorGeografico
+DaoPais <.. GestorGeografico
+DaoCuota <.. GestorPagos
+'Poliza -- ValorAutomovil'
+
+'Relaciones entre clases y gestores'
+
+Cliente "n" ..> "1" GestorCliente
+Localidad "n" ..> "1" GestorGeografico
+Provincia "n" ..> "1" GestorGeografico
+Pais "n" ..> "1" GestorGeografico
+Pago "n" ..> "1" GestorPagos
+Recibo "n" ..> "1" GestorDocumentos
+Poliza "n" ..> "1" GestorPoliza
+FactoresCalculos "1" <.. "1" GestorPoliza
+
+'Relaciones entredistintos gestores'
+
+GestorPagos "1" ..> "1" GestorDocumentos
+GestorPoliza "1" ..> "1" GestorPagos
+GestorPoliza "1" ..> "1" GestorSubSistemaDeSiniestros
+GestorCliente "1" ..> "1" GestorSubSistemaDeSiniestros
+GestorPagos "1" ..> "1" GestorSistemaFinanciero
+
+
+@endUML
