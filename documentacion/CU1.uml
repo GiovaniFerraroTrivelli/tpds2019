@@ -1,0 +1,60 @@
+@startuml
+
+title CU 1
+
+actor Usuario as User
+boundary "AltaPoliza" as IAltaPoliza
+control "GestorPoliza" as GPoliza
+control "GestorCliente" as GCliente
+
+
+
+
+User -> IAltaPoliza : Alta poliza
+activate IAltaPoliza
+
+loop while datos incorrectos
+    IAltaPoliza -> User : Solicitar datos cliente
+    User -> IAltaPoliza : Ingresar datos cliente
+end loop
+
+
+
+IAltaPoliza -> GPoliza : seleccionarCliente(ClienteJSON)
+activate GPoliza
+GPoliza -> GCliente : c:= buscarCliente(ClienteDTO)
+activate GCliente
+ref over GCliente
+    CU17
+end ref
+alt no existe cliente
+    GCliente -> GPoliza : no existe cliente
+    deactivate GCliente
+    
+    GPoliza -> GCliente : c:= altaCliente()
+    activate GCliente
+    ref over GCliente
+        CU04
+    end ref
+    GCliente -> GPoliza : instancia de Cliente
+    deactivate GCliente
+else existe cliente
+    GCliente -> GPoliza : instancia de Cliente
+    deactivate GCliente
+end
+
+GPoliza -> IAltaPoliza : cliente.json()
+IAltaPoliza -> User : Mostrar datos cliente
+
+loop while datos incorrectos
+    IAltaPoliza -> User : Solicitar datos poliza
+    User -> IAltaPoliza : Ingresar datos poliza
+end loop
+
+
+
+
+
+
+
+@enduml
