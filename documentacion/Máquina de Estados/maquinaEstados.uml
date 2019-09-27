@@ -9,9 +9,9 @@ NoVigente:
 Generada --> Generada: realizarPago()[fechaActual() < inicioCobertura()]
 Generada --> Vigente: [tipoPago == PagoSemestral && \n polizaPaga() && \n fechaActual == inicioCobertura()]
 Generada --> Vigente: [tipoPago == PagoMensual && \n cuotas[0].cuotaPaga() && \n fechaActual == inicioCobertura()]
-Generada --> NoVigente: [tipoPago == PagoSemestral && \n !polizaPaga() && \n fechaActual == inicioCobertura()]
-Generada --> NoVigente: [tipoPago == PagoMensual && \n !cuotas[0].cuotaPaga() && \n fechaActual == inicioCobertura()]
-
+Generada --> Suspendida: [tipoPago == PagoSemestral && \n !polizaPaga() && \n fechaActual == inicioCobertura()]
+Generada --> Suspendida: [tipoPago == PagoMensual && \n !cuotas[0].cuotaPaga() && \n fechaActual == inicioCobertura()]
+Generada --> NoVigente: cancelarPoliza()
 
 Vigente --> Vigente: registrarPago()
 
