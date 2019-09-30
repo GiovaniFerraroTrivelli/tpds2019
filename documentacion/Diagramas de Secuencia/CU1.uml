@@ -6,19 +6,20 @@ actor Usuario as User
 boundary "AltaPoliza" as IAltaPoliza
 control "GestorPoliza" as GPoliza
 control "GestorCliente" as GCliente
-
-
+'database "MySQL" as db
 
 
 User -> IAltaPoliza : Alta poliza
 activate IAltaPoliza
 
 loop while datos incorrectos
-    IAltaPoliza -> User : Solicitar datos cliente
+    User <-- IAltaPoliza : Solicitar datos cliente
     User -> IAltaPoliza : Ingresar datos cliente
 end loop
 
-
+/'El actor selecciona el cliente para el cuál quiere dar
+  la póliza mediante la opción buscar cliente 
+  (CU17-Buscar Cliente).'/
 
 IAltaPoliza -> GPoliza : seleccionarCliente(ClienteJSON)
 activate GPoliza
@@ -28,7 +29,7 @@ ref over GCliente
     CU17
 end ref
 alt no existe cliente
-    GCliente -> GPoliza : no existe cliente
+    GPoliza <-- GCliente : no existe cliente
     deactivate GCliente
     
     GPoliza -> GCliente : c:= altaCliente()
@@ -36,25 +37,108 @@ alt no existe cliente
     ref over GCliente
         CU04
     end ref
-    GCliente -> GPoliza : instancia de Cliente
+    GPoliza <-- GCliente : Cliente c
     deactivate GCliente
 else existe cliente
-    GCliente -> GPoliza : instancia de Cliente
+    GPoliza <-- GCliente : Cliente c
     deactivate GCliente
 end
 
-GPoliza -> IAltaPoliza : cliente.json()
+/'El sistema muestra los datos del cliente seleccionado.'/
+
+IAltaPoliza <-- GPoliza: cliente.json()
+deactivate GPoliza
 IAltaPoliza -> User : Mostrar datos cliente
+
+/'El actor ingresa los datos de la póliza'/
 
 loop while datos incorrectos
     IAltaPoliza -> User : Solicitar datos poliza
     User -> IAltaPoliza : Ingresar datos poliza
 end loop
 
+/'El sistema muestra las alternativas de cobertura 
+  en base a los parámetros ingresados.'/
+  
+User <-- IAltaPoliza : Coberturas Disponibles
+
+/'El actor selecciona:  
+   ▪ el tipo de cobertura que se asociará a la póliza. 
+   ▪ La fecha de inicio de vigencia de la póliza 
+     (por defecto el día posterior a la fecha actual). 
+   ▪ Forma de pago (mensual o semestral). '/
+   
+User --> IAltaPoliza : Tipo Cobertura, Inicio Vigencia, Forma Pago
+
+/'El sistema calcula el premio, derecho de emisión y descuentos
+  correspondientes a la póliza invocando al 
+  CU16-Calcular Premio, Derecho de Emisión y Descuentos'/
+
+ref over IAltaPoliza
+        CU-16
+end ref
+
+/'El sistema muestra la información de la póliza a generar'/
+
+User <-- IAltaPoliza : Información Póliza
+
+/'El actor confirma la generación de la póliza.'/
 
 
+alt El actor confirma la generación de la póliza
+    User -> IAltaPoliza : Confirmación
+
+    /'El sistema genera el número de póliza y guarda 
+    la información de la misma. La póliza queda en
+    el estado generada. '/
+
+    IAltaPoliza -> GPoliza : altaPoliza(PolizaJSON)
+    activate GPoliza
+    GPoliza -> Poliza: p := new(PolizaDTO)
+    activate Poliza
+    GPoliza <-- Poliza: Poliza p 
+    deactivate Poliza
+
+    GPoliza -> GPoliza: nroPoliza := calcularNroPoliza(p)
+    activate GPoliza
+    deactivate GPoliza
+    GPoliza -> Poliza : setNroPoliza(nroPoliza)
+    activate Poliza
+    GPoliza <-- Poliza
+    deactivate Poliza
+
+    GPoliza -> Poliza : setEstado(EstadoPoliza.Generada)
+    activate Poliza
+    GPoliza <-- Poliza
+    deactivate Poliza
 
 
+    database "MySQL" as db
+    GPoliza -> db : insert(p)
+    activate db
+    GPoliza <-- db
+    deactivate db
 
+    /'El sistema actualiza la forma de considerar al cliente 
+    en base a la política definida por la empresa'/
+
+    GPoliza -> GCliente : actualizarCondicionCliente(c)
+    activate GCliente
+    GPoliza <-- GCliente
+    deactivate GCliente
+
+    ref over User, IAltaPoliza, GPoliza, GCliente, Poliza, db
+        CU-11
+    end ref
+
+else cancelar
+    User --> IAltaPoliza : cancelar
+    deactivate IAltaPoliza
+    deactivate User
+    deactivate GPoliza
+    deactivate GCliente
+    deactivate Poliza
+    deactivate db
+end alt
 
 @enduml
