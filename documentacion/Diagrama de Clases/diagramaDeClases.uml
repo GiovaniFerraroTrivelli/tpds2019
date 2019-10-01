@@ -59,9 +59,10 @@ package Dominio{
     
     class Modelo {
     	-nombre: String
-    	-marca: String
+        -anio: Integer
     	-factorRiesgoRobo: HistorialValor
     }
+
 
     /'class Cobrador {
         +registrarPago(Poliza): Void
@@ -256,14 +257,9 @@ package Dominio{
     ModificacionPoliza "n" --> "1" TipoCobertura
     Usuario "1" <-- "n" ModificacionPoliza
     (Poliza, ModificacionPoliza) .. HistorialModificacionesPoliza
-    ModificacionPoliza "1" -- "0..n" HijoDeclarado
+    ModificacionPoliza "0..1" -- "0..n" HijoDeclarado
 	Poliza "n" --> "1" Modelo
-    
-    /'Poliza .. EstadoPoliza
-    EstadoPoliza <|-- PolizaVigente
-    EstadoPoliza <|-- PolizaGenerada
-    EstadoPoliza <|-- PolizaSuspendida
-    EstadoPoliza <|-- PolizaFinalizada'/
+    Marca "1" -- "1..n" Modelo
     
     FormaPago <|-- PagoMensual
     FormaPago <|-- PagoSemestral
@@ -276,7 +272,7 @@ package Dominio{
 	Provincia "1..n" --> "1" Pais
 	
 	Pago "1" -- "1" Recibo
-	Poliza "0 .. 1" -- "1" Pago
+	Poliza "1" -- "0..6" Pago
 	Usuario "1" <-- "0 .. n" Pago
     Usuario "1" <-- "0 .. n" Poliza
 }
