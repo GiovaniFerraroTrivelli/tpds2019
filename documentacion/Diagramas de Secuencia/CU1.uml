@@ -6,8 +6,8 @@ actor Usuario as User
 boundary "AltaPoliza" as IAltaPoliza
 control "GestorPoliza" as GPoliza
 control "GestorCliente" as GCliente
-'database "MySQL" as db
-
+control DAOPoliza
+'database MySQL as Disponibles
 
 User -> IAltaPoliza : Alta poliza
 activate IAltaPoliza
@@ -74,7 +74,7 @@ User --> IAltaPoliza : Tipo Cobertura, Inicio Vigencia, Forma Pago
   correspondientes a la póliza invocando al 
   CU16-Calcular Premio, Derecho de Emisión y Descuentos'/
 
-ref over IAltaPoliza
+ref over IAltaPoliza, GPoliza
         CU-16
 end ref
 
@@ -97,27 +97,29 @@ alt El actor confirma la generación de la póliza
     GPoliza -> Poliza: p := new(PolizaDTO)
     activate Poliza
     GPoliza <-- Poliza: Poliza p 
-    deactivate Poliza
+    
 
     GPoliza -> GPoliza: nroPoliza := calcularNroPoliza(p)
     activate GPoliza
     deactivate GPoliza
     GPoliza -> Poliza : setNroPoliza(nroPoliza)
-    activate Poliza
     GPoliza <-- Poliza
-    deactivate Poliza
+    
 
     GPoliza -> Poliza : setEstado(EstadoPoliza.Generada)
-    activate Poliza
     GPoliza <-- Poliza
-    deactivate Poliza
+
+    loop while hijos > 0
+        GPoliza -> Poliza : agregarHijoDeclarado(fechaNacimiento, sexo, estadoCivil)
+        Poliza --> GPoliza
+    end loop
 
 
-    database "MySQL" as db
-    GPoliza -> db : insert(p)
-    activate db
-    GPoliza <-- db
-    deactivate db
+    database "MySQL" as DAOPoliza
+    GPoliza -> DAOPoliza : insert(p)
+    activate DAOPoliza
+    GPoliza <-- DAOPoliza
+    deactivate DAOPoliza
 
     /'El sistema actualiza la forma de considerar al cliente 
     en base a la política definida por la empresa'/
@@ -127,7 +129,7 @@ alt El actor confirma la generación de la póliza
     GPoliza <-- GCliente
     deactivate GCliente
 
-    ref over User, IAltaPoliza, GPoliza, GCliente, Poliza, db
+    ref over User, IAltaPoliza, GPoliza, GCliente, Poliza, DAOPoliza
         CU-11
     end ref
 
@@ -138,7 +140,7 @@ else cancelar
     deactivate GPoliza
     deactivate GCliente
     deactivate Poliza
-    deactivate db
+    deactivate DAOPoliza
 end alt
 
 @enduml
