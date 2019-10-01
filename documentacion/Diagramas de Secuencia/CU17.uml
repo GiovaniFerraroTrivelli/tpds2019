@@ -1,0 +1,65 @@
+@startuml
+
+actor Usuario
+boundary Resultados
+boundary PantallaDeBusqueda
+control GestorPoliza
+control GestorCliente
+entity "r: ResultadoBusqueda" as resultado
+control DAOCliente
+activate GestorPoliza
+GestorPoliza -> GestorCliente : buscarCliente()
+activate GestorCliente
+alt
+    
+     
+    loop while no existen resultados de busqueda
+
+        GestorCliente -> PantallaDeBusqueda : mostrarPantallaDeBusqueda()
+        activate PantallaDeBusqueda
+        loop while datos incorrectos
+            PantallaDeBusqueda -> Usuario : Solicitar criterios de búsqueda
+            activate Usuario
+            Usuario --> PantallaDeBusqueda : Criterios de búsqueda
+            deactivate Usuario
+        end loop
+        PantallaDeBusqueda --> GestorCliente : criteriosDeBusqueda.JSON
+        deactivate PantallaDeBusqueda
+    
+    GestorCliente -> DAOCliente : getClientes(criteriosDeBusqueda[0])
+    activate DAOCliente
+    DAOCliente -> resultado : new: Collection<<Cliente>>
+    activate resultado
+    loop for Cliente in resultadobBusqueda
+        DAOCliente -> resultado : add(Cliente)
+    end loop
+    DAOCliente -> GestorCliente : r: ResultadoBusqueda
+    loop for criterio in criteriosDeBusqueda
+        GestorCliente ->resultado : aplicarFiltro(criterio)
+    end loop
+    end loop
+
+    loop Paginación
+        GestorCliente -> resultado : obtenerResultadoJSON(numeroDeResultadosPorPagina, numeroDePagina)
+        resultado -> GestorCliente : resultados = resultado.JSON
+        GestorCliente -> Resultados : mostrarResultados(resultados)
+        activate Resultados
+    end loop
+    Usuario -> Resultados : Seleciona cliente
+    Resultados --> GestorCliente : c = clienteSeleccionado
+    deactivate Resultados
+    GestorCliente -> GestorPoliza : clienteSeleccionado
+    deactivate GestorCliente
+    deactivate resultado
+    deactivate DAOCliente
+    
+else cancelar busqueda
+    activate PantallaDeBusqueda
+    Usuario -> PantallaDeBusqueda : Cancelar búsqueda
+    PantallaDeBusqueda -> GestorCliente : cancelar()
+    deactivate PantallaDeBusqueda
+    GestorCliente --> GestorPoliza : trows exception: "Busqueda cancelada"
+
+end
+
+@enduml
