@@ -232,6 +232,7 @@ package Dominio{
 		-bonificacionPagoAdelantado: MonetaryAmount
 	}
 
+	Pago "1" --> "1..n" Cuota
 	(Pago, Cuota) . PagoCuota
 
 	class Recibo{
@@ -248,14 +249,15 @@ package Dominio{
 	'/
    
     Poliza "0..n" o-- "1" Localidad
+    ModificacionPoliza "0..n" o-- "1" Localidad
     Poliza "1..n" o-- "0..n" HijoDeclarado
     Poliza "1" o--> "1" FormaPago
-	Poliza "n" -right- "1" TipoCobertura
-    ModificacionPoliza "n" -right- "1" TipoCobertura
-	Poliza "n" -right- "1" Modelo
+	Poliza "n" --> "1" TipoCobertura
+    ModificacionPoliza "n" --> "1" TipoCobertura
     Usuario "1" <-- "n" ModificacionPoliza
     (Poliza, ModificacionPoliza) .. HistorialModificacionesPoliza
     ModificacionPoliza "1" -- "0..n" HijoDeclarado
+	Poliza "n" --> "1" Modelo
     
     /'Poliza .. EstadoPoliza
     EstadoPoliza <|-- PolizaVigente
@@ -273,11 +275,10 @@ package Dominio{
 	Localidad "1..n" --> "1" Provincia
 	Provincia "1..n" --> "1" Pais
 	
-	Pago "1" --> "1..n" Cuota
 	Pago "1" -- "1" Recibo
-	Poliza "1" -- "1" Pago
-	Usuario "1" <-- "n" Pago
-    Usuario "1" <-- "n" Poliza
+	Poliza "0 .. 1" -- "1" Pago
+	Usuario "1" <-- "0 .. n" Pago
+    Usuario "1" <-- "0 .. n" Poliza
 }
 
 package "Acceso a Datos"{
