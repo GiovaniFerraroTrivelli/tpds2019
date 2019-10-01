@@ -7,11 +7,15 @@ import { AppComponent } from './app.component';
 import { UserListComponent } from './user-list/user-list.component';
 //import { UserFormComponent } from './user-form/user-form.component';
 import { UserService } from './user-service.service';
+import { AltapolizaComponent } from './altapoliza/altapoliza.component';
+import { ConsultarpolizaComponent } from './consultarpoliza/consultarpoliza.component';
  
 @NgModule({
   declarations: [
     AppComponent,
-    UserListComponent//,
+    UserListComponent,
+    AltapolizaComponent,
+    ConsultarpolizaComponent//,
     //UserFormComponent
   ],
   imports: [
