@@ -3,7 +3,6 @@
 ' ver observacion 2, como modelarlo? '
 ' diagrama de clases - crear clase marca, realizar relacion con sistemafinanciero '
 
-
 title CU 16
 
 control "GestorPoliza" as GPoliza
