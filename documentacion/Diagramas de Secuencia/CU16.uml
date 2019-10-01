@@ -1,169 +1,201 @@
 @startuml
 
-' ver observacion 2, como modelarlo? '
 ' diagrama de clases - crear clase marca, realizar relacion con sistemafinanciero '
 
 title CU 16
 
 control "GestorPoliza" as GPoliza
+
+-> GPoliza : calcularPremio(p)
+
+entity "p : Poliza" as Poliza
 activate GPoliza
-GPoliza -> Poliza : p := calcularPrima()
+GPoliza -> Poliza : getTipoCobertura()
 activate Poliza
-Poliza -> TipoCobertura : c := obtenerValor(Date)
+GPoliza <-- Poliza : TipoCobertura t
+deactivate Poliza
 
+entity TipoCobertura
+GPoliza -> TipoCobertura : obtenerValor(Date)
+
+entity "HVTipoCobertura :\nHistorialValor" as HVC
 activate TipoCobertura
-TipoCobertura -> HistorialValor : v := valorEnFecha(Date)
-activate HistorialValor
-TipoCobertura <-- HistorialValor : Float v
-deactivate HistorialValor
+TipoCobertura -> HVC : valorEnFecha(Date)
+activate HVC
+TipoCobertura <-- HVC : valorCobertura
+deactivate HVC
 
-Poliza <-- TipoCobertura : Float c
+GPoliza <-- TipoCobertura : valorCobertura
 deactivate TipoCobertura
 
-Poliza -> Cliente : l := getLocalidad()
-activate Cliente
-Poliza <-- Cliente : Localidad l
-deactivate Cliente
+GPoliza -> Poliza : getLocalidad()
+activate Poliza
+GPoliza <-- Poliza : Localidad l
+deactivate Poliza
 
-Poliza -> Localidad : l := obtenerValor(Date)
+entity Localidad
+GPoliza -> Localidad : obtenerValor(Date)
 
+entity "HVLocalidad :\nHistorialValor" as HVL
 activate Localidad
-Localidad -> HistorialValor : v := valorEnFecha(Date)
-activate HistorialValor
-Localidad <-- HistorialValor : Float v
-deactivate HistorialValor
+Localidad -> HVL : valorEnFecha(Date)
+activate HVL
+Localidad <-- HVL : valorLocalidad
+deactivate HVL
 
-Poliza <-- Localidad : Float l
+GPoliza <-- Localidad : valorLocalidad
 deactivate Localidad
 
-Poliza -> Marca : ma := obtenerValor(Date)
-activate Marca
-Marca -> HistorialValor : v := valorEnFecha(Date)
-activate HistorialValor
-Marca <-- HistorialValor : Float v
-deactivate HistorialValor
+GPoliza -> Poliza : getMarca()
+activate Poliza
+GPoliza <-- Poliza : Marca ma
+deactivate Poliza
 
-Poliza <-- Marca : Float ma
+entity Marca
+GPoliza -> Marca : obtenerValor(Date)
+entity "HVMarca :\nHistorialValor" as HVMa
+activate Marca
+Marca -> HVMa : valorEnFecha(Date)
+activate HVMa
+Marca <-- HVMa : valorMarca
+deactivate HVMa
+
+GPoliza <-- Marca : valorMarca
 deactivate Marca
 
-Poliza -> Modelo : mo := obtenerValor(Date)
-activate Modelo
-Modelo -> HistorialValor : v := valorEnFecha(Date)
-activate HistorialValor
-Modelo <-- HistorialValor : Float v
-deactivate HistorialValor
+GPoliza -> Poliza : getModelo()
+activate Poliza
+GPoliza <-- Poliza : Modelo mo
+deactivate Poliza
 
-Poliza <-- Modelo : Float mo
+entity Modelo
+GPoliza -> Modelo : obtenerValor(Date)
+entity "HVModelo :\nHistorialValor" as HVMo
+activate Modelo
+Modelo -> HVMo : valorEnFecha(Date)
+activate HVMo
+Modelo <-- HVMo : valorModelo
+deactivate HVMo
+
+GPoliza <-- Modelo : valorModelo
 deactivate Modelo
 
-Poliza -> FactoresCalculos : km := obtenerValorKm(Date)
+GPoliza -> Poliza : getKmsAnuales()
+activate Poliza
+GPoliza <-- Poliza : kmsAnuales
+deactivate Poliza
+
+entity FactoresCalculos
+GPoliza -> FactoresCalculos : obtenerValorKm(Date)
+entity "HVKmRealizados :\nHistorialValor" as HVKm
 activate FactoresCalculos
-FactoresCalculos -> HistorialValor : v := valorEnFecha(Date)
-activate HistorialValor
-FactoresCalculos <-- HistorialValor : Float v
-deactivate HistorialValor
-Poliza <-- FactoresCalculos : Float km
+FactoresCalculos -> HVKm : valorEnFecha(Date)
+activate HVKm
+FactoresCalculos <-- HVKm : valorPorKmRealizados
+deactivate HVKm
+GPoliza <-- FactoresCalculos : valorPorKmRealizados
 deactivate FactoresCalculos
 
-Poliza -> FactoresCalculos : fsg := obtenerValorGarage(Date)
+GPoliza -> Poliza : getPoseeGarage()
+activate Poliza
+GPoliza <-- Poliza : poseeGarage
+deactivate Poliza
+GPoliza -> Poliza : getPoseeAlarma()
+activate Poliza
+GPoliza <-- Poliza : poseeAlarma
+deactivate Poliza
+GPoliza -> Poliza : getPoseeRastreoVehicular()
+activate Poliza
+GPoliza <-- Poliza : poseeRastreoVehicular
+deactivate Poliza
+GPoliza -> Poliza : getPoseeTuercasAntirrobo()
+activate Poliza
+GPoliza <-- Poliza : poseeTuercasAntirrobo
+deactivate Poliza
+
+GPoliza -> Poliza : g := getSiniestros()
+activate Poliza
+GPoliza <-- Poliza
+deactivate Poliza
+
+entity "HVSiniestros :\nHistorialValor" as HVS
+GPoliza -> FactoresCalculos : obtenerValorSiniestros(Date, g)
 activate FactoresCalculos
-FactoresCalculos -> HistorialValor : v := valorEnFecha(Date)
-activate HistorialValor
-FactoresCalculos <-- HistorialValor : Float v
-deactivate HistorialValor
-Poliza <-- FactoresCalculos : Float fsg
+FactoresCalculos -> HVS : valorEnFecha(Date)
+activate HVS
+FactoresCalculos <-- HVS : valorSiniestros
+deactivate HVS
+GPoliza <-- FactoresCalculos : valorSiniestros
 deactivate FactoresCalculos
 
-Poliza -> FactoresCalculos : fsa := obtenerValorAlarma(Date)
+GPoliza -> Poliza : getCantidadHijosDeclarados()
+activate Poliza
+GPoliza <-- Poliza : cantidadHijosDeclarados
+deactivate Poliza
+
+entity "HVCantidadHijos :\nHistorialValor" as HVH
+GPoliza -> FactoresCalculos : obtenerValorHijos(Date)
 activate FactoresCalculos
-FactoresCalculos -> HistorialValor : v := valorEnFecha(Date)
-activate HistorialValor
-FactoresCalculos <-- HistorialValor : Float v
-deactivate HistorialValor
-Poliza <-- FactoresCalculos : Float fsa
+FactoresCalculos -> HVH : valorEnFecha(Date)
+activate HVH
+FactoresCalculos <-- HVH : valorHijosDeclarados
+deactivate HVH
+GPoliza <-- FactoresCalculos : valorHijosDeclarados
 deactivate FactoresCalculos
 
-Poliza -> FactoresCalculos : fsr := obtenerValorRastreo(Date)
+entity "HVDerechosDeEmision :\nHistorialValor" as HVD
+GPoliza -> FactoresCalculos : obtenerDerechosEmision(Date)
 activate FactoresCalculos
-FactoresCalculos -> HistorialValor : v := valorEnFecha(Date)
-activate HistorialValor
-FactoresCalculos <-- HistorialValor : Float v
-deactivate HistorialValor
-Poliza <-- FactoresCalculos : Float fsr
+FactoresCalculos -> HVD : valorEnFecha(Date)
+activate HVD
+FactoresCalculos <-- HVD : valorDerechosEmision
+deactivate HVD
+GPoliza <-- FactoresCalculos : valorDerechosEmision
 deactivate FactoresCalculos
+<-- GPoliza : valorPremio
+deactivate Poliza
 
-Poliza -> FactoresCalculos : fst := obtenerValorTuercas(Date)
-activate FactoresCalculos
-FactoresCalculos -> HistorialValor : v := valorEnFecha(Date)
-activate HistorialValor
-FactoresCalculos <-- HistorialValor : Float v
-deactivate HistorialValor
-Poliza <-- FactoresCalculos : Float fst
-deactivate FactoresCalculos
-
-Poliza -> Poliza : g := getSiniestros()
-
-Poliza -> FactoresCalculos : fs := obtenerValorSiniestros(Date, g)
-activate FactoresCalculos
-FactoresCalculos -> HistorialValor : v := valorEnFecha(Date)
-activate HistorialValor
-FactoresCalculos <-- HistorialValor : Float v
-deactivate HistorialValor
-Poliza <-- FactoresCalculos : Float fs
-deactivate FactoresCalculos
-
-Poliza -> Poliza : g := getCantidadHijosDeclarados()
-
-Poliza -> FactoresCalculos : fh := obtenerValorHijos(Date)
-activate FactoresCalculos
-FactoresCalculos -> HistorialValor : v := valorEnFecha(Date)
-activate HistorialValor
-FactoresCalculos <-- HistorialValor : Float v
-deactivate HistorialValor
-Poliza <-- FactoresCalculos : Float fh
-deactivate FactoresCalculos
-
-Poliza -> FactoresCalculos : derechosEmision := obtenerDerechosEmision(Date)
-activate FactoresCalculos
-FactoresCalculos -> HistorialValor : v := valorEnFecha(Date)
-activate HistorialValor
-FactoresCalculos <-- HistorialValor : Float v
-deactivate HistorialValor
-Poliza <-- FactoresCalculos : Float derechosEmision
-deactivate FactoresCalculos
-
-Poliza -> Cliente : cantidadPolizas := getCantidadPolizas()
+entity Cliente
+-> GPoliza : calcularDescuentos()
+GPoliza -> Poliza : getCliente()
+activate Poliza
+GPoliza <-- Poliza : Cliente c
+deactivate Poliza
+GPoliza -> Cliente : getCantidadPolizas()
 activate Cliente
-Poliza <-- Cliente : Integer cantidadPolizas
+GPoliza <-- Cliente : cantidadPolizas
 deactivate Cliente
 
 alt cantidadPolizas > 0
 
-Poliza -> FactoresCalculos : descUnidadAdicional := obtenerDescuentoUnidadAdicional(Date)
+entity "HVDescUnidadAdicional :\nHistorialValor" as HVUA
+GPoliza -> FactoresCalculos : obtenerDescuentoUnidadAdicional(Date)
 activate FactoresCalculos
-FactoresCalculos -> HistorialValor : v := valorEnFecha(Date)
-activate HistorialValor
-FactoresCalculos <-- HistorialValor : Float v
-deactivate HistorialValor
-Poliza <-- FactoresCalculos : Float descUnidadAdicional
+FactoresCalculos -> HVUA : valorEnFecha(Date)
+activate HVUA
+FactoresCalculos <-- HVUA : valorDescUnidadAdicional
+deactivate HVUA
+GPoliza <-- FactoresCalculos : valorDescUnidadAdicional
 deactivate FactoresCalculos
 
 end
 
-Poliza -> Poliza : g := getFormaPago()
+GPoliza -> Poliza : g := getFormaPago()
+activate Poliza
+GPoliza <-- Poliza
+deactivate Poliza
 
 alt g instanceOf PagoSemestral
 control GestorSistemaFinanciero
 
-Poliza -> GestorSistemaFinanciero : tds := getTasasDescuento()
+GPoliza -> GestorSistemaFinanciero : getTasasDescuento()
 activate GestorSistemaFinanciero
-Poliza <-- GestorSistemaFinanciero : HashMap<K, V> tds
+GPoliza <-- GestorSistemaFinanciero : HashMap<K, V> tasasDescuento
 deactivate GestorSistemaFinanciero
 
 end
 
-deactivate Poliza
-GPoliza <-- Poliza
+<-- GPoliza : valorDescuentos
 deactivate GPoliza
 
 @enduml
