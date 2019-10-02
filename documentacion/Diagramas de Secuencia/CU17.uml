@@ -1,5 +1,8 @@
 @startuml
 
+title Diagrama de Secuencia - CU17
+center footer Grupo 4A: Matías Bode, Francisco Busso, Giovani Ferraro Trivelli, Miguel Storani
+
 actor Usuario
 boundary Resultados
 boundary PantallaDeBusqueda
