@@ -2,7 +2,9 @@
 
 ' diagrama de clases - crear clase marca, realizar relacion con sistemafinanciero '
 
-title CU 16
+title Diagrama de Secuencia - CU16
+center footer Grupo 4A: Matías Bode, Francisco Busso, Giovani Ferraro Trivelli, Miguel Storani
+
 
 control "GestorPoliza" as GPoliza
 
