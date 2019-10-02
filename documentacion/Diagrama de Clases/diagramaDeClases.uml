@@ -241,6 +241,10 @@ package Dominio{
 		+emitir(): ReciboDTO
 	}
 	
+    class Marca{
+        -nombre: String
+    }
+
     Cliente "1" -up- "0..n" Poliza
     Cliente "1..n" --> "1" Domicilio
     
