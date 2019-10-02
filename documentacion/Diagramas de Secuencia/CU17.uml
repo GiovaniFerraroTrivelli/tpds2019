@@ -30,7 +30,7 @@ alt
     activate DAOCliente
     DAOCliente -> resultado : new: Collection<<Cliente>>
     activate resultado
-    loop for Cliente in resultadobBusqueda
+    loop for Cliente in resultadoBusqueda
         DAOCliente -> resultado : add(Cliente)
     end loop
     DAOCliente -> GestorCliente : r: ResultadoBusqueda
@@ -45,7 +45,7 @@ alt
         GestorCliente -> Resultados : mostrarResultados(resultados)
         activate Resultados
     end loop
-    Usuario -> Resultados : Seleciona cliente
+    Usuario -> Resultados : Selecciona cliente
     Resultados --> GestorCliente : c = clienteSeleccionado
     deactivate Resultados
     GestorCliente -> GestorPoliza : clienteSeleccionado
@@ -58,7 +58,7 @@ else cancelar busqueda
     Usuario -> PantallaDeBusqueda : Cancelar búsqueda
     PantallaDeBusqueda -> GestorCliente : cancelar()
     deactivate PantallaDeBusqueda
-    GestorCliente --> GestorPoliza : trows exception: "Busqueda cancelada"
+    GestorCliente --> GestorPoliza : throw exception: "Búsqueda cancelada"
 
 end
 
