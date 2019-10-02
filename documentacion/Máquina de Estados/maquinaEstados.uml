@@ -9,6 +9,14 @@ note as N1
     proceso batch 
 end note
 
+note as N2
+Grupo 4A:
+Matías Bode,
+Francisco Busso,
+Giovani Ferraro Trivelli,
+Miguel Storani
+end note
+
 [*] --> Generada
 
 
