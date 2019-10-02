@@ -12,4 +12,9 @@ export class AltapolizaComponent implements OnInit {
   ngOnInit() {
   }
 
+  changeTest()
+  {
+  	console.log(":v");
+  }
+
 }

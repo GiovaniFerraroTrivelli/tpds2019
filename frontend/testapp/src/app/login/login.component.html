@@ -1,0 +1,14 @@
+<div *ngIf="this.invalidLogin" class="alert alert-dismissible alert-danger">
+	  <button type="button" class="close" data-dismiss="alert">&times;</button>
+	  ¡Login incorrecto!
+</div>
+
+<div class="container">
+  <div>
+    User Name : <input type="text" name="username" [(ngModel)]="userLogin.username">
+    Password : <input type="password" name="password" [(ngModel)]="userLogin.password">
+  </div>
+  <button (click)=checkLogin() class="btn btn-success">
+    Login
+  </button>
+</div>

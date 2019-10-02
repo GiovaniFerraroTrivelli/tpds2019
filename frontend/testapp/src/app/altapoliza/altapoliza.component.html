@@ -15,7 +15,12 @@
 		</div>
 		<div class="col-sm">
 			<h4 class="mt-3">Datos del vehículo</h4>
-			<select class="form-control mb-1"><option>Marca del vehículo</option></select>
+			<select (change)=changeTest() class="form-control mb-1">
+				<option>Marca del vehículo</option>
+				<option>Fiat</option>
+				<option>Ford</option>
+				<option>Volkswagen</option>
+			</select>
 			<select class="form-control mb-1"><option>Modelo del vehículo</option></select>
 			<select class="form-control mb-1"><option>Año de fabricación</option></select>
 			<input class="form-control mb-1" type="text" placeholder="Motor" />

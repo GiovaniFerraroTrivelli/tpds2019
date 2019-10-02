@@ -9,13 +9,19 @@ import { UserListComponent } from './user-list/user-list.component';
 import { UserService } from './user-service.service';
 import { AltapolizaComponent } from './altapoliza/altapoliza.component';
 import { ConsultarpolizaComponent } from './consultarpoliza/consultarpoliza.component';
+import { LoginComponent } from './login/login.component';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
  
 @NgModule({
   declarations: [
     AppComponent,
     UserListComponent,
     AltapolizaComponent,
-    ConsultarpolizaComponent//,
+    ConsultarpolizaComponent,
+    LoginComponent,
+    HeaderComponent,
+    FooterComponent//,
     //UserFormComponent
   ],
   imports: [
