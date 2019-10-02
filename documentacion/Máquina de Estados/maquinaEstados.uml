@@ -3,6 +3,12 @@ Vigente:
 Suspendida:
 NoVigente:
 
+note as N1
+    Las transiciones sin eventos son 
+    controladas diariamente por un 
+    proceso batch 
+end note
+
 [*] --> Generada
 
 
