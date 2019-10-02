@@ -1,6 +1,7 @@
 @startuml
 
-title CU 1
+title Diagrama de Secuencia - CU 1
+center footer Grupo 4A: Matías Bode, Francisco Busso, Giovani Ferraro Trivelli, Miguel Storani
 
 actor Usuario as User
 boundary "AltaPoliza" as IAltaPoliza
@@ -12,22 +13,10 @@ control DAOPoliza
 User -> IAltaPoliza : Alta poliza
 activate IAltaPoliza
 
-loop while datos incorrectos
-    User <-- IAltaPoliza : Solicitar datos cliente
-    User -> IAltaPoliza : Ingresar datos cliente
-end loop
-
-/'El actor selecciona el cliente para el cuál quiere dar
-  la póliza mediante la opción buscar cliente 
-  (CU17-Buscar Cliente).'/
-
-IAltaPoliza -> GPoliza : seleccionarCliente(ClienteJSON)
-activate GPoliza
-GPoliza -> GCliente : c:= buscarCliente(ClienteDTO)
-activate GCliente
-ref over GCliente
+ref over GCliente, User, GPoliza
     CU17
 end ref
+
 alt no existe cliente
     GPoliza <-- GCliente : no existe cliente
     deactivate GCliente
