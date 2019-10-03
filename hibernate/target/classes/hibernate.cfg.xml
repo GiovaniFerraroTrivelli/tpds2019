@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- database connection properties -->
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://dbadmin.ngamers.net/tpds</property>
+        <property name="hibernate.connection.username">tpds2019</property>
+        <property name="hibernate.connection.password">qMxYFmazNR9QGmYG</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+
+        <!-- show mysql queries output in console -->
+        <property name="hibernate.show_sql">true</property>
+
+        <!-- manage automatic database creation -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <!-- add resources here -->
+        <mapping resource="Usuario.hbm.xml"/>
+
+    </session-factory>
+</hibernate-configuration>
