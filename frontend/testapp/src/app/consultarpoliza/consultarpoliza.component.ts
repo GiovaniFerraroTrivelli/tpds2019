@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-consultarpoliza',
-  templateUrl: './consultarpoliza.component.html',
-  styleUrls: ['./consultarpoliza.component.scss']
+	selector: 'app-consultarpoliza',
+	templateUrl: './consultarpoliza.component.html',
+	styleUrls: ['./consultarpoliza.component.scss']
 })
 export class ConsultarpolizaComponent implements OnInit {
 
-  constructor() { }
+	constructor(private titleService: Title) { }
 
-  ngOnInit() {
-  }
+	ngOnInit() {
+		this.titleService.setTitle("Consultar póliza");
+	}
 
 }

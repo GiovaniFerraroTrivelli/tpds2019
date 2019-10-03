@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-altapoliza',
-  templateUrl: './altapoliza.component.html',
-  styleUrls: ['./altapoliza.component.scss']
+	selector: 'app-altapoliza',
+	templateUrl: './altapoliza.component.html',
+	styleUrls: ['./altapoliza.component.scss']
 })
 export class AltapolizaComponent implements OnInit {
 
-  constructor() { }
+	constructor(private titleService: Title) { }
 
-  ngOnInit() {
-  }
+	ngOnInit() {
+		this.titleService.setTitle("Dar de alta póliza");
+	}
 
-  changeTest()
-  {
-  	console.log(":v");
-  }
-
+	changeTest() {
+		console.log(":v");
+	}
 }
