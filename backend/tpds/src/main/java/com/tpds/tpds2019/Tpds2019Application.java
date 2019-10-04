@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Tpds2019Application {
 
 	public static void main(String[] args) throws SQLException {
-		String ip = "jdbc:mariadb://dbadmin.ngamers.net/tpds";
+		/*String ip = "jdbc:mariadb://dbadmin.ngamers.net/tpds";
 		String user = "tpds2019";
 		String password = "qMxYFmazNR9QGmYG";
 		
@@ -23,9 +23,9 @@ public class Tpds2019Application {
 		ResultSet rs = stmt.executeQuery("SELECT * FROM tabla_prueba;");
 		while (rs.next()) {
 			System.out.println(rs.getString("name") + " " + rs.getInt("id"));
-		}
+		}*/
 		
-		//SpringApplication.run(Tpds2019Application.class, args);
+		SpringApplication.run(Tpds2019Application.class, args);
 	}
 
 }

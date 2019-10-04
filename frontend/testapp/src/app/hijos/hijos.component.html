@@ -1,0 +1,26 @@
+<div class="tabla-div">
+<table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Edad</th>
+        <th scope="col">E. Civil</th>
+        <th scope="col">Sexo</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let hijo of hijos">
+            <td>{{hijo.edad}}</td>
+            <td>{{hijo.estadoCivil}}</td>
+            <td>{{hijo.sexo}}</td>
+            <td><button type="button" class="btn btn-danger">Eliminar</button></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><button type="button" class="btn btn-primary">Agregar</button></td>
+        </tr>
+    </tbody>
+  </table>
+</div>
