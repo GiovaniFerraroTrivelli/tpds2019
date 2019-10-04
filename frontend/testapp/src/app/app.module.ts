@@ -15,6 +15,8 @@ import { FooterComponent } from './footer/footer.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { DialogService } from './dialog/dialog.service';
 import { IndexComponent } from './index/index.component';
+import { BuscarpolizaComponent } from './buscarpoliza/buscarpoliza.component';
+import { AltaclienteComponent } from './altacliente/altacliente.component';
 
 @NgModule({
 	declarations: [
@@ -26,7 +28,9 @@ import { IndexComponent } from './index/index.component';
 		HeaderComponent,
 		FooterComponent,
 		DialogComponent,
-		IndexComponent
+		IndexComponent,
+		BuscarpolizaComponent,
+		AltaclienteComponent
 	],
 
 	imports: [

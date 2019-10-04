@@ -1,0 +1,160 @@
+<form action="/">
+	<div class="row">
+		<div class="col-sm">
+			<label class="pt-2" for="nrocliente">Número de cliente</label>
+		    <div class="input-group">
+		      <div class="input-group-prepend">
+		        <div class="input-group-text">#</div>
+		      </div>
+		      <input type="number" name="nrocliente" id="nrocliente" disabled="disabled" class="form-control">
+		    </div>
+
+		    <div class="row">
+			    <div class="col-lg-6">
+					<label class="pt-2" for="nombre">Nombre(s)</label>
+				    <div class="input-group">
+				      <input type="text" name="nombre" id="nombre" class="form-control">
+				    </div>
+				</div>
+
+			    <div class="col-lg-6">
+					<label class="pt-2" for="apellido">Apellido(s)</label>
+				    <div class="input-group">
+				      <input type="text" name="apellido" id="apellido" class="form-control">
+				    </div>
+				</div>
+			</div>
+
+		    <div class="row">
+			    <div class="col-lg-4">
+					<label class="pt-2" for="tipodni">Tipo</label>
+				    <div class="input-group">
+						<select class="form-control" id="tipodni">
+					      <option>1</option>
+					      <option>2</option>
+					      <option>3</option>
+					      <option>4</option>
+					      <option>5</option>
+					    </select>
+				    </div>
+				</div>
+			    <div class="col-lg-8">
+					<label class="pt-2" for="nrodni">Nro. documento</label>
+				    <div class="input-group">
+				      <input type="text" name="nrodni" id="nrodni" class="form-control">
+				    </div>
+				</div>
+			</div>
+
+			<label class="pt-2" for="cuil">CUIL</label>
+		    <div class="input-group">
+		      <input type="text" name="cuil" id="cuil" class="form-control">
+		    </div>
+
+			<label class="pt-2" for="sexo">Sexo</label>
+		    <div class="input-group">
+				<select class="form-control" id="sexo">
+					<option>Masculino</option>
+					<option>Femenino</option>
+			    </select>
+		    </div>
+
+			<label class="pt-2" for="fechanac">Fecha de nacimiento</label>
+		    <div class="input-group">
+		    	<input type="date" class="form-control" name="fechanac" />
+		    </div>
+		</div>
+		<div class="col-sm">
+		    <div class="row">
+			    <div class="col-lg-8">
+					<label class="pt-2" for="dircalle">Calle</label>
+				    <div class="input-group">
+						<input type="text" name="dircalle" id="dircalle" class="form-control">
+				    </div>
+				</div>
+			    <div class="col-lg-4">
+					<label class="pt-2" for="dirnro">Número</label>
+				    <div class="input-group">
+				      <input type="text" name="dirnro" id="dirnro" class="form-control">
+				    </div>
+				</div>
+			    <div class="col-lg-6">
+					<label class="pt-2" for="dirpiso">Piso</label>
+				    <div class="input-group">
+						<input type="text" name="dirpiso" id="dirpiso" class="form-control">
+				    </div>
+				</div>
+			    <div class="col-lg-6">
+					<label class="pt-2" for="dirdpto">Departamento</label>
+				    <div class="input-group">
+						<input type="text" name="dirdpto" id="dirdpto" class="form-control">
+				    </div>
+				</div>
+			</div>
+
+			<label class="pt-2" for="pais">País</label>
+		    <div class="input-group">
+				<select class="form-control" id="pais">
+					<option>Masculino</option>
+					<option>Femenino</option>
+			    </select>
+		    </div>
+
+			<label class="pt-2" for="provincia">Provincia</label>
+		    <div class="input-group">
+				<select class="form-control" id="provincia">
+					<option>Masculino</option>
+					<option>Femenino</option>
+			    </select>
+		    </div>
+
+			<label class="pt-2" for="localidad">Localidad</label>
+		    <div class="input-group">
+				<select class="form-control" id="localidad">
+					<option>Masculino</option>
+					<option>Femenino</option>
+			    </select>
+		    </div>
+
+			<label class="pt-2" for="codigopostal">Código Postal</label>
+		    <div class="input-group">
+		      <input type="text" name="codigopostal" id="codigopostal" class="form-control">
+		    </div>
+		</div>
+		<div class="col-sm">
+			<label class="pt-2" for="condiva">Condición de IVA</label>
+		    <div class="input-group">
+				<select class="form-control" id="condiva">
+					<option>Masculino</option>
+					<option>Femenino</option>
+			    </select>
+		    </div>
+
+			<label class="pt-2" for="email">Correo electrónico</label>
+		    <div class="input-group">
+		    	<input type="email" name="email" id="email" class="form-control">
+		    </div>
+
+			<label class="pt-2" for="estadocivil">Estado Civil</label>
+		    <div class="input-group">
+				<select class="form-control" id="estadocivil">
+					<option>Masculino</option>
+					<option>Femenino</option>
+			    </select>
+		    </div>
+
+			<label class="pt-2" for="profesion">Profesión</label>
+		    <div class="input-group">
+		      <input type="text" name="profesion" id="profesion" class="form-control">
+		    </div>
+
+			<label class="pt-2" for="anioregistro">Año de registro</label>
+		    <div class="input-group">
+		      <input type="number" name="anioregistro" id="anioregistro" class="form-control">
+		    </div>
+		</div>
+	</div>
+	<div class="text-right">
+	  <button type="submit" class="btn btn-secondary">Cancelar</button>   <button type="submit" class="btn btn-primary">Aceptar</button>
+	</div>
+</form> 
