@@ -1,1 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+#ajaxLoading {
+    background: #323232;
+    width: 200px;
+    padding: 15px;
+    color: #fff;
+    position: fixed;
+    bottom: 15px;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: center;
+    z-index: 15000;
+    left: 50%;
+	margin-left: -75px;
+}
