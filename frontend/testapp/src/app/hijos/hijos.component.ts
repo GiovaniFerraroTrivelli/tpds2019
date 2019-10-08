@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { HijosService } from '../hijos.service'
+import { Component, OnInit, Input} from '@angular/core';
+import { HijosService } from '../hijos.service';
 import { Hijo } from 'hijos';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-hijos',
@@ -10,12 +11,41 @@ import { Hijo } from 'hijos';
 export class HijosComponent implements OnInit {
   hijos: Hijo[];
 
-  constructor(private HijosService: HijosService) { }
+  @Input() fechaNacimiento: Date;
+  @Input() sexo: String;
+  @Input() estadoCivil: String;
+  edad: number;
+
+  constructor(private HijosService: HijosService, private modalService: NgbModal) {
+    this.hijos = [];
+  }
   
-  ngOnInit() {
-    this.HijosService.findAll().subscribe(data => {
-      this.hijos = data;
-    });
+  ngOnInit() {}
+  
+  openVerticallyCentered(content) {
+    this.modalService.open(content, { centered: true });
   }
 
+  calcularEdad(){
+    const today = new Date();
+    const fechaNac = new Date(this.fechaNacimiento);
+    let age = today.getFullYear() - fechaNac.getFullYear();
+    const m = today.getMonth() - fechaNac.getMonth();
+    if(m < 0 || (m === 0 && today.getDate() < fechaNac.getDate())){
+      age--;
+    }
+    this.edad = age;
+  }
+
+  addHijo(){
+    const hijo = new Hijo();
+    hijo.edad = this.edad;
+    hijo.estadoCivil = this.estadoCivil;
+    hijo.sexo = this.sexo;
+    this.hijos.push(hijo);
+    console.log(hijo);
+  }
+  deleteHijo(index: number){
+    this.hijos.splice(index, 1);
+  }
 }

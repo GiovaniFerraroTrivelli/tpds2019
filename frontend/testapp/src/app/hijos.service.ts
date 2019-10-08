@@ -12,10 +12,6 @@ export class HijosService {
     this.hijosUrl = 'http://localhost:8080/hijos';
   }
 
-  public findAll(): Observable<Hijo[]> {
-    return this.http.get<Hijo[]>(this.hijosUrl);
-  }
- 
   public save(hijo: Hijo) {
     return this.http.post<Hijo>(this.hijosUrl, hijo);
   }

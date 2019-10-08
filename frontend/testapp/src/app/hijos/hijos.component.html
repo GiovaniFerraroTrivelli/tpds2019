@@ -1,3 +1,30 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Agregar Hijo/a</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <label class="pt-2" for="fechaNacimiento">Fecha de nacimiento</label>
+        <input type="date" name="fechaNacimiento" id="fechaNacimiento" class="form-control" [(ngModel)]="fechaNacimiento" >
+        <label class="pt-2" for="sexo">Sexo</label>
+        <select class="form-control" id="sexo" [(ngModel)]="sexo">
+          <option>Masculino</option>
+          <option>Femenino</option>
+        </select>
+        <label class="pt-2" for="estadoCivil">Estado civil</label>
+        <select class="form-control" id="estadoCivil" [(ngModel)]="estadoCivil">
+          <option>Soltero/a</option>
+          <option>Casado/a</option>
+        </select>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('cancel')">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="[modal.close('add'), calcularEdad(), addHijo()]">Aceptar</button>
+    </div>
+</ng-template>
+
 <div class="tabla-div">
 <table class="table">
     <thead class="thead-light">
@@ -9,17 +36,20 @@
       </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let hijo of hijos">
+        <tr *ngFor="let hijo of hijos; let row = index">
             <td>{{hijo.edad}}</td>
             <td>{{hijo.estadoCivil}}</td>
             <td>{{hijo.sexo}}</td>
-            <td><button type="button" class="btn btn-danger">Eliminar</button></td>
+            <td> 
+              <button type="button" class="btn btn-danger" (click)='deleteHijo(row)'>Eliminar</button>
+            </td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><button type="button" class="btn btn-primary">Agregar</button></td>
+            <td colspan="4" id='btn-col'>
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="btn btn-primary" (click)='openVerticallyCentered(content)'>Agregar</button>
+                </div>
+            </td>
         </tr>
     </tbody>
   </table>
