@@ -17,8 +17,8 @@ import { DialogService } from './dialog/dialog.service';
 import { IndexComponent } from './index/index.component';
 import { BuscarpolizaComponent } from './buscarpoliza/buscarpoliza.component';
 import { AltaclienteComponent } from './altacliente/altacliente.component';
-import { HijosService } from './hijos.service';
 import { HijosComponent } from './hijos/hijos.component';
+import { TipocoberturaComponent } from './tipocobertura/tipocobertura.component';
 
 @NgModule({
 	declarations: [
@@ -33,7 +33,8 @@ import { HijosComponent } from './hijos/hijos.component';
 		IndexComponent,
 		BuscarpolizaComponent,
 		AltaclienteComponent,
-		HijosComponent
+		HijosComponent,
+		TipocoberturaComponent
 	],
 
 	imports: [
@@ -47,7 +48,6 @@ import { HijosComponent } from './hijos/hijos.component';
 	providers: [
 		UserService,
 		DialogService,
-		HijosService,
 		Title
 	],
 	

@@ -1,5 +1,4 @@
 import { Component, OnInit, Input} from '@angular/core';
-import { HijosService } from '../hijos.service';
 import { Hijo } from 'hijos';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -16,7 +15,7 @@ export class HijosComponent implements OnInit {
   @Input() estadoCivil: String;
   edad: number;
 
-  constructor(private HijosService: HijosService, private modalService: NgbModal) {
+  constructor(private modalService: NgbModal) {
     this.hijos = [];
   }
   

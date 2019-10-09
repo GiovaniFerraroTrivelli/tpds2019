@@ -7,6 +7,8 @@ import { ConsultarpolizaComponent } from './consultarpoliza/consultarpoliza.comp
 import { BuscarpolizaComponent } from './buscarpoliza/buscarpoliza.component';
 import { AltaclienteComponent } from './altacliente/altacliente.component';
 import { IndexComponent } from './index/index.component';
+import { TipoCobertura } from 'TipoCobertura';
+import { TipocoberturaComponent } from './tipocobertura/tipocobertura.component';
  
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -15,6 +17,7 @@ const routes: Routes = [
   { path: 'consultar-poliza', component: ConsultarpolizaComponent },
   { path: 'buscar-poliza', component: BuscarpolizaComponent },
   { path: 'alta-cliente', component: AltaclienteComponent },
+  { path: 'cobertura', component: TipocoberturaComponent},
   { path: '', component: IndexComponent },
 ];
  
