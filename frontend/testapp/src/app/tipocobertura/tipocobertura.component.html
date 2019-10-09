@@ -6,7 +6,15 @@
             </button>
         </div>
         <div class="modal-body">
-            
+                <label class="pt-2" for="coberturaSeleccionada">Cobertura seleccionada:</label>
+            <input class="form-control" type="text" [placeholder]=coberturaSeleccionada readonly>
+            <label class="pt-2" for="fechaVigencia">Fecha de vigencia:</label>
+            <input type="date" name="fechaVigencia" id="fechaVigencia" class="form-control">
+            <label class="pt-2" for="modalidadPago">Modalidad de pago:</label>
+            <select class="form-control" id="modalidadPago">
+            <option>Mensual</option>
+            <option>Semestral</option>
+            </select>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" (click)="modal.close('cancel')">Cancelar</button>
@@ -22,7 +30,7 @@
                         <h5 class="card-title">{{cobertura.nombre}}</h5>
                         <p class="card-text">{{cobertura.descripcion}}</p>
                         <div class="d-flex flex-row-reverse">
-                            <button type="button" class="btn btn-primary p-2" (click)='openVerticallyCentered(content)' >Seleccionar</button>
+                            <button type="button" class="btn btn-primary p-2" (click)='[openVerticallyCentered(content), seleccionarCobertura(cobertura.nombre)]'>Seleccionar</button>
                         </div>
                     </div>
                 </div>

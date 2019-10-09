@@ -36,10 +36,16 @@ export class TipocoberturaComponent implements OnInit {
     }
   ];
 
+  coberturaSeleccionada: String;
+
   constructor(private modalService: NgbModal) { }
 
   openVerticallyCentered(content) {
     this.modalService.open(content, { centered: true });
+  }
+  seleccionarCobertura(cobertura){
+    this.coberturaSeleccionada = cobertura;
+    console.log(this.coberturaSeleccionada);
   }
   ngOnInit() {
   }
