@@ -1,0 +1,64 @@
+@startuml
+
+title CU-18: Buscar Póliza
+center footer Grupo 4A: Matías Bode, Francisco Busso, Giovani Ferraro Trivelli, Miguel Storani
+
+actor Usuario
+boundary InterfazUsuario
+entity ControladorPoliza
+entity GestorPoliza
+entity DaoPoliza
+
+-> Usuario : El CU es invocado
+
+loop !existePoliza
+
+Usuario -> InterfazUsuario : buscar póliza por Id
+activate Usuario
+activate InterfazUsuario
+
+InterfazUsuario -> ControladorPoliza : POST (JSON) IdPoliza
+
+activate ControladorPoliza
+ControladorPoliza -> GestorPoliza : buscarPoliza(idPoliza)
+
+activate GestorPoliza
+
+GestorPoliza -> DaoPoliza : buscarPoliza(idPoliza)
+
+activate DaoPoliza
+
+alt !existePoliza
+GestorPoliza <-- DaoPoliza : Error "no existe póliza"
+ControladorPoliza <-- GestorPoliza : Error "no existe póliza"
+InterfazUsuario <-- ControladorPoliza : JSON Error "no existe póliza"
+Usuario <-- InterfazUsuario : Mensaje de error "no existe póliza"
+
+end
+
+end
+
+GestorPoliza <-- DaoPoliza : List<Poliza> listaPolizas
+deactivate DaoPoliza
+
+ControladorPoliza <-- GestorPoliza : List<Poliza> listaPolizas
+deactivate GestorPoliza
+
+InterfazUsuario <-- ControladorPoliza : JSON listaPolizas
+deactivate ControladorPoliza
+
+Usuario <-- InterfazUsuario : lista de pólizas
+deactivate InterfazUsuario
+
+Usuario -> InterfazUsuario : seleccionar póliza
+activate InterfazUsuario
+Usuario <-- InterfazUsuario : datos de póliza seleccionada
+deactivate InterfazUsuario
+
+deactivate Usuario
+
+note right
+	El usuario puede cancelar el proceso. El caso de uso termina.
+end note
+
+@enduml
