@@ -1,135 +1,134 @@
 @startuml
 
-title Diagrama de Secuencia - CU 1
+title CU-01: Alta Póliza
 center footer Grupo 4A: Matías Bode, Francisco Busso, Giovani Ferraro Trivelli, Miguel Storani
 
-actor Usuario as User
-boundary "AltaPoliza" as IAltaPoliza
-control "GestorPoliza" as GPoliza
-control "GestorCliente" as GCliente
-control DAOPoliza
-'database MySQL as Disponibles
+actor Usuario
+boundary "Interfaz de Usuario" as GUI
+control ControladorCliente as CC
+control ControladorPoliza as CP
 
-User -> IAltaPoliza : Alta poliza
-activate IAltaPoliza
+entity GestorCliente as GC
+entity GestorPoliza as GP
+entity DAOCliente as DC
+entity DAOPoliza as DP
 
-ref over GCliente, User, GPoliza
-    CU17
+
+
+activate Usuario
+
+
+Usuario -> GUI: Buscar cliente
+activate GUI
+GUI -> CC : POST (JSON) datosCliente
+activate CC
+
+ref over CC, GC, DC
+    CU-17: Buscar Cliente
 end ref
+
+activate GC
 
 alt no existe cliente
-    GPoliza <-- GCliente : no existe cliente
-    deactivate GCliente
-    
-    GPoliza -> GCliente : c:= altaCliente()
-    activate GCliente
-    ref over GCliente
-        CU04
+    GUI <-- CC : JSON Error "no existe cliente"
+    ref over Usuario, GC, DC
+        CU-04: Alta Cliente
     end ref
-    GPoliza <-- GCliente : Cliente c
-    deactivate GCliente
-else existe cliente
-    GPoliza <-- GCliente : Cliente c
-    deactivate GCliente
-end
+    
+end alt
+    
+activate DC
+DC -> "Cliente c" as Cliente: <<create>>
+activate Cliente
+DC <-- Cliente : Cliente c
+deactivate Cliente
+GC <-- DC : Cliente c
+deactivate DC
 
-/'El sistema muestra los datos del cliente seleccionado.'/
-
-IAltaPoliza <-- GPoliza: cliente.json()
-deactivate GPoliza
-IAltaPoliza -> User : Mostrar datos cliente
-
-/'El actor ingresa los datos de la póliza'/
+CC <-- GC : Cliente c
+deactivate GC
+GUI <-- CC : JSON cliente
+deactivate CC
+Usuario <-- GUI : información del cliente
 
 loop while datos incorrectos
-    IAltaPoliza -> User : Solicitar datos poliza
-    User -> IAltaPoliza : Ingresar datos poliza
+    Usuario <-- GUI : Solicitar Datos
+    Usuario -> GUI : Datos de la póliza
 end loop
 
-/'El sistema muestra las alternativas de cobertura 
-  en base a los parámetros ingresados.'/
-  
-User <-- IAltaPoliza : Coberturas Disponibles
+Usuario <-- GUI : Coberturas Disponibles
+Usuario -> GUI: Tipo de Cobertura, Inicio Vigencia, Forma de Pago
+GUI -> CP : POST (JSON) informacionPoliza
 
-/'El actor selecciona:  
-   ▪ el tipo de cobertura que se asociará a la póliza. 
-   ▪ La fecha de inicio de vigencia de la póliza 
-     (por defecto el día posterior a la fecha actual). 
-   ▪ Forma de pago (mensual o semestral). '/
-   
-User --> IAltaPoliza : Tipo Cobertura, Inicio Vigencia, Forma Pago
-
-/'El sistema calcula el premio, derecho de emisión y descuentos
-  correspondientes a la póliza invocando al 
-  CU16-Calcular Premio, Derecho de Emisión y Descuentos'/
-
-ref over IAltaPoliza, GPoliza
-        CU-16
+activate CP
+activate GP
+ref over CP, GP
+    CU-16: Clacular Premio, Derecho de Emisión y Descuentos
 end ref
 
-/'El sistema muestra la información de la póliza a generar'/
+GUI <-- CP : JSON InformacionPoliza
+deactivate CP
 
-User <-- IAltaPoliza : Información Póliza
+Usuario <-- GUI : Información Póliza
 
-/'El actor confirma la generación de la póliza.'/
-
-
-alt El actor confirma la generación de la póliza
-    User -> IAltaPoliza : Confirmación
-
-    /'El sistema genera el número de póliza y guarda 
-    la información de la misma. La póliza queda en
-    el estado generada. '/
-
-    IAltaPoliza -> GPoliza : altaPoliza(PolizaJSON)
-    activate GPoliza
-    GPoliza -> Poliza: p := new(PolizaDTO)
+alt El usuario confirma la generación de la póliza
+    Usuario -> GUI : Confirmar generación de la póliza
+    GUI -> CP : POST (JSON) informacionPoliza
+    activate CP
+    CP -> GP : altaPoliza(DTOPoliza)
+    GP -> "Poliza p" as Poliza : <<create>>(DTOPoliza)
     activate Poliza
-    GPoliza <-- Poliza: Poliza p 
+    GP <-- Poliza : Poliza p
     
-
-    GPoliza -> GPoliza: nroPoliza := calcularNroPoliza(p)
-    activate GPoliza
-    deactivate GPoliza
-    GPoliza -> Poliza : setNroPoliza(nroPoliza)
-    GPoliza <-- Poliza
+    GP -> GP : nroPoliza := calcularNroPoliza(p)
+    activate GP
+    deactivate GP
     
+    GP -> Poliza : setNroPoliza(nroPoliza)
+    GP <-- Poliza
 
-    GPoliza -> Poliza : setEstado(EstadoPoliza.Generada)
-    GPoliza <-- Poliza
-
-    loop while hijos > 0
-        GPoliza -> Poliza : agregarHijoDeclarado(fechaNacimiento, sexo, estadoCivil)
-        Poliza --> GPoliza
-    end loop
-
-
-    database "MySQL" as DAOPoliza
-    GPoliza -> DAOPoliza : insert(p)
-    activate DAOPoliza
-    GPoliza <-- DAOPoliza
-    deactivate DAOPoliza
-
-    /'El sistema actualiza la forma de considerar al cliente 
-    en base a la política definida por la empresa'/
-
-    GPoliza -> GCliente : actualizarCondicionCliente(c)
-    activate GCliente
-    GPoliza <-- GCliente
-    deactivate GCliente
-
-    ref over User, IAltaPoliza, GPoliza, GCliente, Poliza, DAOPoliza
-        CU-11
-    end ref
-
-else cancelar
-    User --> IAltaPoliza : cancelar
-    deactivate IAltaPoliza
-    deactivate User
-    deactivate GPoliza
-    deactivate GCliente
+    GP -> Poliza : setEstadoPoliza(EstadoPoliza.Generada)
+    GP <-- Poliza
+    
+    GP -> DP : insert(p)
+    activate DP
+    GP <-- DP
+    deactivate DP
     deactivate Poliza
-    deactivate DAOPoliza
+    
+    GP -> GC : actualizarCondicionCliente(c)
+    activate Cliente
+    activate GC
+    GP <-- GC
+    deactivate Cliente
+    deactivate GC
+    
+    ref over GP
+        CU-11: Realizar Emisión de Póliza
+    end ref
+    
+    CP <-- GP
+    deactivate GP
+    GUI <-- CP
+    deactivate CP
+    Usuario <-- GUI
+    deactivate GUI
+
+    
+else cancelar
+    Usuario -> GUI : cancelar
+    deactivate Usuario
+    deactivate GUI
+    deactivate CC
+    deactivate CP
+    deactivate GC
+    deactivate GP
+    deactivate DC
+    deactivate DP
+    deactivate Cliente
+    deactivate Poliza
+
 end alt
+    
 
 @enduml
