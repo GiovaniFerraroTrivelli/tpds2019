@@ -87,6 +87,11 @@ alt El usuario confirma la generación de la póliza
     GP -> Poliza : setNroPoliza(nroPoliza)
     GP <-- Poliza
 
+    loop while hijos > 0
+        GP -> Poliza : agregarHijo(fechaNacimiento, sexo, estadoCivil)
+        GP <-- Poliza
+    end
+
     GP -> Poliza : setEstadoPoliza(EstadoPoliza.Generada)
     GP <-- Poliza
     
