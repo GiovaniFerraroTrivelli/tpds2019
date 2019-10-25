@@ -5,9 +5,11 @@ center footer Grupo 4A: Matías Bode, Francisco Busso, Giovani Ferraro Trivelli,
 
 actor Usuario
 boundary InterfazUsuario
-entity ControladorPoliza
-entity GestorPoliza
-entity DaoPoliza
+control ControladorPoliza
+control GestorPoliza
+control DaoPoliza
+entity "p: Poliza" as poliza
+database MariaDB
 
 -> Usuario : El CU es invocado
 
@@ -27,7 +29,23 @@ activate GestorPoliza
 GestorPoliza -> DaoPoliza : buscarPoliza(idPoliza)
 
 activate DaoPoliza
+DaoPoliza -> MariaDB : selectPoliza(idPoliza)
+activate MariaDB
+MariaDB --> DaoPoliza : polizaDTO
+deactivate MariaDB
+loop while cantidadPolizas > 0
+	DaoPoliza -> poliza : new Poliza(polizaDTO)
+	activate poliza
+	poliza --> DaoPoliza : p
+	deactivate poliza
+	DaoPoliza -> DaoPoliza : addPolizasEnMemoria()
+	activate DaoPoliza
+end loop
 
+activate DaoPoliza
+
+
+deactivate DaoPoliza
 alt !existePoliza
 GestorPoliza <-- DaoPoliza : Error "no existe póliza"
 ControladorPoliza <-- GestorPoliza : Error "no existe póliza"
