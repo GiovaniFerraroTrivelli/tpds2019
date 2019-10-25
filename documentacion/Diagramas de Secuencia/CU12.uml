@@ -9,47 +9,47 @@ entity ControladorPoliza
 entity GestorPoliza
 
 ref over Usuario, InterfazUsuario, ControladorPoliza, GestorPoliza
-    CU-18: Buscar Poliza
+    CU-18: Buscar Póliza
 end ref
 
-loop do while poliza incorrecta
+loop !polizaCorrecta
 activate Usuario
-Usuario -> InterfazUsuario : Seleccionar poliza
+Usuario -> InterfazUsuario : Seleccionar póliza
 activate InterfazUsuario
-InterfazUsuario -> ControladorPoliza : POST numero poliza seleccionada
+InterfazUsuario -> ControladorPoliza : POST número de póliza seleccionada
 activate ControladorPoliza
 ControladorPoliza -> GestorPoliza : obtenerPoliza(numeroPoliza)
 activate GestorPoliza
-alt existe la poliza
-ControladorPoliza <-- GestorPoliza : Poliza seleccionada
-InterfazUsuario <-- ControladorPoliza : JSON datos poliza
-Usuario <-- InterfazUsuario : Datos de poliza
-else no existe la poliza o no esta vigente
-ControladorPoliza <-- GestorPoliza : Mensaje de error "No existe poliza o no esta vigente"
-InterfazUsuario <-- ControladorPoliza : JSON Error "No existe poliza o no esta vigente"
-Usuario <-- InterfazUsuario : Error 
+alt polizaCorrecta
+ControladorPoliza <-- GestorPoliza : Poliza p
+InterfazUsuario <-- ControladorPoliza : JSON datos de Poliza p
+Usuario <-- InterfazUsuario : Datos de la póliza seleccionada
+else !polizaCorrecta
+ControladorPoliza <-- GestorPoliza : Error "No existe póliza o no está vigente"
+InterfazUsuario <-- ControladorPoliza : JSON Error "No existe póliza o no está vigente"
+Usuario <-- InterfazUsuario : Error "No existe póliza o no está vigente" 
 end
 end
-loop do while !confirmado
+loop !confirmado
 Usuario -> InterfazUsuario : Seleccionar cuotas a abonar
 InterfazUsuario -> ControladorPoliza : POST cuotas a abonar
 ControladorPoliza -> GestorPoliza : calcularImportes()
-ControladorPoliza <-- GestorPoliza : Importes
+ControladorPoliza <-- GestorPoliza : List<Float> importes
 InterfazUsuario <-- ControladorPoliza : JSON Importes
 Usuario <-- InterfazUsuario : Importes parciales y totales
 alt la cuota seleccionada no es la primera pendiente de pago
 Usuario <-- InterfazUsuario : Error "No puede cancelar una cuota posterior a la primera pendiente de pago"
 end
 alt el usuario confirma el pago
-Usuario -> InterfazUsuario : confirmar pago
+Usuario -> InterfazUsuario : Confirmar pago
 else cancelar
-Usuario -> InterfazUsuario : cancelar
+Usuario -> InterfazUsuario : Cancelar
 end
 end
 Usuario -> InterfazUsuario : Ingresar monto abonado
 InterfazUsuario -> ControladorPoliza : POST monto abonado
 ControladorPoliza -> GestorPoliza : calcularVuelto()
-ControladorPoliza <-- GestorPoliza : Monto vuelto
+ControladorPoliza <-- GestorPoliza : Float vuelto
 InterfazUsuario <-- ControladorPoliza : JSON vuelto
 Usuario <-- InterfazUsuario : Monto vuelto
 GestorPoliza -> GestorPoliza : registrarPago()
