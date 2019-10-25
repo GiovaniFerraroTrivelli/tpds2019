@@ -26,7 +26,7 @@ package Dominio{
         -dominio: String
         -chasis: String
         -motor: String
-        -fabricacion: Integer
+        -anioFabricacion: Integer
 	    -seGuardaEnGarage: Boolean
 	    -poseeAlarma: Boolean
 	    -poseeRastreoVehicular: Boolean
@@ -59,7 +59,7 @@ package Dominio{
     
     class Modelo {
     	-nombre: String
-        -anio: Integer
+        -anio: List<Integer>
     	-factorRiesgoRobo: HistorialValor
     }
 
@@ -255,7 +255,7 @@ package Dominio{
    
     Poliza "0..n" o-- "1" Localidad
     ModificacionPoliza "0..n" o-- "1" Localidad
-    Poliza "1..n" o-- "0..n" HijoDeclarado
+    Poliza "0..n" o-- "0..n" HijoDeclarado
     Poliza "1" o--> "1" FormaPago
 	Poliza "n" --> "1" TipoCobertura
     ModificacionPoliza "n" --> "1" TipoCobertura
