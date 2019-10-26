@@ -10,7 +10,7 @@
         <property name="hibernate.connection.url">jdbc:mysql://dbadmin.ngamers.net/tpds</property>
         <property name="hibernate.connection.username">tpds2019</property>
         <property name="hibernate.connection.password">qMxYFmazNR9QGmYG</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
 
         <!-- show mysql queries output in console -->
         <property name="hibernate.show_sql">true</property>
@@ -19,8 +19,9 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- add resources here -->
-        <mapping resource="Usuario.hbm.xml"/>
         <mapping resource="Cliente.hbm.xml"/>
+        <mapping resource="Pais.hbm.xml"/>
+        <mapping resource="Provincia.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>
