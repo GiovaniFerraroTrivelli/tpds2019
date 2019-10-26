@@ -1,7 +1,7 @@
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
@@ -42,7 +42,8 @@ import { TipocoberturaComponent } from './tipocobertura/tipocobertura.component'
 		AppRoutingModule,
 		NgbModule,
 		HttpClientModule,
-		FormsModule
+		FormsModule,
+		ReactiveFormsModule
 	],
 
 	providers: [

@@ -59,8 +59,8 @@ ul.checkbox-tags li input[type="checkbox"]:checked + label::before {
 }
 
 ul.checkbox-tags li input[type="checkbox"]:checked + label {
-    border: 2px solid #1bdbf8;
-    background-color: #12bbd4;
+    border: 2px solid #12bbd4;
+    background-color: #3498DB;
     color: #fff;
     transition: all .2s;
 }
@@ -75,5 +75,5 @@ ul.checkbox-tags li input[type="checkbox"] {
 }
 
 ul.checkbox-tags li input[type="checkbox"]:focus + label {
-  border: 2px solid #e9a1ff;
+  border: 2px solid #12bbd4;
 }

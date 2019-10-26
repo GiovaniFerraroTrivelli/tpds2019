@@ -1,8 +1,9 @@
 import { Component, OnInit, Input} from '@angular/core';
-import { Hijo } from 'hijos';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Hijo } from './hijo';
 import { Sexo } from '../enums/sexo.enum';
 import { EstadoCivil } from '../enums/estado-civil.enum';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
 	selector: 'app-hijos',
@@ -11,29 +12,41 @@ import { EstadoCivil } from '../enums/estado-civil.enum';
 })
 
 export class HijosComponent implements OnInit {
-	hijos: Hijo[];
-
-	@Input() fechaNacimiento: Date;
-	@Input() sexo: String;
-	@Input() estadoCivil: String;
-	edad: number;
-
 	public Sexo = Sexo;
 	public EstadoCivil = EstadoCivil;
+
+	hijos: Hijo[];
+	hijoForm: FormGroup;
+
+	_fechaNacimiento: Date;
+	_sexo: Sexo;
+	_estadoCivil: EstadoCivil;
+	_edad: number;
 
 	constructor(private modalService: NgbModal) {
 		this.hijos = [];
 	}
 	
-	ngOnInit() {}
+	ngOnInit() {
+		this.hijoForm = new FormGroup({
+			'fechaNacimiento': new FormControl(null, Validators.required),
+			'sexo': new FormControl(null, Validators.required),
+			'estadoCivil': new FormControl(null, Validators.required)
+		});
+	}
 	
+	get fechaNacimiento() { return this.hijoForm.get('fechaNacimiento'); }
+	get sexo() { return this.hijoForm.get('sexo'); }
+	get estadoCivil() { return this.hijoForm.get('estadoCivil'); }
+	get edad() { return this.hijoForm.get('edad'); }
+
 	openVerticallyCentered(content) {
 		this.modalService.open(content, { centered: true });
 	}
 
 	calcularEdad() {
 		const today = new Date();
-		const fechaNac = new Date(this.fechaNacimiento);
+		const fechaNac = new Date(this.hijoForm.get('fechaNacimiento').value);
 		let age = today.getFullYear() - fechaNac.getFullYear();
 		const m = today.getMonth() - fechaNac.getMonth();
 
@@ -41,24 +54,38 @@ export class HijosComponent implements OnInit {
 		  age--;
 		}
 		
-		this.edad = age;
+		this._edad = age;
 	}
 
-	onSubmitHijoDialog(modal) {
-		modal.close('add');
-		this.calcularEdad();
-		this.addHijo();
-	}
+	onSubmitHijoDialog(f: NgForm, modal) {
+		if(!f.valid || this._edad < 18 || this._edad > 30) {
+			return false;
+		}
 
-	addHijo() {
+		console.log(f.value);
+
 		const hijo = new Hijo();
-		hijo.edad = this.edad;
-		hijo.estadoCivil = this.estadoCivil;
-		hijo.sexo = this.sexo;
+		hijo.fechaNacimiento = this.fechaNacimiento.value;
+		hijo.sexo = this.sexo.value;
+		hijo.estadoCivil = this.estadoCivil.value;
+		hijo.edad = this._edad;
+
+		modal.close('add');
+
 		this.hijos.push(hijo);
+		f.reset();
 	}
 
 	deleteHijo(index: number) {
 		this.hijos.splice(index, 1);
+	}
+
+	edadIsValid() {
+		return this._edad > 18 && this._edad < 30;
+	}
+
+	cancelHijo(f: NgForm, modal) {
+		modal.close('cancel');
+		f.reset();
 	}
 }
