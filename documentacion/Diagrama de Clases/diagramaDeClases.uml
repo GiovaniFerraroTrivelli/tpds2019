@@ -449,7 +449,7 @@ package Enumeradores
     enum EstadoPoliza {
         Generada
         Vigente
-        Supendida
+        Suspendida
         Finalizada
     }
 
