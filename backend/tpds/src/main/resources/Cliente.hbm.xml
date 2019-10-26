@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="dominio.Cliente" table="clientes">
+
+        <id name="idCliente" type="java.lang.Integer" column="id_cliente">
+            <generator class="identity" />
+        </id>
+
+        <property name="nombre" column="nombre"/>
+        <property name="apellido" column="apellido"/> 
+
+        <property name="tipoDocumento" column="tipo_documento" length="3">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">dominio.TipoDocumento</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        
+        <property name="nroDocumento" column="nro_documento" unique="true"/>
+        <property name="cuil" column="cuil" unique="true"/>
+
+        <property name="sexo" column="sexo" length="10">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">dominio.Sexo</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+
+
+        <property name="fechaNacimiento" column="fecha_nacimiento"/>
+        <property name="profesion" column="profesion"/>
+
+        <property name="estadoCivil" column="estado_civil" length="10">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">dominio.EstadoCivil</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        
+        <property name="email" column="email"/>
+
+        <property name="condicionIva" column="condicion_iva" length="30">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">dominio.CondicionIva</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+
+    </class>
+</hibernate-mapping>
