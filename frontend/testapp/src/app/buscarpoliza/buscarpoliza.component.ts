@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { TipoDNI } from '../enums/tipo-dni.enum';
 
 @Component({
   selector: 'app-buscarpoliza',
@@ -11,13 +12,15 @@ export class BuscarpolizaComponent implements OnInit {
 
 	constructor() { }
 
+	public TipoDNI = TipoDNI;
+
 	ngOnInit() {
 	}
 
 	isValidForm(f: NgForm)
 	{
 		for(let prop in f.value) {
-			if(f.value[prop] !== null && f.value[prop] !== '') {
+			if(prop != "tipoDocumento" && f.value[prop] !== null && f.value[prop] !== '') {
 				return true;
 			}
 		}

@@ -25,11 +25,7 @@
 			<label class="pt-2" for="tipoDocumento">Documento</label>
 			
 			<select ngModel name="tipoDocumento" class="form-control" id="tipoDocumento">
-				<option>1</option>
-				<option>2</option>
-				<option>3</option>
-				<option>4</option>
-				<option>5</option>
+				<option value="{{ enum.key }}" *ngFor="let enum of TipoDNI | keyvalue">{{ enum.key }}</option>
 			</select>
 		</div>
 		<div class="form-group col-sm-9 col-lg-8">

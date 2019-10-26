@@ -29,9 +29,8 @@ export class AltapolizaComponent implements OnInit {
 	onSubmit(f: NgForm) {
 		console.log("aca abajo");
 		let formJSON = f.value;
-		console.log(formJSON);
-		let hijosJSON = this.childComp.hijos;
-		const mergeJSON = Object.assign({}, hijosJSON, formJSON);
-		console.log(mergeJSON);
+		formJSON.hijos = this.childComp.hijos;
+
+		console.log(f.value);
 	}
 }

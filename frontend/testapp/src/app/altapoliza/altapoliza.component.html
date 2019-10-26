@@ -34,7 +34,7 @@
 			<label class="pt-2" for="apellido">Tipo y nro. de documento</label>
 			<div class="input-group mb-1">
 				<div class="input-group-prepend">
-					<span class="input-group-text" id="basic-addon1">DNI</span>
+					<span class="input-group-text" id="basic-addon1"></span>
 				</div>
 				<input type="text" disabled="disabled" class="form-control" />
 			</div>
@@ -104,22 +104,25 @@
 		<div class="col-sm">
 			<h4 class="mt-3">Medidas de seguridad</h4>
 
-			<div class="form-check">
-				<input class="form-check-input" ngModel name="seGuardaEnGarage" type="checkbox" value="" id="seGuardaEnGarage">
-				<label class="form-check-label" for="seGuardaEnGarage">¿Se guarda en garage?</label>
-			</div>
-			<div class="form-check">
-				<input class="form-check-input" ngModel name="poseeAlarma" type="checkbox" value="" id="poseeAlarma">
-				<label class="form-check-label" for="poseeAlarma">¿Tiene alarma?</label>
-			</div>
-			<div class="form-check">
-				<input class="form-check-input" ngModel name="poseeRastreoVehicular" type="checkbox" value="" id="poseeRastreoVehicular">
-				<label class="form-check-label" for="poseeRastreoVehicular">¿Posee dispositivo de rastreo vehicular?</label>
-			</div>
-			<div class="form-check">
-				<input class="form-check-input" ngModel name="poseeTuercasAntirrobo" type="checkbox" value="" id="poseeTuercasAntirrobo">
-				<label class="form-check-label" for="poseeTuercasAntirrobo">¿Posee tuercas antirrobo en las cuatro ruedas?</label>
-			</div>
+			<ul class="checkbox-tags">
+				<li>
+					<input class="form-check-input" ngModel name="seGuardaEnGarage" type="checkbox" value="" id="seGuardaEnGarage">
+					<label class="form-check-label" for="seGuardaEnGarage">Se guarda en garage</label>
+				</li>
+				<li>
+					<input class="form-check-input" ngModel name="poseeAlarma" type="checkbox" value="" id="poseeAlarma">
+					<label class="form-check-label" for="poseeAlarma">Tiene alarma</label>
+				</li>
+				<li>
+					<input class="form-check-input" ngModel name="poseeRastreoVehicular" type="checkbox" value="" id="poseeRastreoVehicular">
+					<label class="form-check-label" for="poseeRastreoVehicular">Posee dispositivo de rastreo vehicular</label>
+				</li>
+				<li>
+					<input class="form-check-input" ngModel name="poseeTuercasAntirrobo" type="checkbox" value="" id="poseeTuercasAntirrobo">
+					<label class="form-check-label" for="poseeTuercasAntirrobo">Posee tuercas antirrobo en las cuatro ruedas</label>
+				</li>
+			</ul>
+
 			<h6 class='mt-3'><strong>Hijos</strong></h6>
 			<app-hijos></app-hijos>
 			<input class="form-control mt-3 mb-1" type="text" placeholder="Suma Asegurada" disabled="disabled" />
