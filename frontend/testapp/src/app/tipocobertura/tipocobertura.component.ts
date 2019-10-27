@@ -48,7 +48,7 @@ export class TipocoberturaComponent implements OnInit {
   }
   onSubmit(){
     this.coberturas.forEach(element => {
-    if (element.nombre == this.coberturaSeleccionada) console.log(element.nombre);
+    if (element.nombre == this.coberturaSeleccionada) console.log(element);
     });
   }
   ngOnInit() {
