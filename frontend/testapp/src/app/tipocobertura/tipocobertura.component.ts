@@ -45,7 +45,11 @@ export class TipocoberturaComponent implements OnInit {
   }
   seleccionarCobertura(cobertura){
     this.coberturaSeleccionada = cobertura;
-    console.log(this.coberturaSeleccionada);
+  }
+  onSubmit(){
+    this.coberturas.forEach(element => {
+    if (element.nombre == this.coberturaSeleccionada) console.log(element.nombre);
+    });
   }
   ngOnInit() {
   }

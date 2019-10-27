@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { HijosComponent } from '../hijos/hijos.component';
 import { NgForm } from '@angular/forms';
-import { Hijo } from 'hijos';
+import { Hijo } from '../hijos/hijo';
 
 @Component({
 	selector: 'app-altapoliza',

@@ -18,7 +18,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" (click)="modal.close('cancel')">Cancelar</button>
-            <button type="button" class="btn btn-primary" (click)="modal.close('add')">Aceptar</button>
+            <button type="button" class="btn btn-primary" (click)="[modal.close('add'), onSubmit()]">Aceptar</button>
         </div>
     </ng-template>
 <div class="card" id='outside-card'>
