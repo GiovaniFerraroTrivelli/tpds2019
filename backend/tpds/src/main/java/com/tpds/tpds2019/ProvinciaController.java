@@ -31,8 +31,7 @@ public class ProvinciaController {
 			
 			pais = session.get(Pais.class, idPais);
 			tx.commit();
-	
-			
+
 			Set<Provincia> provincias = pais.getProvincias();
 			List<ProvinciaDTO> result = new ArrayList<ProvinciaDTO>();
 			
@@ -40,7 +39,7 @@ public class ProvinciaController {
 				result.add(provincia.getDTO());
 			}
 			return result;
-		} catch (HibernateException e) {
+		} catch (HibernateException e){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw e;

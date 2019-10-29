@@ -13,12 +13,6 @@ public class Pais {
 
 	}
 
-	public Pais(Integer idPais, String nombre, Set<Provincia> provincias) {
-		this.idPais = idPais;
-		this.nombre = nombre;
-		this.provincias = provincias;
-	}
-
 	public Integer getIdPais() {
 		return idPais;
 	}
@@ -42,7 +36,7 @@ public class Pais {
 	public void setProvincias(Set<Provincia> provincias) {
 		this.provincias = provincias;
 	}
-
+	
 	public PaisDTO getDTO() {
 		PaisDTO result = new PaisDTO();
 		result.setIdPais(this.idPais);
