@@ -21,14 +21,26 @@ public class Test {
 		Session session = HibernateUtil.getSession();
 
 
-		try {			
+		try {
 			
+			
+			Pais pais = session.get(Pais.class, 1);
+			
+			Set<Provincia> provincias = pais.getProvincias();
+			
+			for(Provincia p : provincias) {
+				System.out.println(p.getNombre());
+			}
+			
+			
+
+			
+			/*
 			long start = System.nanoTime();
-			List<Provincia> provincias = loadAllData(session);
+			Pais pais = session.get(Pais.class, 1);
 			long elapsedTime = System.nanoTime() - start;
 			System.out.println(elapsedTime);
-			
-			
+			*/
 
 
 			
@@ -45,7 +57,7 @@ public class Test {
 	}
 	
 	public static List<Provincia> loadAllData(Session session) {
-	    return session.createQuery("SELECT a FROM provincias a", Provincia.class).getResultList();      
+	    return session.createQuery("SELECT a FROM Provincia a", Provincia.class).getResultList();      
 	}
 
 }
