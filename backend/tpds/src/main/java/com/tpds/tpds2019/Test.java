@@ -1,10 +1,13 @@
 package com.tpds.tpds2019;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import dataAccess.HibernateUtil;
 import dominio.Pais;
@@ -16,26 +19,21 @@ public class Test {
 		// TODO Auto-generated method stub
 
 		Session session = HibernateUtil.getSession();
-		Transaction tx = session.beginTransaction();
 
-		Pais p = new Pais();
-
-		p.setNombre("Argentina");
-
-		Provincia prov1 = new Provincia();
-		prov1.setNombre("Santa Fe");
-		prov1.setPais(p);
-
-		Provincia prov2 = new Provincia();
-		prov2.setNombre("Chaco");
-		prov2.setPais(p);
 
 		try {			
-			session.save(p);
-			session.save(prov1);
-			session.save(prov2);
+			
+			long start = System.nanoTime();
+			List<Provincia> provincias = loadAllData(session);
+			long elapsedTime = System.nanoTime() - start;
+			System.out.println(elapsedTime);
+			
+			
 
-			tx.commit();
+
+			
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.close();
@@ -44,6 +42,10 @@ public class Test {
 
 		session.close();
 		HibernateUtil.shutdown();
+	}
+	
+	public static List<Provincia> loadAllData(Session session) {
+	    return session.createQuery("SELECT a FROM provincias a", Provincia.class).getResultList();      
 	}
 
 }

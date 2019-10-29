@@ -11,6 +11,13 @@ public class Provincia {
 
 	}
 
+	public Provincia(Integer idProvincia, Pais pais, String nombre) {
+		super();
+		this.idProvincia = idProvincia;
+		this.pais = pais;
+		this.nombre = nombre;
+	}
+
 	public Integer getIdProvincia() {
 		return idProvincia;
 	}

@@ -6,7 +6,7 @@
     <session-factory>
 
         <!-- database connection properties -->
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://dbadmin.ngamers.net/tpds</property>
         <property name="hibernate.connection.username">tpds2019</property>
         <property name="hibernate.connection.password">qMxYFmazNR9QGmYG</property>
