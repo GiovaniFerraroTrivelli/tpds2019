@@ -19,7 +19,7 @@ import dominio.Pais;
 import dominio.Provincia;
 
 @RestController
-@CrossOrigin(origins = "http://localhost")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProvinciaController {
 	
 	@GetMapping("/provincias/{idPais}")
