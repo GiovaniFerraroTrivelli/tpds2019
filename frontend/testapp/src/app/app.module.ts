@@ -19,6 +19,7 @@ import { BuscarpolizaComponent } from './buscarpoliza/buscarpoliza.component';
 import { AltaclienteComponent } from './altacliente/altacliente.component';
 import { HijosComponent } from './hijos/hijos.component';
 import { TipocoberturaComponent } from './tipocobertura/tipocobertura.component';
+import { GeografiaService } from './geografia/geografia.service';
 
 @NgModule({
 	declarations: [
@@ -49,7 +50,8 @@ import { TipocoberturaComponent } from './tipocobertura/tipocobertura.component'
 	providers: [
 		UserService,
 		DialogService,
-		Title
+		Title,
+		GeografiaService
 	],
 	
 	entryComponents: [ DialogComponent ],

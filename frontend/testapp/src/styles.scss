@@ -77,3 +77,8 @@ ul.checkbox-tags li input[type="checkbox"] {
 ul.checkbox-tags li input[type="checkbox"]:focus + label {
   border: 2px solid #12bbd4;
 }
+
+.form-group.required .control-label:after {
+  content:"*";
+  color:red;
+}
