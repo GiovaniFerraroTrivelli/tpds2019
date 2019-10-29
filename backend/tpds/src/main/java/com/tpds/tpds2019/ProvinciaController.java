@@ -23,7 +23,6 @@ public class ProvinciaController {
 	
 	@GetMapping("/provincias")
 	public List<ProvinciaDTO> getProvincias() throws HibernateException{
-		System.out.println("lalala");
 		Pais pais;
 		try {
 			Session session = HibernateUtil.getSession();
@@ -46,5 +45,4 @@ public class ProvinciaController {
 			throw e;
 		}
 	}
-
 }

@@ -37,7 +37,6 @@ public class Provincia {
 
 	public ProvinciaDTO getDTO() {
 		ProvinciaDTO result = new ProvinciaDTO();
-		result.setIdPais(this.pais.getIdPais());
 		result.setIdProvincia(this.idProvincia);
 		result.setNombre(this.nombre);
 		return result;
