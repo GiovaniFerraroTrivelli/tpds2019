@@ -10,6 +10,7 @@ import org.hibernate.SharedSessionContract;
 import org.hibernate.Transaction;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import DTOs.ProvinciaDTO;
@@ -21,14 +22,14 @@ import dominio.Provincia;
 @CrossOrigin(origins = "http://localhost")
 public class ProvinciaController {
 	
-	@GetMapping("/provincias")
-	public List<ProvinciaDTO> getProvincias() throws HibernateException{
+	@GetMapping("/provincias/{idPais}")
+	public List<ProvinciaDTO> getProvincias(@PathVariable("idPais") Integer idPais) throws HibernateException{
 		Pais pais;
 		try {
 			Session session = HibernateUtil.getSession();
 			Transaction tx = session.beginTransaction();
 			
-			pais = session.get(Pais.class, 1);
+			pais = session.get(Pais.class, idPais);
 			tx.commit();
 	
 			

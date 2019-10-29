@@ -16,9 +16,10 @@ public class HibernateUtil {
             throw new ExceptionInInitializerError(ex);
         }
     }
+    private static final Session session = sessionFactory.openSession();
 
     public static Session getSession() throws HibernateException {
-        return sessionFactory.openSession();
+    	return session;
     }
 
     public static void shutdown() {
