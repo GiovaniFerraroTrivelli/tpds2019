@@ -1,5 +1,7 @@
 package dominio;
 
+import DTOs.ProvinciaDTO;
+
 public class Provincia {
 	private Integer idProvincia;
 	private Pais pais;
@@ -33,4 +35,11 @@ public class Provincia {
 		this.nombre = nombre;
 	}
 
+	public ProvinciaDTO getDTO() {
+		ProvinciaDTO result = new ProvinciaDTO();
+		result.setIdPais(this.pais.getIdPais());
+		result.setIdProvincia(this.idProvincia);
+		result.setNombre(this.nombre);
+		return result;
+	}
 }

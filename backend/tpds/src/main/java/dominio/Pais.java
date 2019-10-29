@@ -2,6 +2,8 @@ package dominio;
 
 import java.util.Set;
 
+import DTOs.PaisDTO;
+
 public class Pais {
 	private Integer idPais;
 	private String nombre;
@@ -33,6 +35,13 @@ public class Pais {
 
 	public void setProvincias(Set<Provincia> provincias) {
 		this.provincias = provincias;
+	}
+	
+	public PaisDTO getDTO() {
+		PaisDTO result = new PaisDTO();
+		result.setIdPais(this.idPais);
+		result.setNombre(this.nombre);
+		return result;
 	}
 
 }
