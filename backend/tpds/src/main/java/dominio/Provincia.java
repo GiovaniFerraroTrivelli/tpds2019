@@ -46,6 +46,7 @@ public class Provincia {
 		ProvinciaDTO result = new ProvinciaDTO();
 		result.setIdProvincia(this.idProvincia);
 		result.setNombre(this.nombre);
+		result.setIdPais(this.pais.getIdPais());
 		return result;
 	}
 }

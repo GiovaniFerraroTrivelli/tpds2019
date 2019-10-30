@@ -1,4 +1,4 @@
-package com.tpds.tpds2019;
+package RestControllers;
 
 public class UserLogin {
 	private String username;

@@ -3,7 +3,14 @@ package DTOs;
 public class ProvinciaDTO {
 	private Integer idProvincia;
 	private String nombre;
+	private Integer idPais;
 	
+	public Integer getIdPais() {
+		return idPais;
+	}
+	public void setIdPais(Integer idPais) {
+		this.idPais = idPais;
+	}
 	public Integer getIdProvincia() {
 		return idProvincia;
 	}

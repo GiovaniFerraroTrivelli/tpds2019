@@ -1,4 +1,4 @@
-package com.tpds.tpds2019;
+package RestControllers;
 
 import java.util.List;
 
@@ -6,29 +6,27 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-public class HijoController {
+public class UserController {
 
-	@GetMapping("/hijos")
-	public List<Hijo> getHijos() {
-		Hijo.blankList();
+	@GetMapping("/users")
+	public List<User> getUsers() {
+		User.blankList();
 
-		Hijo hijoA = new Hijo(20, "Soltere", "Masculino");
-		Hijo hijoB = new Hijo(23, "Casado", "Femenino");
-		Hijo hijoC = new Hijo(22, "Soltero", "non-binary");
+		User pepe = new User(1, "Capo");
+		User bode = new User(2, "Bode");
 
-		Hijo.addToList(hijoA);
-		Hijo.addToList(hijoB);
-		Hijo.addToList(hijoC);
-		
-		return (List<Hijo>) Hijo.getLista();
+		User.addToList(pepe);
+		User.addToList(bode);
+
+		return (List<User>) User.getLista();
 	}
-    /*
+
 	@PostMapping("/login")
 	public Boolean login(@RequestBody UserLogin userLogin) {
 		System.out.println("lalala");
 		return userLogin.getUsername().equals("giovi") && userLogin.getPassword().contentEquals("capo");
 	}
-    */
+
 	/*
 	 * @PostMapping("/users") void addUser(@RequestBody User user) {
 	 * userRepository.save(user); }
