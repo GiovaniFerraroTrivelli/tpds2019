@@ -3,12 +3,12 @@ import { NgForm } from '@angular/forms';
 import { TipoDNI } from '../enums/tipo-dni.enum';
 
 @Component({
-  selector: 'app-buscarpoliza',
-  templateUrl: './buscarpoliza.component.html',
-  styleUrls: ['./buscarpoliza.component.scss']
+  selector: 'app-buscarcliente',
+  templateUrl: './buscarcliente.component.html',
+  styleUrls: ['./buscarcliente.component.scss']
 })
 
-export class BuscarpolizaComponent implements OnInit {
+export class BuscarclienteComponent implements OnInit {
 
 	constructor() { }
 

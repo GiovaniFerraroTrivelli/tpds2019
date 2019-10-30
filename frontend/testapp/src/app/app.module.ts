@@ -15,7 +15,7 @@ import { FooterComponent } from './footer/footer.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { DialogService } from './dialog/dialog.service';
 import { IndexComponent } from './index/index.component';
-import { BuscarpolizaComponent } from './buscarpoliza/buscarpoliza.component';
+import { BuscarclienteComponent } from './buscarcliente/buscarcliente.component';
 import { AltaclienteComponent } from './altacliente/altacliente.component';
 import { HijosComponent } from './hijos/hijos.component';
 import { TipocoberturaComponent } from './tipocobertura/tipocobertura.component';
@@ -32,7 +32,7 @@ import { GeografiaService } from './geografia/geografia.service';
 		FooterComponent,
 		DialogComponent,
 		IndexComponent,
-		BuscarpolizaComponent,
+		BuscarclienteComponent,
 		AltaclienteComponent,
 		HijosComponent,
 		TipocoberturaComponent
