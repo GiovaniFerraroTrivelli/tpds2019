@@ -22,6 +22,7 @@
         <mapping resource="Cliente.hbm.xml"/>
         <mapping resource="Pais.hbm.xml"/>
         <mapping resource="Provincia.hbm.xml"/>
+        <mapping resource="Localidad.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>

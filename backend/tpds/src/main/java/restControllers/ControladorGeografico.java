@@ -20,50 +20,53 @@ import gestores.GestorGeografico;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class ControladorGeografico {
-	
+
 	@GetMapping("/provincias/{idPais}")
-	public ResponseEntity<Object> getProvincias(@PathVariable("idPais") Integer idPais){
+	public ResponseEntity<Object> getProvincias(@PathVariable("idPais") Integer idPais) {
 		try {
 			ArrayList<Provincia> provincias = GestorGeografico.getProvinciasDePais(idPais);
 			ArrayList<ProvinciaDTO> result = new ArrayList<ProvinciaDTO>();
-			for (Provincia provincia : provincias) result.add(provincia.getDTO());
+			for (Provincia provincia : provincias)
+				result.add(provincia.getDTO());
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>("{\"error\": \"no encontrado\"}", HttpStatus.NOT_FOUND);
 		}
-		
+
 	}
-	
+
 	@GetMapping("/provincia/{idProvincia}")
-	public ResponseEntity<Object> getProvincia(@PathVariable("idProvincia") Integer idProvincia){
+	public ResponseEntity<Object> getProvincia(@PathVariable("idProvincia") Integer idProvincia) {
 		try {
 			Provincia provincia = GestorGeografico.getProvincia(idProvincia);
 			return new ResponseEntity<>(provincia.getDTO(), HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>("{\"error\": \"no encontrado\"}", HttpStatus.NOT_FOUND) ;
+			return new ResponseEntity<>("{\"error\": \"no encontrado\"}", HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 	@GetMapping("/localidades/{idProvincia}")
-	public ResponseEntity<Object> getLocalidadesDeProvincia(@PathVariable("idProvincia") Integer idProvincia) throws DatoNoEncontradoException{
+	public ResponseEntity<Object> getLocalidadesDeProvincia(@PathVariable("idProvincia") Integer idProvincia)
+			throws DatoNoEncontradoException {
 		try {
 			ArrayList<Localidad> localidades = GestorGeografico.getLocalidadesDeProvincia(idProvincia);
 			ArrayList<LocalidadDTO> result = new ArrayList<LocalidadDTO>();
-			for (Localidad localidad : localidades) result.add(localidad.getDTO());
+			for (Localidad localidad : localidades)
+				result.add(localidad.getDTO());
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>("{\"error\": \"no encontrado\"}", HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 	@GetMapping("/pais/{idPais}")
-	public ResponseEntity<Object> getPais(@PathVariable("idPais") Integer idPais){
+	public ResponseEntity<Object> getPais(@PathVariable("idPais") Integer idPais) {
 		try {
 			PaisDTO pais = GestorGeografico.getPais(idPais).getDTO();
 			return new ResponseEntity<>(pais, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(new Error("Hola capo"), HttpStatus.NOT_FOUND) ;
+			return new ResponseEntity<>("{\"error\": \"no encontrado\"}", HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 }

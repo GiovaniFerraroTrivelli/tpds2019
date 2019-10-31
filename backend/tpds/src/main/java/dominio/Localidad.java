@@ -5,11 +5,18 @@ import dominio.Provincia;
 import excepciones.NoHayValorException;
 
 public class Localidad {
+	private Integer idLocalidad;
 	private String nombre;
 	private String CPA;
 	private Provincia provincia;
 	private HistorialValor<Float> factorRiesgo;
 	
+	public Integer getIdLocalidad() {
+		return idLocalidad;
+	}
+	public void setIdLocalidad(Integer idLocalidad) {
+		this.idLocalidad = idLocalidad;
+	}
 	public Provincia getProvincia() {
 		return provincia;
 	}
@@ -40,6 +47,7 @@ public class Localidad {
 		result.setCPA(this.CPA);
 		result.setNombre(this.nombre);
 		result.setProvinciaId(this.provincia.getIdProvincia());
+		result.setIdLocalidad(this.idLocalidad);
 		return result;
 	}
 }

@@ -1,11 +1,14 @@
 package dominio;
 
+import java.util.Set;
+
 import dataTransferObjects.ProvinciaDTO;
 
 public class Provincia {
 	private Integer idProvincia;
 	private Pais pais;
 	private String nombre;
+
 
 	public Provincia() {
 
@@ -41,6 +44,16 @@ public class Provincia {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
+	public Set<Localidad> getLocalidades() {
+		return localidades;
+	}
+
+	public void setLocalidades(Set<Localidad> localidades) {
+		this.localidades = localidades;
+	}
+
+	private Set<Localidad> localidades;
 
 	public ProvinciaDTO getDTO() {
 		ProvinciaDTO result = new ProvinciaDTO();

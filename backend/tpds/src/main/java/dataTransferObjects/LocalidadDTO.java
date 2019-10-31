@@ -4,6 +4,7 @@ public class LocalidadDTO {
 	private String CPA;
 	private String nombre;
 	private Integer provinciaId;
+	private Integer idLocalidad;
 	
 	public String getCPA() {
 		return CPA;
@@ -22,5 +23,9 @@ public class LocalidadDTO {
 	}
 	public void setProvinciaId(Integer provinciaId) {
 		this.provinciaId = provinciaId;
+	}
+	public void setIdLocalidad(Integer idLocalidad) {
+		this.idLocalidad = idLocalidad;
+		
 	}
 }

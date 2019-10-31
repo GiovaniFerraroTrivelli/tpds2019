@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import dataAccess.HibernateUtil;
+import dominio.Localidad;
 import dominio.Pais;
 import dominio.Provincia;
 
@@ -18,20 +19,25 @@ public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		Session session = HibernateUtil.getSession();
 
 
 		try {
 			
 			
-			Pais pais = session.get(Pais.class, 1);
+			/*HibernateUtil.getSession().beginTransaction();
+			Provincia p = HibernateUtil.getSession().get(Provincia.class, 2);
 			
-			Set<Provincia> provincias = pais.getProvincias();
+			System.out.println(p.getNombre());
 			
-			for(Provincia p : provincias) {
-				System.out.println(p.getNombre());
-			}
 			
+			
+			Localidad l = new Localidad();
+			l.setIdLocalidad(666);
+			l.setNombre("30 mil pesos");
+			l.setProvincia(p);
+			HibernateUtil.getSession().save(l);
+			
+			HibernateUtil.getSession().getTransaction().commit();*/
 			
 
 			
@@ -48,11 +54,11 @@ public class Test {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			session.close();
+			HibernateUtil.getSession().close();
 			HibernateUtil.shutdown();
 		}
 
-		session.close();
+		HibernateUtil.getSession().close();
 		HibernateUtil.shutdown();
 	}
 	
