@@ -2,7 +2,7 @@ package dominio;
 
 import java.util.Set;
 
-import DTOs.PaisDTO;
+import dataTransferObjects.PaisDTO;
 
 public class Pais {
 	private Integer idPais;

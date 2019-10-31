@@ -1,4 +1,4 @@
-package DTOs;
+package dataTransferObjects;
 
 public class LocalidadDTO {
 	private String CPA;

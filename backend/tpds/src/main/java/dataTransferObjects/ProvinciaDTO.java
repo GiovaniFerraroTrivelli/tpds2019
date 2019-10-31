@@ -1,4 +1,4 @@
-package DTOs;
+package dataTransferObjects;
 
 public class ProvinciaDTO {
 	private Integer idProvincia;

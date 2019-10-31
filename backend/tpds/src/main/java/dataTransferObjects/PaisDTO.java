@@ -1,4 +1,4 @@
-package DTOs;
+package dataTransferObjects;
 
 public class PaisDTO {
 	private Integer idPais;

@@ -1,6 +1,6 @@
 package dominio;
 
-import DTOs.LocalidadDTO;
+import dataTransferObjects.LocalidadDTO;
 import dominio.Provincia;
 import excepciones.NoHayValorException;
 

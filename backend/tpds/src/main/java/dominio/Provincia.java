@@ -1,6 +1,6 @@
 package dominio;
 
-import DTOs.ProvinciaDTO;
+import dataTransferObjects.ProvinciaDTO;
 
 public class Provincia {
 	private Integer idProvincia;

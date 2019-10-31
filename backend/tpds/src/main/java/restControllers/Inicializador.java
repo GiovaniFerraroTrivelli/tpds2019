@@ -1,4 +1,4 @@
-package RestControllers;
+package restControllers;
 
 
 import org.springframework.boot.SpringApplication;

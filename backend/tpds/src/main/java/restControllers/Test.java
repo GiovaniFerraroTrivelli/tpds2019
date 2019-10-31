@@ -1,4 +1,4 @@
-package RestControllers;
+package restControllers;
 
 import java.util.ArrayList;
 import java.util.HashSet;

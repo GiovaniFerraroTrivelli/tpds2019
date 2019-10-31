@@ -1,4 +1,4 @@
-package RestControllers;
+package restControllers;
 
 public class UserLogin {
 	private String username;
