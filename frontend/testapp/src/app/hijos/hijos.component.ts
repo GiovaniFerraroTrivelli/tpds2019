@@ -1,9 +1,10 @@
 import { Component, OnInit, Input} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Hijo } from './hijo';
+import { AgeValidator } from './hijos.validator';
 import { Sexo } from '../enums/sexo.enum';
 import { EstadoCivil } from '../enums/estado-civil.enum';
-import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 
 @Component({
 	selector: 'app-hijos',
@@ -29,7 +30,7 @@ export class HijosComponent implements OnInit {
 	
 	ngOnInit() {
 		this.hijoForm = new FormGroup({
-			'fechaNacimiento': new FormControl(null, Validators.required),
+			'fechaNacimiento': new FormControl(null, [ Validators.required, AgeValidator ]),
 			'sexo': new FormControl(null, Validators.required),
 			'estadoCivil': new FormControl(null, Validators.required)
 		});
@@ -54,11 +55,11 @@ export class HijosComponent implements OnInit {
 		  age--;
 		}
 		
-		this._edad = age;
+		return age;
 	}
 
 	onSubmitHijoDialog(f: NgForm, modal) {
-		if(!f.valid || this._edad < 18 || this._edad > 30) {
+		if(!f.valid) {
 			return false;
 		}
 
@@ -68,7 +69,7 @@ export class HijosComponent implements OnInit {
 		hijo.fechaNacimiento = this.fechaNacimiento.value;
 		hijo.sexo = this.sexo.value;
 		hijo.estadoCivil = this.estadoCivil.value;
-		hijo.edad = this._edad;
+		hijo.edad = this.calcularEdad();
 
 		modal.close('add');
 
@@ -78,10 +79,6 @@ export class HijosComponent implements OnInit {
 
 	deleteHijo(index: number) {
 		this.hijos.splice(index, 1);
-	}
-
-	edadIsValid() {
-		return this._edad > 18 && this._edad < 30;
 	}
 
 	cancelHijo(f: NgForm, modal) {

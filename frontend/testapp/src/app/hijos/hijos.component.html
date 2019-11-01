@@ -9,18 +9,17 @@
 		
 		<div class="modal-body">
 			<label class="pt-2" for="fechaNacimiento">Fecha de nacimiento</label>
-			<input required type="date" (change)="calcularEdad()" name="fechaNacimiento" formControlName="fechaNacimiento" id="fechaNacimiento" class="form-control" name="fechaNacimiento">
+			<input required type="date" name="fechaNacimiento" formControlName="fechaNacimiento" id="fechaNacimiento" class="form-control" name="fechaNacimiento">
 
 			<div *ngIf="fechaNacimiento.invalid && (fechaNacimiento.dirty || fechaNacimiento.touched)" class="invalid-feedback d-block mt-1 mb-0">
 				<div *ngIf="fechaNacimiento.errors.required">
 					El campo de fecha de nacimiento es obligatorio.
 				</div>
+				<div *ngIf="fechaNacimiento.errors.validateAge">
+					La edad debe estar entre 18 y 30 años.
+				</div>
 			</div>
 
-			<div *ngIf="!fechaNacimiento.invalid && !edadIsValid()" class="invalid-feedback d-block mt-1 mb-0">
-				La edad debe estar entre 18 y 30 años.
-			</div>
-			
 			<label class="pt-2" for="sexo">Sexo</label>
 			<select required class="form-control" id="sexo" formControlName="sexo" name="sexo">
 				<option value="{{ enum.key }}" *ngFor="let enum of Sexo | keyvalue">{{ enum.value }}</option>
@@ -46,7 +45,7 @@
 		
 		<div class="modal-footer">
 			<button type="button" class="btn btn-danger" (click)="cancelHijo(hijosForm, modal)">Cancelar</button>
-			<button type="submit" [disabled]="!hijoForm.valid || !edadIsValid()" class="btn btn-primary">Aceptar</button>
+			<button type="submit" [disabled]="!hijoForm.valid" class="btn btn-primary">Aceptar</button>
 		</div>
 	</form>
 </ng-template>

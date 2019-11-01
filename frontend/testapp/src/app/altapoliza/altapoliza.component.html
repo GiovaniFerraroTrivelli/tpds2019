@@ -115,7 +115,6 @@
 				<label class="pt-2" for="localidad">Localidad</label>
 			    <div class="input-group">
 					<select required="required" ngModel name="localidad" class="form-control mb-1">
-						<option value="" disabled="disabled"></option>
 						<option value="{{ localidad.idLocalidad }}" *ngFor="let localidad of localidades">{{ localidad.nombre }}</option>
 					</select>
 			    </div>
