@@ -24,8 +24,10 @@ public class LocalidadDTO {
 	public void setProvinciaId(Integer provinciaId) {
 		this.provinciaId = provinciaId;
 	}
+	public Integer getIdLocalidad() {
+		return idLocalidad;
+	}
 	public void setIdLocalidad(Integer idLocalidad) {
 		this.idLocalidad = idLocalidad;
-		
 	}
 }
