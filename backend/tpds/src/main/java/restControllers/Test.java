@@ -11,6 +11,8 @@ import org.hibernate.query.Query;
 
 import dataAccess.HibernateUtil;
 import dominio.Localidad;
+import dominio.Marca;
+import dominio.Modelo;
 import dominio.Pais;
 import dominio.Provincia;
 
@@ -24,21 +26,17 @@ public class Test {
 		try {
 			
 			
-			/*HibernateUtil.getSession().beginTransaction();
-			Provincia p = HibernateUtil.getSession().get(Provincia.class, 2);
+			HibernateUtil.getSession().beginTransaction();
+			Marca m = HibernateUtil.getSession().get(Marca.class, 1);
 			
-			System.out.println(p.getNombre());
+			System.out.println(m.getNombre());
 			
+			Modelo mod = new Modelo();
+			mod.setMarca(m);
+			mod.setNombre("test");
+			HibernateUtil.getSession().save(mod);
 			
-			
-			Localidad l = new Localidad();
-			l.setIdLocalidad(666);
-			l.setNombre("30 mil pesos");
-			l.setProvincia(p);
-			HibernateUtil.getSession().save(l);
-			
-			HibernateUtil.getSession().getTransaction().commit();*/
-			
+			HibernateUtil.getSession().getTransaction().commit();
 
 			
 			/*

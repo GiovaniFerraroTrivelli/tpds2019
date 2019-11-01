@@ -23,6 +23,8 @@
         <mapping resource="Pais.hbm.xml"/>
         <mapping resource="Provincia.hbm.xml"/>
         <mapping resource="Localidad.hbm.xml"/>
+        <mapping resource="Marca.hbm.xml"/>
+        <mapping resource="Modelo.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>
