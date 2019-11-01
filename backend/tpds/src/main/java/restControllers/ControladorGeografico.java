@@ -30,7 +30,7 @@ public class ControladorGeografico {
 				result.add(provincia.getDTO());
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>("{\"error\": \"no encontrado\"}", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new Error("País no encontrado"), HttpStatus.NOT_FOUND);
 		}
 
 	}
@@ -41,7 +41,7 @@ public class ControladorGeografico {
 			Provincia provincia = GestorGeografico.getProvincia(idProvincia);
 			return new ResponseEntity<>(provincia.getDTO(), HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>("{\"error\": \"no encontrado\"}", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new Error("Provincia no encontrada"), HttpStatus.NOT_FOUND);
 		}
 	}
 
@@ -55,7 +55,7 @@ public class ControladorGeografico {
 				result.add(localidad.getDTO());
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>("{\"error\": \"no encontrado\"}", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new Error("Provincia no encontrada"), HttpStatus.NOT_FOUND);
 		}
 	}
 
@@ -65,7 +65,7 @@ public class ControladorGeografico {
 			PaisDTO pais = GestorGeografico.getPais(idPais).getDTO();
 			return new ResponseEntity<>(pais, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>("{\"error\": \"no encontrado\"}", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new Error("País no encontrado"), HttpStatus.NOT_FOUND);
 		}
 	}
 

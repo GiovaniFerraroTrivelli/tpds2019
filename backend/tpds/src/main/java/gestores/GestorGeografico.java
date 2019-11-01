@@ -52,5 +52,4 @@ public class GestorGeografico{
 			throw new DatoNoEncontradoException();
 		}
 	}
-
 }

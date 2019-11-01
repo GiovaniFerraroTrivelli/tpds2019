@@ -1,11 +1,13 @@
 package restControllers;
 
 public class Error {
-	private String mensaje = "no encontrado";
-
-	public Error  Error(String mensaje) {
-		
-		this.mensaje = mensaje;
-		return this;
+	private String error = "no encontrado";
+	
+	public Error(String mensaje) {
+		error = mensaje;
+	}
+	
+	public String getMensaje() {
+		return this.error;
 	}
 }

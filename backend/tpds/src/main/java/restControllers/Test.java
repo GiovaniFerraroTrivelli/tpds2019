@@ -47,7 +47,8 @@ public class Test {
 			long elapsedTime = System.nanoTime() - start;
 			System.out.println(elapsedTime);
 			*/
-
+			Error e = new Error("Hola");
+			System.out.println(e.getMensaje());
 
 			
 
