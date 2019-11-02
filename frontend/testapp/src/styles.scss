@@ -21,9 +21,9 @@ ul.checkbox-tags {
 ul.checkbox-tags li label{
     display: inline-block;
     background-color: rgba(255, 255, 255, .9);
-    border: 2px solid rgba(139, 139, 139, .3);
-    color: #adadad;
-    border-radius: 25px;
+    border: 1px solid #ced4da;
+    color: #95a5a6;
+    border-radius: 0.25rem;
     white-space: nowrap;
     margin: 3px 0px;
     -webkit-touch-callout: none;
@@ -36,7 +36,7 @@ ul.checkbox-tags li label{
 }
 
 ul.checkbox-tags li label {
-    padding: 8px 12px;
+    padding: 0.375rem 0.75rem;
     cursor: pointer;
 }
 
@@ -59,7 +59,7 @@ ul.checkbox-tags li input[type="checkbox"]:checked + label::before {
 }
 
 ul.checkbox-tags li input[type="checkbox"]:checked + label {
-    border: 2px solid #12bbd4;
+    border: 1px solid #12bbd4;
     background-color: #3498DB;
     color: #fff;
     transition: all .2s;
@@ -75,12 +75,18 @@ ul.checkbox-tags li input[type="checkbox"] {
 }
 
 ul.checkbox-tags li input[type="checkbox"]:focus + label {
-  border: 2px solid #12bbd4;
+  border: 1px solid #12bbd4;
 }
 
 .form-group.required .control-label:after {
-  content:"*";
-  color:red;
+    content: "REQUERIDO";
+    color:red;
+    font-size: 10px;
+    padding-left: 10px;
+}
+
+.btn-primary[disabled]:hover {
+    cursor:not-allowed;
 }
 
 input, select {

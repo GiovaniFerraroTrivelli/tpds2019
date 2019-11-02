@@ -8,37 +8,43 @@
 		</div>
 		
 		<div class="modal-body">
-			<label class="pt-2" for="fechaNacimiento">Fecha de nacimiento</label>
-			<input required type="date" name="fechaNacimiento" formControlName="fechaNacimiento" id="fechaNacimiento" class="form-control" name="fechaNacimiento">
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="fechaNacimiento">Fecha de nacimiento</label>
+				<input required type="date" name="fechaNacimiento" formControlName="fechaNacimiento" id="fechaNacimiento" class="form-control" name="fechaNacimiento">
 
-			<div *ngIf="fechaNacimiento.invalid && (fechaNacimiento.dirty || fechaNacimiento.touched)" class="invalid-feedback d-block mt-1 mb-0">
-				<div *ngIf="fechaNacimiento.errors.required">
-					El campo de fecha de nacimiento es obligatorio.
-				</div>
-				<div *ngIf="fechaNacimiento.errors.validateAge">
-					La edad debe estar entre 18 y 30 años.
-				</div>
-			</div>
-
-			<label class="pt-2" for="sexo">Sexo</label>
-			<select required class="form-control" id="sexo" formControlName="sexo" name="sexo">
-				<option value="{{ enum.key }}" *ngFor="let enum of Sexo | keyvalue">{{ enum.value }}</option>
-			</select>
-
-			<div *ngIf="sexo.invalid && (sexo.dirty || sexo.touched)" class="invalid-feedback d-block mt-1 mb-0">
-				<div *ngIf="sexo.errors.required">
-					El campo de sexo es obligatorio.
+				<div *ngIf="fechaNacimiento.invalid && (fechaNacimiento.dirty || fechaNacimiento.touched)" class="invalid-feedback d-block mt-1 mb-0">
+					<div *ngIf="fechaNacimiento.errors.required">
+						El campo de fecha de nacimiento es obligatorio.
+					</div>
+					<div *ngIf="fechaNacimiento.errors.validateAge">
+						La edad debe estar entre 18 y 30 años.
+					</div>
 				</div>
 			</div>
 
-			<label class="pt-2" for="estadoCivil">Estado civil</label>
-			<select required class="form-control" formControlName="estadoCivil" id="estadoCivil" name="estadoCivil">
-				<option value="{{ enum.key }}" *ngFor="let enum of EstadoCivil | keyvalue">{{ enum.value }}</option>
-			</select>
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="sexo">Sexo</label>
+				<select required class="form-control" id="sexo" formControlName="sexo" name="sexo">
+					<option value="{{ enum.key }}" *ngFor="let enum of Sexo | keyvalue">{{ enum.value }}</option>
+				</select>
 
-			<div *ngIf="estadoCivil.invalid && (estadoCivil.dirty || estadoCivil.touched)" class="invalid-feedback d-block mt-1 mb-0">
-				<div *ngIf="estadoCivil.errors.required">
-					El campo de estado civil es obligatorio.
+				<div *ngIf="sexo.invalid && (sexo.dirty || sexo.touched)" class="invalid-feedback d-block mt-1 mb-0">
+					<div *ngIf="sexo.errors.required">
+						El campo de sexo es obligatorio.
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="estadoCivil">Estado civil</label>
+				<select required class="form-control" formControlName="estadoCivil" id="estadoCivil" name="estadoCivil">
+					<option value="{{ enum.key }}" *ngFor="let enum of EstadoCivil | keyvalue">{{ enum.value }}</option>
+				</select>
+
+				<div *ngIf="estadoCivil.invalid && (estadoCivil.dirty || estadoCivil.touched)" class="invalid-feedback d-block mt-1 mb-0">
+					<div *ngIf="estadoCivil.errors.required">
+						El campo de estado civil es obligatorio.
+					</div>
 				</div>
 			</div>
 		</div>
@@ -51,8 +57,8 @@
 </ng-template>
 
 <div class="tabla-hijos">
-	<table class="table">
-		<thead class="thead-light">
+	<table class="table mb-1">
+		<thead>
 			<tr>
 				<th scope="col">Edad</th>
 				<th scope="col">E. Civil</th>
@@ -61,6 +67,9 @@
 			</tr>
 		</thead>
 		<tbody>
+			<tr *ngIf="!hijos.length">
+				<td colspan="4" class="text-muted text-center"><small>No hay hijos cargados</small></td>
+			</tr>
 			<tr *ngFor="let hijo of hijos; let row = index">
 				<td>{{hijo.edad}}</td>
 				<td>{{hijo.estadoCivil}}</td>
@@ -72,6 +81,7 @@
 		</tbody>
 	</table>
 </div>
+
 <div class="text-center">
-	<button type="button" class="btn btn-primary" (click)='[openVerticallyCentered(content)]'>Agregar</button>
+	<button type="button" class="btn btn-outline-primary btn-sm" (click)='[openVerticallyCentered(content)]'>Agregar</button>
 </div>
