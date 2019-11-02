@@ -80,9 +80,9 @@ ul.checkbox-tags li input[type="checkbox"]:focus + label {
 
 .form-group.required .control-label:after {
     content: "REQUERIDO";
-    color:red;
-    font-size: 10px;
-    padding-left: 10px;
+    color: #c02222;
+    font-size: 8px;
+    margin-left: 10px;
 }
 
 .btn-primary[disabled]:hover {
