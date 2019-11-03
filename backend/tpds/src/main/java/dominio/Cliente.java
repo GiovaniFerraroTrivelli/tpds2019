@@ -8,7 +8,7 @@ public class Cliente {
 	private String apellido;
 	private TipoDocumento tipoDocumento;
 	private Integer nroDocumento;
-	private Integer cuil;
+	private String cuil;
 	private Sexo sexo;
 	private Date fechaNacimiento;
 	private String profesion;
@@ -61,11 +61,11 @@ public class Cliente {
 		this.nroDocumento = nroDocumento;
 	}
 
-	public Integer getCuil() {
+	public String getCuil() {
 		return cuil;
 	}
 
-	public void setCuil(Integer cuil) {
+	public void setCuil(String cuil) {
 		this.cuil = cuil;
 	}
 
