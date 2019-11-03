@@ -20,6 +20,7 @@ import { AltaclienteComponent } from './altacliente/altacliente.component';
 import { HijosComponent } from './hijos/hijos.component';
 import { TipocoberturaComponent } from './tipocobertura/tipocobertura.component';
 import { GeografiaService } from './geografia/geografia.service';
+import { ModelosService } from './modelos/modelos.service';
 
 @NgModule({
 	declarations: [
@@ -51,7 +52,8 @@ import { GeografiaService } from './geografia/geografia.service';
 		UserService,
 		DialogService,
 		Title,
-		GeografiaService
+		GeografiaService,
+		ModelosService
 	],
 	
 	entryComponents: [ DialogComponent ],

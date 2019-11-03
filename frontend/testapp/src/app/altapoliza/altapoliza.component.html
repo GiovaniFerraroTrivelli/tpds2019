@@ -57,7 +57,8 @@
 			<div class="form-group mb-1 required">
 				<label class="control-label pt-2" for="marca">Marca</label>
 			    <div class="input-group">
-					<select (change)=changeTest() ngModel name="marca" class="form-control mb-1">
+					<select required="required" [(ngModel)]="marca" (ngModelChange)="changeMarca($event)" name="marca" class="form-control mb-1">
+						<option value="{{ marca.idMarca }}" *ngFor="let marca of marcas">{{ marca.nombre }}</option>
 					</select>
 			    </div>
 			</div>
@@ -66,7 +67,8 @@
 			    <div class="col form-group mb-1 required">
 					<label class="control-label pt-2" for="modelo">Modelo</label>
 				    <div class="input-group">
-						<select (change)=changeTest() ngModel name="modelo" class="form-control mb-1">
+						<select required="required" [(ngModel)]="modelo" name="modelo" class="form-control mb-1">
+							<option value="{{ modelo.idModelo }}" *ngFor="let modelo of modelos">{{ modelo.nombre }}</option>
 						</select>
 				    </div>
 				</div>

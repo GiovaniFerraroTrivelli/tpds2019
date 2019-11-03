@@ -6,6 +6,9 @@ import { Hijo } from '../hijos/hijo';
 import { GeografiaService } from '../geografia/geografia.service';
 import { Provincia } from '../geografia/provincia';
 import { Localidad } from '../geografia/localidad';
+import { ModelosService } from '../modelos/modelos.service';
+import { Marca } from '../modelos/marca';
+import { Modelo } from '../modelos/modelo';
 
 @Component({
 	selector: 'app-altapoliza',
@@ -19,12 +22,19 @@ export class AltapolizaComponent implements OnInit {
 
 	private provincias : Provincia[];
 	private localidades : Localidad[];
+	private marcas : Marca[];
+	private modelos : Modelo[];
 
-	constructor(private titleService: Title, private geografiaService: GeografiaService) { }
+	constructor(
+		private titleService: Title,
+		private geografiaService: GeografiaService,
+		private modelosService: ModelosService,
+	) { }
 
 	ngOnInit() {
 		this.titleService.setTitle("Dar de alta póliza");
 		this.getListaProvincias();
+		this.getListaMarcas();
 	}
 
 	getListaProvincias(): void {
@@ -36,6 +46,18 @@ export class AltapolizaComponent implements OnInit {
 	changeProvincia(idProvincia) {
 		this.geografiaService.getLocalidadesByProvincia(idProvincia).subscribe(data => {
 		    this.localidades = data;
+	    });
+	}
+
+	getListaMarcas(): void {
+		this.modelosService.getMarcas().subscribe(data => {
+		    this.marcas = data;
+	    });
+	}
+
+	changeMarca(idMarca) : void {
+		this.modelosService.getModelosByMarca(idMarca).subscribe(data => {
+		    this.modelos = data;
 	    });
 	}
 
