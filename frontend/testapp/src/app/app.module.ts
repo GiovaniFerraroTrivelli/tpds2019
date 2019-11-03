@@ -21,6 +21,7 @@ import { HijosComponent } from './hijos/hijos.component';
 import { TipocoberturaComponent } from './tipocobertura/tipocobertura.component';
 import { GeografiaService } from './geografia/geografia.service';
 import { ModelosService } from './modelos/modelos.service';
+import { BusquedaClienteService } from './buscarcliente/busquedacliente.service';
 
 @NgModule({
 	declarations: [
@@ -53,7 +54,8 @@ import { ModelosService } from './modelos/modelos.service';
 		DialogService,
 		Title,
 		GeografiaService,
-		ModelosService
+		ModelosService,
+		BusquedaClienteService
 	],
 	
 	entryComponents: [ DialogComponent ],

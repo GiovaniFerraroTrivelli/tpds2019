@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { TipoDNI } from '../enums/tipo-dni.enum';
+import { Cliente } from '../cliente/cliente';
+//import { TipoDNI } from '../enums/tipo-dni.enum';
+import { BusquedaClienteService } from './busquedacliente.service';
+import { DialogService } from '../dialog/dialog.service';
 
 @Component({
   selector: 'app-buscarcliente',
@@ -10,9 +13,13 @@ import { TipoDNI } from '../enums/tipo-dni.enum';
 
 export class BuscarclienteComponent implements OnInit {
 
-	constructor() { }
+	//private TipoDNI : TipoDNI;
+	private resultados : Cliente[];
 
-	public TipoDNI = TipoDNI;
+	constructor(
+		private busquedaClienteService: BusquedaClienteService,
+		private dialogService: DialogService
+	) { }
 
 	ngOnInit() {
 	}
@@ -29,6 +36,17 @@ export class BuscarclienteComponent implements OnInit {
 	}
 
 	onSubmit(f: NgForm) {
-		console.log(f.value);
+		this.busquedaClienteService.postClienteBusqueda(f.value).subscribe(data => {
+		    this.resultados = data;
+
+		    if(this.resultados.length) {
+		    	// aca
+		    } else {
+		    	this.dialogService.alert(
+		    		'Resultados de búsqueda',
+		    		'Ningún cliente coincide con los criterios de búsqueda. Intente nuevamente.'
+		    	);
+		    }
+	    });
 	}
 }
