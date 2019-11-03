@@ -32,7 +32,6 @@ public class ControladorGeografico {
 		} catch (Exception e) {
 			return new ResponseEntity<>(new Error("País no encontrado"), HttpStatus.NOT_FOUND);
 		}
-
 	}
 
 	@GetMapping("/provincia/{idProvincia}")

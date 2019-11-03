@@ -34,7 +34,7 @@ public class GestorGeografico{
 	
 	public static ArrayList<Provincia> getProvinciasDePais(Integer idPais) throws DatoNoEncontradoException{
 		try {
-			String hql = "FROM Provincia WHERE id_pais=" + idPais.toString();
+			String hql = "FROM Provincia WHERE id_pais=" + idPais.toString() + " ORDER BY nombre ASC";
 			Query<Provincia> query = HibernateUtil.getSession().createQuery(hql);
 			if (query.list().isEmpty()) throw new ObjectNotFoundException(hql, hql);
 			return  new ArrayList<Provincia>(query.list());
@@ -45,7 +45,7 @@ public class GestorGeografico{
 	
 	public static ArrayList<Localidad> getLocalidadesDeProvincia(Integer idProvincia) throws DatoNoEncontradoException{
 		try {
-			String hql = "FROM Localidad WHERE id_provincia=" + idProvincia.toString();
+			String hql = "FROM Localidad WHERE id_provincia=" + idProvincia.toString() + " ORDER BY nombre ASC";
 			Query<Localidad> query = HibernateUtil.getSession().createQuery(hql);
 			return  new ArrayList<Localidad>(query.list());
 		} catch (HibernateException e) {

@@ -16,10 +16,14 @@ public class HibernateUtil {
 			throw new ExceptionInInitializerError(ex);
 		}
 	}
-	private static final Session session = sessionFactory.openSession();
-
+	
 	public static Session getSession() throws HibernateException {
-		return session;
+		try {
+			return sessionFactory.openSession();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public static void shutdown() {

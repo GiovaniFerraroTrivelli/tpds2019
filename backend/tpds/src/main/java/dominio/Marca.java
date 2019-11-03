@@ -1,5 +1,7 @@
 package dominio;
 
+import dataTransferObjects.MarcaDTO;
+
 public class Marca {
 	private Integer idMarca;
 	private String nombre;
@@ -28,4 +30,9 @@ public class Marca {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
+	public MarcaDTO getDTO() {
+		return new MarcaDTO(this.idMarca, this.nombre);
+	}
+
 }
