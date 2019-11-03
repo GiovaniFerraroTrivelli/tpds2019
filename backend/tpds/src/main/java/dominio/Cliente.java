@@ -2,6 +2,8 @@ package dominio;
 
 import java.util.Date;
 
+import dataTransferObjects.ClienteDTO;
+
 public class Cliente {
 	private Integer idCliente;
 	private String nombre;
@@ -15,6 +17,20 @@ public class Cliente {
 	private EstadoCivil estadoCivil;
 	private String email;
 	private CondicionIva condicionIva;
+	private Direccion direccion;
+
+	public ClienteDTO getDTO() {
+		ClienteDTO result = new ClienteDTO(this.idCliente, this.nombre, this.apellido, this.tipoDocumento, this.nroDocumento, this.direccion.getDTO());
+		return result;
+	}
+
+	public Direccion getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(Direccion direccion) {
+		this.direccion = direccion;
+	}
 
 	public Cliente() {
 
@@ -116,5 +132,6 @@ public class Cliente {
 	public void setCondicionIva(CondicionIva condicionIva) {
 		this.condicionIva = condicionIva;
 	}
+
 
 }

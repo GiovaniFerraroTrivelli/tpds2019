@@ -15,9 +15,12 @@ import dataTransferObjects.ClienteDTO;
 import dataTransferObjects.ParametrosDeBusqueda;
 import dominio.Cliente;
 import dominio.CondicionIva;
+import dominio.Direccion;
 import dominio.EstadoCivil;
 import dominio.Sexo;
 import dominio.TipoDocumento;
+import excepciones.DatoNoEncontradoException;
+import gestores.GestorGeografico;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -37,8 +40,16 @@ public class ControladorCliente {
 		c.setEstadoCivil(EstadoCivil.SOLTERO);
 		c.setCondicionIva(CondicionIva.ConsumidorFinal);
 		c.setIdCliente(42069);
-		ArrayList<Cliente> result = new ArrayList<>();
-		result.add(c);
+		Direccion direccion = null;
+		try {
+			direccion = new Direccion("Aristóbulo del Valle", 1831, null, null, GestorGeografico.getLocalidad(3707));
+			c.setDireccion(direccion);
+		} catch (DatoNoEncontradoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ArrayList<ClienteDTO> result = new ArrayList<>();
+		result.add(c.getDTO());
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 }

@@ -26,8 +26,8 @@ public class GestorGeografico{
 		else return result;
 	}
 	
-	public static Localidad getLocalidad(String CPA) throws DatoNoEncontradoException{
-		Localidad result = HibernateUtil.getSession().get(Localidad.class, CPA);
+	public static Localidad getLocalidad(Integer idLocalidad) throws DatoNoEncontradoException{
+		Localidad result = HibernateUtil.getSession().get(Localidad.class, idLocalidad);
 		if (result.equals(null))throw new DatoNoEncontradoException();
 		else return result;
 	}
