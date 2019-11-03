@@ -33,7 +33,7 @@ public class ControladorModelos {
 		}
 	}
 	
-	@GetMapping("/modelosDeMarca/{idMarca}")
+	@GetMapping("/modelos/{idMarca}")
 	public ResponseEntity<Object> getModelos(@PathVariable("idMarca") Integer idMarca){
 		try {
 			ArrayList<Modelo> modelos = GestorModelos.getModelosDeMarca(idMarca);
