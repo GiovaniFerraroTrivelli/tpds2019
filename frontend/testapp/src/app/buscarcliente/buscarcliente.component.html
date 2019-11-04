@@ -1,4 +1,34 @@
-<form #buscarClienteForm="ngForm" (ngSubmit)="onSubmit(buscarClienteForm)">
+<ng-template #content let-modal>
+	<div class="modal-header">
+	  <h4 class="modal-title">Seleccione el cliente</h4>
+	  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+		<span aria-hidden="true">&times;</span>
+	  </button>
+	</div>
+	<div class="modal-body">
+		<table class="table table-hover">
+			<thead>
+			  <tr>
+				<th scope="col">Número de Cliente</th>
+				<th scope="col">Apellido y Nombre</th>
+				<th scope="col">Documento</th>
+			  </tr>
+			</thead>
+			<tbody>
+			  <tr *ngFor='let resultado of resultados' [className]="getSelectedClient() ? 'table-active' : ''" (click)='loadSelectedClient(resultado)'>
+				<th scope="row">{{resultado.idCliente}}</th>
+				<td>{{resultado.apellido}}, {{resultado.nombre}}</td>
+				<td>{{resultado.tipoDocumento}} {{resultado.nroDocumento}}</td>
+			  </tr>			  
+			</tbody>
+		  </table>
+	</div>
+	<div class="modal-footer">
+	  <button type="button" class="btn btn-primary" (click)="[emitCliente(), modal.close('Close click')]">Seleccionar</button>
+	  <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancelar</button>
+	</div>
+  </ng-template>
+<form #buscarClienteForm="ngForm" (ngSubmit)="onSubmit(buscarClienteForm, content)">
 	<div class="row">      
 		<div class="form-group col-sm-9 col-lg-4">
 			<label class="pt-2" for="idCliente">Nro. de cliente</label>

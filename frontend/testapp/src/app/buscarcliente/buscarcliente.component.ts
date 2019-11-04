@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Cliente } from '../cliente/cliente';
 //import { TipoDNI } from '../enums/tipo-dni.enum';
 import { BusquedaClienteService } from './busquedacliente.service';
 import { DialogService } from '../dialog/dialog.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-buscarcliente',
@@ -15,13 +16,28 @@ export class BuscarclienteComponent implements OnInit {
 
 	//private TipoDNI : TipoDNI;
 	private resultados : Cliente[];
+	private selectedClient : Cliente;
+	@Output()
+	emitter = new EventEmitter<Cliente>();
 
 	constructor(
 		private busquedaClienteService: BusquedaClienteService,
-		private dialogService: DialogService
+		private dialogService: DialogService,
+		private modalService: NgbModal
 	) { }
 
 	ngOnInit() {
+	}
+
+	getSelectedClient(){
+		return this.selectedClient;
+	}
+
+	loadSelectedClient(resultado){
+		this.selectedClient = resultado;
+	}
+	emitCliente(){
+		this.emitter.emit(this.selectedClient);
 	}
 
 	isValidForm(f: NgForm)
@@ -35,12 +51,11 @@ export class BuscarclienteComponent implements OnInit {
 		return false;
 	}
 
-	onSubmit(f: NgForm) {
+	onSubmit(f: NgForm, content) {
 		this.busquedaClienteService.postClienteBusqueda(f.value).subscribe(data => {
 		    this.resultados = data;
-
 		    if(this.resultados.length) {
-		    	// aca
+		    	this.modalService.open(content, { centered: true });
 		    } else {
 		    	this.dialogService.alert(
 		    		'Resultados de búsqueda',
@@ -49,4 +64,5 @@ export class BuscarclienteComponent implements OnInit {
 		    }
 	    });
 	}
+
 }

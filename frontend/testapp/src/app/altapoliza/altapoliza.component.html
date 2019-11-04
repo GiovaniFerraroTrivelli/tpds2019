@@ -1,5 +1,5 @@
 <div id="collapseExample" [ngbCollapse]="!isCollapsed">
-  <app-buscarcliente></app-buscarcliente>
+  <app-buscarcliente (emitter)="processCliente($event)" ></app-buscarcliente>
 </div>
 
 <form #altaPolizaForm="ngForm" (ngSubmit)="onSubmit(altaPolizaForm)">
@@ -13,7 +13,7 @@
 			      <div class="input-group-prepend">
 			        <div class="input-group-text">#</div>
 			      </div>
-			      <input type="number" name="idCliente" ngModel id="idCliente" disabled="disabled" class="form-control">
+			      <input type="number" name="idCliente" ngModel id="idCliente" disabled="disabled" class="form-control" placeholder="{{idClientePlaceholder}}">
 			    </div>
 			</div>
 
@@ -21,14 +21,14 @@
 			    <div class="col form-group mb-1 required">
 					<label class="control-label pt-2" for="nombre">Nombre(s)</label>
 				    <div class="input-group">
-				      <input type="text" name="nombre" disabled id="nombre" class="form-control">
+				      <input type="text" name="nombre" disabled id="nombre" class="form-control" placeholder="{{nombrePlaceholder}}">
 				    </div>
 				</div>
 
 			    <div class="col form-group mb-1 required">
 					<label class="control-label pt-2" for="apellido">Apellido(s)</label>
 				    <div class="input-group">
-				      <input type="text" name="apellido" disabled id="apellido" class="form-control">
+				      <input type="text" name="apellido" disabled id="apellido" class="form-control" placeholder="{{apellidoPlaceholder}}">
 				    </div>
 				</div>
 			</div>
@@ -37,16 +37,16 @@
 				<label class="control-label pt-2" for="apellido">Tipo y nro. de documento</label>
 				<div class="input-group">
 					<div class="input-group-prepend">
-						<span class="input-group-text" id="basic-addon1"></span>
+						<span class="input-group-text" id="basic-addon1">{{tipoDocPlaceholder}}</span>
 					</div>
-					<input type="text" disabled="disabled" class="form-control" />
+					<input type="text" disabled="disabled" class="form-control"  placeholder="{{documentoPlaceholder}}"/>
 				</div>
 			</div>
 
 			<div class="form-group mb-1 required">
 				<label class="control-label pt-2" for="direccion">Dirección</label>
 			    <div class="input-group">
-			      <input type="text" name="direccion" disabled id="direccion" class="form-control">
+			      <input type="text" name="direccion" disabled id="direccion" class="form-control" placeholder="{{direccionPlaceholder}}">
 			    </div>
 			</div>
 		</div>
