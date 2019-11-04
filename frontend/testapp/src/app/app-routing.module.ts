@@ -17,7 +17,6 @@ const routes: Routes = [
   { path: 'consultar-poliza', component: ConsultarpolizaComponent },
   { path: 'buscar-cliente', component: BuscarclienteComponent },
   { path: 'alta-cliente', component: AltaclienteComponent },
-  { path: 'cobertura', component: TipocoberturaComponent},
   { path: '', component: IndexComponent },
 ];
  
