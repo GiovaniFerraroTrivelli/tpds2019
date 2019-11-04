@@ -10,6 +10,7 @@ import { ModelosService } from '../modelos/modelos.service';
 import { Marca } from '../modelos/marca';
 import { Modelo } from '../modelos/modelo';
 import { Cliente } from '../cliente/cliente';
+import { Direccion } from '../cliente/direccion';
 
 @Component({
 	selector: 'app-altapoliza',
@@ -25,14 +26,7 @@ export class AltapolizaComponent implements OnInit {
 	private localidades : Localidad[];
 	private marcas : Marca[];
 	private modelos : Modelo[];
-	private clienteSeleccionado : Cliente;
-	private idClientePlaceholder = '';
-	private nombrePlaceholder = '';
-	private apellidoPlaceholder = '';
-	private tipoDocPlaceholder = '';
-	private documentoPlaceholder = '';
-	private direccionPlaceholder = '';
-	
+	private cliente : Cliente;
 
 	constructor(
 		private titleService: Title,
@@ -41,6 +35,8 @@ export class AltapolizaComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
+		this.cliente = new Cliente();
+
 		this.titleService.setTitle("Dar de alta póliza");
 		this.getListaProvincias();
 		this.getListaMarcas();
@@ -80,14 +76,8 @@ export class AltapolizaComponent implements OnInit {
 
 		console.log(f.value);
 	}
-	processCliente(cliente){
-		this.clienteSeleccionado = cliente;
-		this.idClientePlaceholder = this.clienteSeleccionado.idCliente.toString();
-		this.nombrePlaceholder = this.clienteSeleccionado.nombre;
-		this.apellidoPlaceholder = this.clienteSeleccionado.apellido;
-		this.tipoDocPlaceholder = this.clienteSeleccionado.tipoDocumento;
-		this.documentoPlaceholder = this.clienteSeleccionado.nroDocumento.toString();
-		this.direccionPlaceholder = this.clienteSeleccionado.direccion.calle + ' ' + this.clienteSeleccionado.direccion.numero.toString();
-		console.log(this.clienteSeleccionado)
+
+	processCliente(cliente) {
+		this.cliente = cliente;
 	}
 }

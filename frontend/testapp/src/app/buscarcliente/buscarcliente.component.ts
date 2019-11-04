@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Cliente } from '../cliente/cliente';
-//import { TipoDNI } from '../enums/tipo-dni.enum';
+import { TipoDNI } from '../enums/tipo-dni.enum';
 import { BusquedaClienteService } from './busquedacliente.service';
 import { DialogService } from '../dialog/dialog.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -14,9 +14,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 export class BuscarclienteComponent implements OnInit {
 
-	//private TipoDNI : TipoDNI;
+	public TipoDNI = TipoDNI;
 	private resultados : Cliente[];
 	private selectedClient : Cliente;
+
 	@Output()
 	emitter = new EventEmitter<Cliente>();
 
@@ -33,9 +34,10 @@ export class BuscarclienteComponent implements OnInit {
 		return this.selectedClient;
 	}
 
-	loadSelectedClient(resultado){
+	loadSelectedClient(resultado) {
 		this.selectedClient = resultado;
 	}
+
 	emitCliente(){
 		this.emitter.emit(this.selectedClient);
 	}
@@ -55,7 +57,10 @@ export class BuscarclienteComponent implements OnInit {
 		this.busquedaClienteService.postClienteBusqueda(f.value).subscribe(data => {
 		    this.resultados = data;
 		    if(this.resultados.length) {
-		    	this.modalService.open(content, { centered: true });
+		    	this.modalService.open(content, {
+		    		centered: true,
+		    		size: 'lg'
+		    	});
 		    } else {
 		    	this.dialogService.alert(
 		    		'Resultados de búsqueda',
@@ -63,6 +68,16 @@ export class BuscarclienteComponent implements OnInit {
 		    	);
 		    }
 	    });
+	}
+
+	seleccionarCliente(modal) {
+		this.emitCliente();
+		modal.close();
+	}
+
+	cancelarBusquedaCliente(modal) {
+		this.loadSelectedClient(null);
+		modal.close();
 	}
 
 }

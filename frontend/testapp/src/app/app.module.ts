@@ -1,7 +1,8 @@
 import { BrowserModule, Title } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
@@ -22,6 +23,10 @@ import { TipocoberturaComponent } from './tipocobertura/tipocobertura.component'
 import { GeografiaService } from './geografia/geografia.service';
 import { ModelosService } from './modelos/modelos.service';
 import { BusquedaClienteService } from './buscarcliente/busquedacliente.service';
+
+import localeEsAr from '@angular/common/locales/es-AR';
+
+registerLocaleData(localeEsAr, 'es-AR');
 
 @NgModule({
 	declarations: [
@@ -50,6 +55,7 @@ import { BusquedaClienteService } from './buscarcliente/busquedacliente.service'
 	],
 
 	providers: [
+		{ provide: LOCALE_ID, useValue: 'es-AR' },
 		UserService,
 		DialogService,
 		Title,

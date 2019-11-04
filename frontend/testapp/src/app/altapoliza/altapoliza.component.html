@@ -13,7 +13,7 @@
 			      <div class="input-group-prepend">
 			        <div class="input-group-text">#</div>
 			      </div>
-			      <input type="number" name="idCliente" ngModel id="idCliente" disabled="disabled" class="form-control" placeholder="{{idClientePlaceholder}}">
+			      <input type="number" name="idCliente" [ngModel]="cliente.idCliente" id="idCliente" readonly="" class="form-control">
 			    </div>
 			</div>
 
@@ -21,14 +21,14 @@
 			    <div class="col form-group mb-1 required">
 					<label class="control-label pt-2" for="nombre">Nombre(s)</label>
 				    <div class="input-group">
-				      <input type="text" name="nombre" disabled id="nombre" class="form-control" placeholder="{{nombrePlaceholder}}">
+				      <input type="text" name="nombre" readonly [ngModel]="cliente.nombre" id="nombre" class="form-control">
 				    </div>
 				</div>
 
 			    <div class="col form-group mb-1 required">
 					<label class="control-label pt-2" for="apellido">Apellido(s)</label>
 				    <div class="input-group">
-				      <input type="text" name="apellido" disabled id="apellido" class="form-control" placeholder="{{apellidoPlaceholder}}">
+				      <input type="text" name="apellido" readonly [ngModel]="cliente.apellido" id="apellido" class="form-control">
 				    </div>
 				</div>
 			</div>
@@ -37,16 +37,16 @@
 				<label class="control-label pt-2" for="apellido">Tipo y nro. de documento</label>
 				<div class="input-group">
 					<div class="input-group-prepend">
-						<span class="input-group-text" id="basic-addon1">{{tipoDocPlaceholder}}</span>
+						<span class="input-group-text" id="basic-addon1">{{ cliente.tipoDocumento }}</span>
 					</div>
-					<input type="text" disabled="disabled" class="form-control"  placeholder="{{documentoPlaceholder}}"/>
+					<input type="text" readonly="readonly" class="form-control" name="nroDocumento" [ngModel]="cliente.nroDocumento | number: '' : 'es-AR'" />
 				</div>
 			</div>
 
 			<div class="form-group mb-1 required">
 				<label class="control-label pt-2" for="direccion">Dirección</label>
 			    <div class="input-group">
-			      <input type="text" name="direccion" disabled id="direccion" class="form-control" placeholder="{{direccionPlaceholder}}">
+			      <input type="text" name="direccion" readonly id="direccion" class="form-control" [ngModel]="cliente.direccion">
 			    </div>
 			</div>
 		</div>

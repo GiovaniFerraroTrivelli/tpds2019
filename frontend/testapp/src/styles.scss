@@ -89,7 +89,7 @@ ul.checkbox-tags li input[type="checkbox"]:focus + label {
     cursor:not-allowed;
 }
 
-input, select {
+input:not([readonly]), select:not([readonly]) {
     &.ng-invalid.ng-touched:not(.optional) {
         border-color: #E74C3C;
         padding-right: calc(1.5em + 0.75rem);

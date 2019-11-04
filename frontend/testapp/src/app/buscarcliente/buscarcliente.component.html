@@ -1,7 +1,7 @@
 <ng-template #content let-modal>
 	<div class="modal-header">
 	  <h4 class="modal-title">Seleccione el cliente</h4>
-	  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+	  <button type="button" class="close" aria-label="Close" (click)="cancelarBusquedaCliente(modal)">
 		<span aria-hidden="true">&times;</span>
 	  </button>
 	</div>
@@ -15,19 +15,20 @@
 			  </tr>
 			</thead>
 			<tbody>
-			  <tr *ngFor='let resultado of resultados' [className]="getSelectedClient() ? 'table-active' : ''" (click)='loadSelectedClient(resultado)'>
+			  <tr *ngFor='let resultado of resultados' [ngClass]="['cursor-pointer' , (getSelectedClient() ? 'table-active' : '') ]" (click)='loadSelectedClient(resultado)'>
 				<th scope="row">{{resultado.idCliente}}</th>
 				<td>{{resultado.apellido}}, {{resultado.nombre}}</td>
-				<td>{{resultado.tipoDocumento}} {{resultado.nroDocumento}}</td>
+				<td>{{resultado.tipoDocumento}} {{resultado.nroDocumento | number: '' : 'es-AR' }}</td>
 			  </tr>			  
 			</tbody>
 		  </table>
 	</div>
 	<div class="modal-footer">
-	  <button type="button" class="btn btn-primary" (click)="[emitCliente(), modal.close('Close click')]">Seleccionar</button>
-	  <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancelar</button>
+	  <button type="button" class="btn btn-light" (click)="cancelarBusquedaCliente(modal)">Cancelar</button>
+	  <button type="button" class="btn btn-primary" (click)="seleccionarCliente(modal)">Seleccionar</button>
 	</div>
-  </ng-template>
+</ng-template>
+
 <form #buscarClienteForm="ngForm" (ngSubmit)="onSubmit(buscarClienteForm, content)">
 	<div class="row">      
 		<div class="form-group col-sm-9 col-lg-4">
