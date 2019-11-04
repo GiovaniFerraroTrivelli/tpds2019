@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="dominio.TipoCobertura" table="tipos_cobertura">
+
+        <id name="idCobertura" type="java.lang.Integer" column="id_cobertura">
+            <generator class="native" />
+        </id>
+
+        <property name="nombre" column="nombre" length="30"/>
+        <property name="descripcion" column="descripcion" length="500"/>
+
+    </class>
+</hibernate-mapping>

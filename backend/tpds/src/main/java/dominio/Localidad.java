@@ -3,6 +3,7 @@ package dominio;
 import dataTransferObjects.LocalidadDTO;
 import dominio.Provincia;
 import excepciones.NoHayValorException;
+import historialValor.HistorialValor;
 
 public class Localidad {
 	private Integer idLocalidad;

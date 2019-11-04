@@ -1,18 +1,18 @@
-package dominio;
+package historialValor;
 
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.ArrayList;
 
 import excepciones.NoHayValorException;
 
 public class HistorialValor<T> {
-	private List<Entrada<T>> historial;
+	protected ArrayList<Entrada<T>> historial;
 
-	public List<Entrada<T>> getHistorial() {
+	public ArrayList<Entrada<T>> getHistorial() {
 		return historial;
 	}
 
-	public void setHistorial(List<Entrada<T>> historial) {
+	public void setHistorial(ArrayList<Entrada<T>> historial) {
 		this.historial = historial;
 	}
 

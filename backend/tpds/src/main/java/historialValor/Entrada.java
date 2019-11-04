@@ -1,4 +1,4 @@
-package dominio;
+package historialValor;
 
 import java.sql.Timestamp;
 
@@ -25,6 +25,4 @@ public class Entrada<T> {
 	public void setFinVigencia(Timestamp finVigencia) {
 		this.finVigencia = finVigencia;
 	}
-	
-	
 }
