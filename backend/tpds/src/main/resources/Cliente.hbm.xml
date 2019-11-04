@@ -12,15 +12,7 @@
         <property name="nombre" column="nombre"/>
         <property name="apellido" column="apellido"/> 
 
-        <property name="tipoDocumento" column="tipo_documento" length="3">
-            <type name="org.hibernate.type.EnumType">
-                <param name="enumClass">dominio.TipoDocumento</param>
-                <param name="useNamed">true</param>
-            </type>
-        </property>
         
-        <property name="nroDocumento" column="nro_documento" unique="true"/>
-        <property name="cuil" column="cuil" unique="true"/>
 
         <property name="sexo" column="sexo" length="10">
             <type name="org.hibernate.type.EnumType">
@@ -48,6 +40,7 @@
                 <param name="useNamed">true</param>
             </type>
         </property>
-
+        <many-to-one name="documento" cascade="save-update" column="id_documento" unique="true"/>
+        <!--<one-to-one name="documento" cascade="all" class="dominio.Documento" column="id_cliente"/>-->
     </class>
 </hibernate-mapping>

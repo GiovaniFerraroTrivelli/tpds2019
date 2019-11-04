@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="dominio.Documento" table="documentos">
+
+        <id name="idDocumento" type="java.lang.Integer" column="id_documento">
+            <generator class="identity" />
+		</id>
+
+        <!--<id name="idCliente" column="id_cliente">
+            <generator class="foreign">
+                <param name="property">clientes</param>
+            </generator>
+        </id>
+        -->
+
+        <property name="tipoDocumento" column="tipo_documento" length="3">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">dominio.TipoDocumento</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        
+        <property name="nroDocumento" column="nro_documento"/>
+    </class>
+</hibernate-mapping>
+

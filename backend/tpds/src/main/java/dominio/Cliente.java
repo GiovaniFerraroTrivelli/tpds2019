@@ -8,8 +8,7 @@ public class Cliente {
 	private Integer idCliente;
 	private String nombre;
 	private String apellido;
-	private TipoDocumento tipoDocumento;
-	private Integer nroDocumento;
+	private Documento documento;
 	private String cuil;
 	private Sexo sexo;
 	private Date fechaNacimiento;
@@ -20,9 +19,9 @@ public class Cliente {
 	private Direccion direccion;
 
 	public ClienteDTO getDTO() {
-		ClienteDTO result = new ClienteDTO(this.idCliente, this.nombre, this.apellido, this.tipoDocumento,
-				this.nroDocumento, this.cuil, this.sexo, this.fechaNacimiento, this.profesion, this.estadoCivil,
-				this.email, this.condicionIva, this.direccion.getDTO());
+		ClienteDTO result = new ClienteDTO(this.idCliente, this.nombre, this.apellido, this.documento, this.cuil,
+				this.sexo, this.fechaNacimiento, this.profesion, this.estadoCivil, this.email, this.condicionIva,
+				this.direccion.getDTO());
 		return result;
 	}
 
@@ -63,22 +62,6 @@ public class Cliente {
 		this.apellido = apellido;
 	}
 
-	public TipoDocumento getTipoDocumento() {
-		return tipoDocumento;
-	}
-
-	public void setTipoDocumento(TipoDocumento tipoDocumento) {
-		this.tipoDocumento = tipoDocumento;
-	}
-
-	public Integer getNroDocumento() {
-		return nroDocumento;
-	}
-
-	public void setNroDocumento(Integer nroDocumento) {
-		this.nroDocumento = nroDocumento;
-	}
-
 	public String getCuil() {
 		return cuil;
 	}
@@ -89,6 +72,14 @@ public class Cliente {
 
 	public Sexo getSexo() {
 		return sexo;
+	}
+
+	public Documento getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(Documento documento) {
+		this.documento = documento;
 	}
 
 	public void setSexo(Sexo sexo) {

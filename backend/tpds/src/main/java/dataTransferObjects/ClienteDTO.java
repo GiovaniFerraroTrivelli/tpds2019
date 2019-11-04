@@ -3,16 +3,15 @@ package dataTransferObjects;
 import java.util.Date;
 
 import dominio.CondicionIva;
+import dominio.Documento;
 import dominio.EstadoCivil;
 import dominio.Sexo;
-import dominio.TipoDocumento;
 
 public class ClienteDTO {
 	private Integer idCliente;
 	private String nombre;
 	private String apellido;
-	private TipoDocumento tipoDocumento;
-	private Integer nroDocumento;
+	private Documento documento;
 	private String cuil;
 	private Sexo sexo;
 	private Date fechaNacimiento;
@@ -21,19 +20,15 @@ public class ClienteDTO {
 	private String email;
 	private CondicionIva condicionIva;
 	private DireccionDTO direccion;
-	
 
-	
-
-	public ClienteDTO(Integer idCliente, String nombre, String apellido, TipoDocumento tipoDocumento,
-			Integer nroDocumento, String cuil, Sexo sexo, Date fechaNacimiento, String profesion,
-			EstadoCivil estadoCivil, String email, CondicionIva condicionIva, DireccionDTO direccion) {
+	public ClienteDTO(Integer idCliente, String nombre, String apellido, Documento documento, String cuil, Sexo sexo,
+			Date fechaNacimiento, String profesion, EstadoCivil estadoCivil, String email, CondicionIva condicionIva,
+			DireccionDTO direccion) {
 		super();
 		this.idCliente = idCliente;
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.tipoDocumento = tipoDocumento;
-		this.nroDocumento = nroDocumento;
+		this.documento = documento;
 		this.cuil = cuil;
 		this.sexo = sexo;
 		this.fechaNacimiento = fechaNacimiento;
@@ -43,8 +38,6 @@ public class ClienteDTO {
 		this.condicionIva = condicionIva;
 		this.direccion = direccion;
 	}
-
-
 
 	public Integer getIdCliente() {
 		return idCliente;
@@ -70,28 +63,20 @@ public class ClienteDTO {
 		this.apellido = apellido;
 	}
 
-	public TipoDocumento getTipoDocumento() {
-		return tipoDocumento;
-	}
-
-	public void setTipoDocumento(TipoDocumento tipoDocumento) {
-		this.tipoDocumento = tipoDocumento;
-	}
-
-	public Integer getNroDocumento() {
-		return nroDocumento;
-	}
-
-	public void setNroDocumento(Integer nroDocumento) {
-		this.nroDocumento = nroDocumento;
-	}
-
 	public String getCuil() {
 		return cuil;
 	}
 
 	public void setCuil(String cuil) {
 		this.cuil = cuil;
+	}
+
+	public Documento getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(Documento documento) {
+		this.documento = documento;
 	}
 
 	public Sexo getSexo() {
@@ -149,6 +134,5 @@ public class ClienteDTO {
 	public void setDireccion(DireccionDTO direccion) {
 		this.direccion = direccion;
 	}
-
 
 }
