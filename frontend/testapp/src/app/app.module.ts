@@ -23,6 +23,8 @@ import { TipocoberturaComponent } from './tipocobertura/tipocobertura.component'
 import { GeografiaService } from './geografia/geografia.service';
 import { ModelosService } from './modelos/modelos.service';
 import { BusquedaClienteService } from './buscarcliente/busquedacliente.service';
+import { LoadingService } from './loading/loading.service';
+import { LoadingComponent } from './loading/loading.component';
 
 import localeEsAr from '@angular/common/locales/es-AR';
 
@@ -42,7 +44,8 @@ registerLocaleData(localeEsAr, 'es-AR');
 		BuscarclienteComponent,
 		AltaclienteComponent,
 		HijosComponent,
-		TipocoberturaComponent
+		TipocoberturaComponent,
+		LoadingComponent
 	],
 
 	imports: [
@@ -61,7 +64,8 @@ registerLocaleData(localeEsAr, 'es-AR');
 		Title,
 		GeografiaService,
 		ModelosService,
-		BusquedaClienteService
+		BusquedaClienteService,
+		LoadingService
 	],
 	
 	entryComponents: [ DialogComponent ],

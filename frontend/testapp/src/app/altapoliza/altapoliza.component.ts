@@ -36,6 +36,8 @@ export class AltapolizaComponent implements OnInit {
 
 	ngOnInit() {
 		this.cliente = new Cliente();
+		this.cliente.direccion = new Direccion();
+		this.cliente.direccion.localidad = new Localidad();
 
 		this.titleService.setTitle("Dar de alta póliza");
 		this.getListaProvincias();

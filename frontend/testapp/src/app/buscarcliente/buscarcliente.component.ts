@@ -5,6 +5,7 @@ import { TipoDNI } from '../enums/tipo-dni.enum';
 import { BusquedaClienteService } from './busquedacliente.service';
 import { DialogService } from '../dialog/dialog.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LoadingService } from '../loading/loading.service';
 
 @Component({
   selector: 'app-buscarcliente',
@@ -24,7 +25,8 @@ export class BuscarclienteComponent implements OnInit {
 	constructor(
 		private busquedaClienteService: BusquedaClienteService,
 		private dialogService: DialogService,
-		private modalService: NgbModal
+		private modalService: NgbModal,
+		private loadingService: LoadingService
 	) { }
 
 	ngOnInit() {
@@ -54,6 +56,8 @@ export class BuscarclienteComponent implements OnInit {
 	}
 
 	onSubmit(f: NgForm, content) {
+		this.loadingService.i();
+
 		this.busquedaClienteService.postClienteBusqueda(f.value).subscribe(data => {
 		    this.resultados = data;
 		    if(this.resultados.length) {
@@ -67,11 +71,14 @@ export class BuscarclienteComponent implements OnInit {
 		    		'Ningún cliente coincide con los criterios de búsqueda. Intente nuevamente.'
 		    	);
 		    }
+		    
+		    this.loadingService.d();
 	    });
 	}
 
 	seleccionarCliente(modal) {
 		this.emitCliente();
+		this.loadSelectedClient(null);
 		modal.close();
 	}
 
