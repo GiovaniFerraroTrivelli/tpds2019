@@ -11,6 +11,8 @@ import { Marca } from '../modelos/marca';
 import { Modelo } from '../modelos/modelo';
 import { Cliente } from '../cliente/cliente';
 import { Direccion } from '../cliente/direccion';
+import { TipocoberturaComponent } from '../tipocobertura/tipocobertura.component';
+import { TipoCobertura } from 'TipoCobertura';
 
 @Component({
 	selector: 'app-altapoliza',
@@ -27,12 +29,16 @@ export class AltapolizaComponent implements OnInit {
 	private marcas : Marca[];
 	private modelos : Modelo[];
 	private cliente : Cliente;
+	private cobertura: TipoCobertura;
+	private toggleView: boolean;
 
 	constructor(
 		private titleService: Title,
 		private geografiaService: GeografiaService,
 		private modelosService: ModelosService,
-	) { }
+	) { 
+		this.toggleView = true;
+	}
 
 	ngOnInit() {
 		this.cliente = new Cliente();
@@ -77,9 +83,13 @@ export class AltapolizaComponent implements OnInit {
 		formJSON.hijos = this.childComp.hijos;
 
 		console.log(f.value);
+		this.toggleView = false;
 	}
 
 	processCliente(cliente) {
 		this.cliente = cliente;
+	}
+	processReturn(volver) {
+		this.toggleView = volver;
 	}
 }

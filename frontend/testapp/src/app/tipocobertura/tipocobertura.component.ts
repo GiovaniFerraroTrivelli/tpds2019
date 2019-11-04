@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { TipoCobertura } from 'TipoCobertura';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-tipocobertura',
@@ -37,6 +38,7 @@ export class TipocoberturaComponent implements OnInit {
   ];
 
   coberturaSeleccionada: String;
+  @Output() emitterBoolean = new EventEmitter<boolean>();
 
   constructor(private modalService: NgbModal) { }
 
@@ -48,10 +50,14 @@ export class TipocoberturaComponent implements OnInit {
   }
   onSubmit(){
     this.coberturas.forEach(element => {
-    if (element.nombre == this.coberturaSeleccionada) console.log(element);
+      if (element.nombre == this.coberturaSeleccionada){
+        console.log(element);
+      }
     });
   }
   ngOnInit() {
   }
-
+  return(volver){
+    this.emitterBoolean.emit(volver);
+  }
 }

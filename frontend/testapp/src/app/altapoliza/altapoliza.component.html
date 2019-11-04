@@ -1,157 +1,160 @@
-<div id="collapseExample" [ngbCollapse]="!isCollapsed">
-  <app-buscarcliente (emitter)="processCliente($event)" ></app-buscarcliente>
-</div>
+<div *ngIf='toggleView'>
+	<div id="collapseExample" [ngbCollapse]="!isCollapsed">
+	<app-buscarcliente (emitter)="processCliente($event)" ></app-buscarcliente>
+	</div>
 
-<form #altaPolizaForm="ngForm" (ngSubmit)="onSubmit(altaPolizaForm)">
-	<div class="row">
-		<div class="col-sm">
-			<h4 class="mt-3">Datos del cliente <span (click)="isCollapsed = !isCollapsed" class="btn btn-secondary btn-sm float-right">Buscar</span></h4>
+	<form #altaPolizaForm="ngForm" (ngSubmit)="onSubmit(altaPolizaForm)">
+		<div class="row">
+			<div class="col-sm">
+				<h4 class="mt-3">Datos del cliente <span (click)="isCollapsed = !isCollapsed" class="btn btn-secondary btn-sm float-right">Buscar</span></h4>
 
-			<div class="form-group mb-1">
-				<label class="control-label pt-2" for="idCliente">Número de cliente</label>
-			    <div class="input-group">
-			      <div class="input-group-prepend">
-			        <div class="input-group-text">#</div>
-			      </div>
-			      <input type="number" name="idCliente" [ngModel]="cliente.idCliente" id="idCliente" readonly="" class="form-control">
-			    </div>
-			</div>
-
-		    <div class="form-row">
-			    <div class="col form-group mb-1">
-					<label class="control-label pt-2" for="nombre">Nombre(s)</label>
-				    <div class="input-group">
-				      <input type="text" name="nombre" readonly [ngModel]="cliente.nombre" id="nombre" class="form-control">
-				    </div>
-				</div>
-
-			    <div class="col form-group mb-1">
-					<label class="control-label pt-2" for="apellido">Apellido(s)</label>
-				    <div class="input-group">
-				      <input type="text" name="apellido" readonly [ngModel]="cliente.apellido" id="apellido" class="form-control">
-				    </div>
-				</div>
-			</div>
-
-			<div class="form-group mb-1">
-				<label class="control-label pt-2" for="apellido">Tipo y nro. de documento</label>
-				<div class="input-group">
+				<div class="form-group mb-1">
+					<label class="control-label pt-2" for="idCliente">Número de cliente</label>
+					<div class="input-group">
 					<div class="input-group-prepend">
-						<span class="input-group-text" id="basic-addon1">{{ cliente.tipoDocumento }}</span>
+						<div class="input-group-text">#</div>
 					</div>
-					<input type="text" readonly="readonly" class="form-control" name="nroDocumento" [ngModel]="cliente.nroDocumento | number: '' : 'es-AR'" />
+					<input type="number" name="idCliente" [ngModel]="cliente.idCliente" id="idCliente" readonly="" class="form-control">
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="col form-group mb-1">
+						<label class="control-label pt-2" for="nombre">Nombre(s)</label>
+						<div class="input-group">
+						<input type="text" name="nombre" readonly [ngModel]="cliente.nombre" id="nombre" class="form-control">
+						</div>
+					</div>
+
+					<div class="col form-group mb-1">
+						<label class="control-label pt-2" for="apellido">Apellido(s)</label>
+						<div class="input-group">
+						<input type="text" name="apellido" readonly [ngModel]="cliente.apellido" id="apellido" class="form-control">
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group mb-1">
+					<label class="control-label pt-2" for="apellido">Tipo y nro. de documento</label>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="basic-addon1">{{ cliente.tipoDocumento }}</span>
+						</div>
+						<input type="text" readonly="readonly" class="form-control" name="nroDocumento" [ngModel]="cliente.nroDocumento | number: '' : 'es-AR'" />
+					</div>
+				</div>
+
+				<div class="form-group mb-1">
+					<label class="control-label pt-2" for="direccion">Dirección</label>
+					<div class="input-group">
+					<input type="text" name="direccion" readonly id="direccion" class="form-control" value="{{ cliente.direccion.calle }} {{ cliente.direccion.numero }}">
+					</div>
 				</div>
 			</div>
 
-			<div class="form-group mb-1">
-				<label class="control-label pt-2" for="direccion">Dirección</label>
-			    <div class="input-group">
-			      <input type="text" name="direccion" readonly id="direccion" class="form-control" value="{{ cliente.direccion.calle }} {{ cliente.direccion.numero }}">
-			    </div>
-			</div>
-		</div>
+			<div class="col-sm">
+				<h4 class="mt-3">Datos del vehículo</h4>
 
-		<div class="col-sm">
-			<h4 class="mt-3">Datos del vehículo</h4>
-
-			<div class="form-group mb-1 required">
-				<label class="control-label pt-2" for="marca">Marca</label>
-			    <div class="input-group">
-					<select required="required" [(ngModel)]="marca" (ngModelChange)="changeMarca($event)" name="marca" class="form-control mb-1">
-						<option value="{{ marca.idMarca }}" *ngFor="let marca of marcas">{{ marca.nombre }}</option>
-					</select>
-			    </div>
-			</div>
-
-		    <div class="form-row">
-			    <div class="col form-group mb-1 required">
-					<label class="control-label pt-2" for="modelo">Modelo</label>
-				    <div class="input-group">
-						<select required="required" [(ngModel)]="modelo" name="modelo" class="form-control mb-1">
-							<option value="{{ modelo.idModelo }}" *ngFor="let modelo of modelos">{{ modelo.nombre }}</option>
+				<div class="form-group mb-1 required">
+					<label class="control-label pt-2" for="marca">Marca</label>
+					<div class="input-group">
+						<select required="required" [(ngModel)]="marca" (ngModelChange)="changeMarca($event)" name="marca" class="form-control mb-1">
+							<option value="{{ marca.idMarca }}" *ngFor="let marca of marcas">{{ marca.nombre }}</option>
 						</select>
-				    </div>
+					</div>
 				</div>
-			    <div class="col form-group mb-1 required">
-					<label class="control-label pt-2" for="anio">Año</label>
-				    <div class="input-group">
-						<select (change)=changeTest() ngModel name="anio" class="form-control mb-1">
+
+				<div class="form-row">
+					<div class="col form-group mb-1 required">
+						<label class="control-label pt-2" for="modelo">Modelo</label>
+						<div class="input-group">
+							<select required="required" [(ngModel)]="modelo" name="modelo" class="form-control mb-1">
+								<option value="{{ modelo.idModelo }}" *ngFor="let modelo of modelos">{{ modelo.nombre }}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col form-group mb-1 required">
+						<label class="control-label pt-2" for="anio">Año</label>
+						<div class="input-group">
+							<select (change)=changeTest() ngModel name="anio" class="form-control mb-1">
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group mb-1 required">
+					<label class="control-label pt-2" for="motor">Motor</label>
+					<div class="input-group">
+					<input type="text" required="required" name="motor" ngModel id="motor" class="form-control">
+					</div>
+				</div>
+
+				<div class="form-group mb-1 required">
+					<label class="control-label pt-2" for="chasis">Chasis</label>
+					<div class="input-group">
+					<input type="text" name="chasis" ngModel id="chasis" class="form-control">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="pt-2" for="patente">Patente del vehículo</label>
+					<div class="input-group">
+					<input type="text" name="patente" ngModel id="patente" class="form-control">
+					</div>
+				</div>
+
+				<h6 class='mt-3'><strong>Domicilio de riesgo</strong></h6>
+
+				<div class="form-group mb-1 required">
+					<label class="control-label pt-2" for="provincia">Provincia</label>
+					<div class="input-group">
+						<select required="required" [(ngModel)]="provincia" (ngModelChange)="changeProvincia($event)" name="provincia" class="form-control mb-1">
+							<option value="{{ provincia.idProvincia }}" *ngFor="let provincia of provincias">{{ provincia.nombre }}</option>
 						</select>
-				    </div>
+					</div>
 				</div>
+
+				<div class="form-group mb-1 required">
+					<label class="control-label pt-2" for="localidad">Localidad</label>
+					<div class="input-group">
+						<select required="required" ngModel name="localidad" class="form-control mb-1">
+							<option value="{{ localidad.idLocalidad }}" *ngFor="let localidad of localidades">{{ localidad.nombre }}</option>
+						</select>
+					</div>
+				</div>
+
 			</div>
+			<div class="col-sm">
+				<h4 class="mt-3">Medidas de seguridad</h4>
 
-			<div class="form-group mb-1 required">
-				<label class="control-label pt-2" for="motor">Motor</label>
-			    <div class="input-group">
-			      <input type="text" required="required" name="motor" ngModel id="motor" class="form-control">
-			    </div>
+				<ul class="checkbox-tags">
+					<li>
+						<input class="form-check-input" ngModel name="seGuardaEnGarage" type="checkbox" value="" id="seGuardaEnGarage">
+						<label class="form-check-label" for="seGuardaEnGarage">Se guarda en garage</label>
+					</li>
+					<li>
+						<input class="form-check-input" ngModel name="poseeAlarma" type="checkbox" value="" id="poseeAlarma">
+						<label class="form-check-label" for="poseeAlarma">Tiene alarma</label>
+					</li>
+					<li>
+						<input class="form-check-input" ngModel name="poseeRastreoVehicular" type="checkbox" value="" id="poseeRastreoVehicular">
+						<label class="form-check-label" for="poseeRastreoVehicular">Posee dispositivo de rastreo vehicular</label>
+					</li>
+					<li>
+						<input class="form-check-input" ngModel name="poseeTuercasAntirrobo" type="checkbox" value="" id="poseeTuercasAntirrobo">
+						<label class="form-check-label" for="poseeTuercasAntirrobo">Posee tuercas antirrobo en las cuatro ruedas</label>
+					</li>
+				</ul>
+
+				<h6 class='mt-3'><strong>Hijos</strong></h6>
+				<app-hijos></app-hijos>
+				<input class="form-control mt-3 mb-1" type="text" placeholder="Suma Asegurada" disabled="disabled" />
 			</div>
-
-			<div class="form-group mb-1 required">
-				<label class="control-label pt-2" for="chasis">Chasis</label>
-			    <div class="input-group">
-			      <input type="text" name="chasis" ngModel id="chasis" class="form-control">
-			    </div>
-			</div>
-
-			<div class="form-group">
-				<label class="pt-2" for="patente">Patente del vehículo</label>
-			    <div class="input-group">
-			      <input type="text" name="patente" ngModel id="patente" class="form-control">
-			    </div>
-			</div>
-
-			<h6 class='mt-3'><strong>Domicilio de riesgo</strong></h6>
-
-			<div class="form-group mb-1 required">
-				<label class="control-label pt-2" for="provincia">Provincia</label>
-			    <div class="input-group">
-					<select required="required" [(ngModel)]="provincia" (ngModelChange)="changeProvincia($event)" name="provincia" class="form-control mb-1">
-						<option value="{{ provincia.idProvincia }}" *ngFor="let provincia of provincias">{{ provincia.nombre }}</option>
-					</select>
-			    </div>
-			</div>
-
-			<div class="form-group mb-1 required">
-				<label class="control-label pt-2" for="localidad">Localidad</label>
-			    <div class="input-group">
-					<select required="required" ngModel name="localidad" class="form-control mb-1">
-						<option value="{{ localidad.idLocalidad }}" *ngFor="let localidad of localidades">{{ localidad.nombre }}</option>
-					</select>
-			    </div>
-			</div>
-
 		</div>
-		<div class="col-sm">
-			<h4 class="mt-3">Medidas de seguridad</h4>
-
-			<ul class="checkbox-tags">
-				<li>
-					<input class="form-check-input" ngModel name="seGuardaEnGarage" type="checkbox" value="" id="seGuardaEnGarage">
-					<label class="form-check-label" for="seGuardaEnGarage">Se guarda en garage</label>
-				</li>
-				<li>
-					<input class="form-check-input" ngModel name="poseeAlarma" type="checkbox" value="" id="poseeAlarma">
-					<label class="form-check-label" for="poseeAlarma">Tiene alarma</label>
-				</li>
-				<li>
-					<input class="form-check-input" ngModel name="poseeRastreoVehicular" type="checkbox" value="" id="poseeRastreoVehicular">
-					<label class="form-check-label" for="poseeRastreoVehicular">Posee dispositivo de rastreo vehicular</label>
-				</li>
-				<li>
-					<input class="form-check-input" ngModel name="poseeTuercasAntirrobo" type="checkbox" value="" id="poseeTuercasAntirrobo">
-					<label class="form-check-label" for="poseeTuercasAntirrobo">Posee tuercas antirrobo en las cuatro ruedas</label>
-				</li>
-			</ul>
-
-			<h6 class='mt-3'><strong>Hijos</strong></h6>
-			<app-hijos></app-hijos>
-			<input class="form-control mt-3 mb-1" type="text" placeholder="Suma Asegurada" disabled="disabled" />
+		<div class="text-right">
+		<button type="cancel" class="btn btn-secondary">Cancelar</button>
+		<button [disabled]="false" type="submit" class="btn btn-primary ml-2">Aceptar</button>
 		</div>
-	</div>
-	<div class="text-right">
-	  <button type="cancel" class="btn btn-secondary">Cancelar</button>
-	  <button [disabled]="false" type="submit" class="btn btn-primary ml-2">Aceptar</button>
-	</div>
-</form> 
+	</form> 
+</div>
+<app-tipocobertura *ngIf='!toggleView' (emitterBoolean)='processReturn($event)'></app-tipocobertura>
