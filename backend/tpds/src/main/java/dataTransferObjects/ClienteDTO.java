@@ -8,15 +8,43 @@ import dominio.Sexo;
 import dominio.TipoDocumento;
 
 public class ClienteDTO {
-	public ClienteDTO(Integer idCliente2, String nombre2, String apellido2, TipoDocumento tipoDocumento2,
-			Integer nroDocumento2, DireccionDTO direccion2) {
-		idCliente = idCliente2;
-		nombre = nombre2;
-		apellido = apellido2;
-		tipoDocumento = tipoDocumento2;
-		nroDocumento = nroDocumento2;
-		direccion = direccion2;
+	private Integer idCliente;
+	private String nombre;
+	private String apellido;
+	private TipoDocumento tipoDocumento;
+	private Integer nroDocumento;
+	private String cuil;
+	private Sexo sexo;
+	private Date fechaNacimiento;
+	private String profesion;
+	private EstadoCivil estadoCivil;
+	private String email;
+	private CondicionIva condicionIva;
+	private DireccionDTO direccion;
+	
+
+	
+
+	public ClienteDTO(Integer idCliente, String nombre, String apellido, TipoDocumento tipoDocumento,
+			Integer nroDocumento, String cuil, Sexo sexo, Date fechaNacimiento, String profesion,
+			EstadoCivil estadoCivil, String email, CondicionIva condicionIva, DireccionDTO direccion) {
+		super();
+		this.idCliente = idCliente;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.tipoDocumento = tipoDocumento;
+		this.nroDocumento = nroDocumento;
+		this.cuil = cuil;
+		this.sexo = sexo;
+		this.fechaNacimiento = fechaNacimiento;
+		this.profesion = profesion;
+		this.estadoCivil = estadoCivil;
+		this.email = email;
+		this.condicionIva = condicionIva;
+		this.direccion = direccion;
 	}
+
+
 
 	public Integer getIdCliente() {
 		return idCliente;
@@ -122,18 +150,5 @@ public class ClienteDTO {
 		this.direccion = direccion;
 	}
 
-	private Integer idCliente;
-	private String nombre;
-	private String apellido;
-	private TipoDocumento tipoDocumento;
-	private Integer nroDocumento;
-	private String cuil;
-	private Sexo sexo;
-	private Date fechaNacimiento;
-	private String profesion;
-	private EstadoCivil estadoCivil;
-	private String email;
-	private CondicionIva condicionIva;
-	private DireccionDTO direccion;
 
 }

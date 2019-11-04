@@ -20,7 +20,9 @@ public class Cliente {
 	private Direccion direccion;
 
 	public ClienteDTO getDTO() {
-		ClienteDTO result = new ClienteDTO(this.idCliente, this.nombre, this.apellido, this.tipoDocumento, this.nroDocumento, this.direccion.getDTO());
+		ClienteDTO result = new ClienteDTO(this.idCliente, this.nombre, this.apellido, this.tipoDocumento,
+				this.nroDocumento, this.cuil, this.sexo, this.fechaNacimiento, this.profesion, this.estadoCivil,
+				this.email, this.condicionIva, this.direccion.getDTO());
 		return result;
 	}
 
@@ -132,6 +134,5 @@ public class Cliente {
 	public void setCondicionIva(CondicionIva condicionIva) {
 		this.condicionIva = condicionIva;
 	}
-
 
 }
