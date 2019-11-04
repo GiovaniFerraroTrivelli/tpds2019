@@ -14,6 +14,12 @@ public class TipoCobertura {
 
 	}
 
+	public TipoCobertura(String nombre, String descripcion) {
+		super();
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}

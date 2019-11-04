@@ -9,7 +9,7 @@
             <generator class="native" />
         </id>
 
-        <property name="nombre" column="nombre" length="30"/>
+        <property name="nombre" column="nombre" length="60"/>
         <property name="descripcion" column="descripcion" length="500"/>
 
     </class>
