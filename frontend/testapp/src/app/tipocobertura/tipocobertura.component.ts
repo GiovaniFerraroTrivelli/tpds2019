@@ -28,10 +28,6 @@ export class TipocoberturaComponent implements OnInit {
       'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vel lectus in sapien aliquet rutrum. Quisque nisl nibh, iaculis vel dictum ut, tincidunt eu turpis. Quisque quis efficitur dui, sed faucibus tellus. Praesent tortor velit, fringilla ut dapibus ac, sodales ut magna. Donec lobortis efficitur massa at lacinia. Integer posuere augue ut quam tincidunt luctus. Etiam eu mollis est. Vestibulum eleifend rutrum nibh.'
     },
     {
-      'nombre': 'ndeaa',
-      'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vel lectus in sapien aliquet rutrum. Quisque nisl nibh, iaculis vel dictum ut, tincidunt eu turpis. Quisque quis efficitur dui, sed faucibus tellus. Praesent tortor velit, fringilla ut dapibus ac, sodales ut magna. Donec lobortis efficitur massa at lacinia. Integer posuere augue ut quam tincidunt luctus. Etiam eu mollis est. Vestibulum eleifend rutrum nibh.'
-    },
-    {
       'nombre': 'coscu',
       'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vel lectus in sapien aliquet rutrum. Quisque nisl nibh, iaculis vel dictum ut, tincidunt eu turpis. Quisque quis efficitur dui, sed faucibus tellus. Praesent tortor velit, fringilla ut dapibus ac, sodales ut magna. Donec lobortis efficitur massa at lacinia. Integer posuere augue ut quam tincidunt luctus. Etiam eu mollis est. Vestibulum eleifend rutrum nibh.'
     }
