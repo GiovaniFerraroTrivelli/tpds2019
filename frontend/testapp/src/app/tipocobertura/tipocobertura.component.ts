@@ -1,7 +1,6 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { TipoCobertura } from 'TipoCobertura';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { EventEmitter } from '@angular/core';
 import { TipocoberturaService } from './tipocobertura.service';
 
 @Component({
@@ -35,7 +34,6 @@ export class TipocoberturaComponent implements OnInit {
   ];
 
   coberturaSeleccionada: String;
-  @Output() emitterBoolean = new EventEmitter<boolean>();
 
   constructor(private modalService: NgbModal, private coberturaService: TipocoberturaService) { }
 
@@ -57,9 +55,5 @@ export class TipocoberturaComponent implements OnInit {
     this.coberturaService.findAll().subscribe(data => {
       this.coberturas = data;
     });*/
-  }
-  
-  return(volver){
-    this.emitterBoolean.emit(volver);
   }
 }
