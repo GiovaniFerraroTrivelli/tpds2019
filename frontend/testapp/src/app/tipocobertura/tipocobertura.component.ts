@@ -2,6 +2,7 @@ import { Component, OnInit, Output } from '@angular/core';
 import { TipoCobertura } from 'TipoCobertura';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EventEmitter } from '@angular/core';
+import { TipocoberturaService } from './tipocobertura.service';
 
 @Component({
   selector: 'app-tipocobertura',
@@ -36,7 +37,7 @@ export class TipocoberturaComponent implements OnInit {
   coberturaSeleccionada: String;
   @Output() emitterBoolean = new EventEmitter<boolean>();
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal, private coberturaService: TipocoberturaService) { }
 
   openVerticallyCentered(content) {
     this.modalService.open(content, { centered: true });
@@ -51,8 +52,13 @@ export class TipocoberturaComponent implements OnInit {
       }
     });
   }
-  ngOnInit() {
+  
+  ngOnInit() {/*
+    this.coberturaService.findAll().subscribe(data => {
+      this.coberturas = data;
+    });*/
   }
+  
   return(volver){
     this.emitterBoolean.emit(volver);
   }
