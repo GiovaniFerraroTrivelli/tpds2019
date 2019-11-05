@@ -106,6 +106,20 @@ package Dominio{
         +clienteActivo(): Boolean
         +clientePlata(): Boolean
     }
+    
+    class Documento {        
+	-tipoDocumento: TipoDocumento
+        -numeroDocumento: Integer
+    }
+
+    class MedidasSeguridad {
+	-seGuardaEnGarage: Boolean
+	-poseeAlarma: Boolean
+	-poseeRastreoVehicular: Boolean
+	-poseeTuercasAntirrobo: Boolean
+    }
+
+    
     package "Tipo de dato HistorialValor" <<Rectangle>> {
         class HistorialValor {
         	+valorActual(): Float
@@ -247,13 +261,15 @@ package Dominio{
 
     Cliente "1" -up- "0..n" Poliza
     Cliente "1..n" --> "1" Domicilio
-    
+    Cliente "1" --> "1" Documento    
+
     /'Usuario <-- Cobrador: <<is role of>>
     Usuario <-- ProductorSeguros: <<is role of>>
     Usuario <-- Gerente: <<is role of>>
 	'/
    
     Poliza "0..n" o-- "1" Localidad
+    Poliza "1" --> "1" MedidasSeguridad
     ModificacionPoliza "0..n" o-- "1" Localidad
     Poliza "0..n" o-- "0..n" HijoDeclarado
     Poliza "1" o--> "1" FormaPago
