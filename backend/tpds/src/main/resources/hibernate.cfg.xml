@@ -26,7 +26,6 @@
         <mapping resource="Marca.hbm.xml"/>
         <mapping resource="Modelo.hbm.xml"/>
         <mapping resource="TipoCobertura.hbm.xml"/>
-        <mapping resource="Documento.hbm.xml"/>
-
+        
     </session-factory>
 </hibernate-configuration>

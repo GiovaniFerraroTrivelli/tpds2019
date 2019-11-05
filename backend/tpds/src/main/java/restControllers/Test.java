@@ -13,13 +13,13 @@ import dominio.TipoDocumento;
 public class Test {
 
 	public static void main(String[] args) {
+		recuperarCliente();
 
+	}
+
+	private static void insertarCliente() {
 		HibernateUtil.createSessionFactory();
 
-		Session session = HibernateUtil.getSession();
-		Transaction tx = session.beginTransaction();
-
-		
 		Cliente c = new Cliente();
 		c.setNombre("Francisco");
 		c.setApellido("Busso");
@@ -27,19 +27,16 @@ public class Test {
 		c.setEstadoCivil(EstadoCivil.VIUDO);
 		Documento d = new Documento(TipoDocumento.DNI, 41490799);
 		c.setDocumento(d);
-//		Cliente c = session.get(Cliente.class, 1);
-//		System.out.println(c.getNombre());
-//		System.out.println(c.getDocumento().getNroDocumento());
-//		
-		
-		
-		
+
+		Session session = HibernateUtil.getSession();
+		Transaction tx = session.beginTransaction();
+
 		try {
 
 			session.save(c);
 			tx.commit();
 			System.out.println(c.getIdCliente());
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.close();
@@ -48,7 +45,24 @@ public class Test {
 
 		session.close();
 		HibernateUtil.shutdown();
-
 	}
 
+	private static void recuperarCliente() {
+		HibernateUtil.createSessionFactory();
+		Session session = HibernateUtil.getSession();
+
+		try {
+
+			Cliente c = session.get(Cliente.class, 1);
+			System.out.println(c.getDocumento().getNroDocumento());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.close();
+			HibernateUtil.shutdown();
+		}
+
+		session.close();
+		HibernateUtil.shutdown();
+	}
 }
