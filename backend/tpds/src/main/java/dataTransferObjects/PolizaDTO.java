@@ -1,4 +1,4 @@
-package gestores;
+package dataTransferObjects;
 
 public class PolizaDTO {
 	
