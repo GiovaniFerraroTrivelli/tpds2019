@@ -56,8 +56,7 @@ public class TipoCobertura {
 	}
 
 	public TipoCoberturaDTO getDTO() throws NoHayValorException {
-		return new TipoCoberturaDTO(this.idCobertura, this.nombre, this.descripcion,
-				this.factorCobertura.valorActual());
+		return new TipoCoberturaDTO(this.idCobertura, this.nombre, this.descripcion);
 	}
 
 	public Integer getIdCobertura() {

@@ -2,6 +2,7 @@ package dataTransferObjects;
 
 
 public class TipoCoberturaDTO {
+
 	private Integer idCobertura;
 	private String nombre;
 	private String descripcion;
@@ -13,6 +14,14 @@ public class TipoCoberturaDTO {
 		descripcion = descripcion2;
 		factorCoberturaActual = factorCoberturaActual2;
 	}
+	
+	public TipoCoberturaDTO(Integer idCobertura, String nombre, String descripcion) {
+		super();
+		this.idCobertura = idCobertura;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+	}
+
 
 	public Integer getIdCobertura() {
 		return idCobertura;

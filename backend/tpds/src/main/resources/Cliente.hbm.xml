@@ -14,7 +14,7 @@
 
         <property name="sexo" column="sexo" length="10">
             <type name="org.hibernate.type.EnumType">
-                <param name="enumClass">dominio.Sexo</param>
+                <param name="enumClass">enumeradores.Sexo</param>
                 <param name="useNamed">true</param>
             </type>
         </property>
@@ -24,7 +24,7 @@
 
         <property name="estadoCivil" column="estado_civil" length="10">
             <type name="org.hibernate.type.EnumType">
-                <param name="enumClass">dominio.EstadoCivil</param>
+                <param name="enumClass">enumeradores.EstadoCivil</param>
                 <param name="useNamed">true</param>
             </type>
         </property>
@@ -33,7 +33,7 @@
 
         <property name="condicionIva" column="condicion_iva" length="30">
             <type name="org.hibernate.type.EnumType">
-                <param name="enumClass">dominio.CondicionIva</param>
+                <param name="enumClass">enumeradores.CondicionIva</param>
                 <param name="useNamed">true</param>
             </type>
         </property>
@@ -41,7 +41,7 @@
         <component name="documento">
             <property name="tipoDocumento" column="tipo_documento" length="3">
 	            <type name="org.hibernate.type.EnumType">
-	                <param name="enumClass">dominio.TipoDocumento</param>
+	                <param name="enumClass">enumeradores.TipoDocumento</param>
 	                <param name="useNamed">true</param>
 	            </type>
             </property>
