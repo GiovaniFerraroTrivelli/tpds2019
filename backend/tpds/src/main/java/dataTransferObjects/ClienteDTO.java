@@ -2,10 +2,10 @@ package dataTransferObjects;
 
 import java.util.Date;
 
-import dominio.CondicionIva;
 import dominio.Documento;
-import dominio.EstadoCivil;
-import dominio.Sexo;
+import enumeradores.CondicionIva;
+import enumeradores.EstadoCivil;
+import enumeradores.Sexo;
 
 public class ClienteDTO {
 	private Integer idCliente;

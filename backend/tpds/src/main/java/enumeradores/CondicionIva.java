@@ -1,4 +1,4 @@
-package dominio;
+package enumeradores;
 
 public enum CondicionIva {
 	ResponsableInscripto,

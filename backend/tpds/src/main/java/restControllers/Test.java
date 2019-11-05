@@ -6,9 +6,9 @@ import org.hibernate.Transaction;
 import dataAccess.HibernateUtil;
 import dominio.Cliente;
 import dominio.Documento;
-import dominio.EstadoCivil;
 import dominio.TipoCobertura;
-import dominio.TipoDocumento;
+import enumeradores.EstadoCivil;
+import enumeradores.TipoDocumento;
 
 public class Test {
 

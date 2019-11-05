@@ -3,6 +3,9 @@ package dominio;
 import java.util.Date;
 
 import dataTransferObjects.ClienteDTO;
+import enumeradores.CondicionIva;
+import enumeradores.EstadoCivil;
+import enumeradores.Sexo;
 
 public class Cliente {
 	private Integer idCliente;

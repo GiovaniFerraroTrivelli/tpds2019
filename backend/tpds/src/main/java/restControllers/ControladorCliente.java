@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import dataTransferObjects.ClienteDTO;
 import dataTransferObjects.ParametrosDeBusqueda;
 import dominio.Cliente;
-import dominio.CondicionIva;
 import dominio.Direccion;
 import dominio.Documento;
-import dominio.EstadoCivil;
-import dominio.Sexo;
-import dominio.TipoDocumento;
+import enumeradores.CondicionIva;
+import enumeradores.EstadoCivil;
+import enumeradores.Sexo;
+import enumeradores.TipoDocumento;
 import excepciones.DatoNoEncontradoException;
 import gestores.GestorGeografico;
 
@@ -31,7 +31,7 @@ public class ControladorCliente {
 		Cliente c = new Cliente();
 		c.setApellido("Storani");
 		c.setNombre("Miguel");
-		c.setEmail("miguelignacitorani@gmail.com");
+		c.setEmail("miguelignaciostorani@gmail.com");
 		c.setCuil("20409679049");
 		c.setFechaNacimiento(new Date("03/04/1998"));
 		c.setDocumento(new Documento(TipoDocumento.DNI, 40967904));

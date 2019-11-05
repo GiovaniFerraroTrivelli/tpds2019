@@ -1,5 +1,7 @@
 package dominio;
 
+import enumeradores.TipoDocumento;
+
 public class Documento {
 	private TipoDocumento tipoDocumento;
 	private Integer nroDocumento;
