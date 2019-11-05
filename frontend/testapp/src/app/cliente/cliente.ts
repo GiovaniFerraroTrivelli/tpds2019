@@ -1,13 +1,13 @@
 import { Sexo } from '../enums/sexo.enum';
 import { Direccion } from './direccion';
+import { Documento } from './documento';
 import { CondicionIva } from '../enums/condicion-iva.enum';
 
 export class Cliente {
 	idCliente: number;
 	nombre: string;
 	apellido: string;
-	tipoDocumento: string;
-	nroDocumento: string;
+	documento: Documento;
 	cuil: number;
 	sexo: Sexo;
 	fechaNacimiento: string;

@@ -10,6 +10,7 @@ import { ModelosService } from '../modelos/modelos.service';
 import { Marca } from '../modelos/marca';
 import { Modelo } from '../modelos/modelo';
 import { Cliente } from '../cliente/cliente';
+import { Documento } from '../cliente/documento';
 import { Direccion } from '../cliente/direccion';
 import { TipocoberturaComponent } from '../tipocobertura/tipocobertura.component';
 import { TipoCobertura } from 'TipoCobertura';
@@ -44,6 +45,7 @@ export class AltapolizaComponent implements OnInit {
 		this.cliente = new Cliente();
 		this.cliente.direccion = new Direccion();
 		this.cliente.direccion.localidad = new Localidad();
+		this.cliente.documento = new Documento();
 
 		this.titleService.setTitle("Dar de alta póliza");
 		this.getListaProvincias();

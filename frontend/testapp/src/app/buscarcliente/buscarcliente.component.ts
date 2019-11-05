@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Cliente } from '../cliente/cliente';
+import { Documento } from '../cliente/documento';
 import { TipoDNI } from '../enums/tipo-dni.enum';
 import { BusquedaClienteService } from './busquedacliente.service';
 import { DialogService } from '../dialog/dialog.service';

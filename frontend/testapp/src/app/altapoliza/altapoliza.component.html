@@ -38,9 +38,9 @@
 					<label class="control-label pt-2" for="apellido">Tipo y nro. de documento</label>
 					<div class="input-group">
 						<div class="input-group-prepend">
-							<span class="input-group-text" id="basic-addon1">{{ cliente.tipoDocumento }}</span>
+							<span class="input-group-text" id="basic-addon1">{{ cliente.documento.tipoDocumento }}</span>
 						</div>
-						<input type="text" readonly="readonly" class="form-control" name="nroDocumento" [ngModel]="cliente.nroDocumento | number: '' : 'es-AR'" />
+						<input type="text" readonly="readonly" class="form-control" name="nroDocumento" [ngModel]="cliente.documento.nroDocumento | number: '' : 'es-AR'" />
 					</div>
 				</div>
 
@@ -152,7 +152,7 @@
 			</div>
 		</div>
 		<div class="text-right">
-		<button type="cancel" class="btn btn-secondary">Cancelar</button>
+		<a routerLink="/" class="btn btn-secondary">Cancelar</a>
 		<button [disabled]="false" type="submit" class="btn btn-primary ml-2">Aceptar</button>
 		</div>
 	</form> 
