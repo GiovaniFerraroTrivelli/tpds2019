@@ -14,18 +14,20 @@ import dataTransferObjects.TipoCoberturaDTO;
 import dominio.TipoCobertura;
 import excepciones.DatoNoEncontradoException;
 import excepciones.NoHayValorException;
-import gestores.GestorCoberturas;
+import gestores.GestorPoliza;
 
 @RestController
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ControladorPoliza {
-	@PostMapping("/verificarDatos")
-	public ResponseEntity<Object> verificarDatos(@RequestBody PolizaDTO p) throws NoHayValorException, DatoNoEncontradoException{
-		RespuestaVerificarDatosPoliza result = new RespuestaVerificarDatosPoliza();
+	@PostMapping("/altaPoliza/validarDatos")
+	public ResponseEntity<Object> validarDatos(@RequestBody PolizaDTO p)
+			throws NoHayValorException, DatoNoEncontradoException {
+		RespuestaValidarDatosPoliza result = new RespuestaValidarDatosPoliza();
 		result.setCoberturasDisponibles(new ArrayList<TipoCoberturaDTO>());
 		result.setErrores(new ArrayList<Error>());
-		for (TipoCobertura t : GestorCoberturas.getCoberturas()) result.getCoberturasDisponibles().add(t.getDTO());
-		return new ResponseEntity<>(result, HttpStatus.OK);	
+		for (TipoCobertura t : GestorPoliza.getCoberturasDisponibles(p))
+			result.getCoberturasDisponibles().add(t.getDTO());
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
+
 }

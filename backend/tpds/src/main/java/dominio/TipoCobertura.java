@@ -9,7 +9,7 @@ public class TipoCobertura {
 	private String nombre;
 	private String descripcion;
 	private HistorialValor<Float> factorCobertura;
-
+	
 	public TipoCobertura() {
 
 	}

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import dataTransferObjects.TipoCoberturaDTO;
 import dominio.TipoCobertura;
 
-public class RespuestaVerificarDatosPoliza {
+public class RespuestaValidarDatosPoliza {
 	private ArrayList<Error> errores;
 	private ArrayList<TipoCoberturaDTO> coberturasDisponibles;
 

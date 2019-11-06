@@ -10,7 +10,7 @@ import dataAccess.HibernateUtil;
 public class Inicializador {
 
 	public static void main(String[] args){
-		HibernateUtil.getSession();
+		HibernateUtil.createSessionFactory();
 		SpringApplication.run(Inicializador.class, args);
 	}
 
