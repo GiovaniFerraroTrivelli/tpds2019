@@ -63,7 +63,7 @@
 			<label class="pt-2" for="numeroDocumento">Número de documento</label>
 			<input type="number" ngModel name="numeroDocumento" id="numeroDocumento" class="form-control optional">
 		</div>
-		<button [disabled]="!isValidForm(buscarClienteForm)" type="submit" class="btn btn-primary ml-auto pull-right" id="buscarCliente">Buscar</button>
+		<button [disabled]="!isValidForm(buscarClienteForm) || !loadingService.isHidden()" type="submit" class="btn btn-primary ml-auto pull-right" id="buscarCliente">Buscar</button>
 	</div>
 </form>
 <hr />

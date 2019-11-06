@@ -66,14 +66,16 @@ export class AltapolizaComponent implements OnInit {
 			'modelo': new FormControl(null, Validators.required),
 			'anio': new FormControl(null, Validators.required),
 			'motor': new FormControl(null, Validators.required),
-			'chasis': new FormControl(null, Validators.required),
+			'chasis': new FormControl(null, [ Validators.required, Validators.pattern('^([A-Z0-9]{17})$') ]),
 			'patente': new FormControl(null, Validators.pattern('^(|[A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{3}[A-Z]{2})$')),
 			'provincia': new FormControl(null, Validators.required),
 			'localidad': new FormControl(null, Validators.required),
 			'seGuardaEnGarage': new FormControl(null),
 			'poseeAlarma': new FormControl(null),
 			'poseeRastreoVehicular': new FormControl(null),
-			'poseeTuercasAntirrobo': new FormControl(null)
+			'poseeTuercasAntirrobo': new FormControl(null),
+			'nroSiniestros': new FormControl(null, Validators.required),
+			'sumaAsegurada': new FormControl({ value: 0, disabled: true })
 		});
 
 		// seteamos false para que no esté en null
@@ -155,8 +157,8 @@ export class AltapolizaComponent implements OnInit {
 	    });
 	}
 
-	convertToUppercase() {
-		this.altaPolizaForm.controls['patente'].setValue(this.altaPolizaForm.get('patente').value.toUpperCase());
+	convertToUppercase(thisField) {
+		this.altaPolizaForm.controls[thisField].setValue(this.altaPolizaForm.get(thisField).value.toUpperCase());
 	}
 
 	processCliente(cliente) {

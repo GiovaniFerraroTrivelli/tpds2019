@@ -113,3 +113,7 @@ input[type=number].dis-arrows {
         margin: 0;
     }
 }
+
+.unclickable {
+    pointer-events: none;
+}
