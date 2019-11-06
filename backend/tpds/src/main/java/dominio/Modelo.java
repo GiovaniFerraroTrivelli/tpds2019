@@ -1,11 +1,14 @@
 package dominio;
 
+import java.util.Set;
+
 import dataTransferObjects.ModeloDTO;
 
 public class Modelo {
 	private Integer idModelo;
 	private String nombre;
 	private Marca marca;
+	private Set<AnioModelo> anios;
 
 	public Modelo() {
 
@@ -41,7 +44,15 @@ public class Modelo {
 	public void setMarca(Marca marca) {
 		this.marca = marca;
 	}
-	
+
+	public Set<AnioModelo> getAnios() {
+		return anios;
+	}
+
+	public void setAnios(Set<AnioModelo> anios) {
+		this.anios = anios;
+	}
+
 	public ModeloDTO getDTO() {
 		return new ModeloDTO(this.idModelo, this.nombre, this.marca.getDTO());
 	}

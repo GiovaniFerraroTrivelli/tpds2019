@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="dominio.AnioModelo" table="anios_modelos">
+
+        <id name="idAnioModelo" type="java.lang.Integer" column="id_anio_modelo">
+        	<generator class="native" />
+        </id>
+
+        <many-to-one name="modelo" class="dominio.Modelo" fetch="select">
+            <column name="id_modelo" not-null="true" />
+        </many-to-one>
+
+        <property name="valor" column="valor" />
+
+    </class>
+</hibernate-mapping>
