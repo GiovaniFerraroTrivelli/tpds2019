@@ -1,18 +1,23 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { HijosComponent } from '../hijos/hijos.component';
 import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { Hijo } from '../hijos/hijo';
+
+import { HijosComponent } from '../hijos/hijos.component';
+import { TipocoberturaComponent } from '../tipocobertura/tipocobertura.component';
+
 import { GeografiaService } from '../geografia/geografia.service';
+import { ModelosService } from '../modelos/modelos.service';
+import { AltaPolizaService } from './altapoliza.service';
+import { LoadingService } from '../loading/loading.service';
+
+import { Hijo } from '../hijos/hijo';
 import { Provincia } from '../geografia/provincia';
 import { Localidad } from '../geografia/localidad';
-import { ModelosService } from '../modelos/modelos.service';
 import { Marca } from '../modelos/marca';
 import { Modelo } from '../modelos/modelo';
 import { Cliente } from '../cliente/cliente';
 import { Documento } from '../cliente/documento';
 import { Direccion } from '../cliente/direccion';
-import { TipocoberturaComponent } from '../tipocobertura/tipocobertura.component';
 import { TipoCobertura } from 'TipoCobertura';
 
 @Component({
@@ -23,7 +28,7 @@ import { TipoCobertura } from 'TipoCobertura';
 
 export class AltapolizaComponent implements OnInit {
 
-	@ViewChild(HijosComponent, {static:false}) childComp: HijosComponent;
+	@ViewChild(HijosComponent, { static: false }) childComp: HijosComponent;
 
 	private provincias : Provincia[];
 	private localidades : Localidad[];
@@ -32,7 +37,6 @@ export class AltapolizaComponent implements OnInit {
 	private cliente : Cliente;
 	private cobertura: TipoCobertura;
 	private nextStep: boolean;
-	private toggleView: boolean;
 
 	altaPolizaForm: FormGroup;
 
@@ -40,8 +44,9 @@ export class AltapolizaComponent implements OnInit {
 		private titleService: Title,
 		private geografiaService: GeografiaService,
 		private modelosService: ModelosService,
+		private altaPolizaService: AltaPolizaService,
+		private loadingService: LoadingService
 	) { 
-		this.toggleView = true;
 	}
 
 	ngOnInit() {
@@ -128,12 +133,29 @@ export class AltapolizaComponent implements OnInit {
 	}
 
 	onSubmit(f: NgForm) {
-		console.log("aca abajo");
-		let formJSON = f.value;
-		formJSON.hijos = this.childComp.hijos;
+		f.value.hijos = this.childComp.hijos;
 
 		console.log(f.value);
-		this.nextStep = true;
+
+		this.loadingService.i();
+
+		this.altaPolizaService.postValidarDatos(f.value).subscribe(data => {
+		    this.loadingService.d();
+		    
+		    //console.log(data.errores.length);
+		    //console.log(data.coberturasDisponibles.length);
+
+		    if(data.errores.length) {
+		    	// aca apareceria un cartelito con todos los errores que tiene
+		    } else {
+		    	// data.coberturasDisponibles posee un array de TipoCoberturas.
+		    	this.nextStep = true;
+		    }
+	    });
+	}
+
+	convertToUppercase() {
+		this.altaPolizaForm.controls['patente'].setValue(this.altaPolizaForm.get('patente').value.toUpperCase());
 	}
 
 	processCliente(cliente) {

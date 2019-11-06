@@ -99,7 +99,7 @@
 			<div class="form-group">
 				<label class="pt-2" for="patente">Patente del vehículo</label>
 				<div class="input-group">
-				<input formControlName="patente" type="text" name="patente" id="patente" class="form-control">
+				<input formControlName="patente" (input)="convertToUppercase()" type="text" name="patente" id="patente" class="form-control">
 				</div>
 
 				<div *ngIf="patente.invalid && (patente.dirty || patente.touched)" class="invalid-feedback d-block mt-1 mb-0">
