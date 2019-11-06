@@ -1,4 +1,4 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, Input } from '@angular/core';
 import { TipoCobertura } from 'TipoCobertura';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TipocoberturaService } from './tipocobertura.service';
@@ -9,30 +9,7 @@ import { TipocoberturaService } from './tipocobertura.service';
   styleUrls: ['./tipocobertura.component.scss']
 })
 export class TipocoberturaComponent implements OnInit {
-  /*coberturas: TipoCobertura[];*/
-  coberturas = [
-    {
-      'nombre': 'total',
-      'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vel lectus in sapien aliquet rutrum. Quisque nisl nibh, iaculis vel dictum ut, tincidunt eu turpis. Quisque quis efficitur dui, sed faucibus tellus. Praesent tortor velit, fringilla ut dapibus ac, sodales ut magna. Donec lobortis efficitur massa at lacinia. Integer posuere augue ut quam tincidunt luctus. Etiam eu mollis est. Vestibulum eleifend rutrum nibh.'
-    },
-    {
-      'nombre': 'parcial',
-      'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vel lectus in sapien aliquet rutrum. Quisque nisl nibh, iaculis vel dictum ut, tincidunt eu turpis. Quisque quis efficitur dui, sed faucibus tellus. Praesent tortor velit, fringilla ut dapibus ac, sodales ut magna. Donec lobortis efficitur massa at lacinia. Integer posuere augue ut quam tincidunt luctus. Etiam eu mollis est. Vestibulum eleifend rutrum nibh.'
-    },
-    {
-      'nombre': 'casiparcial',
-      'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vel lectus in sapien aliquet rutrum. Quisque nisl nibh, iaculis vel dictum ut, tincidunt eu turpis. Quisque quis efficitur dui, sed faucibus tellus. Praesent tortor velit, fringilla ut dapibus ac, sodales ut magna. Donec lobortis efficitur massa at lacinia. Integer posuere augue ut quam tincidunt luctus. Etiam eu mollis est. Vestibulum eleifend rutrum nibh.'
-    },
-    {
-      'nombre': 'casitotal',
-      'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vel lectus in sapien aliquet rutrum. Quisque nisl nibh, iaculis vel dictum ut, tincidunt eu turpis. Quisque quis efficitur dui, sed faucibus tellus. Praesent tortor velit, fringilla ut dapibus ac, sodales ut magna. Donec lobortis efficitur massa at lacinia. Integer posuere augue ut quam tincidunt luctus. Etiam eu mollis est. Vestibulum eleifend rutrum nibh.'
-    },
-    {
-      'nombre': 'coscu',
-      'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vel lectus in sapien aliquet rutrum. Quisque nisl nibh, iaculis vel dictum ut, tincidunt eu turpis. Quisque quis efficitur dui, sed faucibus tellus. Praesent tortor velit, fringilla ut dapibus ac, sodales ut magna. Donec lobortis efficitur massa at lacinia. Integer posuere augue ut quam tincidunt luctus. Etiam eu mollis est. Vestibulum eleifend rutrum nibh.'
-    }
-  ];
-
+  @Input() coberturas: TipoCobertura[];
   coberturaSeleccionada: String;
 
   constructor(private modalService: NgbModal, private coberturaService: TipocoberturaService) { }
@@ -51,9 +28,6 @@ export class TipocoberturaComponent implements OnInit {
     });
   }
   
-  ngOnInit() {/*
-    this.coberturaService.findAll().subscribe(data => {
-      this.coberturas = data;
-    });*/
+  ngOnInit() {
   }
 }

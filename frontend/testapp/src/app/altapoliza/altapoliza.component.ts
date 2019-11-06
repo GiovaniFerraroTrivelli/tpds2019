@@ -36,6 +36,7 @@ export class AltapolizaComponent implements OnInit {
 	private modelos : Modelo[];
 	private cliente : Cliente;
 	private cobertura: TipoCobertura;
+	private coberturasDisponibles: TipoCobertura[];
 	private nextStep: boolean;
 
 	altaPolizaForm: FormGroup;
@@ -141,7 +142,7 @@ export class AltapolizaComponent implements OnInit {
 
 		this.altaPolizaService.postValidarDatos(f.value).subscribe(data => {
 		    this.loadingService.d();
-		    
+		    this.coberturasDisponibles = data.coberturasDisponibles;
 		    //console.log(data.errores.length);
 		    //console.log(data.coberturasDisponibles.length);
 
