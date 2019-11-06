@@ -8,6 +8,11 @@
 		<id name="idPoliza" type="java.lang.Integer" column="id_poliza">
 			<generator class="identity" />
 		</id>
+		
+		<!-- relacion entre la poliza y el cliente -->
+        <many-to-one name="cliente" class="dominio.Cliente" fetch="select">
+            <column name="id_cliente" not-null="true" />
+        </many-to-one>
 
 		<property name="idSucursal" column="id_sucursal" />
 		<property name="nroPoliza" column="nro_poliza" />
@@ -38,10 +43,7 @@
 			<property name="poseeTuercasAntirrobo" column="posee_tuercas_antirrobo" />
 		</component>
 
-		<!-- relacion entre la poliza y el cliente -->
-        <many-to-one name="cliente" class="dominio.Cliente" fetch="select">
-            <column name="id_cliente" not-null="true" />
-        </many-to-one>
+
 
 		<!-- relacion entre la poliza y los hijos -->
 		<set name="hijos" table="hijos_poliza" inverse="true" cascade="save-update" lazy="true" fetch="select">

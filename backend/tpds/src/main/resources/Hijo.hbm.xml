@@ -9,6 +9,10 @@
             <generator class="native" />
         </id>
 
+        <many-to-one name="poliza" class="dominio.Poliza" fetch="select">
+            <column name="id_poliza" not-null="true" />
+        </many-to-one>
+
 		<property name="fechaNacimiento" column="fecha_nacimiento"/>
 
         <property name="estadoCivil" column="estado_civil" length="10">
@@ -24,10 +28,5 @@
                 <param name="useNamed">true</param>
             </type>
         </property>
-
-        <many-to-one name="poliza" class="dominio.Poliza" fetch="select">
-            <column name="id_poliza" not-null="true" />
-        </many-to-one>
-
     </class>
 </hibernate-mapping>

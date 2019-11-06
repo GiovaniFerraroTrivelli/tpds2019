@@ -19,22 +19,11 @@ import enumeradores.TipoDocumento;
 public class Test {
 
 	public static void main(String[] args) {
-		HibernateUtil.createSessionFactory();
-		Session session = HibernateUtil.getSession();
-
-		try {
-
-			Hijo h = session.get(Hijo.class, 2);
-			System.out.println(h.getPoliza().getAnioFabricacion());
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			session.close();
-			HibernateUtil.shutdown();
-		}
+		insertarPolizaConHijos();
 	}
 
 	private static void insertarPolizaConHijos() {
+
 		Poliza p = new Poliza();
 
 		Hijo h1 = new Hijo();
@@ -55,11 +44,16 @@ public class Test {
 
 		HibernateUtil.createSessionFactory();
 		Session session = HibernateUtil.getSession();
+
+		Cliente c = session.get(Cliente.class, 1);
+		c.getPolizas().add(p);
+		p.setCliente(c);
+
 		Transaction tx = session.beginTransaction();
 
 		try {
 
-			session.save(p);
+			session.update(c);
 			tx.commit();
 
 		} catch (Exception e) {
