@@ -1,54 +1,57 @@
 <ng-template #content let-modal>
-  <form #seleccionCobertura="ngForm" [formGroup]="selCobForm" (ngSubmit)="onSubmitSelCob(seleccionCobertura, modal)">
-    <div class="modal-header">
-        <h4 class="modal-title">Selección de cobertura</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <div class="alert alert-dismissible alert-info">
-          Cobertura seleccionada: <strong>{{ coberturaSeleccionada }}</strong>
-        </div>
+	<form #seleccionCobertura="ngForm" [formGroup]="selCobForm" (ngSubmit)="onSubmitSelCob(seleccionCobertura, modal)">
+		<div class="modal-header">
+			<h4 class="modal-title">Selección de cobertura</h4>
+			<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+	
+		<div class="modal-body">
+			<div class="alert alert-dismissible alert-info">
+		 		Cobertura seleccionada: <strong>{{ coberturaSeleccionada.nombre }}</strong>
+			</div>
 
-        <input type="hidden" name="coberturaId" value="" />
+			<input type="hidden" name="coberturaId" value="" />
 
-      <div class="form-group mb-1 required">
-        <label class="pt-2" for="fechaVigencia">Fecha de vigencia</label>
-        <input type="date" name="fechaVigencia" formControlName="fechaVigencia" id="fechaVigencia" class="form-control">
-      </div>
+	  		<div class="form-group mb-1 required">
+				<label class="pt-2" for="fechaVigencia">Fecha de vigencia</label>
+				<input type="date" name="fechaVigencia" formControlName="fechaVigencia" id="fechaVigencia" class="form-control">
+	  		</div>
 
-      <div class="form-group mb-1 required">
-        <label class="pt-2" for="modalidadPago">Modalidad de pago:</label>
-        <select class="form-control" formControlName="modalidadPago" id="modalidadPago">
-          <option>Mensual</option>
-          <option>Semestral</option>
-        </select>
-      </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-light" (click)="modal.close('cancel')">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="[modal.close('add'), onSubmit()]">Aceptar</button>
-    </div>
-  </form>
+	  		<div class="form-group mb-1 required">
+				<label class="pt-2" for="modalidadPago">Modalidad de pago</label>
+		
+				<select class="form-control" formControlName="modalidadPago" id="modalidadPago">
+		  			<option>Mensual</option>
+		  			<option>Semestral</option>
+				</select>
+	  		</div>
+		</div>
+
+		<div class="modal-footer">
+			<button type="button" class="btn btn-light" (click)="cancelCobertura(seleccionCobertura, modal)">Cancelar</button>
+			<button type="submit" [disabled]="!seleccionCobertura.valid" class="btn btn-primary">Aceptar</button>
+		</div>
+  	</form>
 </ng-template>
 
 <h4 class="mb-3">Tipos de cobertura disponibles</h4>
 
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-md-6 col-sm-12 col-xs-12 col-lg-4 mb-2" *ngFor='let cobertura of coberturas'>
-    <div class="card h-100">
-      <div class="card-header">
-        {{cobertura.nombre}}
-      </div>
-      <div class="card-body">
-        <p class="card-text">{{cobertura.descripcion}}</p>
-      </div>
-      <div class="card-footer text-muted text-center">
-        <button class="btn btn-primary btn-block" (click)='[openVerticallyCentered(content), seleccionarCobertura(cobertura.nombre)]'>Seleccionar</button>
-      </div>
-    </div>
-  </div>
-</div>
+	<div class="row">
+		<div class="col-md-6 col-sm-12 col-xs-12 col-lg-4 mb-2" *ngFor='let cobertura of coberturas'>
+			<div class="card h-100">
+	  			<div class="card-header">{{cobertura.nombre}}</div>
+	  
+  				<div class="card-body">
+					<p class="card-text">{{cobertura.descripcion}}</p>
+	  			</div>
+	  
+	  			<div class="card-footer text-muted text-center">
+					<button class="btn btn-primary btn-block" (click)='seleccionarCobertura(cobertura, content)'>Seleccionar</button>
+	  			</div>
+			</div>
+		</div>
+	</div>
 </div>

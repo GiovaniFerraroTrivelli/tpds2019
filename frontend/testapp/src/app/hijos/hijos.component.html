@@ -71,9 +71,9 @@
 				<td colspan="4" class="text-muted text-center"><small>No hay hijos cargados</small></td>
 			</tr>
 			<tr *ngFor="let hijo of hijos; let row = index">
-				<td>{{hijo.edad}}</td>
-				<td>{{hijo.estadoCivil}}</td>
-				<td>{{hijo.sexo}}</td>
+				<td>{{ hijo.edad }}</td>
+				<td>{{ hijo.estadoCivil }}</td>
+				<td>{{ hijo.sexo }}</td>
 				<td> 
 					<button type="button" class="btn btn-danger btn-sm" (click)='deleteHijo(row)'>Eliminar</button>
 				</td>

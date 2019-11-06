@@ -10,7 +10,7 @@ export class AltaPolizaService {
 	private validarUrl: string;
 
 	constructor(private http: HttpClient) {
-		this.validarUrl = 'http://localhost:8080/verificarDatos';
+		this.validarUrl = 'http://localhost:8080/altaPoliza/validarDatos';
 	}
 
 	public postValidarDatos(poliza : Poliza): Observable<RespuestaValidacion> {

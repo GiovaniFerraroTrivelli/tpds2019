@@ -11,10 +11,13 @@ import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@an
 })
 export class TipocoberturaComponent implements OnInit {
 	@Input() coberturas: TipoCobertura[];
-	coberturaSeleccionada: String;
+	coberturaSeleccionada: TipoCobertura;
 	selCobForm: FormGroup;
 	
-	constructor(private modalService: NgbModal, private coberturaService: TipocoberturaService) { }
+	constructor(
+		private modalService: NgbModal,
+		private coberturaService: TipocoberturaService
+	) { }
 	
 	ngOnInit() {
 		this.selCobForm = new FormGroup({
@@ -22,16 +25,38 @@ export class TipocoberturaComponent implements OnInit {
 			'modalidadPago': new FormControl(null, Validators.required),
 		});
 	}
-	
+
+	get fechaVigencia() { return this.selCobForm.get('fechaVigencia'); }
+	get modalidadPago() { return this.selCobForm.get('modalidadPago'); }
+
 	openVerticallyCentered(content) {
 		this.modalService.open(content, { centered: true });
 	}
 
-	seleccionarCobertura(cobertura) {
+	seleccionarCobertura(cobertura, content) {
 		this.coberturaSeleccionada = cobertura;
+
+		// setear fecha de mañana
+		let today = new Date();
+		let tomorrow = new Date();
+		tomorrow.setDate(today.getDate()+1);
+		this.selCobForm.controls['fechaVigencia'].setValue(tomorrow.toISOString().substring(0,10));
+
+		this.openVerticallyCentered(content);
 	}
 
-	onSubmit(){
-		console.log(this.coberturaSeleccionada)
+	cancelCobertura(f: NgForm, modal) {
+		modal.close('cancel');
+		f.reset();
+	}
+
+	onSubmitSelCob(f: NgForm, modal) {
+		console.log(this.coberturaSeleccionada);
+
+		console.log(f.value);
+
+		modal.close('add');
+
+		f.reset();
 	}
 }
