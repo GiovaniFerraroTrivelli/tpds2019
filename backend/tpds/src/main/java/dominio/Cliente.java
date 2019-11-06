@@ -1,6 +1,7 @@
 package dominio;
 
 import java.util.Date;
+import java.util.Set;
 
 import dataTransferObjects.ClienteDTO;
 import enumeradores.CondicionIva;
@@ -20,6 +21,7 @@ public class Cliente {
 	private String email;
 	private CondicionIva condicionIva;
 	private Direccion direccion;
+	private Set<Poliza> polizas;
 
 	public ClienteDTO getDTO() {
 		ClienteDTO result = new ClienteDTO(this.idCliente, this.nombre, this.apellido, this.documento, this.cuil,
@@ -127,6 +129,14 @@ public class Cliente {
 
 	public void setCondicionIva(CondicionIva condicionIva) {
 		this.condicionIva = condicionIva;
+	}
+
+	public Set<Poliza> getPolizas() {
+		return polizas;
+	}
+
+	public void setPolizas(Set<Poliza> polizas) {
+		this.polizas = polizas;
 	}
 
 }

@@ -2,18 +2,19 @@ package dominio;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
 
 import enumeradores.EstadoPoliza;
 
 public class Poliza {
 	private Integer idPoliza;
 	private Integer idSucursal;
-	private Integer numeroPoliza;
+	private Integer nroPoliza;
 	private TipoCobertura cobertura;
 	private Date inicioVigencia;
 	private Date finVigencia;
 	private Integer kmsAnuales;
-	private EstadoPoliza estado;
+	private EstadoPoliza estadoPoliza;
 	private Integer siniestros;
 	private String dominio;
 	private String chasis;
@@ -22,7 +23,7 @@ public class Poliza {
 	private Modelo modelo;
 	private Cliente cliente;
 	private MedidasSeguridad medidasSeguridad;
-	private ArrayList<Hijo> hijos;
+	private Set<Hijo> hijos;
 	private FormaPago formaPago;
 	private ArrayList<Pago> pagos;
 
@@ -46,12 +47,12 @@ public class Poliza {
 		this.idSucursal = idSucursal;
 	}
 
-	public Integer getNumeroPoliza() {
-		return numeroPoliza;
+	public Integer getNroPoliza() {
+		return nroPoliza;
 	}
 
-	public void setNumeroPoliza(Integer numeroPoliza) {
-		this.numeroPoliza = numeroPoliza;
+	public void setNroPoliza(Integer nroPoliza) {
+		this.nroPoliza = nroPoliza;
 	}
 
 	public TipoCobertura getCobertura() {
@@ -86,12 +87,12 @@ public class Poliza {
 		this.kmsAnuales = kmsAnuales;
 	}
 
-	public EstadoPoliza getEstado() {
-		return estado;
+	public EstadoPoliza getEstadoPoliza() {
+		return estadoPoliza;
 	}
 
-	public void setEstado(EstadoPoliza estado) {
-		this.estado = estado;
+	public void setEstadoPoliza(EstadoPoliza estadoPoliza) {
+		this.estadoPoliza = estadoPoliza;
 	}
 
 	public Integer getSiniestros() {
@@ -158,11 +159,11 @@ public class Poliza {
 		this.medidasSeguridad = medidasSeguridad;
 	}
 
-	public ArrayList<Hijo> getHijos() {
+	public Set<Hijo> getHijos() {
 		return hijos;
 	}
 
-	public void setHijos(ArrayList<Hijo> hijos) {
+	public void setHijos(Set<Hijo> hijos) {
 		this.hijos = hijos;
 	}
 

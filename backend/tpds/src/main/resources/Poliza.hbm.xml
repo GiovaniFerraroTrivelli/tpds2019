@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="dominio.Poliza" table="polizas">
+
+		<id name="idPoliza" type="java.lang.Integer" column="id_poliza">
+			<generator class="identity" />
+		</id>
+
+		<property name="idSucursal" column="id_sucursal" />
+		<property name="nroPoliza" column="nro_poliza" />
+		<property name="inicioVigencia" column="inicio_vigencia" />
+		<property name="finVigencia" column="fin_vigencia" />
+		<property name="kmsAnuales" column="kms_anuales" />
+		<property name="siniestros" column="siniestros" />
+		<property name="dominio" column="dominio" />
+		<property name="chasis" column="chasis" />
+		<property name="motor" column="motor" />
+		<property name="anioFabricacion" column="anio_fabricacion" />
+
+
+		<!-- tipoCobertura -->
+
+		<property name="estadoPoliza" column="estado_poliza"
+			length="15">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">enumeradores.EstadoPoliza</param>
+				<param name="useNamed">true</param>
+			</type>
+		</property>
+
+		<component name="medidasSeguridad">
+			<property name="seGuardaEnGarage" column="se_guarda_en_garage" />
+			<property name="poseeAlarma" column="posee_alarma" />
+			<property name="poseeRastreoVehicular" column="posee_rastreo_vehicular" />
+			<property name="poseeTuercasAntirrobo" column="posee_tuercas_antirrobo" />
+		</component>
+
+		<!-- relacion entre la poliza y el cliente -->
+        <many-to-one name="cliente" class="dominio.Cliente" fetch="select">
+            <column name="id_cliente" not-null="true" />
+        </many-to-one>
+
+		<!-- relacion entre la poliza y los hijos -->
+		<set name="hijos" table="hijos_poliza" inverse="true" cascade="save-update" lazy="true" fetch="select">
+			<key>
+				<column name="id_poliza" not-null="true" />
+			</key>
+			<one-to-many class="dominio.Hijo" />
+		</set>
+
+
+	</class>
+</hibernate-mapping>
