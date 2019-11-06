@@ -119,7 +119,7 @@ export class AltapolizaComponent implements OnInit {
 		    });
 		});
 	}
-
+	//sadasds//
 	getListaProvincias(): void {
 		this.geografiaService.getProvinciasByPais(1).subscribe(data => {
 		    this.provincias = data;
