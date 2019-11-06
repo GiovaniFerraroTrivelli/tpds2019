@@ -14,6 +14,11 @@
             <column name="id_cliente" not-null="true" />
         </many-to-one>
 
+		<!-- relacion entre la poliza y el tipo de cobertura -->
+      	<many-to-one name = "tipoCobertura" class="dominio.TipoCobertura">
+      		<column name = "id_cobertura" not-null="true"/>
+        </many-to-one>
+
 		<property name="idSucursal" column="id_sucursal" />
 		<property name="nroPoliza" column="nro_poliza" />
 		<property name="inicioVigencia" column="inicio_vigencia" />

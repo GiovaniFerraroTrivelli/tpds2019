@@ -20,8 +20,36 @@ public class Test {
 
 	public static void main(String[] args) {
 		insertarPolizaConHijos();
+		//agregarTipoCobertura();
 	}
 
+	private static void agregarTipoCobertura() {
+		HibernateUtil.createSessionFactory();
+		Session session = HibernateUtil.getSession();
+		
+		Poliza p = session.get(Poliza.class, 1);
+		TipoCobertura t = session.get(TipoCobertura.class, 2);
+		
+		System.out.println(p.getAnioFabricacion());
+		
+		
+		/*Transaction tx = session.beginTransaction();
+
+		try {
+
+			session.update(p);
+			tx.commit();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.close();
+			HibernateUtil.shutdown();
+		}*/
+
+		session.close();
+		HibernateUtil.shutdown();
+	}
+	
 	private static void insertarPolizaConHijos() {
 
 		Poliza p = new Poliza();
@@ -45,15 +73,18 @@ public class Test {
 		HibernateUtil.createSessionFactory();
 		Session session = HibernateUtil.getSession();
 
-		Cliente c = session.get(Cliente.class, 1);
-		c.getPolizas().add(p);
-		p.setCliente(c);
 
 		Transaction tx = session.beginTransaction();
 
 		try {
+			
+			Cliente c = session.get(Cliente.class, 1);
+			p.setCliente(c);
 
-			session.update(c);
+			TipoCobertura cob = session.get(TipoCobertura.class, 2);
+			p.setTipoCobertura(cob);
+
+			session.save(p);
 			tx.commit();
 
 		} catch (Exception e) {

@@ -1,5 +1,5 @@
 package dominio;
 
-public class FormaPago {
+public abstract class FormaPago {
 	
 }

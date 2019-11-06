@@ -48,12 +48,5 @@
             <property name="nroDocumento" column="nro_documento"/>
         </component>
         
-		<set name="polizas" table="polizas" inverse="true" cascade="save-update" lazy="true" fetch="select">
-			<key>
-				<column name="id_cliente" not-null="true" />
-			</key>
-			<one-to-many class="dominio.Poliza" />
-		</set>
-        
     </class>
 </hibernate-mapping>

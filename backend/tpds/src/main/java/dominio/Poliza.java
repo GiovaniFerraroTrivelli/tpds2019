@@ -10,7 +10,7 @@ public class Poliza {
 	private Integer idPoliza;
 	private Integer idSucursal;
 	private Integer nroPoliza;
-	private TipoCobertura cobertura;
+	private TipoCobertura tipoCobertura;
 	private Date inicioVigencia;
 	private Date finVigencia;
 	private Integer kmsAnuales;
@@ -55,12 +55,12 @@ public class Poliza {
 		this.nroPoliza = nroPoliza;
 	}
 
-	public TipoCobertura getCobertura() {
-		return cobertura;
+	public TipoCobertura getTipoCobertura() {
+		return tipoCobertura;
 	}
 
-	public void setCobertura(TipoCobertura cobertura) {
-		this.cobertura = cobertura;
+	public void setTipoCobertura(TipoCobertura cobertura) {
+		this.tipoCobertura = cobertura;
 	}
 
 	public Date getInicioVigencia() {
