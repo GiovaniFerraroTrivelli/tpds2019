@@ -2,6 +2,7 @@ package restControllers;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,8 +23,21 @@ import enumeradores.TipoDocumento;
 public class Test {
 
 	public static void main(String[] args) {
-		//agregarAnioAModelo();
-		recuperarModeloConAnio();
+		HibernateUtil.createSessionFactory();
+		Session s = HibernateUtil.getSession();		
+		Integer idModelo = 4;
+		
+		String hql = "FROM AnioModelo WHERE id_modelo=" + idModelo.toString() + " ORDER BY valor DESC";
+		Query<AnioModelo> query = HibernateUtil.getSession().createQuery(hql);
+		
+		ArrayList<AnioModelo> listaModelos = new ArrayList<AnioModelo>(query.list());
+		
+		for(AnioModelo a : listaModelos) {
+			System.out.println(a.getValor());
+		}
+		
+		s.close();
+		HibernateUtil.shutdown();
 	}
 
 	private static void recuperarModeloConAnio() {

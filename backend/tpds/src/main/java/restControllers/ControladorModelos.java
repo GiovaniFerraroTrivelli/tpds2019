@@ -44,5 +44,15 @@ public class ControladorModelos {
 			return new ResponseEntity<>(new Error("No se pudo recuperar los modelos de la marca elegida"), HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	@GetMapping("/anios/{idModelo}")
+	public ResponseEntity<Object> getAnios(@PathVariable("idModelo") Integer idModelo){
+		try {
+			ArrayList<Integer> result = GestorModelos.getAnios(idModelo);
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new Error("No se pudo recuperar los modelos de la marca elegida"), HttpStatus.NOT_FOUND);
+		}
+	}
 
 }
