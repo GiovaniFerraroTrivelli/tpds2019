@@ -42,6 +42,8 @@ export class AltapolizaComponent implements OnInit {
 	private nextStep: boolean;
 	private polizaValues: Poliza;
 	altaPolizaForm: FormGroup;
+	private marcaSeleccionada: String;
+	private modeloSeleccionado: String;
 
 	constructor(
 		private titleService: Title,
@@ -163,9 +165,11 @@ export class AltapolizaComponent implements OnInit {
 		    } else {
 		    	this.polizaValues = f.value;
 		    	this.coberturasDisponibles = data.coberturasDisponibles;
-		    	this.nextStep = true;
+				this.nextStep = true;
+				this.setMarca();
+				this.setModelo();
 		    }
-	    });
+		});
 	}
 
 	convertToUppercase(thisField) {
@@ -184,5 +188,13 @@ export class AltapolizaComponent implements OnInit {
 
 	prevStep() {
 		this.nextStep = false;
+	}
+	setMarca(){
+		this.marcaSeleccionada = document.getElementById('selectMarca'+this.polizaValues.marca).innerHTML;
+		console.log(this.marcaSeleccionada);
+	}
+	setModelo(){
+		this.modeloSeleccionado = document.getElementById('selectModelo'+this.polizaValues.modelo).innerHTML;
+		console.log(this.modeloSeleccionado);
 	}
 }

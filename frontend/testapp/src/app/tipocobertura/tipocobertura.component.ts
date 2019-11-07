@@ -17,6 +17,8 @@ export class TipocoberturaComponent implements OnInit {
 	coberturaSeleccionada: TipoCobertura;
 	selCobForm: FormGroup;
 	@Input() polizaValues: Poliza;
+	@Input() marcaSeleccionada: String;
+	@Input() modeloSeleccionado: String;
 
 	constructor(
 		private modalService: NgbModal,
