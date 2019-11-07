@@ -22,6 +22,7 @@ public class ControladorPoliza {
 	@PostMapping("/altaPoliza/validarDatos")
 	public ResponseEntity<Object> validarDatos(@RequestBody PolizaDTO p)
 			throws NoHayValorException, DatoNoEncontradoException {
+		
 		RespuestaValidarDatosPoliza result = new RespuestaValidarDatosPoliza();
 		result.setCoberturasDisponibles(new ArrayList<TipoCoberturaDTO>());
 		result.setErrores(new ArrayList<Error>());

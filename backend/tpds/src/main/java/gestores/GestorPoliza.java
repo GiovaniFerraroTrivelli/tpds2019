@@ -1,6 +1,9 @@
 package gestores;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.time.Year;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 import dao.DaoCliente;
@@ -8,6 +11,7 @@ import dao.DaoGeografico;
 import dao.DaoVehiculo;
 import dataTransferObjects.PolizaDTO;
 import dominio.Cotizacion;
+import dominio.Hijo;
 import dominio.Modelo;
 import dominio.TipoCobertura;
 import excepciones.DatoNoEncontradoException;
@@ -30,24 +34,19 @@ public class GestorPoliza {
 	public static ArrayList<Error> validarDatos(PolizaDTO p) {
 		ArrayList<Error> errores = new ArrayList<>();
 
-		
 		// Validar idUsuario
 		if (p.getIdCliente() == null)
 			errores.add(new Error("Falta definir el cliente"));
 		else if (DaoCliente.getCliente(p.getIdCliente()) == null)
 			errores.add(new Error("No existe el cliente especificado"));
 
-		
 		// Validar Domicilio de riesgo
-
 		if (p.getLocalidad() == null)
 			errores.add(new Error("No se definió una localidad de riesgo"));
 		else if (DaoGeografico.getLocalidad(p.getLocalidad()) == null)
 			errores.add(new Error("No existe el domicilio de riesgo especificado"));
-		
-		
-		// Validar Modelo
-		
+
+		// Validar ModelP
 		if (p.getModelo() == null)
 			errores.add(new Error("No se definió el modelo del vehículo"));
 		else {
@@ -55,26 +54,52 @@ public class GestorPoliza {
 				errores.add(new Error("No existe el modelo de vehículo especificado"));
 			else {
 				// Validar anio
-				
 				Boolean existe = false;
 				for (Cotizacion m : GestorModelos.getModelo(p.getModelo()).getAnios()) {
-					if (m.getAnio() == p.getAnio()) existe = true;
+					if (m.getAnio() == p.getAnio())
+						existe = true;
 				}
 				if (!existe)
 					errores.add(new Error("El modelo seleccionado no se fabricó en el año indicado"));
 			}
 		}
-		
+
 		// Validar existencia de anio de fabricación
-		
 		if (p.getAnio() == null)
 			errores.add(new Error("No de definió un año de fabricación"));
-		
+
 		// Validar Motor
-		
 		if (p.getMotor() == null)
 			errores.add(new Error("No se ingresó el número de motor"));
+
+		// Validar Medidas de Seguridad
+		if (p.getPoseeAlarma() == null || p.getPoseeRastreoVehicular() == null || p.getPoseeTuercasAntirrobo() == null
+				|| p.getPoseeAlarma() == null)
+			errores.add(new Error("No se especificaron las medidas de seguridad"));
+
+		// Validar hijos
+		if (p.getHijos() != null)
+			for (Hijo h : p.getHijos()) {
+				if (h.getSexo() == null)
+					errores.add(new Error("El sexo de al menos un hijo no fue especificado"));
+				if (h.getEstadoCivil() == null)
+					errores.add(new Error("El estado civil de al menos un hijo no fue especificado"));
+				if (h.getFechaNacimiento() == null)
+					errores.add(new Error("La fecha de nacimiento de al menos un hijo no fue especificado"));
+
+				LocalDate date = h.getFechaNacimiento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				Integer diff = Period.between(date, java.time.LocalDate.now()).getYears();
+				if (diff < 18 || diff > 32) {
+					errores.add(new Error(
+							"La edad de al menos un hijo no se encuentra dentro de los parámetros esperados"));
+				}
+			}
 		
+		// Validar siniestros
+		if(p.getSiniestros() < 0 || p.getSiniestros() > 3)
+			errores.add(new Error("La cantidad de siniestros especficada no se encuentra dentro de los parametros esperadas"));
+		
+
 		return errores;
 	}
 }

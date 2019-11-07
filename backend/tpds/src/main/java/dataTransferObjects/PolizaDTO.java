@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import dominio.Hijo;
 
-
 public class PolizaDTO {
 	private Integer idCliente;
 	private Integer modelo;
@@ -17,6 +16,7 @@ public class PolizaDTO {
 	private Boolean poseeAlarma;
 	private Boolean poseeRastreoVehicular;
 	private Boolean poseeTuercasAntirrobo;
+	private Integer siniestros;
 	private ArrayList<Hijo> hijos;
 
 	public Integer getIdCliente() {
@@ -105,6 +105,14 @@ public class PolizaDTO {
 
 	public void setPoseeTuercasAntirrobo(Boolean poseeTuercasAntirrobo) {
 		this.poseeTuercasAntirrobo = poseeTuercasAntirrobo;
+	}
+
+	public Integer getSiniestros() {
+		return siniestros;
+	}
+
+	public void setSiniestros(Integer siniestros) {
+		this.siniestros = siniestros;
 	}
 
 	public ArrayList<Hijo> getHijos() {
