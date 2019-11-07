@@ -8,12 +8,12 @@
 			<h4 class="mt-3">Datos del cliente <span (click)="isCollapsed = !isCollapsed" class="btn btn-secondary btn-sm float-right">Buscar</span></h4>
 
 			<div class="form-group mb-1">
-				<label class="control-label pt-2" for="idcliente">Número de cliente</label>
+				<label class="control-label pt-2" for="idCliente">Número de cliente</label>
 				<div class="input-group">
 					<div class="input-group-prepend">
 						<div class="input-group-text">#</div>
 					</div>
-					<input type="number" readonly="readonly" formControlName="idcliente" name="idcliente" id="idcliente" class="form-control unclickable">
+					<input type="number" readonly="readonly" formControlName="idCliente" name="idCliente" id="idCliente" class="form-control unclickable">
 				</div>
 			</div>
 
@@ -63,22 +63,21 @@
 				</div>
 			</div>
 
-			<div class="form-row">
-				<div class="col form-group mb-1 required">
-					<label class="control-label pt-2" for="modelo">Modelo</label>
-					<div class="input-group">
-						<select formControlName="modelo" name="modelo" class="form-control mb-1">
-							<option id="selectModelo{{modelo.idModelo}}" value="{{ modelo.idModelo }}" *ngFor="let modelo of modelos" >{{ modelo.nombre }}</option>
-						</select>
-					</div>
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="modelo">Modelo</label>
+				<div class="input-group">
+					<select formControlName="modelo" name="modelo" class="form-control mb-1">
+						<option id="selectModelo{{modelo.idModelo}}" value="{{ modelo.idModelo }}" *ngFor="let modelo of modelos" >{{ modelo.nombre }}</option>
+					</select>
 				</div>
-				<div class="col form-group mb-1 required">
-					<label class="control-label pt-2" for="anio">Año</label>
-					<div class="input-group">
-						<select formControlName="anio" name="anio" class="form-control mb-1">
-							<option value="{{ anio }}" *ngFor="let anio of anios">{{ anio }}</option>
-						</select>
-					</div>
+			</div>
+			
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="anio">Año</label>
+				<div class="input-group">
+					<select formControlName="anio" name="anio" class="form-control mb-1">
+						<option value="{{ anio }}" *ngFor="let anio of anios">{{ anio }}</option>
+					</select>
 				</div>
 			</div>
 
@@ -165,9 +164,9 @@
 			<hr />
 
 			<div class="form-group mt-3 mb-1 required">
-				<label class="control-label pt-2" for="nroSiniestros">Nro. siniestros en el último año</label>
+				<label class="control-label pt-2" for="siniestros">Nro. siniestros en el último año</label>
 				<div class="input-group">
-					<select formControlName="nroSiniestros" name="nroSiniestros" class="form-control mb-1">
+					<select formControlName="siniestros" name="siniestros" class="form-control mb-1">
 						<option value="0">Ningún siniestro</option>
 						<option value="1">1 siniestro</option>
 						<option value="2">2 siniestros</option>

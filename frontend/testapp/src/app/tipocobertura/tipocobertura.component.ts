@@ -5,6 +5,7 @@ import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@an
 import { Poliza } from '../poliza/poliza';
 import { SeleccionCobertura } from './seleccion-cobertura';
 import { DialogService } from '../dialog/dialog.service';
+import { FechaVigenciaValidator } from './fechavigencia.validator';
 import { Router } from "@angular/router";
 
 @Component({
@@ -19,6 +20,7 @@ export class TipocoberturaComponent implements OnInit {
 	@Input() polizaValues: Poliza;
 	@Input() marcaSeleccionada: String;
 	@Input() modeloSeleccionado: String;
+	finVigencia: Date;
 
 	constructor(
 		private modalService: NgbModal,
@@ -29,7 +31,7 @@ export class TipocoberturaComponent implements OnInit {
 	ngOnInit() {
 		this.selCobForm = new FormGroup({
 			'idCobertura': new FormControl(null, Validators.required),
-			'fechaVigencia': new FormControl(null, Validators.required),
+			'fechaVigencia': new FormControl(null, [ Validators.required, FechaVigenciaValidator ]),
 			'modalidadPago': new FormControl(null, Validators.required),
 		});
 
@@ -68,6 +70,10 @@ export class TipocoberturaComponent implements OnInit {
 		modal.close('add');
 
 		this.polizaValues.seleccionCobertura = f.value;
+		
+		this.finVigencia = new Date(this.selCobForm.get('fechaVigencia').value);
+		this.finVigencia.setMonth(this.finVigencia.getMonth() + 6);
+
 		console.log(this.polizaValues);
 
 		f.reset();

@@ -62,7 +62,7 @@ export class AltapolizaComponent implements OnInit {
 		this.cliente.documento = new Documento();
 
 		this.altaPolizaForm = new FormGroup({
-			'idcliente': new FormControl(null, Validators.required),
+			'idCliente': new FormControl(null, Validators.required),
 			'nombre': new FormControl(null),
 			'apellido': new FormControl(null),
 			'nroDocumento': new FormControl({ value: '', disabled: true }),
@@ -79,7 +79,7 @@ export class AltapolizaComponent implements OnInit {
 			'poseeAlarma': new FormControl(null),
 			'poseeRastreoVehicular': new FormControl(null),
 			'poseeTuercasAntirrobo': new FormControl(null),
-			'nroSiniestros': new FormControl(null, Validators.required),
+			'siniestros': new FormControl(null, Validators.required),
 			'sumaAsegurada': new FormControl({ value: 0, disabled: true })
 		});
 
@@ -96,7 +96,7 @@ export class AltapolizaComponent implements OnInit {
 		this.getListaMarcas();
 	}
 
-	get idcliente() { return this.altaPolizaForm.get('idcliente'); }
+	get idCliente() { return this.altaPolizaForm.get('idCliente'); }
 	get nombre() { return this.altaPolizaForm.get('nombre'); }
 	get apellido() { return this.altaPolizaForm.get('apellido'); }
 	get nroDocumento() { return this.altaPolizaForm.get('nroDocumento'); }
@@ -113,11 +113,13 @@ export class AltapolizaComponent implements OnInit {
 	get poseeAlarma() { return this.altaPolizaForm.get('poseeAlarma'); }
 	get poseeRastreoVehicular() { return this.altaPolizaForm.get('poseeRastreoVehicular'); }
 	get poseeTuercasAntirrobo() { return this.altaPolizaForm.get('poseeTuercasAntirrobo'); }
+	get siniestros() { return this.altaPolizaForm.get('siniestros'); }
 
 	onChanges(): void {
 		this.altaPolizaForm.get('marca').valueChanges.subscribe(idMarca => {
 			this.modelosService.getModelosByMarca(idMarca).subscribe(data => {
 			    this.modelos = data;
+			    this.anios = undefined;
 		    });
 		});
 
@@ -179,7 +181,7 @@ export class AltapolizaComponent implements OnInit {
 	processCliente(cliente) {
 		this.cliente = cliente;
 
-		this.altaPolizaForm.controls['idcliente'].setValue(this.cliente.idCliente);
+		this.altaPolizaForm.controls['idCliente'].setValue(this.cliente.idCliente);
 		this.altaPolizaForm.controls['nombre'].setValue(this.cliente.nombre);
 		this.altaPolizaForm.controls['apellido'].setValue(this.cliente.apellido);
 		this.altaPolizaForm.controls['nroDocumento'].setValue(this.cliente.documento.nroDocumento);
