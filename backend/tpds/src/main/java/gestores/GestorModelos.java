@@ -7,6 +7,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import dao.DaoVehiculo;
 import dataAccess.HibernateUtil;
 import dominio.AnioModelo;
 import dominio.Localidad;
@@ -33,6 +34,10 @@ public class GestorModelos {
 		} catch (HibernateException e) {
 			throw new DatoNoEncontradoException();
 		}
+	}
+	
+	public static Modelo getModelo(Integer idModelo) {
+		return DaoVehiculo.getModelo(idModelo);
 	}
 
 	public static ArrayList<Integer> getAnios(Integer idModelo) throws DatoNoEncontradoException {

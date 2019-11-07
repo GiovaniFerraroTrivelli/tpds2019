@@ -1,9 +1,11 @@
 package restControllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Hijo{
     private Integer edad;
+    private Date fechaNacimiento;
     private String estadoCivil;
     private String sexo;
 
@@ -49,6 +51,14 @@ public class Hijo{
     
     public String getSexo() {
 		return sexo;
+	}
+
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
 }

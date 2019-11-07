@@ -39,7 +39,7 @@ public class ControladorCliente {
 		c.setSexo(Sexo.MASCULINO);
 		c.setEstadoCivil(EstadoCivil.SOLTERO);
 		c.setCondicionIva(CondicionIva.ConsumidorFinal);
-		c.setIdCliente(42069);
+		c.setIdCliente(1234567890);
 		Direccion direccion = null;
 		try {
 			direccion = new Direccion("Aristóbulo del Valle", 1831, null, null, GestorGeografico.getLocalidad(3707));
