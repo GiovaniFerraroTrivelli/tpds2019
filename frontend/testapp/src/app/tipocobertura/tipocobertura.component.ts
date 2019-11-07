@@ -11,10 +11,10 @@ import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@an
 })
 export class TipocoberturaComponent implements OnInit {
 	@Input() coberturas: TipoCobertura[];
-	@Output() tipoCoberturaEmitter = new EventEmitter<TipoCobertura>();
 	coberturaSeleccionada: TipoCobertura;
 	selCobForm: FormGroup;
-	
+	@Input() polizaValues: Object;
+
 	constructor(
 		private modalService: NgbModal,
 		private coberturaService: TipocoberturaService
@@ -52,15 +52,8 @@ export class TipocoberturaComponent implements OnInit {
 	}
 
 	onSubmitSelCob(f: NgForm, modal) {
-		console.log(this.coberturaSeleccionada);
-
-		console.log(f.value);
-
 		modal.close('add');
-
+		console.log(this.polizaValues);
 		f.reset();
-	}
-	sendCobertura(){
-		this.tipoCoberturaEmitter.emit(this.coberturaSeleccionada);
 	}
 }

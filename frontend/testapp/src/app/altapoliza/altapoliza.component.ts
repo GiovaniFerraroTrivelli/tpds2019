@@ -35,10 +35,9 @@ export class AltapolizaComponent implements OnInit {
 	private marcas : Marca[];
 	private modelos : Modelo[];
 	private cliente : Cliente;
-	private cobertura: TipoCobertura;
 	private coberturasDisponibles: TipoCobertura[];
 	private nextStep: boolean;
-
+	private polizaValues: Object;
 	altaPolizaForm: FormGroup;
 
 	constructor(
@@ -138,15 +137,15 @@ export class AltapolizaComponent implements OnInit {
 
 	onSubmit(f: NgForm) {
 		f.value.hijos = this.childComp.hijos;
-
-		console.log(f.value);
+		console.log(typeof(f.value));
 
 		this.loadingService.i();
 
 		this.altaPolizaService.postValidarDatos(f.value).subscribe(data => {
 		    this.loadingService.d();
-		    this.coberturasDisponibles = data.coberturasDisponibles;
-		    //console.log(data.errores.length);
+			this.coberturasDisponibles = data.coberturasDisponibles;
+			this.polizaValues = f.value;
+			//console.log(data.errores.length);
 		    //console.log(data.coberturasDisponibles.length);
 
 		    if(data.errores.length) {
@@ -174,10 +173,5 @@ export class AltapolizaComponent implements OnInit {
 
 	prevStep() {
 		this.nextStep = false;
-	}
-	getCoberturaSeleccionada(cobertura){
-		this.cobertura = cobertura;
-		console.log(cobertura);
-		console.log('------');
 	}
 }

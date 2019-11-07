@@ -194,7 +194,7 @@
 	</div>
 </form> 
 
-<app-tipocobertura [ngbCollapse]="!nextStep" [coberturas]="coberturasDisponibles" (tipoCoberturaEmitter)="getCoberturaSeleccionada($event)"></app-tipocobertura>
+<app-tipocobertura [ngbCollapse]="!nextStep" [coberturas]="coberturasDisponibles" [polizaValues]="polizaValues"></app-tipocobertura>
 
 <div [ngbCollapse]="!nextStep">
 	<div class="d-flex flex-row-reverse" id='returnbtn'>
