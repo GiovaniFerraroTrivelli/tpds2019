@@ -8,7 +8,7 @@ public class Modelo {
 	private Integer idModelo;
 	private String nombre;
 	private Marca marca;
-	private Set<AnioModelo> anios;
+	private Set<Cotizacion> anios;
 
 	public Modelo() {
 
@@ -45,11 +45,11 @@ public class Modelo {
 		this.marca = marca;
 	}
 
-	public Set<AnioModelo> getAnios() {
+	public Set<Cotizacion> getAnios() {
 		return anios;
 	}
 
-	public void setAnios(Set<AnioModelo> anios) {
+	public void setAnios(Set<Cotizacion> anios) {
 		this.anios = anios;
 	}
 

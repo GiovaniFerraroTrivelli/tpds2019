@@ -9,7 +9,7 @@ import org.hibernate.query.Query;
 
 import dao.DaoVehiculo;
 import dataAccess.HibernateUtil;
-import dominio.AnioModelo;
+import dominio.Cotizacion;
 import dominio.Localidad;
 import dominio.Marca;
 import dominio.Modelo;
@@ -42,15 +42,15 @@ public class GestorModelos {
 
 	public static ArrayList<Integer> getAnios(Integer idModelo) throws DatoNoEncontradoException {
 		Session session = HibernateUtil.getSession();
-		String hql = "FROM AnioModelo WHERE id_modelo=" + idModelo.toString() + " ORDER BY valor DESC";
+		String hql = "FROM Cotizacion WHERE id_modelo =" + idModelo.toString() + " ORDER BY anio DESC";
 		ArrayList<Integer> anios = new ArrayList<Integer>();
 
 		try {
-			Query<AnioModelo> query = session.createQuery(hql);
-			ArrayList<AnioModelo> listaModelos = new ArrayList<AnioModelo>(query.list());
+			Query<Cotizacion> query = session.createQuery(hql);
+			ArrayList<Cotizacion> listaModelos = new ArrayList<Cotizacion>(query.list());
 
-			for (AnioModelo a : listaModelos)
-				anios.add(a.getValor());
+			for (Cotizacion a : listaModelos)
+				anios.add(a.getAnio());
 
 		} catch (HibernateException e) {
 			throw new DatoNoEncontradoException();

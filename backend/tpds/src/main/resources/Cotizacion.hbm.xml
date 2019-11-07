@@ -3,9 +3,9 @@
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="dominio.AnioModelo" table="anios_modelos">
+    <class name="dominio.Cotizacion" table="cotizaciones">
 
-        <id name="idAnioModelo" type="java.lang.Integer" column="id_anio_modelo">
+        <id name="idCotizacion" type="java.lang.Integer" column="id_cotizacion">
         	<generator class="native" />
         </id>
 
@@ -13,7 +13,10 @@
             <column name="id_modelo" not-null="true" />
         </many-to-one>
 
-        <property name="valor" column="valor" />
+        <property name="anio" column="anio" />
+        <property name="cotizacion" column="cotizacion" />
+        <property name="unidad" column="unidad" length="3" />
+        
 
     </class>
 </hibernate-mapping>

@@ -7,7 +7,7 @@ import dao.DaoCliente;
 import dao.DaoGeografico;
 import dao.DaoVehiculo;
 import dataTransferObjects.PolizaDTO;
-import dominio.AnioModelo;
+import dominio.Cotizacion;
 import dominio.Modelo;
 import dominio.TipoCobertura;
 import excepciones.DatoNoEncontradoException;
@@ -57,8 +57,8 @@ public class GestorPoliza {
 				// Validar anio
 				
 				Boolean existe = false;
-				for (AnioModelo m : GestorModelos.getModelo(p.getModelo()).getAnios()) {
-					if (m.getValor() == p.getAnio()) existe = true;
+				for (Cotizacion m : GestorModelos.getModelo(p.getModelo()).getAnios()) {
+					if (m.getAnio() == p.getAnio()) existe = true;
 				}
 				if (!existe)
 					errores.add(new Error("El modelo seleccionado no se fabricó en el año indicado"));

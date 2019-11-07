@@ -28,7 +28,7 @@
         <mapping resource="TipoCobertura.hbm.xml"/>
         <mapping resource="Poliza.hbm.xml"/>
         <mapping resource="Hijo.hbm.xml"/>
-        <mapping resource="AnioModelo.hbm.xml"/>
+        <mapping resource="Cotizacion.hbm.xml"/>
         
     </session-factory>
 </hibernate-configuration>

@@ -51,7 +51,7 @@ public class ControladorModelos {
 			ArrayList<Integer> result = GestorModelos.getAnios(idModelo);
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(new Error("No se pudo recuperar los modelos de la marca elegida"), HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new Error("No se pudo recuperar los años del modelo elegido"), HttpStatus.NOT_FOUND);
 		}
 	}
 

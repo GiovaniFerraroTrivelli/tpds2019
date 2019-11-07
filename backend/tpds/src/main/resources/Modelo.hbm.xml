@@ -15,11 +15,11 @@
 
         <property name="nombre" column="nombre" length="60"/>
         
-        <set name="anios" table="anios_modelos" inverse="true" cascade="save-update" lazy="true" fetch="select" order-by="valor">
+        <set name="anios" table="cotizaciones" inverse="true" cascade="save-update" lazy="true" fetch="select" order-by="valor">
             <key>
                 <column name="id_modelo" not-null="true" />
             </key>
-            <one-to-many class="dominio.AnioModelo" />
+            <one-to-many class="dominio.Cotizacion" />
         </set>
 
     </class>

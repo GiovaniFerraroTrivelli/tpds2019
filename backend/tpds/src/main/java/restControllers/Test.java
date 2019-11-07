@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import dataAccess.HibernateUtil;
-import dominio.AnioModelo;
+import dominio.Cotizacion;
 import dominio.Cliente;
 import dominio.Documento;
 import dominio.Poliza;
@@ -27,13 +27,18 @@ public class Test {
 		Session s = HibernateUtil.getSession();		
 		Integer idModelo = 4;
 		
-		String hql = "FROM AnioModelo WHERE id_modelo=" + idModelo.toString() + " ORDER BY valor DESC";
-		Query<AnioModelo> query = HibernateUtil.getSession().createQuery(hql);
-		
-		ArrayList<AnioModelo> listaModelos = new ArrayList<AnioModelo>(query.list());
-		
-		for(AnioModelo a : listaModelos) {
-			System.out.println(a.getValor());
+		try {
+			String hql = "FROM Cotizacion WHERE id_modelo=" + idModelo.toString() + " ORDER BY anio DESC";
+			Query<Cotizacion> query = s.createQuery(hql);
+			
+			ArrayList<Cotizacion> listaModelos = new ArrayList<Cotizacion>(query.list());
+			
+			for(Cotizacion a : listaModelos) {
+				System.out.println(a.getAnio());
+			}
+		} catch (Exception e) {
+			s.close();
+			HibernateUtil.shutdown();
 		}
 		
 		s.close();
@@ -46,7 +51,7 @@ public class Test {
 
 		try {
 			Modelo m = session.get(Modelo.class, 1);
-			ArrayList<AnioModelo> listaAnios = new ArrayList<AnioModelo>(m.getAnios());
+			ArrayList<Cotizacion> listaAnios = new ArrayList<Cotizacion>(m.getAnios());
 			System.out.println(m.getNombre());
 			System.out.println(m.getAnios().size());
 		} catch (Exception e) {
@@ -62,8 +67,8 @@ public class Test {
 	private static void agregarAnioAModelo() {
 		HibernateUtil.createSessionFactory();
 		Session session = HibernateUtil.getSession();
-		AnioModelo a = new AnioModelo();
-		a.setValor(2011);
+		Cotizacion a = new Cotizacion();
+		a.setAnio(2011);
 
 		try {
 			Transaction tx = session.beginTransaction();
