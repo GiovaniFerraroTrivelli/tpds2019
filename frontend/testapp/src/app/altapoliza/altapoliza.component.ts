@@ -56,6 +56,7 @@ export class AltapolizaComponent implements OnInit {
 		this.cliente.direccion.localidad = new Localidad();
 		this.cliente.documento = new Documento();
 
+
 		this.altaPolizaForm = new FormGroup({
 			'idcliente': new FormControl(null, Validators.required),
 			'nombre': new FormControl({ value: '', disabled: true }),
@@ -173,5 +174,10 @@ export class AltapolizaComponent implements OnInit {
 
 	prevStep() {
 		this.nextStep = false;
+	}
+	getCoberturaSeleccionada(cobertura){
+		this.cobertura = cobertura;
+		console.log(cobertura);
+		console.log('------');
 	}
 }

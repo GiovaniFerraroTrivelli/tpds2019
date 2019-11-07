@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter} from '@angular/core';
 import { TipoCobertura } from 'TipoCobertura';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TipocoberturaService } from './tipocobertura.service';
@@ -11,6 +11,7 @@ import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@an
 })
 export class TipocoberturaComponent implements OnInit {
 	@Input() coberturas: TipoCobertura[];
+	@Output() tipoCoberturaEmitter = new EventEmitter<TipoCobertura>();
 	coberturaSeleccionada: TipoCobertura;
 	selCobForm: FormGroup;
 	
@@ -58,5 +59,8 @@ export class TipocoberturaComponent implements OnInit {
 		modal.close('add');
 
 		f.reset();
+	}
+	sendCobertura(){
+		this.tipoCoberturaEmitter.emit(this.coberturaSeleccionada);
 	}
 }
