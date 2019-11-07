@@ -9,6 +9,7 @@ import { GeografiaService } from '../geografia/geografia.service';
 import { ModelosService } from '../modelos/modelos.service';
 import { AltaPolizaService } from './altapoliza.service';
 import { LoadingService } from '../loading/loading.service';
+import { DialogService } from '../dialog/dialog.service';
 
 import { Hijo } from '../hijos/hijo';
 import { Provincia } from '../geografia/provincia';
@@ -18,6 +19,7 @@ import { Modelo } from '../modelos/modelo';
 import { Cliente } from '../cliente/cliente';
 import { Documento } from '../cliente/documento';
 import { Direccion } from '../cliente/direccion';
+import { Poliza } from '../poliza/poliza';
 import { TipoCobertura } from 'TipoCobertura';
 
 @Component({
@@ -32,16 +34,18 @@ export class AltapolizaComponent implements OnInit {
 
 	private provincias : Provincia[];
 	private localidades : Localidad[];
+	private anios : number[];
 	private marcas : Marca[];
 	private modelos : Modelo[];
 	private cliente : Cliente;
 	private coberturasDisponibles: TipoCobertura[];
 	private nextStep: boolean;
-	private polizaValues: Object;
+	private polizaValues: Poliza;
 	altaPolizaForm: FormGroup;
 
 	constructor(
 		private titleService: Title,
+		private dialogService: DialogService,
 		private geografiaService: GeografiaService,
 		private modelosService: ModelosService,
 		private altaPolizaService: AltaPolizaService,
@@ -55,11 +59,10 @@ export class AltapolizaComponent implements OnInit {
 		this.cliente.direccion.localidad = new Localidad();
 		this.cliente.documento = new Documento();
 
-
 		this.altaPolizaForm = new FormGroup({
 			'idcliente': new FormControl(null, Validators.required),
-			'nombre': new FormControl({ value: '', disabled: true }),
-			'apellido': new FormControl({ value: '', disabled: true }),
+			'nombre': new FormControl(null),
+			'apellido': new FormControl(null),
 			'nroDocumento': new FormControl({ value: '', disabled: true }),
 			'direccion': new FormControl({ value: '', disabled: true }),
 			'marca': new FormControl(null, Validators.required),
@@ -121,6 +124,12 @@ export class AltapolizaComponent implements OnInit {
 			    this.localidades = data;
 		    });
 		});
+
+		this.altaPolizaForm.get('modelo').valueChanges.subscribe(idModelo => {
+			this.modelosService.getAniosByModelo(idModelo).subscribe(data => {
+			    this.anios = data;
+		    });
+		});
 	}
 
 	getListaProvincias(): void {
@@ -137,21 +146,23 @@ export class AltapolizaComponent implements OnInit {
 
 	onSubmit(f: NgForm) {
 		f.value.hijos = this.childComp.hijos;
-		console.log(typeof(f.value));
+		f.value.seleccionCobertura = null;
+
+		console.info(f.value);
 
 		this.loadingService.i();
 
 		this.altaPolizaService.postValidarDatos(f.value).subscribe(data => {
 		    this.loadingService.d();
-			this.coberturasDisponibles = data.coberturasDisponibles;
-			this.polizaValues = f.value;
-			//console.log(data.errores.length);
-		    //console.log(data.coberturasDisponibles.length);
 
 		    if(data.errores.length) {
-		    	// aca apareceria un cartelito con todos los errores que tiene
+		    	this.dialogService.alert(
+		    		'Errores detectados',
+		    		data.errores.join("\n")
+		    	);
 		    } else {
-		    	// data.coberturasDisponibles posee un array de TipoCoberturas.
+		    	this.polizaValues = f.value;
+		    	this.coberturasDisponibles = data.coberturasDisponibles;
 		    	this.nextStep = true;
 		    }
 	    });

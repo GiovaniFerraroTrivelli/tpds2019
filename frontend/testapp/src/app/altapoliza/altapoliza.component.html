@@ -21,14 +21,14 @@
 				<div class="col form-group mb-1">
 					<label class="control-label pt-2" for="nombre">Nombre(s)</label>
 					<div class="input-group">
-					<input type="text" formControlName="nombre" name="nombre" id="nombre" class="form-control">
+					<input type="text" readonly="readonly" formControlName="nombre" name="nombre" id="nombre" class="form-control unclickable">
 					</div>
 				</div>
 
 				<div class="col form-group mb-1">
 					<label class="control-label pt-2" for="apellido">Apellido(s)</label>
 					<div class="input-group">
-					<input type="text" formControlName="apellido" name="apellido" id="apellido" class="form-control">
+					<input type="text" readonly="readonly" formControlName="apellido" name="apellido" id="apellido" class="form-control unclickable">
 					</div>
 				</div>
 			</div>
@@ -76,8 +76,7 @@
 					<label class="control-label pt-2" for="anio">Año</label>
 					<div class="input-group">
 						<select formControlName="anio" name="anio" class="form-control mb-1">
-							<option value="1998">1998</option>
-							<option value="2010">2010</option>
+							<option value="{{ anio }}" *ngFor="let anio of anios">{{ anio }}</option>
 						</select>
 					</div>
 				</div>
@@ -196,7 +195,7 @@
 
 <app-tipocobertura [ngbCollapse]="!nextStep" [coberturas]="coberturasDisponibles" [polizaValues]="polizaValues"></app-tipocobertura>
 
-<div [ngbCollapse]="!nextStep">
+<div [ngbCollapse]="nextStep != 1">
 	<div class="d-flex flex-row-reverse" id='returnbtn'>
     	<button type="button" class="btn btn-secondary p-2" (click)='prevStep()'>Volver</button>
     </div>

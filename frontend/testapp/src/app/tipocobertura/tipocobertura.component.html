@@ -12,7 +12,7 @@
 		 		Cobertura seleccionada: <strong>{{ coberturaSeleccionada.nombre }}</strong>
 			</div>
 
-			<input type="hidden" name="coberturaId" value="" />
+			<input type="hidden" name="idCobertura" formControlName="idCobertura" />
 
 	  		<div class="form-group mb-1 required">
 				<label class="pt-2" for="fechaVigencia">Fecha de vigencia</label>
@@ -36,22 +36,64 @@
   	</form>
 </ng-template>
 
-<h4 class="mb-3">Tipos de cobertura disponibles</h4>
+<div *ngIf="!polizaValues.seleccionCobertura">
+	<h4 class="mb-3">Tipos de cobertura disponibles</h4>
 
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-6 col-sm-12 col-xs-12 col-lg-4 mb-2" *ngFor='let cobertura of coberturas'>
-			<div class="card h-100">
-	  			<div class="card-header">{{cobertura.nombre}}</div>
-	  
-  				<div class="card-body">
-					<p class="card-text">{{cobertura.descripcion}}</p>
-	  			</div>
-	  
-	  			<div class="card-footer text-muted text-center">
-					<button class="btn btn-primary btn-block" (click)='seleccionarCobertura(cobertura, content)'>Seleccionar</button>
-	  			</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6 col-sm-12 col-xs-12 col-lg-4 mb-2" *ngFor='let cobertura of coberturas'>
+				<div class="card h-100">
+		  			<div class="card-header">{{cobertura.nombre}}</div>
+		  
+	  				<div class="card-body">
+						<p class="card-text">{{cobertura.descripcion}}</p>
+		  			</div>
+		  
+		  			<div class="card-footer text-muted text-center">
+						<button class="btn btn-primary btn-block" (click)='seleccionarCobertura(cobertura, content)'>Seleccionar</button>
+		  			</div>
+				</div>
 			</div>
 		</div>
+	</div>
+</div>
+
+<div *ngIf="polizaValues.seleccionCobertura">
+	<h4 class="mb-3">Confirmación de datos</h4>
+
+	<div class="card mb-3 w-50 m-auto">
+	  <div class="card-body">
+	    <h5 class="card-title">Cliente: {{ polizaValues.apellido }}, {{ polizaValues.nombre }}</h5>
+	  </div>
+	  <ul class="list-group list-group-flush">
+	  	<li class="list-group-item">
+		    <h5 class="card-title">Vehículo: /marca/ /modelo/ {{ polizaValues.motor }}</h5>
+		    <h6 class="card-subtitle mt-1">Chasis {{ polizaValues.chasis }}</h6>
+		    <h6 class="card-subtitle mt-1">Patente {{ polizaValues.patente ? polizaValues.patente : "en trámite" }}</h6>
+		</li>
+	    <li class="list-group-item">
+	    	<strong>Vigencia</strong>: {{ polizaValues.seleccionCobertura.fechaVigencia | date: 'dd/MM/yyyy' }} hasta /fechaHasta/
+	    </li>
+	    <li class="list-group-item">
+	    	<strong>Suma asegurada</strong>: $5
+	    </li>
+	    <li class="list-group-item">
+	    	<strong>Premio</strong>: $2
+	    </li>
+	    <li class="list-group-item">
+	    	<strong>Importe por descuentos</strong>: $5
+	    </li>
+	    <li class="list-group-item">
+	    	<strong>Último día de pago</strong>: mañana
+	    </li>
+	    <li class="list-group-item text-right">
+	    	<strong>Monto total a abonar</strong>: $5
+	    </li>
+	  </ul>
+	  <div class="card-footer text-muted text-center">
+		<button type="button" (click)="endStepCancelar()" class="btn btn-secondary mr-1">Cancelar</button>
+		<button type="button" (click)="endStepCambiarCobertura()" class="btn btn-secondary mr-1">Cambiar cobertura</button>
+		<button type="button" class="btn btn-primary mr-1">Generar póliza</button>
+	  </div>
 	</div>
 </div>
