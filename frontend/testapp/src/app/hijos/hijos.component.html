@@ -72,8 +72,8 @@
 			</tr>
 			<tr *ngFor="let hijo of hijos; let row = index">
 				<td>{{ hijo.edad }}</td>
-				<td>{{ hijo.estadoCivil }}</td>
-				<td>{{ hijo.sexo }}</td>
+				<td>{{ EstadoCivil[hijo.estadoCivil] }}</td>
+				<td>{{ Sexo[hijo.sexo] }}</td>
 				<td> 
 					<button type="button" class="btn btn-danger btn-sm" (click)='deleteHijo(row)'>Eliminar</button>
 				</td>
