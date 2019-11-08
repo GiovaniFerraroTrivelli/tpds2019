@@ -15,7 +15,7 @@
 
         <property name="nombre" column="nombre" length="60"/>
         
-        <set name="anios" table="cotizaciones" inverse="true" cascade="save-update" lazy="true" fetch="select" order-by="valor">
+        <set name="anios" table="cotizaciones" inverse="true" cascade="save-update" fetch="select" order-by="anio">
             <key>
                 <column name="id_modelo" not-null="true" />
             </key>
