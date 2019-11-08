@@ -31,7 +31,7 @@
 	  		<div class="form-group mb-1 required">
 				<label class="pt-2" for="modalidadPago">Modalidad de pago</label>
 
-				<select class="form-control" id="modalidadPago" formControlName="modalidadPago" name="modalidadPago" (change)='setFormaPago($event.target.value)'>
+				<select class="form-control" id="modalidadPago" formControlName="modalidadPago" name="modalidadPago">
 					<option value="{{ enum.key }}" *ngFor="let enum of ModalidadPago | keyvalue">{{ enum.value }}</option>
 				</select>
 	  		</div>
@@ -72,6 +72,7 @@
 	<div class="card mb-3 w-50 m-auto">
 	  <div class="card-body">
 	    <p class="lead mb-0">{{ resumenPoliza.apellidoTitular }}, {{ resumenPoliza.nombreTitular }}</p>
+	    <h6 class="card-subtitle mt-1"><strong>Id de cliente</strong>: {{ polizaValues.idCliente }}</h6>
 	  </div>
 	  <ul class="list-group list-group-flush">
 	  	<li class="list-group-item">
@@ -94,7 +95,7 @@
 		</li>
 		<li class="list-group-item" *ngIf="polizaValues.modalidadPago == 'MENSUAL'">
 			<div *ngFor="let cuota of resumenPoliza.cuotas; let row = index">
-				<strong>Cuota {{ row + 1 }} / {{ resumenPoliza.cuotas.length }}</strong>: ${{ cuota.importe }} - <strong>Vencimiento: </strong> {{ cuota.fechaVencimiento | date: 'dd/MM/yyyy' }}
+				<strong>Cuota {{ row + 1 }}/{{ resumenPoliza.cuotas.length }}</strong>: ${{ cuota.importe }} - <strong>Vencimiento: </strong> {{ cuota.fechaVencimiento | date: 'dd/MM/yyyy' }}
 			</div>	
 		</li>	
 	    <li class="list-group-item text-right">

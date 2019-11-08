@@ -1,16 +1,18 @@
 import { Component, OnInit, Output, Input, EventEmitter} from '@angular/core';
-import { TipoCobertura } from 'TipoCobertura';
+import { Router } from "@angular/router";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+
+import { TipoCobertura } from 'TipoCobertura';
+import { AltaPolizaService } from '../altapoliza/altapoliza.service';
+import { LoadingService } from '../loading/loading.service';
+import { DialogService } from '../dialog/dialog.service';
+
 import { Poliza } from '../poliza/poliza';
 import { RespuestaResumen } from '../poliza/respuesta-resumen';
 import { ResumenPoliza } from '../poliza/resumen-poliza';
 import { ModalidadPago } from '../enums/modalidad-pago.enum';
-import { DialogService } from '../dialog/dialog.service';
 import { FechaVigenciaValidator } from './fechavigencia.validator';
-import { Router } from "@angular/router";
-import { AltaPolizaService } from '../altapoliza/altapoliza.service';
-import { LoadingService } from '../loading/loading.service';
 
 @Component({
 	selector: 'app-tipocobertura',
@@ -20,12 +22,9 @@ import { LoadingService } from '../loading/loading.service';
 export class TipocoberturaComponent implements OnInit {
 	@Input() coberturas: TipoCobertura[];
 	@Input() polizaValues: Poliza;
-	@Input() marcaSeleccionada: String;
-	@Input() modeloSeleccionado: String;
 
 	selCobForm: FormGroup;
 	finVigencia: Date;
-	formaPago: String;
 	fechaVigenciaDay: String;
 	vencimientoCuota: String;
 	coberturaSeleccionada: TipoCobertura;
@@ -83,34 +82,37 @@ export class TipocoberturaComponent implements OnInit {
 		Object.assign(this.polizaValues, f.value);
 		console.log(this.polizaValues);
 
-		this.finVigencia = new Date(this.selCobForm.get('fechaVigencia').value);
-		this.finVigencia.setMonth(this.finVigencia.getMonth() + 6);
-		this.fechaVigenciaDay = this.polizaValues.fechaVigencia[8]+this.polizaValues.fechaVigencia[9];
-
 		this.loadingService.i();
 
-		this.altaPolizaService.postValidarDatos2(this.polizaValues).subscribe(data => {
-		    console.log(data);
+		this.altaPolizaService.postValidarDatos2(this.polizaValues).subscribe(
+			data => {
+			    console.log(data);
 
-		    if(data.errores.length) {
-		    	this.dialogService.alert(
-		    		'Errores detectados',
-		    		data.errores.map(e => e.mensaje).join(". ")
+			    if(data.errores.length) {
+			    	this.dialogService.alert(
+			    		'Errores detectados',
+			    		data.errores.map(e => e.mensaje).join(". ")
+			    	);
+
+					this.clearCobertura();
+			    } else {
+			    	this.resumenPoliza = data.datosPoliza;
+			    }
+
+			    this.loadingService.d();
+
+			    modal.close('add');
+			    f.reset();
+			},
+		    err => {
+        		this.dialogService.alert(
+		    		'Ha ocurrido un error',
+		    		'No se pudo realizar lo solicitado: ' + err.error.error
 		    	);
-
-				this.polizaValues.idCobertura = undefined;
-				this.polizaValues.fechaVigencia = undefined;
-				this.polizaValues.modalidadPago = undefined;
-
-				this.resumenPoliza = new ResumenPoliza();
-		    } else {
-		    	this.resumenPoliza = data.datosPoliza;
-		    }
-
-		    this.loadingService.d();
-		    modal.close('add');
-		    f.reset();
-		});
+			    
+			    this.loadingService.d();
+      		}
+		);
 	}
 
 	endStepCancelar() {
@@ -124,16 +126,7 @@ export class TipocoberturaComponent implements OnInit {
 	}
 
 	endStepCambiarCobertura() {
-		this.polizaValues.idCobertura = undefined;
-		this.polizaValues.fechaVigencia = undefined;
-		this.polizaValues.modalidadPago = undefined;
-
-		this.resumenPoliza = new ResumenPoliza();
-	}
-
-	setFormaPago(formaPago){
-		this.formaPago = formaPago;
-		console.log(this.formaPago)
+		this.clearCobertura();
 	}
 
 	endStepGenerar() {
@@ -148,25 +141,24 @@ export class TipocoberturaComponent implements OnInit {
 		    		'Póliza agregada',
 		    		'La póliza fue agregada exitosamente al sistema.'
 		    	);
-		    }
-
-		    /*if(data.errores.length) {
-		    	this.dialogService.alert(
-		    		'Errores detectados',
-		    		data.errores.map(e => e.mensaje).join(". ")
-		    	);
 		    } else {
-		    	this.polizaValues = f.value;
-		    	this.coberturasDisponibles = data.coberturasDisponibles;
-				this.nextStep = true;
-				this.setMarca();
-				this.setModelo();
-		    }*/
+				this.dialogService.alert(
+		    		'Error de alta de póliza',
+		    		'Hubo un error al cargar la póliza.'
+		    	);
+		    }
 		});
 	}
 
-	hasResponsePost2()
-	{
+	clearCobertura() {
+		this.polizaValues.idCobertura = undefined;
+		this.polizaValues.fechaVigencia = undefined;
+		this.polizaValues.modalidadPago = undefined;
+
+		this.resumenPoliza = new ResumenPoliza();
+	}
+
+	hasResponsePost2() {
 		return Object.keys(this.resumenPoliza).length;
 	}
 }
