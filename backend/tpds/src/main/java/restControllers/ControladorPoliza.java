@@ -5,6 +5,8 @@ import java.time.Period;
 import java.time.Year;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,8 @@ import excepciones.NoHayValorException;
 import gestores.GestorClientes;
 import gestores.GestorModelos;
 import gestores.GestorPoliza;
+
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -77,6 +81,8 @@ public class ControladorPoliza {
 		for (Cuota cuota : poliza.getCuotas()) {
 			cuotas.add(cuota.getDTO());
 		}
+		
+		Collections.sort(cuotas);
 		resumen.setCuotas(cuotas);
 		
 		

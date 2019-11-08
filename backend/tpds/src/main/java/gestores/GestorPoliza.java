@@ -173,7 +173,6 @@ public class GestorPoliza {
 				// TODO: Cambiar el importe
 				cuota.setImporte(100.0);
 				cuota.setPoliza(poliza);
-				System.out.println(cuota.getFechaVencimiento());
 
 				cuotas.add(cuota);
 			}

@@ -4,7 +4,7 @@ import java.util.Date;
 
 import dataTransferObjects.CuotaDTO;
 
-public class Cuota {
+public class Cuota implements Comparable<Cuota>{
 	private Integer idCuota;
 	private Poliza poliza;
 	private Double importe;
@@ -52,6 +52,12 @@ public class Cuota {
 		c.setImporte(this.importe.toString());
 		// TODO Auto-generated method stub
 		return c;
+	}
+
+	@Override
+	public int compareTo(Cuota arg0) {
+		this.fechaVencimiento.compareTo(arg0.getFechaVencimiento());
+		return 0;
 	}
 
 }
