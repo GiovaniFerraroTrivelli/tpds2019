@@ -39,12 +39,12 @@
 
 		<div class="modal-footer">
 			<button type="button" class="btn btn-light" (click)="cancelCobertura(seleccionCobertura, modal)">Cancelar</button>
-			<button type="submit" [disabled]="!seleccionCobertura.valid" class="btn btn-primary">Aceptar</button>
+			<button type="submit" [disabled]="!seleccionCobertura.valid || !loadingService.isHidden()" class="btn btn-primary">Aceptar</button>
 		</div>
   	</form>
 </ng-template>
 
-<div *ngIf="!polizaValues.idCobertura">
+<div *ngIf="!hasResponsePost2()">
 	<h4 class="mb-3">Tipos de cobertura disponibles</h4>
 
 	<div class="container-fluid">
@@ -58,7 +58,7 @@
 		  			</div>
 		  
 		  			<div class="card-footer text-muted text-center">
-						<button class="btn btn-primary btn-block" (click)='seleccionarCobertura(cobertura, content)'>Seleccionar</button>
+						<button type="submit" class="btn btn-primary btn-block" (click)='seleccionarCobertura(cobertura, content)'>Seleccionar</button>
 		  			</div>
 				</div>
 			</div>
@@ -66,43 +66,39 @@
 	</div>
 </div>
 
-<div *ngIf="polizaValues.idCobertura">
+<div *ngIf="hasResponsePost2()">
 	<h4 class="mb-3">Confirmación de datos</h4>
 
 	<div class="card mb-3 w-50 m-auto">
 	  <div class="card-body">
-	    <p class="lead mb-0">{{ polizaValues.apellido }}, {{ polizaValues.nombre }}</p>
-	    <h6 class="mb-0">Id de cliente: {{ polizaValues.idCliente }}</h6>
+	    <p class="lead mb-0">{{ resumenPoliza.apellidoTitular }}, {{ resumenPoliza.nombreTitular }}</p>
 	  </div>
 	  <ul class="list-group list-group-flush">
 	  	<li class="list-group-item">
-		    <p class="lead">{{marcaSeleccionada}} {{modeloSeleccionado}}</p>
+		    <p class="lead">{{ resumenPoliza.marca }} {{ resumenPoliza.modelo }}</p>
 
-		    <h6 class="card-subtitle mt-1"><strong>Motor</strong>: {{ polizaValues.motor }}</h6>
-		    <h6 class="card-subtitle mt-1"><strong>Chasis</strong>: {{ polizaValues.chasis }}</h6>
-		    <h6 class="card-subtitle mt-1"><strong>Patente</strong> {{ polizaValues.patente ? polizaValues.patente : "en trámite" }}</h6>
+		    <h6 class="card-subtitle mt-1"><strong>Motor</strong>: {{ resumenPoliza.motor }}</h6>
+		    <h6 class="card-subtitle mt-1"><strong>Chasis</strong>: {{ resumenPoliza.chasis }}</h6>
+		    <h6 class="card-subtitle mt-1"><strong>Patente</strong> {{ resumenPoliza.patente ? resumenPoliza.patente : "en trámite" }}</h6>
 		</li>
 	    <li class="list-group-item">
-	    	<strong>Vigencia</strong>: {{ polizaValues.fechaVigencia | date: 'dd/MM/yyyy' }} hasta {{ finVigencia | date: 'dd/MM/yyyy' }}
+	    	<strong>Vigencia</strong>: {{ resumenPoliza.inicioVigencia | date: 'dd/MM/yyyy' }} hasta {{ resumenPoliza.finVigencia | date: 'dd/MM/yyyy' }}
 	    </li>
 	    <li class="list-group-item">
-	    	<strong>Suma asegurada</strong>: $5<br />
-	    	<strong>Premio</strong>: $2<br />
-	    	<strong>Importe por descuentos</strong>: $5
+	    	<strong>Suma asegurada</strong>: ${{ resumenPoliza.sumaAsegurada }}<br />
+	    	<strong>Premio</strong>: ${{ resumenPoliza.premio }}<br />
+	    	<strong>Importe por descuentos</strong>: ${{ resumenPoliza.descuentos }}
 	    </li>
 	    <li class="list-group-item">
-	    	<strong>Último día de pago</strong>: 01-01-2050
+	    	<strong>Último día de pago</strong>: {{ resumenPoliza.ultimoDiaPago | date: 'dd/MM/yyyy' }}
 		</li>
-		<div *ngIf="formaPago=='Mensual'">
-			<li class="list-group-item">
-				<strong>Cuotas:</strong>
-			</li>
-			<li *ngFor='let cuota of cuotas; let row = index' class="list-group-item">
-				<strong>Cuota {{row+1}}/{{cantidadCuotas}}</strong>: ${{cuota.importe}} <strong> Vencimiento: </strong> {{fechaVigenciaDay}}/{{vencimiento(cuota)}}
-			</li>	
-		</div>	
+		<li class="list-group-item" *ngIf="polizaValues.modalidadPago == 'MENSUAL'">
+			<div *ngFor="let cuota of resumenPoliza.cuotas; let row = index">
+				<strong>Cuota {{ row + 1 }} / {{ resumenPoliza.cuotas.length }}</strong>: ${{ cuota.importe }} - <strong>Vencimiento: </strong> {{ cuota.fechaVencimiento | date: 'dd/MM/yyyy' }}
+			</div>	
+		</li>	
 	    <li class="list-group-item text-right">
-	    	<strong>Monto total a abonar</strong>: $5
+	    	<strong>Monto total a abonar</strong>: ${{ resumenPoliza.montoTotal }}
 	    </li>
 	  </ul>
 	  <div class="card-footer text-muted text-center">

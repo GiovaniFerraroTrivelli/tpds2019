@@ -190,6 +190,10 @@ export class AltapolizaComponent implements OnInit {
 	}
 
 	prevStep() {
+		this.polizaValues.idCobertura = undefined;
+		this.polizaValues.fechaVigencia = undefined;
+		this.polizaValues.modalidadPago = undefined;
+		
 		this.nextStep = false;
 	}
 	setMarca(){

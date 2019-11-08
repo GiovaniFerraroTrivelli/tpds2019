@@ -3,6 +3,8 @@ import { TipoCobertura } from 'TipoCobertura';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Poliza } from '../poliza/poliza';
+import { RespuestaResumen } from '../poliza/respuesta-resumen';
+import { ResumenPoliza } from '../poliza/resumen-poliza';
 import { ModalidadPago } from '../enums/modalidad-pago.enum';
 import { DialogService } from '../dialog/dialog.service';
 import { FechaVigenciaValidator } from './fechavigencia.validator';
@@ -27,16 +29,9 @@ export class TipocoberturaComponent implements OnInit {
 	fechaVigenciaDay: String;
 	vencimientoCuota: String;
 	coberturaSeleccionada: TipoCobertura;
+	resumenPoliza: ResumenPoliza;
 
 	public ModalidadPago = ModalidadPago;
-
-	private cuotas = [
-		{ importe: 167, mesCorrespondiente: 10, anio: 2019, cuotaPaga: false },
-		{ importe: 167, mesCorrespondiente: 11, anio: 2019, cuotaPaga: false },
-		{ importe: 167, mesCorrespondiente: 12, anio: 2019, cuotaPaga: false },
-	];
-
-	cantidadCuotas = this.cuotas.length;
 
 	constructor(
 		private modalService: NgbModal,
@@ -54,6 +49,7 @@ export class TipocoberturaComponent implements OnInit {
 		});
 
 		this.polizaValues = new Poliza();
+		this.resumenPoliza = new ResumenPoliza();
 	}
 
 	get idCobertura() { return this.selCobForm.get('idCobertura'); }
@@ -84,18 +80,37 @@ export class TipocoberturaComponent implements OnInit {
 	}
 
 	onSubmitSelCob(f: NgForm, modal) {
-		modal.close('add');
-
 		Object.assign(this.polizaValues, f.value);
 		console.log(this.polizaValues);
 
 		this.finVigencia = new Date(this.selCobForm.get('fechaVigencia').value);
 		this.finVigencia.setMonth(this.finVigencia.getMonth() + 6);
-		console.log(this.polizaValues.fechaVigencia)
 		this.fechaVigenciaDay = this.polizaValues.fechaVigencia[8]+this.polizaValues.fechaVigencia[9];
-		console.log(this.polizaValues);
 
-		f.reset();
+		this.loadingService.i();
+
+		this.altaPolizaService.postValidarDatos2(this.polizaValues).subscribe(data => {
+		    console.log(data);
+
+		    if(data.errores.length) {
+		    	this.dialogService.alert(
+		    		'Errores detectados',
+		    		data.errores.map(e => e.mensaje).join(". ")
+		    	);
+
+				this.polizaValues.idCobertura = undefined;
+				this.polizaValues.fechaVigencia = undefined;
+				this.polizaValues.modalidadPago = undefined;
+
+				this.resumenPoliza = new ResumenPoliza();
+		    } else {
+		    	this.resumenPoliza = data.datosPoliza;
+		    }
+
+		    this.loadingService.d();
+		    modal.close('add');
+		    f.reset();
+		});
 	}
 
 	endStepCancelar() {
@@ -112,21 +127,19 @@ export class TipocoberturaComponent implements OnInit {
 		this.polizaValues.idCobertura = undefined;
 		this.polizaValues.fechaVigencia = undefined;
 		this.polizaValues.modalidadPago = undefined;
+
+		this.resumenPoliza = new ResumenPoliza();
 	}
 
 	setFormaPago(formaPago){
 		this.formaPago = formaPago;
 		console.log(this.formaPago)
 	}
-	vencimiento(cuota){
-		if(cuota.mesCorrespondiente == 12) return `01/${cuota.anio+1}`;
-		else return cuota.mesCorrespondiente + '/' + cuota.anio;
-	}
 
 	endStepGenerar() {
 		this.loadingService.i();
 
-		this.altaPolizaService.postValidarDatos2(this.polizaValues).subscribe(data => {
+		this.altaPolizaService.postValidarDatos3(this.polizaValues).subscribe(data => {
 		    this.loadingService.d();
 		    console.log(data);
 
@@ -150,5 +163,10 @@ export class TipocoberturaComponent implements OnInit {
 				this.setModelo();
 		    }*/
 		});
+	}
+
+	hasResponsePost2()
+	{
+		return Object.keys(this.resumenPoliza).length;
 	}
 }
