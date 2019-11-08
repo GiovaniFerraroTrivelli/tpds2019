@@ -2,6 +2,8 @@ package dominio;
 
 import java.util.Date;
 
+import dataTransferObjects.CuotaDTO;
+
 public class Cuota {
 	private Integer idCuota;
 	private Poliza poliza;
@@ -42,6 +44,14 @@ public class Cuota {
 
 	public void setFechaVencimiento(Date fechaVencimiento) {
 		this.fechaVencimiento = fechaVencimiento;
+	}
+
+	public CuotaDTO getDTO() {
+		CuotaDTO c = new CuotaDTO();
+		c.setFechaVencimiento(this.fechaVencimiento);
+		c.setImporte(this.importe.toString());
+		// TODO Auto-generated method stub
+		return c;
 	}
 
 }

@@ -125,7 +125,7 @@ public class GestorPoliza {
 	}
 
 	// TODO: Modificar (hibernate)
-	public static Boolean generarPoliza(PolizaDTO p) {
+	public static Poliza generarPoliza(PolizaDTO p) {
 
 		Poliza poliza = new Poliza();
 		poliza.setAnioFabricacion(p.getAnio());
@@ -165,7 +165,6 @@ public class GestorPoliza {
 		poliza.setDominio(p.getPatente());
 		poliza.setEstadoPoliza(EstadoPoliza.GENERADA);
 
-
 		Set<Cuota> cuotas = new HashSet<Cuota>();
 		if (p.getModalidadPago().equals("MENSUAL")) {
 			for (int i = 0; i < 6; i++) {
@@ -188,11 +187,16 @@ public class GestorPoliza {
 
 		poliza.setCuotas(cuotas);
 
+		return poliza;
+
+	}
+
+	public static Boolean savePoliza(Poliza poliza) {
 		try {
 			Session s = HibernateUtil.getSession();
 			Transaction t = s.beginTransaction();
 			s.save(poliza);
-			
+			Set<Cuota> cuotas = poliza.getCuotas();
 			// TODO: Revisar esto
 			for (Cuota cuota : cuotas) {
 				s.save(cuota);
