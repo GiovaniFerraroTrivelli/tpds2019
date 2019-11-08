@@ -8,13 +8,12 @@ import java.util.ArrayList;
 
 import dao.DaoCliente;
 import dao.DaoGeografico;
-import dao.DaoVehiculo;
 import dataTransferObjects.PolizaDTO;
 import dominio.Cotizacion;
 import dominio.Hijo;
-import dominio.Modelo;
 import dominio.TipoCobertura;
 import excepciones.DatoNoEncontradoException;
+import restControllers.Error;
 
 public class GestorPoliza {
 	public static ArrayList<TipoCobertura> getCoberturasDisponibles(PolizaDTO p) {
@@ -52,16 +51,16 @@ public class GestorPoliza {
 		else {
 			if (GestorModelos.getModelo(p.getModelo()) == null)
 				errores.add(new Error("No existe el modelo de vehículo especificado"));
-			else {
-				// Validar anio
-				Boolean existe = false;
-				for (Cotizacion m : GestorModelos.getModelo(p.getModelo()).getAnios()) {
-					if (m.getAnio() == p.getAnio())
-						existe = true;
-				}
-				if (!existe)
-					errores.add(new Error("El modelo seleccionado no se fabricó en el año indicado"));
-			}
+//			else {
+//				// Validar anio
+//				Boolean existe = false;
+//				for (Cotizacion m : GestorModelos.getModelo(p.getModelo()).getAnios()) {
+//					if (m.getAnio() == p.getAnio())
+//						existe = true;
+//				}
+//				if (!existe)
+//					errores.add(new Error("El modelo seleccionado no se fabricó en el año indicado"));
+//			}
 		}
 
 		// Validar existencia de anio de fabricación
@@ -96,7 +95,8 @@ public class GestorPoliza {
 			}
 		
 		// Validar siniestros
-		if(p.getSiniestros() < 0 || p.getSiniestros() > 3)
+		if (p.getSiniestros() == null) errores.add(new Error("No se especificó la cantidad de siniestros"));
+		else if(p.getSiniestros() < 0 || p.getSiniestros() > 3)
 			errores.add(new Error("La cantidad de siniestros especficada no se encuentra dentro de los parametros esperadas"));
 		
 

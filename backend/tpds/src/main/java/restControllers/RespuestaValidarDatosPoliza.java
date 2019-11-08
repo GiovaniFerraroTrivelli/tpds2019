@@ -13,8 +13,8 @@ public class RespuestaValidarDatosPoliza {
 		return errores;
 	}
 
-	public void setErrores(ArrayList<Error> errores) {
-		this.errores = errores;
+	public void setErrores(ArrayList<Error> arrayList) {
+		this.errores = arrayList;
 	}
 
 	public ArrayList<TipoCoberturaDTO> getCoberturasDisponibles() {

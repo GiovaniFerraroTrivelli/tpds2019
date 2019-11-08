@@ -25,7 +25,9 @@ public class ControladorPoliza {
 		
 		RespuestaValidarDatosPoliza result = new RespuestaValidarDatosPoliza();
 		result.setCoberturasDisponibles(new ArrayList<TipoCoberturaDTO>());
-		result.setErrores(new ArrayList<Error>());
+		ArrayList<Error> errores = GestorPoliza.validarDatos(p);
+		result.setErrores(errores);
+		if (!errores.isEmpty()) return new ResponseEntity<>(result, HttpStatus.OK);
 		for (TipoCobertura t : GestorPoliza.getCoberturasDisponibles(p))
 			result.getCoberturasDisponibles().add(t.getDTO());
 		return new ResponseEntity<>(result, HttpStatus.OK);
