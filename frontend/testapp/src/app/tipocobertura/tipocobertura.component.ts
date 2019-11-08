@@ -3,10 +3,12 @@ import { TipoCobertura } from 'TipoCobertura';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Poliza } from '../poliza/poliza';
-import { SeleccionCobertura } from './seleccion-cobertura';
+import { ModalidadPago } from '../enums/modalidad-pago.enum';
 import { DialogService } from '../dialog/dialog.service';
 import { FechaVigenciaValidator } from './fechavigencia.validator';
 import { Router } from "@angular/router";
+import { AltaPolizaService } from '../altapoliza/altapoliza.service';
+import { LoadingService } from '../loading/loading.service';
 
 @Component({
 	selector: 'app-tipocobertura',
@@ -15,25 +17,32 @@ import { Router } from "@angular/router";
 })
 export class TipocoberturaComponent implements OnInit {
 	@Input() coberturas: TipoCobertura[];
-	coberturaSeleccionada: TipoCobertura;
-	selCobForm: FormGroup;
 	@Input() polizaValues: Poliza;
 	@Input() marcaSeleccionada: String;
 	@Input() modeloSeleccionado: String;
+
+	selCobForm: FormGroup;
 	finVigencia: Date;
 	formaPago: String;
+	fechaVigenciaDay: String;
+	vencimientoCuota: String;
+	coberturaSeleccionada: TipoCobertura;
+
+	public ModalidadPago = ModalidadPago;
+
 	private cuotas = [
 		{ importe: 167, mesCorrespondiente: 10, anio: 2019, cuotaPaga: false },
 		{ importe: 167, mesCorrespondiente: 11, anio: 2019, cuotaPaga: false },
 		{ importe: 167, mesCorrespondiente: 12, anio: 2019, cuotaPaga: false },
 	];
+
 	cantidadCuotas = this.cuotas.length;
-	fechaVigenciaDay: String;
-	vencimientoCuota: String;
 
 	constructor(
 		private modalService: NgbModal,
 		private dialogService: DialogService,
+		private altaPolizaService: AltaPolizaService,
+		private loadingService: LoadingService,
 		private router: Router
 	) { }
 	
@@ -45,7 +54,6 @@ export class TipocoberturaComponent implements OnInit {
 		});
 
 		this.polizaValues = new Poliza();
-		this.polizaValues.seleccionCobertura = new SeleccionCobertura();
 	}
 
 	get idCobertura() { return this.selCobForm.get('idCobertura'); }
@@ -78,12 +86,13 @@ export class TipocoberturaComponent implements OnInit {
 	onSubmitSelCob(f: NgForm, modal) {
 		modal.close('add');
 
-		this.polizaValues.seleccionCobertura = f.value;
-		
+		Object.assign(this.polizaValues, f.value);
+		console.log(this.polizaValues);
+
 		this.finVigencia = new Date(this.selCobForm.get('fechaVigencia').value);
 		this.finVigencia.setMonth(this.finVigencia.getMonth() + 6);
-		console.log(this.polizaValues.seleccionCobertura.fechaVigencia)
-		this.fechaVigenciaDay = this.polizaValues.seleccionCobertura.fechaVigencia[8]+this.polizaValues.seleccionCobertura.fechaVigencia[9];
+		console.log(this.polizaValues.fechaVigencia)
+		this.fechaVigenciaDay = this.polizaValues.fechaVigencia[8]+this.polizaValues.fechaVigencia[9];
 		console.log(this.polizaValues);
 
 		f.reset();
@@ -100,7 +109,9 @@ export class TipocoberturaComponent implements OnInit {
 	}
 
 	endStepCambiarCobertura() {
-		this.polizaValues.seleccionCobertura = null;
+		this.polizaValues.idCobertura = undefined;
+		this.polizaValues.fechaVigencia = undefined;
+		this.polizaValues.modalidadPago = undefined;
 	}
 
 	setFormaPago(formaPago){
@@ -110,5 +121,34 @@ export class TipocoberturaComponent implements OnInit {
 	vencimiento(cuota){
 		if(cuota.mesCorrespondiente == 12) return `01/${cuota.anio+1}`;
 		else return cuota.mesCorrespondiente + '/' + cuota.anio;
+	}
+
+	endStepGenerar() {
+		this.loadingService.i();
+
+		this.altaPolizaService.postValidarDatos2(this.polizaValues).subscribe(data => {
+		    this.loadingService.d();
+		    console.log(data);
+
+		    if(data === true) {
+				this.dialogService.alert(
+		    		'Póliza agregada',
+		    		'La póliza fue agregada exitosamente al sistema.'
+		    	);
+		    }
+
+		    /*if(data.errores.length) {
+		    	this.dialogService.alert(
+		    		'Errores detectados',
+		    		data.errores.map(e => e.mensaje).join(". ")
+		    	);
+		    } else {
+		    	this.polizaValues = f.value;
+		    	this.coberturasDisponibles = data.coberturasDisponibles;
+				this.nextStep = true;
+				this.setMarca();
+				this.setModelo();
+		    }*/
+		});
 	}
 }

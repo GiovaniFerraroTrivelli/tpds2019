@@ -70,7 +70,7 @@ export class AltapolizaComponent implements OnInit {
 			'marca': new FormControl(null, Validators.required),
 			'modelo': new FormControl(null, Validators.required),
 			'anio': new FormControl(null, Validators.required),
-			'motor': new FormControl(null, Validators.required),
+			'motor': new FormControl(null, [ Validators.required, Validators.pattern('^([A-Z0-9]*)$') ]),
 			'chasis': new FormControl(null, [ Validators.required, Validators.pattern('^([A-Z0-9]{17})$') ]),
 			'patente': new FormControl(null, Validators.pattern('^(|[A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{3}[A-Z]{2})$')),
 			'provincia': new FormControl(null, Validators.required),
@@ -80,6 +80,7 @@ export class AltapolizaComponent implements OnInit {
 			'poseeRastreoVehicular': new FormControl(null),
 			'poseeTuercasAntirrobo': new FormControl(null),
 			'siniestros': new FormControl(null, Validators.required),
+			'kmAnio': new FormControl(null, [ Validators.min(0), Validators.required ]),
 			'sumaAsegurada': new FormControl({ value: 0, disabled: true })
 		});
 
@@ -114,6 +115,7 @@ export class AltapolizaComponent implements OnInit {
 	get poseeRastreoVehicular() { return this.altaPolizaForm.get('poseeRastreoVehicular'); }
 	get poseeTuercasAntirrobo() { return this.altaPolizaForm.get('poseeTuercasAntirrobo'); }
 	get siniestros() { return this.altaPolizaForm.get('siniestros'); }
+	get kmAnio() { return this.altaPolizaForm.get('kmAnio'); }
 
 	onChanges(): void {
 		this.altaPolizaForm.get('marca').valueChanges.subscribe(idMarca => {
@@ -150,19 +152,18 @@ export class AltapolizaComponent implements OnInit {
 
 	onSubmit(f: NgForm) {
 		f.value.hijos = this.childComp.hijos;
-		f.value.seleccionCobertura = null;
 
 		console.info(f.value);
 
 		this.loadingService.i();
 
-		this.altaPolizaService.postValidarDatos(f.value).subscribe(data => {
+		this.altaPolizaService.postValidarDatos1(f.value).subscribe(data => {
 		    this.loadingService.d();
 
 		    if(data.errores.length) {
 		    	this.dialogService.alert(
 		    		'Errores detectados',
-		    		data.errores.join("\n")
+		    		data.errores.map(e => e.mensaje).join(". ")
 		    	);
 		    } else {
 		    	this.polizaValues = f.value;

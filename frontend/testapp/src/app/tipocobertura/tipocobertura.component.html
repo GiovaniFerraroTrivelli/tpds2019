@@ -30,10 +30,9 @@
 
 	  		<div class="form-group mb-1 required">
 				<label class="pt-2" for="modalidadPago">Modalidad de pago</label>
-		
-				<select class="form-control" formControlName="modalidadPago" id="modalidadPago" (change)='setFormaPago($event.target.value)'>
-		  			<option>Mensual</option>
-		  			<option>Semestral</option>
+
+				<select class="form-control" id="modalidadPago" formControlName="modalidadPago" name="modalidadPago" (change)='setFormaPago($event.target.value)'>
+					<option value="{{ enum.key }}" *ngFor="let enum of ModalidadPago | keyvalue">{{ enum.value }}</option>
 				</select>
 	  		</div>
 		</div>
@@ -45,7 +44,7 @@
   	</form>
 </ng-template>
 
-<div *ngIf="!polizaValues.seleccionCobertura">
+<div *ngIf="!polizaValues.idCobertura">
 	<h4 class="mb-3">Tipos de cobertura disponibles</h4>
 
 	<div class="container-fluid">
@@ -67,33 +66,32 @@
 	</div>
 </div>
 
-<div *ngIf="polizaValues.seleccionCobertura">
+<div *ngIf="polizaValues.idCobertura">
 	<h4 class="mb-3">Confirmación de datos</h4>
 
 	<div class="card mb-3 w-50 m-auto">
 	  <div class="card-body">
-	    <h5 class="card-title">Cliente: {{ polizaValues.apellido }}, {{ polizaValues.nombre }}</h5>
+	    <p class="lead mb-0">{{ polizaValues.apellido }}, {{ polizaValues.nombre }}</p>
+	    <h6 class="mb-0">Id de cliente: {{ polizaValues.idCliente }}</h6>
 	  </div>
 	  <ul class="list-group list-group-flush">
 	  	<li class="list-group-item">
-		    <h5 class="card-title">Vehículo: {{marcaSeleccionada}} {{modeloSeleccionado}} {{ polizaValues.motor }}</h5>
-		    <h6 class="card-subtitle mt-1">Chasis {{ polizaValues.chasis }}</h6>
-		    <h6 class="card-subtitle mt-1">Patente {{ polizaValues.patente ? polizaValues.patente : "en trámite" }}</h6>
+		    <p class="lead">{{marcaSeleccionada}} {{modeloSeleccionado}}</p>
+
+		    <h6 class="card-subtitle mt-1"><strong>Motor</strong>: {{ polizaValues.motor }}</h6>
+		    <h6 class="card-subtitle mt-1"><strong>Chasis</strong>: {{ polizaValues.chasis }}</h6>
+		    <h6 class="card-subtitle mt-1"><strong>Patente</strong> {{ polizaValues.patente ? polizaValues.patente : "en trámite" }}</h6>
 		</li>
 	    <li class="list-group-item">
-	    	<strong>Vigencia</strong>: {{ polizaValues.seleccionCobertura.fechaVigencia | date: 'dd/MM/yyyy' }} hasta {{ finVigencia | date: 'dd/MM/yyyy' }}
+	    	<strong>Vigencia</strong>: {{ polizaValues.fechaVigencia | date: 'dd/MM/yyyy' }} hasta {{ finVigencia | date: 'dd/MM/yyyy' }}
 	    </li>
 	    <li class="list-group-item">
-	    	<strong>Suma asegurada</strong>: $5
-	    </li>
-	    <li class="list-group-item">
-	    	<strong>Premio</strong>: $2
-	    </li>
-	    <li class="list-group-item">
+	    	<strong>Suma asegurada</strong>: $5<br />
+	    	<strong>Premio</strong>: $2<br />
 	    	<strong>Importe por descuentos</strong>: $5
 	    </li>
 	    <li class="list-group-item">
-	    	<strong>Último día de pago</strong>: mañana
+	    	<strong>Último día de pago</strong>: 01-01-2050
 		</li>
 		<div *ngIf="formaPago=='Mensual'">
 			<li class="list-group-item">
@@ -110,7 +108,7 @@
 	  <div class="card-footer text-muted text-center">
 		<button type="button" (click)="endStepCancelar()" class="btn btn-secondary mr-1">Cancelar</button>
 		<button type="button" (click)="endStepCambiarCobertura()" class="btn btn-secondary mr-1">Cambiar cobertura</button>
-		<button type="button" class="btn btn-primary mr-1">Generar póliza</button>
+		<button type="button" (click)="endStepGenerar()" class="btn btn-primary mr-1">Generar póliza</button>
 	  </div>
 	</div>
 </div>

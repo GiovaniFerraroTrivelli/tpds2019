@@ -1,5 +1,5 @@
 import { Hijo } from '../hijos/hijo';
-import { SeleccionCobertura } from '../tipocobertura/seleccion-cobertura';
+import { ModalidadPago } from '../enums/modalidad-pago.enum';
 
 export class Poliza {
 	anio: number;
@@ -16,8 +16,11 @@ export class Poliza {
 	poseeRastreoVehicular: boolean;
 	poseeTuercasAntirrobo: boolean;
 	provincia: number;
+	kmAnio: number;
 	seGuardaEnGarage: boolean;
-	seleccionCobertura: SeleccionCobertura;
 
 	idPoliza: number;
+	idCobertura: number;
+	fechaVigencia: string;
+	modalidadPago: ModalidadPago;
 }

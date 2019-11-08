@@ -63,6 +63,12 @@
 				</div>
 			</div>
 
+			<div *ngIf="marca.invalid && (marca.dirty || marca.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="marca.errors.required">
+					La marca del vehículo es requerida.
+				</div>
+			</div>
+
 			<div class="form-group mb-1 required">
 				<label class="control-label pt-2" for="modelo">Modelo</label>
 				<div class="input-group">
@@ -71,7 +77,13 @@
 					</select>
 				</div>
 			</div>
-			
+
+			<div *ngIf="modelo.invalid && (modelo.dirty || modelo.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="modelo.errors.required">
+					El modelo del vehículo es requerido.
+				</div>
+			</div>
+
 			<div class="form-group mb-1 required">
 				<label class="control-label pt-2" for="anio">Año</label>
 				<div class="input-group">
@@ -81,21 +93,39 @@
 				</div>
 			</div>
 
+			<div *ngIf="anio.invalid && (anio.dirty || anio.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="anio.errors.required">
+					El año del vehículo es requerido.
+				</div>
+			</div>
+
 			<div class="form-group mb-1 required">
 				<label class="control-label pt-2" for="motor">Motor</label>
 				<div class="input-group">
-				<input formControlName="motor" type="text" name="motor" id="motor" class="form-control">
+				<input formControlName="motor" type="text" (input)="convertToUppercase('motor')" name="motor" id="motor" class="form-control">
+				</div>
+			</div>
+
+			<div *ngIf="motor.invalid && (motor.dirty || motor.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="motor.errors.required">
+					El número de motor del vehículo es requerido.
+				</div>
+				<div *ngIf="motor.errors.pattern">
+					El formato del número del motor ingresado no es válido.
 				</div>
 			</div>
 
 			<div class="form-group mb-1 required">
 				<label class="control-label pt-2" for="chasis">Chasis</label>
 				<div class="input-group">
-				<input formControlName="chasis" (input)="convertToUppercase('chasis')" type="text" name="chasis" id="chasis" class="form-control">
+					<input formControlName="chasis" (input)="convertToUppercase('chasis')" type="text" name="chasis" id="chasis" class="form-control">
 				</div>
 			</div>
 
 			<div *ngIf="chasis.invalid && (chasis.dirty || chasis.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="chasis.errors.required">
+					El número de chasis es requerido.
+				</div>
 				<div *ngIf="chasis.errors.pattern">
 					El número de chasis no es válido.
 				</div>
@@ -125,6 +155,12 @@
 				</div>
 			</div>
 
+			<div *ngIf="provincia.invalid && (provincia.dirty || provincia.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="provincia.errors.required">
+					La selección de una provincia es requerida.
+				</div>
+			</div>
+
 			<div class="form-group mb-1 required">
 				<label class="control-label pt-2" for="localidad">Localidad</label>
 				<div class="input-group">
@@ -134,6 +170,11 @@
 				</div>
 			</div>
 
+			<div *ngIf="localidad.invalid && (localidad.dirty || localidad.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="localidad.errors.required">
+					La selección de una localidad es requerida.
+				</div>
+			</div>
 		</div>
 		<div class="col-sm">
 			<h4 class="mt-3">Medidas de seguridad</h4>
@@ -163,8 +204,24 @@
 
 			<hr />
 
-			<div class="form-group mt-3 mb-1 required">
-				<label class="control-label pt-2" for="siniestros">Nro. siniestros en el último año</label>
+			<div class="mt-1 form-group required">
+				<label class="control-label pt-2" for="kmAnio">Kilómetros/año</label>
+				<div class="input-group">
+					<input formControlName="kmAnio" type="number" name="kmAnio" id="kmAnio" class="form-control">
+				</div>
+			</div>
+
+			<div *ngIf="kmAnio.invalid && (kmAnio.dirty || kmAnio.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="kmAnio.errors.required">
+					Los kilómetros por año son requeridos.
+				</div>
+				<div *ngIf="kmAnio.errors.min">
+					Los kilómetros por año no pueden ser menores a 0.
+				</div>
+			</div>
+
+			<div class="form-group required">
+				<label class="control-label pt-2" for="siniestros">Nro. de siniestros en el último año</label>
 				<div class="input-group">
 					<select formControlName="siniestros" name="siniestros" class="form-control mb-1">
 						<option value="0">Ningún siniestro</option>
@@ -172,6 +229,12 @@
 						<option value="2">2 siniestros</option>
 						<option value="3">Más de 2 siniestros</option>
 					</select>
+				</div>
+			</div>
+
+			<div *ngIf="siniestros.invalid && (siniestros.dirty || siniestros.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="siniestros.errors.required">
+					El número de siniestros por año es requerido.
 				</div>
 			</div>
 

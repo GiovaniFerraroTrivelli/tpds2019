@@ -59,22 +59,32 @@ export class BuscarclienteComponent implements OnInit {
 	onSubmit(f: NgForm, content) {
 		this.loadingService.i();
 
-		this.busquedaClienteService.postClienteBusqueda(f.value).subscribe(data => {
-		    this.resultados = data;
-		    if(this.resultados.length) {
-		    	this.modalService.open(content, {
-		    		centered: true,
-		    		size: 'lg'
-		    	});
-		    } else {
-		    	this.dialogService.alert(
-		    		'Resultados de búsqueda',
-		    		'Ningún cliente coincide con los criterios de búsqueda. Intente nuevamente.'
+		this.busquedaClienteService.postClienteBusqueda(f.value).subscribe(
+			data => {
+			    this.resultados = data;
+			    if(this.resultados.length) {
+			    	this.modalService.open(content, {
+			    		centered: true,
+			    		size: 'lg'
+			    	});
+			    } else {
+			    	this.dialogService.alert(
+			    		'Resultados de búsqueda',
+			    		'Ningún cliente coincide con los criterios de búsqueda. Intente nuevamente.'
+			    	);
+			    }
+			    
+			    this.loadingService.d();
+		    },
+		    err => {
+        		this.dialogService.alert(
+		    		'Ha ocurrido un error',
+		    		'No se pudo realizar lo solicitado: ' + err.error.error
 		    	);
-		    }
-		    
-		    this.loadingService.d();
-	    });
+			    
+			    this.loadingService.d();
+      		}
+	    );
 	}
 
 	seleccionarCliente(modal) {
