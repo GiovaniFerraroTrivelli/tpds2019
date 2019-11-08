@@ -16,6 +16,7 @@ import dominio.Cliente;
 import dominio.Documento;
 import dominio.Poliza;
 import dominio.Hijo;
+import dominio.Localidad;
 import dominio.Modelo;
 import dominio.TipoCobertura;
 import enumeradores.CondicionIva;
@@ -28,11 +29,11 @@ import gestores.GestorGeografico;
 
 public class Test {
 
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 		HibernateUtil.createSessionFactory();
 		Session s = HibernateUtil.getSession();		
-		Integer idModelo = 4;
-//		
+
 //		try {
 //			String hql = "FROM Cotizacion WHERE id_modelo=" + idModelo.toString() + " ORDER BY anio DESC";
 //			Query<Cotizacion> query = s.createQuery(hql);
@@ -60,15 +61,21 @@ public class Test {
 		c.setEstadoCivil(EstadoCivil.SOLTERO);
 		c.setCondicionIva(CondicionIva.ConsumidorFinal);
 		c.setIdCliente(1234567890);
-		Direccion direccion = null;
+		
 		try {
-			direccion = new Direccion("Aristóbulo del Valle", 1831, null, null, GestorGeografico.getLocalidad(3707));
-			c.setDireccion(direccion);
-		} catch (DatoNoEncontradoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Localidad l = s.get(Localidad.class, 3707);
+			Direccion d = new Direccion();
+			d.setLocalidad(l);
+			c.setDireccion(d);
+			d.setCalle("Aristóbulo del Valle");
+			d.setNumero(1831);
+			s.save(d);
+			s.save(c);
+
+		} catch (Exception e) {
+			s.close();
+			HibernateUtil.shutdown();
 		}
-		GestorClientes.saveCliente(c);
 		
 		s.close();
 		HibernateUtil.shutdown();

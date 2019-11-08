@@ -5,7 +5,7 @@
 <hibernate-mapping>
     <class name="dominio.Direccion" table="direcciones">
 
-        <id name="idDireccion" type="java.lang.Integer" column="id_cliente">
+        <id name="idDireccion" type="java.lang.Integer" column="id_direccion">
             <generator class="identity" />
         </id>
 
