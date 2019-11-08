@@ -12,6 +12,7 @@ import java.util.Set;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import dao.DaoCliente;
 import dao.DaoGeografico;
@@ -46,11 +47,11 @@ public class GestorPoliza {
 	}
 
 	// TODO: Corregir esto
-	public static ArrayList<Error> validarDatos(PolizaDTO p) {
+	public static ArrayList<Error> validarDatos2(PolizaDTO p) {
 		return new ArrayList<>();
 	}
 
-	public static ArrayList<Error> validarDatos2(PolizaDTO p) {
+	public static ArrayList<Error> validarDatos(PolizaDTO p) {
 		ArrayList<Error> errores = new ArrayList<>();
 
 		// Validar idUsuario
@@ -86,10 +87,23 @@ public class GestorPoliza {
 		// Validar existencia de anio de fabricación
 		if (p.getAnio() == null)
 			errores.add(new Error("No de definió un año de fabricación"));
+		
+		
 
 		// Validar Motor
 		if (p.getMotor() == null)
 			errores.add(new Error("No se ingresó el número de motor"));
+		else if(GestorPoliza.existePolizaConMotor(p.getMotor()))
+			errores.add(new Error("Ya existe una poliza con el número de motor indicado"));
+		
+		if(p.getChasis() == null)
+			errores.add(new Error("No se ingresó el número de chasis"));
+		else if (existePolizaConChasis(p.getChasis()))
+			errores.add(new Error("Ya existe una póliza con el número de chasis indicado"));
+		
+		if (p.getPatente()!=null && existePolizaConPatente(p.getPatente()))
+			errores.add(new Error("Ya existe una póliza con el domiño ingresado"));
+			
 
 		// Validar Medidas de Seguridad
 		if (p.getPoseeAlarma() == null || p.getPoseeRastreoVehicular() == null || p.getPoseeTuercasAntirrobo() == null
@@ -124,6 +138,29 @@ public class GestorPoliza {
 		return errores;
 	}
 
+	private static boolean existePolizaConPatente(String patente) {
+		Session session = HibernateUtil.getSession();
+		String hql = "FROM Poliza WHERE dominio=\'" + patente + "\'";
+		Query<Poliza> query = session.createQuery(hql);
+		return !query.getResultList().isEmpty();
+	}
+
+	private static boolean existePolizaConMotor(String motor) {
+		Session session = HibernateUtil.getSession();
+		String hql = "FROM Poliza WHERE motor=\'" + motor + "\'";
+		Query<Poliza> query = session.createQuery(hql);
+		return !query.getResultList().isEmpty();
+		
+	}
+
+	private static boolean existePolizaConChasis(String chasis) {
+		Session session = HibernateUtil.getSession();
+		String hql = "FROM Poliza WHERE chasis=\'" + chasis + "\'";
+		Query<Poliza> query = session.createQuery(hql);
+		return !query.getResultList().isEmpty();
+		
+	}
+	
 	// TODO: Modificar (hibernate)
 	public static Poliza generarPoliza(PolizaDTO p) {
 
