@@ -55,7 +55,7 @@ public class GestorPoliza {
 				// Validar anio
 				Boolean existe = false;
 				for (Cotizacion m : GestorModelos.getModelo(p.getModelo()).getAnios()) {
-					if (m.getAnio() == p.getAnio())
+					if (m.getAnio() - p.getAnio() == 0)
 						existe = true;
 				}
 				if (!existe)

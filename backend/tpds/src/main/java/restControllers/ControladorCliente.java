@@ -31,6 +31,7 @@ public class ControladorCliente {
 	@PostMapping("/buscarCliente")
 	public ResponseEntity<Object> buscarCliente(@RequestBody ParametrosDeBusqueda parametros) throws NoExisteClienteException{
 		Cliente c = GestorClientes.getCliente(2);
+		c.setIdCliente(999999999);
 		System.out.println(c.getDireccion().getLocalidad().getNombre());
 		ArrayList<ClienteDTO> result = new ArrayList<>();
 		result.add(c.getDTO());
