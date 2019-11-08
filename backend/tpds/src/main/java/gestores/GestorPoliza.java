@@ -30,7 +30,13 @@ public class GestorPoliza {
 		return coberturasDisponibles;
 	}
 
-	public static ArrayList<Error> validarDatos(PolizaDTO p) {
+	
+	// TODO: Corregir esto
+	public static ArrayList<Error> validarDatos(PolizaDTO p){
+		return new ArrayList<>();
+	}
+	
+	public static ArrayList<Error> validarDatos2(PolizaDTO p) {
 		ArrayList<Error> errores = new ArrayList<>();
 
 		// Validar idUsuario

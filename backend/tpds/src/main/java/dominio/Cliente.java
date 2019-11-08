@@ -9,6 +9,7 @@ import enumeradores.EstadoCivil;
 import enumeradores.Sexo;
 
 public class Cliente {
+	// TODO: El número del cliente tiene que ser un entero largo
 	private Integer idCliente;
 	private String nombre;
 	private String apellido;
