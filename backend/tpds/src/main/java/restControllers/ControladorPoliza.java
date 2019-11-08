@@ -32,5 +32,12 @@ public class ControladorPoliza {
 			result.getCoberturasDisponibles().add(t.getDTO());
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
+	
+	@PostMapping("/altaPoliza/2")
+	public ResponseEntity<Object> altaPoliza(@RequestBody PolizaDTO p) {
+		GestorPoliza.generarPoliza(p);
+		return new ResponseEntity<>(null, HttpStatus.OK);
+		
+	}
 
 }

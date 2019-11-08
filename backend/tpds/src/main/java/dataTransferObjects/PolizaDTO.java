@@ -18,6 +18,9 @@ public class PolizaDTO {
 	private Boolean poseeTuercasAntirrobo;
 	private Integer siniestros;
 	private ArrayList<Hijo> hijos;
+	private Integer idCobertura;
+	private String fechaVigencia;
+	private Integer kmAnio;
 
 	public Integer getIdCliente() {
 		return idCliente;
@@ -119,8 +122,32 @@ public class PolizaDTO {
 		return hijos;
 	}
 
+	public Integer getIdCobertura() {
+		return idCobertura;
+	}
+
+	public void setIdCobertura(Integer idCobertura) {
+		this.idCobertura = idCobertura;
+	}
+
 	public void setHijos(ArrayList<Hijo> hijos) {
 		this.hijos = hijos;
+	}
+
+	public String getFechaVigencia() {
+		return fechaVigencia;
+	}
+
+	public void setFechaVigencia(String fechaVigencia) {
+		this.fechaVigencia = fechaVigencia;
+	}
+
+	public Integer getKmAnio() {
+		return kmAnio;
+	}
+
+	public void setKmAnio(Integer kmAnio) {
+		this.kmAnio = kmAnio;
 	}
 
 }

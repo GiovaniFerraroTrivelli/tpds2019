@@ -5,12 +5,24 @@ import java.time.Period;
 import java.time.Year;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import dao.DaoCliente;
 import dao.DaoGeografico;
+import dao.DaoVehiculo;
+import dataAccess.HibernateUtil;
 import dataTransferObjects.PolizaDTO;
+import dominio.Cliente;
 import dominio.Cotizacion;
 import dominio.Hijo;
+import dominio.MedidasSeguridad;
+import dominio.Modelo;
+import dominio.Poliza;
 import dominio.TipoCobertura;
 import excepciones.DatoNoEncontradoException;
 import restControllers.Error;
@@ -107,5 +119,43 @@ public class GestorPoliza {
 		
 
 		return errores;
+	}
+
+	
+	// TODO: Modificar (hibernate)
+	@SuppressWarnings("deprecation")
+	public static void generarPoliza(PolizaDTO p) {
+
+		Poliza poliza = new Poliza();
+		poliza.setAnioFabricacion(p.getAnio());
+		poliza.setChasis(p.getChasis());
+		
+		Cliente c = DaoCliente.getCliente(p.getIdCliente());
+		poliza.setCliente(c);
+		
+		MedidasSeguridad m = new MedidasSeguridad();
+		m.setPoseeAlarma(p.getPoseeAlarma());
+		m.setPoseeRastreoVehicular(p.getPoseeRastreoVehicular());
+		m.setPoseeTuercasAntirrobo(p.getPoseeTuercasAntirrobo());
+		m.setSeGuardaEnGarage(p.getSeGuardaEnGarage());
+		
+		poliza.setMedidasSeguridad(m);
+		poliza.setSiniestros(p.getSiniestros());
+		
+		Set<Hijo> hijos = new HashSet<Hijo>(p.getHijos());
+		poliza.setHijos(hijos);
+		
+		poliza.setTipoCobertura(HibernateUtil.getSession().get(TipoCobertura.class, p.getIdCobertura()));
+		poliza.setInicioVigencia(new Date(p.getFechaVigencia()));
+		
+		Modelo mod = DaoVehiculo.getModelo(p.getModelo());
+		poliza.setModelo(mod);
+		
+		poliza.setKmsAnuales(p.getKmAnio());
+		
+		Session s = HibernateUtil.getSession();
+		Transaction t = s.beginTransaction();
+		s.save(poliza);
+		t.commit();
 	}
 }
