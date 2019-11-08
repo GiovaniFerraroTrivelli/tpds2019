@@ -129,12 +129,21 @@ alt El usuario confirma la generación de la póliza
             GP --> GP : Hijo h
             GP -> Poliza : agregarHijo(h)
             GP <-- Poliza
-        GP -> GP : calcularFechaFinVigencia()
-        
         end
-        alt FormaDePago = Mensual
+        GP -> GP : calcularFechaFinVigencia()
 
-        else FormaDePago = Semestral 
+        alt FormaDePago = Mensual
+            loop for(x=1, x<=6, x++)
+                GP -> GP : calcularFechaVencimiento()
+                GP -> GP : calcularImporte()
+                GP -> GP : new Cuota(fechaVencimiento. importe)
+            end loop
+            GP -> Poliza : setCuotas(cuotas)
+        else FormaDePago = Semestral
+            GP -> GP : calcularFechaVencimiento()
+            GP -> GP : calcularImporte()
+            GP -> GP : new Cuota(fechaVencimiento. importe)
+            GP -> Poliza : setCuotas(cuotas)
         end alt
 
         GP -> Poliza : setEstadoPoliza(EstadoPoliza.Generada)
@@ -156,19 +165,21 @@ alt El usuario confirma la generación de la póliza
         ref over GP
             CU-11: Realizar Emisión de Póliza
         end ref
-        
-        CP <-- GP
+        GP --> CP :Bool polizaGenerada
         deactivate GP
-        GUI <-- CP
+        CP -->GUI : JSON={\n\tList<Error> errores,\n\tBool polizaGenerada\n\t}
         deactivate CP
-        Usuario <-- GUI
-        deactivate GUI
+        alt polizaGenerada
+            GUI -->Usuario :La poliza fue generada con éxito.
+        else
+            GUI --> Usuario :No se pudo generar la poliza, mensajes de error.
+        end alt
     end alt
 
 else Cambiar tipo de cobertura
     Usuario -> GUI : Seleccionar cobertura distinta
     note right
-        Se vuelve a la pantalla de selleción de póliza
+        Se vuelve a la pantalla de selección de póliza
     end note
 else cancelar
     Usuario -> GUI : cancelar
