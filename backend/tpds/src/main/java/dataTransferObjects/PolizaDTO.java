@@ -22,6 +22,7 @@ public class PolizaDTO {
 	private Integer idCobertura;
 	private String fechaVigencia;
 	private Integer kmAnio;
+	private String modalidadPago;
 
 	public Integer getIdCliente() {
 		return idCliente;
@@ -158,5 +159,15 @@ public class PolizaDTO {
 	public void setPatente(String patente) {
 		this.patente = patente;
 	}
+
+	public String getModalidadPago() {
+		return modalidadPago;
+	}
+
+	public void setModalidadPago(String modalidadPago) {
+		this.modalidadPago = modalidadPago;
+	}
+
+	
 
 }

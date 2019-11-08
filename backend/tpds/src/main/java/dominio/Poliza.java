@@ -25,7 +25,7 @@ public class Poliza {
 	private MedidasSeguridad medidasSeguridad;
 	private Set<Hijo> hijos;
 	private FormaPago formaPago;
-	private ArrayList<Pago> pagos;
+	private Set<Cuota> cuotas;
 
 	public Poliza() {
 
@@ -175,12 +175,12 @@ public class Poliza {
 		this.formaPago = formaPago;
 	}
 
-	public ArrayList<Pago> getPagos() {
-		return pagos;
+	public Set<Cuota> getCuotas() {
+		return cuotas;
 	}
 
-	public void setPagos(ArrayList<Pago> pagos) {
-		this.pagos = pagos;
+	public void setCuotas(Set<Cuota> cuotas) {
+		this.cuotas = cuotas;
 	}
 
 }

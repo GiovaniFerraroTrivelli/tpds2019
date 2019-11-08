@@ -20,6 +20,7 @@ import dataAccess.HibernateUtil;
 import dataTransferObjects.PolizaDTO;
 import dominio.Cliente;
 import dominio.Cotizacion;
+import dominio.Cuota;
 import dominio.Hijo;
 import dominio.MedidasSeguridad;
 import dominio.Modelo;
@@ -164,10 +165,38 @@ public class GestorPoliza {
 		poliza.setDominio(p.getPatente());
 		poliza.setEstadoPoliza(EstadoPoliza.GENERADA);
 
+
+		Set<Cuota> cuotas = new HashSet<Cuota>();
+		if (p.getModalidadPago().equals("MENSUAL")) {
+			for (int i = 0; i < 6; i++) {
+				Cuota cuota = new Cuota();
+				cuota.setFechaVencimiento(java.sql.Date.valueOf(inicioVigencia.minusDays(1).plusMonths(i)));
+				// TODO: Cambiar el importe
+				cuota.setImporte(100.0);
+				cuota.setPoliza(poliza);
+				System.out.println(cuota.getFechaVencimiento());
+
+				cuotas.add(cuota);
+			}
+		} else {
+			Cuota cuota = new Cuota();
+			cuota.setFechaVencimiento(java.sql.Date.valueOf(inicioVigencia.minusDays(1)));
+			cuota.setImporte(100.0);
+			cuota.setPoliza(poliza);
+			cuotas.add(cuota);
+		}
+
+		poliza.setCuotas(cuotas);
+
 		try {
 			Session s = HibernateUtil.getSession();
 			Transaction t = s.beginTransaction();
 			s.save(poliza);
+			
+			// TODO: Revisar esto
+			for (Cuota cuota : cuotas) {
+				s.save(cuota);
+			}
 			t.commit();
 			return true;
 		} catch (Exception e) {

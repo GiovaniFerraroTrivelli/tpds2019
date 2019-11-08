@@ -30,6 +30,7 @@
         <mapping resource="Hijo.hbm.xml"/>
         <mapping resource="Cotizacion.hbm.xml"/>
         <mapping resource="Direccion.hbm.xml"/>
+        <mapping resource="Cuota.hbm.xml"/>
         
     </session-factory>
 </hibernate-configuration>
