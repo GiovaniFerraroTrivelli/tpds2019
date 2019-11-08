@@ -11,6 +11,7 @@ public class PolizaDTO {
 	private String dominio;
 	private String chasis;
 	private String motor;
+	private String patente;
 	private Integer localidad;
 	private Boolean seGuardaEnGarage;
 	private Boolean poseeAlarma;
@@ -148,6 +149,14 @@ public class PolizaDTO {
 
 	public void setKmAnio(Integer kmAnio) {
 		this.kmAnio = kmAnio;
+	}
+
+	public String getPatente() {
+		return patente;
+	}
+
+	public void setPatente(String patente) {
+		this.patente = patente;
 	}
 
 }

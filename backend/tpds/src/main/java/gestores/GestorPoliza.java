@@ -25,6 +25,7 @@ import dominio.MedidasSeguridad;
 import dominio.Modelo;
 import dominio.Poliza;
 import dominio.TipoCobertura;
+import enumeradores.EstadoPoliza;
 import excepciones.DatoNoEncontradoException;
 import restControllers.Error;
 
@@ -43,12 +44,11 @@ public class GestorPoliza {
 		return coberturasDisponibles;
 	}
 
-	
 	// TODO: Corregir esto
-	public static ArrayList<Error> validarDatos(PolizaDTO p){
+	public static ArrayList<Error> validarDatos(PolizaDTO p) {
 		return new ArrayList<>();
 	}
-	
+
 	public static ArrayList<Error> validarDatos2(PolizaDTO p) {
 		ArrayList<Error> errores = new ArrayList<>();
 
@@ -112,49 +112,58 @@ public class GestorPoliza {
 							"La edad de al menos un hijo no se encuentra dentro de los parámetros esperados"));
 				}
 			}
-		
+
 		// Validar siniestros
-		if (p.getSiniestros() == null) errores.add(new Error("No se especificó la cantidad de siniestros"));
-		else if(p.getSiniestros() < 0 || p.getSiniestros() > 3)
-			errores.add(new Error("La cantidad de siniestros especficada no se encuentra dentro de los parametros esperadas"));
-		
+		if (p.getSiniestros() == null)
+			errores.add(new Error("No se especificó la cantidad de siniestros"));
+		else if (p.getSiniestros() < 0 || p.getSiniestros() > 3)
+			errores.add(new Error(
+					"La cantidad de siniestros especficada no se encuentra dentro de los parametros esperadas"));
 
 		return errores;
 	}
 
-	
 	// TODO: Modificar (hibernate)
-	@SuppressWarnings("deprecation")
 	public static Boolean generarPoliza(PolizaDTO p) {
 
 		Poliza poliza = new Poliza();
 		poliza.setAnioFabricacion(p.getAnio());
 		poliza.setChasis(p.getChasis());
-		
+		poliza.setMotor(p.getMotor());
+
 		Cliente c = DaoCliente.getCliente(p.getIdCliente());
 		poliza.setCliente(c);
-		
+
 		MedidasSeguridad m = new MedidasSeguridad();
 		m.setPoseeAlarma(p.getPoseeAlarma());
 		m.setPoseeRastreoVehicular(p.getPoseeRastreoVehicular());
 		m.setPoseeTuercasAntirrobo(p.getPoseeTuercasAntirrobo());
 		m.setSeGuardaEnGarage(p.getSeGuardaEnGarage());
-		
+
 		poliza.setMedidasSeguridad(m);
 		poliza.setSiniestros(p.getSiniestros());
-		
+
+		for (Hijo h : p.getHijos()) {
+			h.setPoliza(poliza);
+		}
+
 		Set<Hijo> hijos = new HashSet<Hijo>(p.getHijos());
 		poliza.setHijos(hijos);
-		
+
 		poliza.setTipoCobertura(HibernateUtil.getSession().get(TipoCobertura.class, p.getIdCobertura()));
 		// TODO: Cambiar
-		poliza.setInicioVigencia(new Date("03/12/2019"));
-		
+
+		LocalDate inicioVigencia = LocalDate.parse(p.getFechaVigencia());
+		poliza.setInicioVigencia(java.sql.Date.valueOf(inicioVigencia));
+		poliza.setFinVigencia(java.sql.Date.valueOf(inicioVigencia.plusMonths(6)));
+
 		Modelo mod = DaoVehiculo.getModelo(p.getModelo());
 		poliza.setModelo(mod);
-		
+
 		poliza.setKmsAnuales(p.getKmAnio());
-		
+		poliza.setDominio(p.getPatente());
+		poliza.setEstadoPoliza(EstadoPoliza.GENERADA);
+
 		try {
 			Session s = HibernateUtil.getSession();
 			Transaction t = s.beginTransaction();

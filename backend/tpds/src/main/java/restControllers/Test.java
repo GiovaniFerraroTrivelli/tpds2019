@@ -33,44 +33,17 @@ public class Test {
 	public static void main(String[] args) {
 		HibernateUtil.createSessionFactory();
 		Session s = HibernateUtil.getSession();		
-
-//		try {
-//			String hql = "FROM Cotizacion WHERE id_modelo=" + idModelo.toString() + " ORDER BY anio DESC";
-//			Query<Cotizacion> query = s.createQuery(hql);
-//			
-//			ArrayList<Cotizacion> listaModelos = new ArrayList<Cotizacion>(query.list());
-//			
-//			for(Cotizacion a : listaModelos) {
-//				System.out.println(a.getAnio());
-//			}
-//		} catch (Exception e) {
-//			s.close();
-//			HibernateUtil.shutdown();
-//		}
-//		
-		
-		Cliente c = new Cliente();
-		c.setApellido("Storani");
-		c.setNombre("Miguel");
-		c.setEmail("miguelignaciostorani@gmail.com");
-		c.setCuil("20409679049");
-		c.setFechaNacimiento(new Date("03/04/1998"));
-		c.setDocumento(new Documento(TipoDocumento.DNI, 40967904));
-		c.setProfesion("Estudiante");
-		c.setSexo(Sexo.MASCULINO);
-		c.setEstadoCivil(EstadoCivil.SOLTERO);
-		c.setCondicionIva(CondicionIva.ConsumidorFinal);
-		c.setIdCliente(1234567890);
-		
+	
 		try {
-			Localidad l = s.get(Localidad.class, 3707);
-			Direccion d = new Direccion();
-			d.setLocalidad(l);
-			c.setDireccion(d);
-			d.setCalle("Aristóbulo del Valle");
-			d.setNumero(1831);
-			s.save(d);
-			s.save(c);
+			Cliente c = s.get(Cliente.class, 1);
+			TipoCobertura t = s.get(TipoCobertura.class, 1);
+			
+			
+			Poliza p = new Poliza();
+			p.setCliente(c);
+			p.setTipoCobertura(t);
+			
+			s.save(p);
 
 		} catch (Exception e) {
 			s.close();
