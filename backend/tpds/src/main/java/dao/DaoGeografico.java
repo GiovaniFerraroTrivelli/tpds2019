@@ -11,7 +11,6 @@ public class DaoGeografico {
 	public static Localidad getLocalidad(Integer idLocalidad) {
 		Session session = HibernateUtil.getSession();
 		Localidad localidad = session.get(Localidad.class, idLocalidad);
-		session.close();
 		return localidad;
 	}
 
@@ -20,7 +19,6 @@ public class DaoGeografico {
 		Transaction t = session.beginTransaction();
 		session.save(l);
 		t.commit();
-		session.close();
 	}
 
 }

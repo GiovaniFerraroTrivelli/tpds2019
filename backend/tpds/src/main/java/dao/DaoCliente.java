@@ -10,7 +10,6 @@ public class DaoCliente {
 	public static Cliente getCliente(Integer idCliente) {
 		Session session = HibernateUtil.getSession();
 		Cliente cliente = session.get(Cliente.class, idCliente);
-		session.close();
 		return cliente;
 	}
 
@@ -19,6 +18,5 @@ public class DaoCliente {
 		Transaction t = session.beginTransaction();
 		session.save(c);
 		t.commit();
-		session.close();
 	}
 }

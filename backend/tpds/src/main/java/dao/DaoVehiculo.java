@@ -12,7 +12,6 @@ public class DaoVehiculo {
 	public static Modelo getModelo(Integer idModelo) {
 		Session session = HibernateUtil.getSession();
 		Modelo modelo = session.get(Modelo.class, idModelo);
-		session.close();
 		return modelo;
 	}
 
@@ -21,6 +20,5 @@ public class DaoVehiculo {
 		Transaction t = session.beginTransaction();
 		session.save(m);
 		t.commit();
-		session.close();
 	}
 }
