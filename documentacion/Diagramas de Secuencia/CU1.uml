@@ -10,9 +10,9 @@ control ControladorPoliza as CP
 
 entity GestorCliente as GC
 entity GestorPoliza as GP
-entity DAOCliente as DC
+control GestorCobertura as GCobertura
+entity "p: Poliza" as Poliza
 entity DAOPoliza as DP
-
 
 
 activate Usuario
@@ -20,10 +20,9 @@ activate Usuario
 
 Usuario -> GUI: Buscar cliente
 activate GUI
-GUI -> CC : POST (JSON) datosCliente
-activate CC
 
-ref over CC, GC, DC
+
+ref over CC, GC, GUI, Usuario
     CU-17: Buscar Cliente
 end ref
 
@@ -31,95 +30,146 @@ activate GC
 
 alt no existe cliente
     GUI <-- CC : JSON Error "no existe cliente"
-    ref over Usuario, GC, DC
+    ref over Usuario, GC
         CU-04: Alta Cliente
     end ref
-    
 end alt
-    
-activate DC
-DC -> "Cliente c" as Cliente: <<create>>
-activate Cliente
-DC <-- Cliente : Cliente c
-deactivate Cliente
-GC <-- DC : Cliente c
-deactivate DC
 
-CC <-- GC : Cliente c
+
+CC <-- GC : List<Cliente> resultadoBusqueda
 deactivate GC
-GUI <-- CC : JSON cliente
+GUI <-- CC : JSON clientes[]
 deactivate CC
-Usuario <-- GUI : información del cliente
+Usuario <-- GUI : Resultado de Búsqueda
+
+Usuario --> GUI : Seleccionar Cliente
+GUI --> Usuario : Informacion Cliente Seleccionado
 
 loop while datos incorrectos
     Usuario <-- GUI : Solicitar Datos
     Usuario -> GUI : Datos de la póliza
 end loop
 
-Usuario <-- GUI : Coberturas Disponibles
-Usuario -> GUI: Tipo de Cobertura, Inicio Vigencia, Forma de Pago
-GUI -> CP : POST (JSON) informacionPoliza
-
+GUI -> CP : POST /altaPoliza/1 JSON={PolizaDTO}
 activate CP
+CP -> GP : validarDatos(PolizaDTO)
 activate GP
-ref over CP, GP
-    CU-16: Clacular Premio, Derecho de Emisión y Descuentos
-end ref
+GP --> CP : List<Error> errores
+deactivate GP
+alt errores.isEmpty()
+    CP -> GP : getCoberturaDisponibles(PolizaDTO)
+    activate GP
+    alt antigüedad del vehiculo > 10 años
+        GP -> GCobertura : getCoberturaContraTerceros()
+        activate GCobertura
+        GCobertura --> GP : List<TiposCobertura> coberturasDisponibles
+        deactivate GCobertura
+    else
+        GP -> GCobertura : getCoberturas()
+        activate GCobertura
+        GCobertura --> GP : List<TipoCobertura> coberturasDisponibles
+        deactivate GCobertura
+    end alt
+    GP --> CP : List<TipoCobertura> coberturasDisponibles
+    deactivate GP
+end alt
 
-GUI <-- CP : JSON InformacionPoliza
+CP -->GUI : JSON={\n\tList<Error> errores,\n\tList<TipoCoberturaDTO> coberturasDisponibles\n\t}
 deactivate CP
 
-Usuario <-- GUI : Información Póliza
+GUI --> Usuario : Tipos de pólizas disponibles
+Usuario -> GUI : Selecciona tipo de póliza,\n\tinicio vigencia,\n\tmodalidad de pago
+
+GUI -> CP : POST /altaPoliza/2 JSON={PolizaDTO}
+activate CP
+CP -> GP : validarDatos(PolizaDTO)
+activate GP
+GP --> CP : List<Error> errores
+deactivate GP
+alt errores.isEmpty()
+    CP -> GP : getResumenPoliza(PolizaDTO)
+    activate GP
+    ref over CP, GP
+        CU-16: Calcular Premio, Derecho de Emisión y Descuentos
+    end ref
+    GP --> CP : ResumenPoliza resumenPoliza
+    deactivate GP
+end alt
+
+
+CP -->GUI : JSON={\n\tList<Error> errores,\n\tResumenPoliza resumenPoliza\n\t}
+deactivate CP
+
+Usuario <-- GUI : Resumen Póliza
 
 alt El usuario confirma la generación de la póliza
     Usuario -> GUI : Confirmar generación de la póliza
-    GUI -> CP : POST (JSON) informacionPoliza
+    GUI -> CP : POST /altaPoliza/3 JSON={PolizaDTO}
     activate CP
-    CP -> GP : altaPoliza(DTOPoliza)
-    GP -> "Poliza p" as Poliza : <<create>>(DTOPoliza)
-    activate Poliza
-    GP <-- Poliza : Poliza p
-    
-    GP -> GP : nroPoliza := calcularNroPoliza(p)
+    CP -> GP : validarDatos(PolizaDTO)
     activate GP
+    GP -->CP: List<Error> errores
     deactivate GP
-    
-    GP -> Poliza : setNroPoliza(nroPoliza)
-    GP <-- Poliza
+    alt errores.isEmpty()
+        CP -> GP : generarPoliza(PolizaDTO)
+        activate GP
+        GP -> "Poliza p" as Poliza : new Poliza()
+        activate Poliza
+        GP <-- Poliza : Poliza p
+        
+        GP -> GP : calcularNroPoliza(PolizaDTO)
+        activate GP
+        GP --> GP : nroPoliza
+        deactivate GP
+        
+        GP -> Poliza : setNroPoliza(nroPoliza)
 
-    loop while hijos > 0
-        GP -> Poliza : agregarHijo(fechaNacimiento, sexo, estadoCivil)
+        loop while hijos > 0
+            GP -> GP : crearHijo(echaNacimiento, sexo, estadoCivil)
+            GP --> GP : Hijo h
+            GP -> Poliza : agregarHijo(h)
+            GP <-- Poliza
+        GP -> GP : calcularFechaFinVigencia()
+        
+        end
+        alt FormaDePago = Mensual
+
+        else FormaDePago = Semestral 
+        end alt
+
+        GP -> Poliza : setEstadoPoliza(EstadoPoliza.Generada)
         GP <-- Poliza
-    end
+        
+        GP -> GP : savePoliza(p)
+        activate GP
+        GP -> DP : savePoliza(p)
+        activate DP
+        DP --> GP
+        deactivate DP
+        deactivate GP
+        
+        GP -> GC : actualizarCondicionCliente(c)
+        activate GC
+        GP <-- GC
+        deactivate GC
+        
+        ref over GP
+            CU-11: Realizar Emisión de Póliza
+        end ref
+        
+        CP <-- GP
+        deactivate GP
+        GUI <-- CP
+        deactivate CP
+        Usuario <-- GUI
+        deactivate GUI
+    end alt
 
-    GP -> Poliza : setEstadoPoliza(EstadoPoliza.Generada)
-    GP <-- Poliza
-    
-    GP -> DP : insert(p)
-    activate DP
-    GP <-- DP
-    deactivate DP
-    deactivate Poliza
-    
-    GP -> GC : actualizarCondicionCliente(c)
-    activate Cliente
-    activate GC
-    GP <-- GC
-    deactivate Cliente
-    deactivate GC
-    
-    ref over GP
-        CU-11: Realizar Emisión de Póliza
-    end ref
-    
-    CP <-- GP
-    deactivate GP
-    GUI <-- CP
-    deactivate CP
-    Usuario <-- GUI
-    deactivate GUI
-
-    
+else Cambiar tipo de cobertura
+    Usuario -> GUI : Seleccionar cobertura distinta
+    note right
+        Se vuelve a la pantalla de selleción de póliza
+    end note
 else cancelar
     Usuario -> GUI : cancelar
     deactivate Usuario
@@ -128,9 +178,7 @@ else cancelar
     deactivate CP
     deactivate GC
     deactivate GP
-    deactivate DC
     deactivate DP
-    deactivate Cliente
     deactivate Poliza
 
 end alt
