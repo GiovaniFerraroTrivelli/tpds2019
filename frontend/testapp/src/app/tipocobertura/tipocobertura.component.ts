@@ -21,6 +21,15 @@ export class TipocoberturaComponent implements OnInit {
 	@Input() marcaSeleccionada: String;
 	@Input() modeloSeleccionado: String;
 	finVigencia: Date;
+	formaPago: String;
+	private cuotas = [
+		{ importe: 167, mesCorrespondiente: 10, anio: 2019, cuotaPaga: false },
+		{ importe: 167, mesCorrespondiente: 11, anio: 2019, cuotaPaga: false },
+		{ importe: 167, mesCorrespondiente: 12, anio: 2019, cuotaPaga: false },
+	];
+	cantidadCuotas = this.cuotas.length;
+	fechaVigenciaDay: String;
+	vencimientoCuota: String;
 
 	constructor(
 		private modalService: NgbModal,
@@ -73,7 +82,8 @@ export class TipocoberturaComponent implements OnInit {
 		
 		this.finVigencia = new Date(this.selCobForm.get('fechaVigencia').value);
 		this.finVigencia.setMonth(this.finVigencia.getMonth() + 6);
-
+		console.log(this.polizaValues.seleccionCobertura.fechaVigencia)
+		this.fechaVigenciaDay = this.polizaValues.seleccionCobertura.fechaVigencia[8]+this.polizaValues.seleccionCobertura.fechaVigencia[9];
 		console.log(this.polizaValues);
 
 		f.reset();
@@ -91,5 +101,14 @@ export class TipocoberturaComponent implements OnInit {
 
 	endStepCambiarCobertura() {
 		this.polizaValues.seleccionCobertura = null;
+	}
+
+	setFormaPago(formaPago){
+		this.formaPago = formaPago;
+		console.log(this.formaPago)
+	}
+	vencimiento(cuota){
+		if(cuota.mesCorrespondiente == 12) return `01/${cuota.anio+1}`;
+		else return cuota.mesCorrespondiente + '/' + cuota.anio;
 	}
 }

@@ -31,7 +31,7 @@
 	  		<div class="form-group mb-1 required">
 				<label class="pt-2" for="modalidadPago">Modalidad de pago</label>
 		
-				<select class="form-control" formControlName="modalidadPago" id="modalidadPago">
+				<select class="form-control" formControlName="modalidadPago" id="modalidadPago" (change)='setFormaPago($event.target.value)'>
 		  			<option>Mensual</option>
 		  			<option>Semestral</option>
 				</select>
@@ -94,7 +94,15 @@
 	    </li>
 	    <li class="list-group-item">
 	    	<strong>Último día de pago</strong>: mañana
-	    </li>
+		</li>
+		<div *ngIf="formaPago=='Mensual'">
+			<li class="list-group-item">
+				<strong>Cuotas:</strong>
+			</li>
+			<li *ngFor='let cuota of cuotas; let row = index' class="list-group-item">
+				<strong>Cuota {{row+1}}/{{cantidadCuotas}}</strong>: ${{cuota.importe}} <strong> Vencimiento: </strong> {{fechaVigenciaDay}}/{{vencimiento(cuota)}}
+			</li>	
+		</div>	
 	    <li class="list-group-item text-right">
 	    	<strong>Monto total a abonar</strong>: $5
 	    </li>
