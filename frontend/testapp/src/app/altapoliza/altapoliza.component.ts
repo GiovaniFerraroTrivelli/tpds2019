@@ -169,8 +169,6 @@ export class AltapolizaComponent implements OnInit {
 		    	this.polizaValues = f.value;
 		    	this.coberturasDisponibles = data.coberturasDisponibles;
 				this.nextStep = true;
-				this.setMarca();
-				this.setModelo();
 		    }
 		});
 	}
@@ -195,13 +193,5 @@ export class AltapolizaComponent implements OnInit {
 		this.polizaValues.modalidadPago = undefined;
 		
 		this.nextStep = false;
-	}
-	setMarca(){
-		this.marcaSeleccionada = document.getElementById('selectMarca'+this.polizaValues.marca).innerHTML;
-		console.log(this.marcaSeleccionada);
-	}
-	setModelo(){
-		this.modeloSeleccionado = document.getElementById('selectModelo'+this.polizaValues.modelo).innerHTML;
-		console.log(this.modeloSeleccionado);
 	}
 }
