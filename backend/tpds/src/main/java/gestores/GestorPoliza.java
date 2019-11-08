@@ -102,7 +102,7 @@ public class GestorPoliza {
 			errores.add(new Error("Ya existe una póliza con el número de chasis indicado"));
 		
 		if (p.getPatente()!=null && existePolizaConPatente(p.getPatente()))
-			errores.add(new Error("Ya existe una póliza con el domiño ingresado"));
+			errores.add(new Error("Ya existe una póliza con el dominio ingresado"));
 			
 
 		// Validar Medidas de Seguridad
