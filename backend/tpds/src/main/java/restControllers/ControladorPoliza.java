@@ -35,8 +35,8 @@ public class ControladorPoliza {
 	
 	@PostMapping("/altaPoliza/2")
 	public ResponseEntity<Object> altaPoliza(@RequestBody PolizaDTO p) {
-		GestorPoliza.generarPoliza(p);
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		Boolean result = GestorPoliza.generarPoliza(p);
+		return new ResponseEntity<>(true, HttpStatus.OK);
 		
 	}
 

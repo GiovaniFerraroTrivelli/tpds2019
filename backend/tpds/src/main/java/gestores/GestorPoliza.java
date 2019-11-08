@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -124,7 +125,7 @@ public class GestorPoliza {
 	
 	// TODO: Modificar (hibernate)
 	@SuppressWarnings("deprecation")
-	public static void generarPoliza(PolizaDTO p) {
+	public static Boolean generarPoliza(PolizaDTO p) {
 
 		Poliza poliza = new Poliza();
 		poliza.setAnioFabricacion(p.getAnio());
@@ -153,9 +154,14 @@ public class GestorPoliza {
 		
 		poliza.setKmsAnuales(p.getKmAnio());
 		
-		Session s = HibernateUtil.getSession();
-		Transaction t = s.beginTransaction();
-		s.save(poliza);
-		t.commit();
+		try {
+			Session s = HibernateUtil.getSession();
+			Transaction t = s.beginTransaction();
+			s.save(poliza);
+			t.commit();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }
