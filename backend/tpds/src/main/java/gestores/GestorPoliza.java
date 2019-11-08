@@ -147,7 +147,8 @@ public class GestorPoliza {
 		poliza.setHijos(hijos);
 		
 		poliza.setTipoCobertura(HibernateUtil.getSession().get(TipoCobertura.class, p.getIdCobertura()));
-		poliza.setInicioVigencia(new Date(p.getFechaVigencia()));
+		// TODO: Cambiar
+		poliza.setInicioVigencia(new Date("03/12/2019"));
 		
 		Modelo mod = DaoVehiculo.getModelo(p.getModelo());
 		poliza.setModelo(mod);
