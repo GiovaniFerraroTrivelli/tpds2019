@@ -5,20 +5,26 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import dataAccess.HibernateUtil;
 import dominio.Cotizacion;
+import dominio.Direccion;
 import dominio.Cliente;
 import dominio.Documento;
 import dominio.Poliza;
 import dominio.Hijo;
 import dominio.Modelo;
 import dominio.TipoCobertura;
+import enumeradores.CondicionIva;
 import enumeradores.EstadoCivil;
 import enumeradores.Sexo;
 import enumeradores.TipoDocumento;
+import excepciones.DatoNoEncontradoException;
+import gestores.GestorClientes;
+import gestores.GestorGeografico;
 
 public class Test {
 
@@ -26,20 +32,43 @@ public class Test {
 		HibernateUtil.createSessionFactory();
 		Session s = HibernateUtil.getSession();		
 		Integer idModelo = 4;
+//		
+//		try {
+//			String hql = "FROM Cotizacion WHERE id_modelo=" + idModelo.toString() + " ORDER BY anio DESC";
+//			Query<Cotizacion> query = s.createQuery(hql);
+//			
+//			ArrayList<Cotizacion> listaModelos = new ArrayList<Cotizacion>(query.list());
+//			
+//			for(Cotizacion a : listaModelos) {
+//				System.out.println(a.getAnio());
+//			}
+//		} catch (Exception e) {
+//			s.close();
+//			HibernateUtil.shutdown();
+//		}
+//		
 		
+		Cliente c = new Cliente();
+		c.setApellido("Storani");
+		c.setNombre("Miguel");
+		c.setEmail("miguelignaciostorani@gmail.com");
+		c.setCuil("20409679049");
+		c.setFechaNacimiento(new Date("03/04/1998"));
+		c.setDocumento(new Documento(TipoDocumento.DNI, 40967904));
+		c.setProfesion("Estudiante");
+		c.setSexo(Sexo.MASCULINO);
+		c.setEstadoCivil(EstadoCivil.SOLTERO);
+		c.setCondicionIva(CondicionIva.ConsumidorFinal);
+		c.setIdCliente(1234567890);
+		Direccion direccion = null;
 		try {
-			String hql = "FROM Cotizacion WHERE id_modelo=" + idModelo.toString() + " ORDER BY anio DESC";
-			Query<Cotizacion> query = s.createQuery(hql);
-			
-			ArrayList<Cotizacion> listaModelos = new ArrayList<Cotizacion>(query.list());
-			
-			for(Cotizacion a : listaModelos) {
-				System.out.println(a.getAnio());
-			}
-		} catch (Exception e) {
-			s.close();
-			HibernateUtil.shutdown();
+			direccion = new Direccion("Aristóbulo del Valle", 1831, null, null, GestorGeografico.getLocalidad(3707));
+			c.setDireccion(direccion);
+		} catch (DatoNoEncontradoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		GestorClientes.saveCliente(c);
 		
 		s.close();
 		HibernateUtil.shutdown();

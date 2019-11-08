@@ -4,6 +4,7 @@ import dataTransferObjects.DireccionDTO;
 import dataTransferObjects.LocalidadDTO;
 
 public class Direccion {
+	private Integer idDireccion;
 	private String calle;
 	private Integer numero;
 	private Integer piso;
@@ -50,5 +51,11 @@ public class Direccion {
 	
 	public DireccionDTO getDTO() {
 		return new DireccionDTO(this.calle, this.numero, this.piso, this.departamento, this.localidad.getDTO());
+	}
+	public Integer getIdDireccion() {
+		return idDireccion;
+	}
+	public void setIdDireccion(Integer idDireccion) {
+		this.idDireccion = idDireccion;
 	}
 }

@@ -51,16 +51,16 @@ public class GestorPoliza {
 		else {
 			if (GestorModelos.getModelo(p.getModelo()) == null)
 				errores.add(new Error("No existe el modelo de vehículo especificado"));
-//			else {
-//				// Validar anio
-//				Boolean existe = false;
-//				for (Cotizacion m : GestorModelos.getModelo(p.getModelo()).getAnios()) {
-//					if (m.getAnio() == p.getAnio())
-//						existe = true;
-//				}
-//				if (!existe)
-//					errores.add(new Error("El modelo seleccionado no se fabricó en el año indicado"));
-//			}
+			else {
+				// Validar anio
+				Boolean existe = false;
+				for (Cotizacion m : GestorModelos.getModelo(p.getModelo()).getAnios()) {
+					if (m.getAnio() == p.getAnio())
+						existe = true;
+				}
+				if (!existe)
+					errores.add(new Error("El modelo seleccionado no se fabricó en el año indicado"));
+			}
 		}
 
 		// Validar existencia de anio de fabricación

@@ -29,6 +29,7 @@
         <mapping resource="Poliza.hbm.xml"/>
         <mapping resource="Hijo.hbm.xml"/>
         <mapping resource="Cotizacion.hbm.xml"/>
+        <mapping resource="Direccion.hbm.xml"/>
         
     </session-factory>
 </hibernate-configuration>

@@ -48,5 +48,9 @@
             <property name="nroDocumento" column="nro_documento"/>
         </component>
         
+        <many-to-one name="direccion" class="dominio.Direccion" fetch="select">
+            <column name="direccion" not-null="true"/>
+        </many-to-one>
+        
     </class>
 </hibernate-mapping>

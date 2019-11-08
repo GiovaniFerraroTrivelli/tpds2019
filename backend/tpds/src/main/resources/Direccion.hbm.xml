@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="dominio.Direccion" table="direcciones">
+
+        <id name="idDireccion" type="java.lang.Integer" column="id_cliente">
+            <generator class="identity" />
+        </id>
+
+        <property name="calle" column="calle"/>
+        <property name="numero" column="numero"/>
+        <property name="piso" column="piso"/> 
+        <property name="departamento" column="departamento"/> 
+
+        <many-to-one name="localidad" class="dominio.Localidad" fetch="select">
+            <column name="localidad" not-null="true"/>
+        </many-to-one>
+        
+        
+    </class>
+</hibernate-mapping>
