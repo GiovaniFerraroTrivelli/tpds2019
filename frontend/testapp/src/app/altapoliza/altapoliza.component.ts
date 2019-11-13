@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { Router } from "@angular/router";
 
 import { HijosComponent } from '../hijos/hijos.component';
 import { TipocoberturaComponent } from '../tipocobertura/tipocobertura.component';
@@ -51,7 +52,8 @@ export class AltapolizaComponent implements OnInit {
 		private geografiaService: GeografiaService,
 		private modelosService: ModelosService,
 		private altaPolizaService: AltaPolizaService,
-		private loadingService: LoadingService
+		private loadingService: LoadingService,
+		private router: Router
 	) { 
 	}
 
@@ -185,6 +187,16 @@ export class AltapolizaComponent implements OnInit {
 		this.altaPolizaForm.controls['apellido'].setValue(this.cliente.apellido);
 		this.altaPolizaForm.controls['nroDocumento'].setValue(this.cliente.documento.nroDocumento);
 		this.altaPolizaForm.controls['direccion'].setValue(this.cliente.direccion.calle + ' ' + this.cliente.direccion.numero);
+	}
+
+	cancelar() {
+		this.dialogService.confirm(
+			'Cancelar alta de póliza',
+			'¿Está seguro que desea cancelar el alta de la póliza?', true, 'Sí', 'No')
+			.then((confirmed) => {
+				if(confirmed)
+					this.router.navigate(['/']);
+			});
 	}
 
 	prevStep() {

@@ -38,7 +38,7 @@
 		</div>
 
 		<div class="modal-footer">
-			<button type="button" class="btn btn-light" (click)="cancelCobertura(seleccionCobertura, modal)">Cancelar</button>
+			<button type="button" [disabled]="!loadingService.isHidden()" class="btn btn-light" (click)="cancelCobertura(seleccionCobertura, modal)">Cancelar</button>
 			<button type="submit" [disabled]="!seleccionCobertura.valid || !loadingService.isHidden()" class="btn btn-primary">Aceptar</button>
 		</div>
   	</form>
@@ -58,7 +58,7 @@
 		  			</div>
 		  
 		  			<div class="card-footer text-muted text-center">
-						<button type="submit" class="btn btn-primary btn-block" (click)='seleccionarCobertura(cobertura, content)'>Seleccionar</button>
+						<button [disabled]="!loadingService.isHidden()" type="submit" class="btn btn-primary btn-block" (click)='seleccionarCobertura(cobertura, content)'>Seleccionar</button>
 		  			</div>
 				</div>
 			</div>
@@ -103,9 +103,9 @@
 	    </li>
 	  </ul>
 	  <div class="card-footer text-muted text-center">
-		<button type="button" (click)="endStepCancelar()" class="btn btn-secondary mr-1">Cancelar</button>
-		<button type="button" (click)="endStepCambiarCobertura()" class="btn btn-secondary mr-1">Cambiar cobertura</button>
-		<button type="button" (click)="endStepGenerar()" class="btn btn-primary mr-1">Generar póliza</button>
+		<button type="button" [disabled]="!loadingService.isHidden()" (click)="endStepCancelar()" class="btn btn-secondary mr-1">Cancelar</button>
+		<button type="button" [disabled]="!loadingService.isHidden()" (click)="endStepCambiarCobertura()" class="btn btn-secondary mr-1">Cambiar cobertura</button>
+		<button type="button" [disabled]="!loadingService.isHidden()" (click)="endStepGenerar()" class="btn btn-primary mr-1">Generar póliza</button>
 	  </div>
 	</div>
 </div>
