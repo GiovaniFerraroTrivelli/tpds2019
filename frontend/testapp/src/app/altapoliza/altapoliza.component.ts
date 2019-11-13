@@ -63,8 +63,8 @@ export class AltapolizaComponent implements OnInit {
 
 		this.altaPolizaForm = new FormGroup({
 			'idCliente': new FormControl(null, Validators.required),
-			'nombre': new FormControl(null),
-			'apellido': new FormControl(null),
+			'nombre': new FormControl({ value: '', disabled: true }),
+			'apellido': new FormControl({ value: '', disabled: true }),
 			'nroDocumento': new FormControl({ value: '', disabled: true }),
 			'direccion': new FormControl({ value: '', disabled: true }),
 			'marca': new FormControl(null, Validators.required),
