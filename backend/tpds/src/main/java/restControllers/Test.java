@@ -16,7 +16,7 @@ import java.util.Set;
 import javax.persistence.NoResultException;
 
 import dataAccess.HibernateUtil;
-import dataTransferObjects.ClienteDTO;
+import dataTransferObjects.ParametrosDeBusqueda;
 import dataTransferObjects.PolizaDTO;
 import dominio.Cotizacion;
 import dominio.Direccion;
@@ -38,23 +38,29 @@ import gestores.GestorGeografico;
 public class Test {
 
 	public static void main(String[] args) {
-		ClienteDTO test = new ClienteDTO();
-		test.setNombre("Francisco Ignacio");
-		buscarCliente(test);
+		ParametrosDeBusqueda test = new ParametrosDeBusqueda();
+		test.setNombre("Miguel");
+
+		ArrayList<Cliente> lc = new ArrayList<Cliente>(buscarCliente(test));
+
+		for (Cliente c : lc) {
+			System.out.println(c.getNombre());
+			System.out.println(c.getApellido());
+		}
 
 	}
 
-	public static void buscarCliente(Object obj) {
-		Session session = HibernateUtil.getSession();
+	public static ArrayList<Cliente> buscarCliente(ParametrosDeBusqueda c) {
 
+		Session session = HibernateUtil.getSession();
 		StringBuffer str = new StringBuffer();
 		str.append("FROM Cliente C WHERE ");
 		ArrayList<Parametro> parametros = new ArrayList<Parametro>();
 
-		ReflectionUtils.doWithFields(obj.getClass(), field -> {
+		ReflectionUtils.doWithFields(ParametrosDeBusqueda.class, field -> {
 			field.setAccessible(true);
-			if (field.get(obj) != null) {
-				parametros.add(new Parametro(field.getName(), field.get(obj)));
+			if (field.get(c) != null) {
+				parametros.add(new Parametro(field.getName(), field.get(c)));
 				str.append("C." + field.getName() + " = :" + field.getName() + " AND ");
 			}
 		});
@@ -66,19 +72,18 @@ public class Test {
 		}
 
 		try {
-			List<Cliente> listaClientes = query.list();
-			for (Cliente c : listaClientes) {
-				System.out.println(c.getNombre() + " " + c.getDocumento().getNroDocumento());
-			}
+			ArrayList<Cliente> listaClientes = new ArrayList<Cliente>(query.list());
+			session.close();
+			HibernateUtil.shutdown();
+			return listaClientes;
 
 		} catch (NoResultException e) {
 			System.out.println("NO SE ENCONTRO CLIENTE");
+			ArrayList<Cliente> listaClientes = new ArrayList<Cliente>();
 			session.close();
 			HibernateUtil.shutdown();
+			return listaClientes;
 		}
-
-		session.close();
-		HibernateUtil.shutdown();
 	}
 
 	private static void recuperarModeloConAnio() {
