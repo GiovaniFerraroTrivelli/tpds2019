@@ -3,13 +3,21 @@ package restControllers;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.NoResultException;
+
 import dataAccess.HibernateUtil;
+import dataTransferObjects.ClienteDTO;
+import dataTransferObjects.PolizaDTO;
 import dominio.Cotizacion;
 import dominio.Direccion;
 import dominio.Cliente;
@@ -29,28 +37,47 @@ import gestores.GestorGeografico;
 
 public class Test {
 
-	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
-		HibernateUtil.createSessionFactory();
-		Session s = HibernateUtil.getSession();		
-	
-		try {
-			Cliente c = s.get(Cliente.class, 1);
-			TipoCobertura t = s.get(TipoCobertura.class, 1);
-			
-			
-			Poliza p = new Poliza();
-			p.setCliente(c);
-			p.setTipoCobertura(t);
-			
-			s.save(p);
+		ClienteDTO test = new ClienteDTO();
+		test.setNombre("Francisco Ignacio");
+		buscarCliente(test);
 
-		} catch (Exception e) {
-			s.close();
+	}
+
+	public static void buscarCliente(Object obj) {
+		Session session = HibernateUtil.getSession();
+
+		StringBuffer str = new StringBuffer();
+		str.append("FROM Cliente C WHERE ");
+		ArrayList<Parametro> parametros = new ArrayList<Parametro>();
+
+		ReflectionUtils.doWithFields(obj.getClass(), field -> {
+			field.setAccessible(true);
+			if (field.get(obj) != null) {
+				parametros.add(new Parametro(field.getName(), field.get(obj)));
+				str.append("C." + field.getName() + " = :" + field.getName() + " AND ");
+			}
+		});
+
+		String hql = str.toString().substring(0, str.toString().length() - 5);
+		Query query = session.createQuery(hql);
+		for (Parametro p : parametros) {
+			query.setParameter(p.getNombre(), p.getValor());
+		}
+
+		try {
+			List<Cliente> listaClientes = query.list();
+			for (Cliente c : listaClientes) {
+				System.out.println(c.getNombre() + " " + c.getDocumento().getNroDocumento());
+			}
+
+		} catch (NoResultException e) {
+			System.out.println("NO SE ENCONTRO CLIENTE");
+			session.close();
 			HibernateUtil.shutdown();
 		}
-		
-		s.close();
+
+		session.close();
 		HibernateUtil.shutdown();
 	}
 
@@ -84,7 +111,7 @@ public class Test {
 			Modelo m = session.get(Modelo.class, 1);
 			m.getAnios().add(a);
 			a.setModelo(m);
-			//session.save(a);
+			// session.save(a);
 			session.update(m);
 			tx.commit();
 			System.out.println(m.getNombre());
