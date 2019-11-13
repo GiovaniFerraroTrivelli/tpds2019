@@ -14,7 +14,7 @@ export class DialogService {
     confirmButtons: boolean = false,
     btnOkText: string = 'Aceptar',
     btnCancelText: string = 'Cancelar',
-    dialogSize: 'sm'|'lg' = 'sm'): Promise<boolean> {
+    dialogSize: 'sm'|'lg' = 'lg'): Promise<boolean> {
     const modalRef = this.modalService.open(DialogComponent, { size: dialogSize });
     modalRef.componentInstance.title = title;
     modalRef.componentInstance.message = message;

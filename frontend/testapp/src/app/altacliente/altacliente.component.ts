@@ -120,6 +120,16 @@ export class AltaclienteComponent implements OnInit {
 	    });
 	}
 
+	cancelar() {
+		this.dialogService.confirm(
+			'Cancelar alta de cliente',
+			'¿Está seguro que desea cancelar el alta del cliente?', true, 'Sí', 'No')
+			.then((confirmed) => {
+				if(confirmed)
+					this.router.navigate(['/']);
+			});
+	}
+
 	onSubmit(f: NgForm) {
 		console.log("aca abajo");
 		let formJSON = f.value;

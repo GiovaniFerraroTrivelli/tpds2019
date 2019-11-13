@@ -293,7 +293,7 @@
 		</div>
 	</div>
 	<div class="text-right">
-	  <button type="cancel" class="btn btn-secondary">Cancelar</button>
-	  <button [disabled]="!altaClienteForm.valid" type="submit" class="btn btn-primary ml-2">Aceptar</button>
+		<button (click)="cancelar()" [disabled]="!loadingService.isHidden()" type="button" class="btn btn-secondary">Cancelar</button>
+		<button [disabled]="!altaClienteForm.valid" type="submit" class="btn btn-primary ml-2">Aceptar</button>
 	</div>
 </form> 
