@@ -33,6 +33,8 @@ export class AltapolizaComponent implements OnInit {
 
 	@ViewChild(HijosComponent, { static: false }) childComp: HijosComponent;
 
+	public title = "Alta de póliza";
+
 	private provincias : Provincia[];
 	private localidades : Localidad[];
 	private anios : number[];
@@ -94,7 +96,7 @@ export class AltapolizaComponent implements OnInit {
 
 		this.onChanges();
 
-		this.titleService.setTitle("Dar de alta póliza");
+		this.titleService.setTitle(this.title);
 		this.getListaProvincias();
 		this.getListaMarcas();
 	}

@@ -1,154 +1,299 @@
-<form #altaClienteForm="ngForm" (ngSubmit)="onSubmit(altaClienteForm)">
+<div class="pb-2 mt-4 mb-2 border-bottom">
+	<h2>{{ title }}</h2>
+</div>
+
+<form #acForm="ngForm" [formGroup]="altaClienteForm" (ngSubmit)="onSubmit(acForm)">
 	<div class="row">
 		<div class="col-sm">
-			<label class="pt-2" for="nrocliente">Número de cliente</label>
-		    <div class="input-group">
-		      <div class="input-group-prepend">
-		        <div class="input-group-text">#</div>
-		      </div>
-		      <input type="number" ngModel name="nrocliente" id="nrocliente" disabled="disabled" class="form-control">
-		    </div>
 
-		    <div class="row">
-			    <div class="col-lg-6">
-					<label class="pt-2" for="nombre">Nombre(s)</label>
-				    <div class="input-group">
-				      <input type="text" ngModel name="nombre" id="nombre" class="form-control">
-				    </div>
-				</div>
-
-			    <div class="col-lg-6">
-					<label class="pt-2" for="apellido">Apellido(s)</label>
-				    <div class="input-group">
-				      <input type="text" ngModel name="apellido" id="apellido" class="form-control">
-				    </div>
+			<div class="form-group mb-1">
+				<label class="control-label pt-2" for="idCliente">Número de cliente</label>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text">#</div>
+					</div>
+					<input type="number" formControlName="idCliente" name="idCliente" id="idCliente" class="form-control dis-arrows">
 				</div>
 			</div>
 
-		    <div class="row">
-			    <div class="col-lg-4">
-					<label class="pt-2" for="tipodni">Tipo</label>
-				    <div class="input-group">
-						<select ngModel name="tipodni" class="form-control" id="tipodni">
+			<div class="form-row">
+				<div class="col form-group mb-1 required">
+					<label class="control-label pt-2" for="nombre">Nombre(s)</label>
+					<div class="input-group">
+					<input type="text" formControlName="nombre" name="nombre" id="nombre" class="form-control">
+					</div>
+				</div>
+
+				<div class="col form-group mb-1 required">
+					<label class="control-label pt-2" for="apellido">Apellido(s)</label>
+					<div class="input-group">
+					<input type="text" formControlName="apellido" name="apellido" id="apellido" class="form-control">
+					</div>
+				</div>
+			</div>
+
+			<div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="nombre.errors.required">
+					El nombre del cliente es obligatorio.
+				</div>
+			</div>
+			<div *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="apellido.errors.required">
+					El apellido del cliente es obligatorio.
+				</div>
+			</div>
+
+		    <div class="form-row">
+				<div class="col-lg-4 form-group mb-1 required">
+					<label class="control-label pt-2" for="tipoDocumento">Tipo</label>
+					<div class="input-group">
+						<select name="tipoDocumento" formControlName="tipoDocumento" class="form-control" id="tipoDocumento">
 							<option value="{{ enum.key }}" *ngFor="let enum of TipoDNI | keyvalue">{{ enum.key }}</option>
-					    </select>
-				    </div>
+						</select>
+					</div>
 				</div>
-			    <div class="col-lg-8">
-					<label class="pt-2" for="nrodni">Nro. documento</label>
-				    <div class="input-group">
-				      <input ngModel type="text" name="nrodni" id="nrodni" class="form-control">
-				    </div>
-				</div>
-			</div>
-
-			<label class="pt-2" for="cuil">CUIL</label>
-		    <div class="input-group">
-		      <input ngModel type="text" name="cuil" id="cuil" class="form-control">
-		    </div>
-
-			<label class="pt-2" for="sexo">Sexo</label>
-		    <div class="input-group">
-				<select ngModel name="sexo" class="form-control" id="sexo">
-					<option value="{{ enum.key }}" *ngFor="let enum of Sexo | keyvalue">{{ enum.key }}</option>
-			    </select>
-		    </div>
-
-			<label class="pt-2" for="fechanac">Fecha de nacimiento</label>
-		    <div class="input-group">
-		    	<input ngModel type="date" class="form-control" name="fechanac" />
-		    </div>
-		</div>
-		<div class="col-sm">
-		    <div class="row">
-			    <div class="col-lg-8">
-					<label class="pt-2" for="dircalle">Calle</label>
-				    <div class="input-group">
-						<input ngModel type="text" name="dircalle" id="dircalle" class="form-control">
-				    </div>
-				</div>
-			    <div class="col-lg-4">
-					<label class="pt-2" for="dirnro">Número</label>
-				    <div class="input-group">
-				      <input ngModel type="text" name="dirnro" id="dirnro" class="form-control">
-				    </div>
-				</div>
-			    <div class="col-lg-6">
-					<label class="pt-2" for="dirpiso">Piso</label>
-				    <div class="input-group">
-						<input ngModel type="text" name="dirpiso" id="dirpiso" class="form-control">
-				    </div>
-				</div>
-			    <div class="col-lg-6">
-					<label class="pt-2" for="dirdpto">Departamento</label>
-				    <div class="input-group">
-						<input ngModel type="text" name="dirdpto" id="dirdpto" class="form-control">
-				    </div>
+				<div class="col-lg-8 form-group mb-1 required">
+					<label class="control-label pt-2" for="nroDocumento">Nro. de documento</label>
+					<div class="input-group">
+					    <input type="text" name="nroDocumento" formControlName="nroDocumento" id="nroDocumento" class="form-control">
+					</div>
 				</div>
 			</div>
 
-			<label class="pt-2" for="pais">País</label>
-		    <div class="input-group">
-				<select ngModel name="pais" class="form-control" id="pais">
-					<option>Masculino</option>
-					<option>Femenino</option>
-			    </select>
-		    </div>
+			<div *ngIf="tipoDocumento.invalid && (tipoDocumento.dirty || tipoDocumento.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="tipoDocumento.errors.required">
+					El tipo de documento es obligatorio.
+				</div>
+			</div>
 
-			<label class="pt-2" for="provincia">Provincia</label>
-		    <div class="input-group">
-				<select ngModel name="provincia" class="form-control" id="provincia">
-					<option>Masculino</option>
-					<option>Femenino</option>
-			    </select>
-		    </div>
+			<div *ngIf="nroDocumento.invalid && (nroDocumento.dirty || nroDocumento.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="nroDocumento.errors.required">
+					El número de documento es obligatorio.
+				</div>
+			</div>
 
-			<label class="pt-2" for="localidad">Localidad</label>
-		    <div class="input-group">
-				<select ngModel name="localidad" class="form-control" id="localidad">
-					<option>Masculino</option>
-					<option>Femenino</option>
-			    </select>
-		    </div>
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="cuil">CUIL</label>
+				<div class="input-group">
+					<input type="text" name="cuil" id="cuil" formControlName="cuil" class="form-control">
+				</div>
+			</div>
 
-			<label class="pt-2" for="codigopostal">Código Postal</label>
-		    <div class="input-group">
-		      <input ngModel type="text" name="codigopostal" id="codigopostal" class="form-control">
-		    </div>
+			<div *ngIf="cuil.invalid && (cuil.dirty || cuil.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="cuil.errors.required">
+					El CUIL es obligatorio.
+				</div>
+			</div>
+
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="sexo">Sexo</label>
+				<div class="input-group">
+					<select name="sexo" class="form-control" formControlName="sexo" id="sexo">
+						<option value="{{ enum.key }}" *ngFor="let enum of Sexo | keyvalue">{{ enum.value }}</option>
+					</select>
+				</div>
+			</div>
+
+			<div *ngIf="sexo.invalid && (sexo.dirty || sexo.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="sexo.errors.required">
+					El sexo del cliente es obligatorio.
+				</div>
+			</div>
+
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="fechaNacimiento">Fecha de nacimiento</label>
+				<div class="input-group">
+		    		<input type="date" class="form-control" formControlName="fechaNacimiento" name="fechaNacimiento" />
+				</div>
+			</div>
+
+			<div *ngIf="fechaNacimiento.invalid && (fechaNacimiento.dirty || fechaNacimiento.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="fechaNacimiento.errors.required">
+					El campo de fecha de nacimiento es obligatorio.
+				</div>
+				<div *ngIf="fechaNacimiento.errors.validateAge">
+					El cliente debe ser mayor de 18 años.
+				</div>
+			</div>
+
 		</div>
 		<div class="col-sm">
-			<label class="pt-2" for="condiva">Condición de IVA</label>
-		    <div class="input-group">
-				<select ngModel name="condiva" class="form-control" id="condiva">
-					<option value="{{ enum.key }}" *ngFor="let enum of CondicionIva | keyvalue">{{ enum.value }}</option>
-			    </select>
-		    </div>
+		    <div class="form-row">
+				<div class="col-lg-8 form-group mb-1 required">
+					<label class="control-label pt-2" for="calle">Calle</label>
+					<div class="input-group">
+						<input type="text" name="calle" id="calle" formControlName="calle" class="form-control">
+					</div>
 
-			<label class="pt-2" for="email">Correo electrónico</label>
-		    <div class="input-group">
-		    	<input ngModel type="email" name="email" id="email" class="form-control">
-		    </div>
+					<div *ngIf="calle.invalid && (calle.dirty || calle.touched)" class="invalid-feedback d-block mt-1 mb-0">
+						<div *ngIf="calle.errors.required">
+							El campo de calle es obligatorio.
+						</div>
+					</div>
 
-			<label class="pt-2" for="estadocivil">Estado Civil</label>
-		    <div class="input-group">
-				<select ngModel name="estadocivil" class="form-control" id="estadocivil">
-					<option value="{{ enum.key }}" *ngFor="let enum of EstadoCivil | keyvalue">{{ enum.value }}</option>
-			    </select>
-		    </div>
+					<div *ngIf="numero.invalid && (numero.dirty || numero.touched)" class="invalid-feedback d-block mt-1 mb-0">
+						<div *ngIf="numero.errors.required">
+							El campo de número es obligatorio.
+						</div>
+					</div>
+				</div>
 
-			<label class="pt-2" for="profesion">Profesión</label>
-		    <div class="input-group">
-		      <input type="text" name="profesion" id="profesion" class="form-control">
-		    </div>
+				<div class="col-lg-4 form-group mb-1 required">
+					<label class="control-label pt-2" for="numero">Número</label>
+					<div class="input-group">
+						<input type="number" name="numero" id="numero" formControlName="numero" class="form-control">
+					</div>
+				</div>
 
-			<label class="pt-2" for="anioregistro">Año de registro</label>
-		    <div class="input-group">
-		      <input type="number" name="anioregistro" id="anioregistro" class="form-control">
-		    </div>
+				<div class="col-lg-6 form-group mb-1">
+					<label class="control-label pt-2" for="piso">Piso</label>
+					<div class="input-group">
+						<input type="number" name="piso" id="piso" formControlName="piso" class="form-control">
+					</div>
+				</div>
+
+				<div class="col-lg-6 form-group mb-1">
+					<label class="control-label pt-2" for="departamento">Departamento</label>
+					<div class="input-group">
+						<input type="text" name="departamento" id="departamento" formControlName="departamento" class="form-control">
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="pais">País</label>
+				<div class="input-group">
+		    		<select formControlName="pais" name="pais" formControlName="pais" class="form-control mb-1">
+						<option value="{{ pais.idPais }}" *ngFor="let pais of paises">{{ pais.nombre }}</option>
+					</select>
+				</div>
+			</div>
+
+			<div *ngIf="pais.invalid && (pais.dirty || pais.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="pais.errors.required">
+					El país del cliente es obligatorio.
+				</div>
+			</div>
+
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="provincia">Provincia</label>
+				<div class="input-group">
+		    		<select formControlName="provincia" name="provincia" formControlName="provincia" class="form-control mb-1">
+						<option value="{{ provincia.idProvincia }}" *ngFor="let provincia of provincias">{{ provincia.nombre }}</option>
+					</select>
+				</div>
+			</div>
+
+			<div *ngIf="provincia.invalid && (provincia.dirty || provincia.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="provincia.errors.required">
+					La provincia del cliente es obligatoria.
+				</div>
+			</div>
+
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="localidad">Localidad</label>
+				<div class="input-group">
+		    		<select formControlName="localidad" name="localidad" formControlName="localidad" class="form-control mb-1">
+						<option value="{{ localidad.idLocalidad }}" *ngFor="let localidad of localidades">{{ localidad.nombre }}</option>
+					</select>
+				</div>
+			</div>
+
+			<div *ngIf="localidad.invalid && (localidad.dirty || localidad.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="localidad.errors.required">
+					La localidad del cliente es obligatoria.
+				</div>
+			</div>
+
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="codigoPostal">Código postal</label>
+				<div class="input-group">
+		      		<input type="number" name="codigoPostal" id="codigoPostal" formControlName="codigoPostal" class="form-control">
+				</div>
+			</div>
+
+			<div *ngIf="codigoPostal.invalid && (codigoPostal.dirty || codigoPostal.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="codigoPostal.errors.required">
+					El código postal es obligatorio.
+				</div>
+			</div>
+		</div>
+		<div class="col-sm">
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="condicionIva">Condición de IVA</label>
+				<div class="input-group">
+		    		<select name="condicionIva" class="form-control" formControlName="condicionIva" id="condicionIva">
+						<option value="{{ enum.key }}" *ngFor="let enum of CondicionIva | keyvalue">{{ enum.value }}</option>
+			    	</select>
+				</div>
+			</div>
+
+			<div *ngIf="condicionIva.invalid && (condicionIva.dirty || condicionIva.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="condicionIva.errors.required">
+					La condición de IVA del cliente es obligatoria.
+				</div>
+			</div>
+
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2 reqyuer" for="email">Correo electrónico</label>
+				<div class="input-group">
+		      		<input type="email" name="email" id="email" formControlName="email" class="form-control">
+				</div>
+			</div>
+
+			<div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="email.errors.required">
+					El correo electrónico del cliente es obligatorio.
+				</div>
+				<div *ngIf="email.errors.pattern">
+					El formato del correo electrónico no es válido.
+				</div>
+			</div>
+
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="estadoCivil">Estado Civil</label>
+				<div class="input-group">
+		    		<select name="estadoCivil" class="form-control" formControlName="estadoCivil" id="estadoCivil">
+						<option value="{{ enum.key }}" *ngFor="let enum of EstadoCivil | keyvalue">{{ enum.value }}</option>
+			    	</select>
+				</div>
+			</div>
+
+			<div *ngIf="estadoCivil.invalid && (estadoCivil.dirty || estadoCivil.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="estadoCivil.errors.required">
+					El estado civil del cliente es obligatorio.
+				</div>
+			</div>
+
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="profesion">Profesión</label>
+				<div class="input-group">
+		      		<input type="text" name="profesion" id="profesion" formControlName="profesion" class="form-control">
+				</div>
+			</div>
+
+			<div *ngIf="profesion.invalid && (profesion.dirty || profesion.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="profesion.errors.required">
+					La profesión del cliente es obligatoria.
+				</div>
+			</div>
+
+			<div class="form-group mb-1 required">
+				<label class="control-label pt-2" for="anioRegistro">Año de registro</label>
+				<div class="input-group">
+		      		<input type="number" name="anioRegistro" id="anioRegistro" formControlName="anioRegistro" class="form-control">
+				</div>
+			</div>
+
+			<div *ngIf="anioRegistro.invalid && (anioRegistro.dirty || anioRegistro.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="anioRegistro.errors.required">
+					El año del registro del cliente es obligatorio.
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="text-right">
 	  <button type="cancel" class="btn btn-secondary">Cancelar</button>
-	  <button [disabled]="false" type="submit" class="btn btn-primary ml-2">Aceptar</button>
+	  <button [disabled]="!altaClienteForm.valid" type="submit" class="btn btn-primary ml-2">Aceptar</button>
 	</div>
 </form> 

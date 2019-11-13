@@ -7,16 +7,28 @@
 
 	<div class="collapse navbar-collapse" id="navbarColor01">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active">
+			<li class="nav-item" [class.active]="isCurrentRouter('/')">
 				<a class="nav-link" routerLink="/">Home</a>
 			</li>
 
-			<li class="list-inline-item"><a routerLink="/users" class="nav-link">List Users</a></li>
-			<li class="list-inline-item"><a routerLink="/alta-poliza" class="nav-link">Alta Poliza</a></li>
-			<li class="list-inline-item"><a routerLink="/consultar-poliza" class="nav-link">Consultar Poliza</a></li>
+			<li class="nav-item" [class.active]="isCurrentRouter('/users')">
+				<a routerLink="/users" class="nav-link">List Users</a>
+			</li>
 
-			<li class="nav-item"><a *ngIf="isUserLoggedIn()" routerLink="/" class="nav-link">View Employees</a></li>
-			<li class="nav-item"><a *ngIf="isUserLoggedIn()" routerLink="/addemployee" class="nav-link">Add New Employee</a></li>
+			<li class="nav-item" [class.active]="isCurrentRouter('/alta-poliza')">
+				<a routerLink="/alta-poliza" class="nav-link">Alta de póliza</a>
+			</li>
+
+			<li class="nav-item" [class.active]="isCurrentRouter('/alta-cliente')">
+				<a routerLink="/alta-cliente" class="nav-link">Alta de cliente</a>
+			</li>
+
+			<li class="nav-item" [class.active]="isCurrentRouter('/consultar-poliza')">
+				<a routerLink="/consultar-poliza" class="nav-link">Consultar póliza</a>
+			</li>
+
+			<!-- <li class="nav-item"><a *ngIf="isUserLoggedIn()" routerLink="/" class="nav-link">View Employees</a></li>
+			<li class="nav-item"><a *ngIf="isUserLoggedIn()" routerLink="/addemployee" class="nav-link">Add New Employee</a></li> -->
 		</ul>
 
 		<ul class="navbar-nav float-right">
