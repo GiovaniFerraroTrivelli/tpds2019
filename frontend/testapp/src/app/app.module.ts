@@ -28,6 +28,8 @@ import { LoadingService } from './loading/loading.service';
 import { LoadingComponent } from './loading/loading.component';
 
 import localeEsAr from '@angular/common/locales/es-AR';
+import { BuscarPolizaComponent } from './buscar-poliza/buscar-poliza.component';
+import { RegistrarPagoComponent } from './registrar-pago/registrar-pago.component';
 
 registerLocaleData(localeEsAr, 'es-AR');
 
@@ -46,7 +48,9 @@ registerLocaleData(localeEsAr, 'es-AR');
 		AltaclienteComponent,
 		HijosComponent,
 		TipocoberturaComponent,
-		LoadingComponent
+		LoadingComponent,
+		BuscarPolizaComponent,
+		RegistrarPagoComponent
 	],
 
 	imports: [

@@ -27,6 +27,13 @@
 				<a routerLink="/consultar-poliza" class="nav-link">Consultar póliza</a>
 			</li>
 
+			<li class="nav-item" [class.active]="isCurrentRouter('/registrar-pago')">
+				<a routerLink="/registrar-pago" class="nav-link">Registrar Pago</a>
+			</li>
+
+			<li class="nav-item" [class.active]="isCurrentRouter('/buscar-poliza')">
+				<a routerLink="/buscar-poliza" class="nav-link">Buscar Poliza</a>
+			</li>
 			<!-- <li class="nav-item"><a *ngIf="isUserLoggedIn()" routerLink="/" class="nav-link">View Employees</a></li>
 			<li class="nav-item"><a *ngIf="isUserLoggedIn()" routerLink="/addemployee" class="nav-link">Add New Employee</a></li> -->
 		</ul>
