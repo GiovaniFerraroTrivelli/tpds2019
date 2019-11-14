@@ -7,9 +7,9 @@
 
         <!-- database connection properties -->
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://104.41.3.65/tpds</property>
-        <property name="hibernate.connection.username">tpdsuser</property>
-        <property name="hibernate.connection.password">tpdspass</property>
+        <property name="hibernate.connection.url">jdbc:mysql://tpds.shiobi.me/tpds?useSSL=false</property>
+        <property name="hibernate.connection.username">tpds2019</property>
+        <property name="hibernate.connection.password">t4b6FsszKvZFFWjaqc65HWREJDetFrUM!</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
 
         <!-- show mysql queries output in console -->
