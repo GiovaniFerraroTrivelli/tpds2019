@@ -8,6 +8,17 @@ public class ParametrosDeBusqueda {
 	private String apellido;
 	private Documento documento;
 
+	public ParametrosDeBusqueda(Integer idCliente, String nombre, String apellido, Documento documento) {
+		this.idCliente = idCliente;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.documento = documento;
+	}
+	
+	public ParametrosDeBusqueda(String nombre) {
+		this.nombre = nombre;
+	}
+
 	public Integer getIdCliente() {
 		return idCliente;
 	}
