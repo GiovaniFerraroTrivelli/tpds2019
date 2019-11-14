@@ -17,7 +17,7 @@ import excepciones.DatoNoEncontradoException;
 public class GestorGeografico {
 
 	public static Provincia getProvincia(Integer idProvincia) throws DatoNoEncontradoException {
-		Provincia result = HibernateUtil.getSession().get(Provincia.class, idProvincia);
+		Provincia result = HibernateUtil.openSession().get(Provincia.class, idProvincia);
 		if (result.equals(null))
 			throw new DatoNoEncontradoException();
 		else
@@ -25,7 +25,7 @@ public class GestorGeografico {
 	}
 
 	public static Pais getPais(Integer idPais) throws DatoNoEncontradoException {
-		Pais result = HibernateUtil.getSession().get(Pais.class, idPais);
+		Pais result = HibernateUtil.openSession().get(Pais.class, idPais);
 		if (result.equals(null))
 			throw new DatoNoEncontradoException();
 		else
@@ -33,7 +33,7 @@ public class GestorGeografico {
 	}
 
 	public static Localidad getLocalidad(Integer idLocalidad) throws DatoNoEncontradoException {
-		Localidad result = HibernateUtil.getSession().get(Localidad.class, idLocalidad);
+		Localidad result = HibernateUtil.openSession().get(Localidad.class, idLocalidad);
 		if (result.equals(null))
 			throw new DatoNoEncontradoException();
 		else
@@ -41,7 +41,7 @@ public class GestorGeografico {
 	}
 
 	public static ArrayList<Provincia> getProvinciasDePais(Integer idPais) throws DatoNoEncontradoException {
-		Session session = HibernateUtil.getSession();
+		Session session = HibernateUtil.openSession();
 		ArrayList<Provincia> provincias = new ArrayList<>();
 		try {
 			String hql = "FROM Provincia WHERE id_pais=" + idPais.toString() + " ORDER BY nombre ASC";
@@ -59,7 +59,7 @@ public class GestorGeografico {
 	public static ArrayList<Localidad> getLocalidadesDeProvincia(Integer idProvincia) throws DatoNoEncontradoException {
 		try {
 			String hql = "FROM Localidad WHERE id_provincia=" + idProvincia.toString() + " ORDER BY nombre ASC";
-			Query<Localidad> query = HibernateUtil.getSession().createQuery(hql);
+			Query<Localidad> query = HibernateUtil.openSession().createQuery(hql);
 			return new ArrayList<Localidad>(query.list());
 		} catch (HibernateException e) {
 			throw new DatoNoEncontradoException();

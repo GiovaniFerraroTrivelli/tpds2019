@@ -38,21 +38,16 @@ import gestores.GestorGeografico;
 public class Test {
 
 	public static void main(String[] args) {
-		ParametrosDeBusqueda test = new ParametrosDeBusqueda();
-		test.setNombre("Miguel");
-
-		ArrayList<Cliente> lc = new ArrayList<Cliente>(buscarCliente(test));
-
-		for (Cliente c : lc) {
-			System.out.println(c.getNombre());
-			System.out.println(c.getApellido());
-		}
-
+		Session session = HibernateUtil.openSession();
+		Cliente c = session.get(Cliente.class, 1);
+		session.close();
+		HibernateUtil.shutdown();
+		System.out.println(c.getNombre());
 	}
 
 	public static ArrayList<Cliente> buscarCliente(ParametrosDeBusqueda c) {
 
-		Session session = HibernateUtil.getSession();
+		Session session = HibernateUtil.openSession();
 		StringBuffer str = new StringBuffer();
 		str.append("FROM Cliente C WHERE ");
 		ArrayList<Parametro> parametros = new ArrayList<Parametro>();
@@ -88,7 +83,7 @@ public class Test {
 
 	private static void recuperarModeloConAnio() {
 		HibernateUtil.createSessionFactory();
-		Session session = HibernateUtil.getSession();
+		Session session = HibernateUtil.openSession();
 
 		try {
 			Modelo m = session.get(Modelo.class, 1);
@@ -107,7 +102,7 @@ public class Test {
 
 	private static void agregarAnioAModelo() {
 		HibernateUtil.createSessionFactory();
-		Session session = HibernateUtil.getSession();
+		Session session = HibernateUtil.openSession();
 		Cotizacion a = new Cotizacion();
 		a.setAnio(2011);
 
@@ -132,7 +127,7 @@ public class Test {
 
 	private static void agregarTipoCobertura() {
 		HibernateUtil.createSessionFactory();
-		Session session = HibernateUtil.getSession();
+		Session session = HibernateUtil.openSession();
 
 		Poliza p = session.get(Poliza.class, 1);
 		TipoCobertura t = session.get(TipoCobertura.class, 2);
@@ -175,7 +170,7 @@ public class Test {
 		p.setHijos(hijos);
 
 		HibernateUtil.createSessionFactory();
-		Session session = HibernateUtil.getSession();
+		Session session = HibernateUtil.openSession();
 
 		Transaction tx = session.beginTransaction();
 
@@ -211,7 +206,7 @@ public class Test {
 		Documento d = new Documento(TipoDocumento.DNI, 41490799);
 		c.setDocumento(d);
 
-		Session session = HibernateUtil.getSession();
+		Session session = HibernateUtil.openSession();
 		Transaction tx = session.beginTransaction();
 
 		try {
@@ -232,7 +227,7 @@ public class Test {
 
 	private static void recuperarCliente() {
 		HibernateUtil.createSessionFactory();
-		Session session = HibernateUtil.getSession();
+		Session session = HibernateUtil.openSession();
 
 		try {
 

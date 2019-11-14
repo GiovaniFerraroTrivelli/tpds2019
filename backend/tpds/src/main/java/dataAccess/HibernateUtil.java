@@ -17,7 +17,7 @@ public class HibernateUtil {
 		}
 	}
 	
-	public static Session getSession() throws HibernateException {
+	public static Session openSession() throws HibernateException {
 		try {
 			return sessionFactory.openSession();
 		} catch (Exception e) {
@@ -32,6 +32,15 @@ public class HibernateUtil {
 
 	public static SessionFactory createSessionFactory() {
 		return sessionFactory;
+	}
+	
+	public static Session getCurrentSession() throws HibernateException {
+		try {
+			return sessionFactory.getCurrentSession();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

@@ -19,7 +19,7 @@ public class GestorModelos {
 	public static ArrayList<Marca> getMarcas() throws DatoNoEncontradoException {
 		try {
 			String hql = "FROM Marca ORDER BY nombre ASC";
-			Query<Marca> query = HibernateUtil.getSession().createQuery(hql);
+			Query<Marca> query = HibernateUtil.openSession().createQuery(hql);
 			return new ArrayList<Marca>(query.list());
 		} catch (HibernateException e) {
 			throw new DatoNoEncontradoException();
@@ -29,7 +29,7 @@ public class GestorModelos {
 	public static ArrayList<Modelo> getModelosDeMarca(Integer idMarca) throws DatoNoEncontradoException {
 		try {
 			String hql = "FROM Modelo WHERE id_marca=" + idMarca.toString() + " ORDER BY nombre ASC";
-			Query<Modelo> query = HibernateUtil.getSession().createQuery(hql);
+			Query<Modelo> query = HibernateUtil.openSession().createQuery(hql);
 			return new ArrayList<Modelo>(query.list());
 		} catch (HibernateException e) {
 			throw new DatoNoEncontradoException();
@@ -41,7 +41,7 @@ public class GestorModelos {
 	}
 
 	public static ArrayList<Integer> getAnios(Integer idModelo) throws DatoNoEncontradoException {
-		Session session = HibernateUtil.getSession();
+		Session session = HibernateUtil.openSession();
 		String hql = "FROM Cotizacion WHERE id_modelo =" + idModelo.toString() + " ORDER BY anio DESC";
 		ArrayList<Integer> anios = new ArrayList<Integer>();
 

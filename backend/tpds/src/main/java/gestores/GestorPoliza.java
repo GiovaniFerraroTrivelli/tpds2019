@@ -139,14 +139,14 @@ public class GestorPoliza {
 	}
 
 	private static boolean existePolizaConPatente(String patente) {
-		Session session = HibernateUtil.getSession();
+		Session session = HibernateUtil.openSession();
 		String hql = "FROM Poliza WHERE dominio=\'" + patente + "\'";
 		Query<Poliza> query = session.createQuery(hql);
 		return !query.getResultList().isEmpty();
 	}
 
 	private static boolean existePolizaConMotor(String motor) {
-		Session session = HibernateUtil.getSession();
+		Session session = HibernateUtil.openSession();
 		String hql = "FROM Poliza WHERE motor=\'" + motor + "\'";
 		Query<Poliza> query = session.createQuery(hql);
 		return !query.getResultList().isEmpty();
@@ -154,7 +154,7 @@ public class GestorPoliza {
 	}
 
 	private static boolean existePolizaConChasis(String chasis) {
-		Session session = HibernateUtil.getSession();
+		Session session = HibernateUtil.openSession();
 		String hql = "FROM Poliza WHERE chasis=\'" + chasis + "\'";
 		Query<Poliza> query = session.createQuery(hql);
 		return !query.getResultList().isEmpty();
@@ -188,7 +188,7 @@ public class GestorPoliza {
 		Set<Hijo> hijos = new HashSet<Hijo>(p.getHijos());
 		poliza.setHijos(hijos);
 
-		poliza.setTipoCobertura(HibernateUtil.getSession().get(TipoCobertura.class, p.getIdCobertura()));
+		poliza.setTipoCobertura(HibernateUtil.openSession().get(TipoCobertura.class, p.getIdCobertura()));
 		// TODO: Cambiar
 
 		LocalDate inicioVigencia = LocalDate.parse(p.getFechaVigencia());
@@ -229,7 +229,7 @@ public class GestorPoliza {
 
 	public static Boolean savePoliza(Poliza poliza) {
 		try {
-			Session s = HibernateUtil.getSession();
+			Session s = HibernateUtil.openSession();
 			Transaction t = s.beginTransaction();
 			s.save(poliza);
 			Set<Cuota> cuotas = poliza.getCuotas();
