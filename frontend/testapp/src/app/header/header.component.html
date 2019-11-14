@@ -1,11 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 	<a class="navbar-brand" routerLink="/">El Asegurado</a>
 	
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+	<button class="navbar-toggler" (click)="isMenuCollapsed = !isMenuCollapsed" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
 
-	<div class="collapse navbar-collapse" id="navbarColor01">
+	<div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse" id="navbarColor01">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item" [class.active]="isCurrentRouter('/')">
 				<a class="nav-link" routerLink="/">Home</a>
@@ -32,7 +32,11 @@
 			</li>
 
 			<li class="nav-item" [class.active]="isCurrentRouter('/buscar-poliza')">
-				<a routerLink="/buscar-poliza" class="nav-link">Buscar Poliza</a>
+				<a routerLink="/buscar-poliza" class="nav-link">Buscar póliza</a>
+			</li>
+
+			<li class="nav-item" [class.active]="isCurrentRouter('/consultar-clientes')">
+				<a routerLink="/consultar-clientes" class="nav-link">Consultar clientes</a>
 			</li>
 			<!-- <li class="nav-item"><a *ngIf="isUserLoggedIn()" routerLink="/" class="nav-link">View Employees</a></li>
 			<li class="nav-item"><a *ngIf="isUserLoggedIn()" routerLink="/addemployee" class="nav-link">Add New Employee</a></li> -->
