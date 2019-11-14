@@ -5,7 +5,19 @@
 		<span aria-hidden="true">&times;</span>
 	  </button>
 	</div>
+
 	<div class="modal-body">
+		<div class="alert alert-light">
+			<h5><strong>Criterios de búsqueda aplicados</strong></h5>
+			<div class="row font-weight-light">
+		  		<div class="col-4"><small>Id de cliente: {{ buscarClienteForm.value.idCliente == "" ? "sin filtros" : buscarClienteForm.value.idCliente }}</small></div>
+		  		<div class="col-4"><small>Nombre: {{ buscarClienteForm.value.nombre == "" ? "sin filtros" : buscarClienteForm.value.nombre }}</small></div>
+		  		<div class="col-4"><small>Apellido: {{ buscarClienteForm.value.apellido == "" ? "sin filtros" : buscarClienteForm.value.apellido }}</small></div>
+		  		<div class="col-4"><small>Tipo de documento: {{ buscarClienteForm.value.tipoDocumento == "" ? "sin filtros" : buscarClienteForm.value.tipoDocumento }}</small></div>
+		  		<div class="col-4"><small>Nro. documento: {{ buscarClienteForm.value.nroDocumento == null ? "sin filtros" : buscarClienteForm.value.nroDocumento }}</small></div>
+		  	</div>
+		</div>
+
 		<table class="table table-hover">
 			<thead>
 			  <tr>
