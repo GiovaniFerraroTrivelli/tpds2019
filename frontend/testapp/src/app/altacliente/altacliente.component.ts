@@ -1,6 +1,6 @@
 import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
-import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators, AbstractControl, FormBuilder } from '@angular/forms';
 import { Router } from "@angular/router";
 
 import { GeografiaService } from '../geografia/geografia.service';
@@ -57,14 +57,16 @@ export class AltaclienteComponent implements OnInit {
 			'cuil': new FormControl(null, Validators.required),
 			'sexo': new FormControl(null, Validators.required),
 			'fechaNacimiento': new FormControl(null, [ Validators.required, FechaNacimientoValidator ]),
-			'calle': new FormControl(null, Validators.required),
-			'numero': new FormControl(null, Validators.required),
-			'piso': new FormControl(null),
-			'departamento': new FormControl(null),
-			'pais': new FormControl(null, Validators.required),
-			'provincia': new FormControl(null, Validators.required),
-			'localidad': new FormControl(null, Validators.required),
-			'codigoPostal': new FormControl(null, Validators.required),
+			'direccion': new FormGroup({
+				'calle': new FormControl(null, Validators.required),
+				'numero': new FormControl(null, Validators.required),
+				'piso': new FormControl(null),
+				'departamento': new FormControl(null),
+				'pais': new FormControl(null, Validators.required),
+				'provincia': new FormControl(null, Validators.required),
+				'localidad': new FormControl(null, Validators.required),
+				'codigoPostal': new FormControl(null, [ Validators.required, Validators.pattern('^[A-Z][0-9]{3,5}[A-Z]{0,3}$') ])
+			}),
 			'condicionIva': new FormControl(null, Validators.required),
 			'email': new FormControl(null, [ Validators.required, Validators.pattern('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$') ]),
 			'estadoCivil': new FormControl(null, Validators.required),
@@ -85,14 +87,15 @@ export class AltaclienteComponent implements OnInit {
 	get cuil() { return this.altaClienteForm.get('cuil'); }
 	get sexo() { return this.altaClienteForm.get('sexo'); }
 	get fechaNacimiento() { return this.altaClienteForm.get('fechaNacimiento'); }
-	get calle() { return this.altaClienteForm.get('calle'); }
-	get numero() { return this.altaClienteForm.get('numero'); }
-	get piso() { return this.altaClienteForm.get('piso'); }
-	get departamento() { return this.altaClienteForm.get('departamento'); }
-	get pais() { return this.altaClienteForm.get('pais'); }
-	get provincia() { return this.altaClienteForm.get('provincia'); }
-	get localidad() { return this.altaClienteForm.get('localidad'); }
-	get codigoPostal() { return this.altaClienteForm.get('codigoPostal'); }
+	get direccion() { return this.altaClienteForm.get('direccion'); }
+	get calle() { return this.altaClienteForm.get('direccion.calle'); }
+	get numero() { return this.altaClienteForm.get('direccion.numero'); }
+	get piso() { return this.altaClienteForm.get('direccion.piso'); }
+	get departamento() { return this.altaClienteForm.get('direccion.departamento'); }
+	get pais() { return this.altaClienteForm.get('direccion.pais'); }
+	get provincia() { return this.altaClienteForm.get('direccion.provincia'); }
+	get localidad() { return this.altaClienteForm.get('direccion.localidad'); }
+	get codigoPostal() { return this.altaClienteForm.get('direccion.codigoPostal'); }
 	get condicionIva() { return this.altaClienteForm.get('condicionIva'); }
 	get email() { return this.altaClienteForm.get('email'); }
 	get estadoCivil() { return this.altaClienteForm.get('estadoCivil'); }
@@ -100,14 +103,14 @@ export class AltaclienteComponent implements OnInit {
 	get anioRegistro() { return this.altaClienteForm.get('anioRegistro'); }
 
 	onChanges(): void {
-		this.altaClienteForm.get('pais').valueChanges.subscribe(idPais => {
+		this.altaClienteForm.get('direccion.pais').valueChanges.subscribe(idPais => {
 			this.geografiaService.getProvinciasByPais(idPais).subscribe(data => {
 			    this.provincias = data;
 			    this.localidades = undefined;
 		    });
 		});
 
-		this.altaClienteForm.get('provincia').valueChanges.subscribe(idProvincia => {
+		this.altaClienteForm.get('direccion.provincia').valueChanges.subscribe(idProvincia => {
 			this.geografiaService.getLocalidadesByProvincia(idProvincia).subscribe(data => {
 			    this.localidades = data;
 		    });

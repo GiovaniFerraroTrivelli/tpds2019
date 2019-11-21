@@ -117,7 +117,7 @@
 			</div>
 
 		</div>
-		<div class="col-sm">
+		<div class="col-sm" [formGroup]="direccion">
 		    <div class="form-row">
 				<div class="col-lg-8 form-group mb-1 required">
 					<label class="control-label pt-2" for="calle">Calle</label>
@@ -208,13 +208,16 @@
 			<div class="form-group mb-1 required">
 				<label class="control-label pt-2" for="codigoPostal">Código postal</label>
 				<div class="input-group">
-		      		<input type="number" name="codigoPostal" id="codigoPostal" formControlName="codigoPostal" class="form-control">
+		      		<input type="text" name="codigoPostal" id="codigoPostal" formControlName="codigoPostal" class="form-control">
 				</div>
 			</div>
 
 			<div *ngIf="codigoPostal.invalid && (codigoPostal.dirty || codigoPostal.touched)" class="invalid-feedback d-block mt-1 mb-0">
 				<div *ngIf="codigoPostal.errors.required">
 					El código postal es obligatorio.
+				</div>
+				<div *ngIf="codigoPostal.errors.pattern">
+					El código postal no tiene un formato válido. <a target='_blank' href='https://www.correoargentino.com.ar/formularios/cpa'>Cliqueé para más información</a>.
 				</div>
 			</div>
 		</div>
