@@ -65,4 +65,15 @@ public class GestorGeografico {
 			throw new DatoNoEncontradoException();
 		}
 	}
+	
+	public static ArrayList<Pais> getPaises() throws DatoNoEncontradoException{
+		try {
+			String hql = "FROM Pais ORDER BY nombre ASC";
+			Query<Pais> query = HibernateUtil.openSession().createQuery(hql);
+			return new ArrayList<Pais>(query.list());
+		} catch (HibernateException e) {
+			throw new DatoNoEncontradoException();
+		}
+		
+	}
 }

@@ -67,5 +67,18 @@ public class ControladorGeografico {
 			return new ResponseEntity<>(new Error("País no encontrado"), HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	@GetMapping("/paises")
+	public ResponseEntity<Object> getPaises() {
+		try {
+			ArrayList<PaisDTO> paisesDTO = new ArrayList<>();
+			ArrayList<Pais> paises = GestorGeografico.getPaises();
+			for (Pais pais : paises) paisesDTO.add(pais.getDTO());
+			return new ResponseEntity<>(paisesDTO, HttpStatus.OK);
+		} catch (DatoNoEncontradoException e) {
+			return new ResponseEntity<>(new Error("No se pudo recuperar la lista de paises"), HttpStatus.NOT_FOUND);
+		}
+		
+	}
 
 }
