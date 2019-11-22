@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import javax.persistence.NoResultException;
 
 import org.hibernate.HibernateException;
+import org.hibernate.PersistentObjectException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.exception.DataException;
 import org.hibernate.query.Query;
 import org.springframework.util.ReflectionUtils;
 
@@ -25,12 +28,17 @@ public class DaoCliente {
 		return cliente;
 	}
 
-	public static void save(Cliente c) throws java.sql.SQLIntegrityConstraintViolationException {
+	public static void guardarCliente(Cliente c) {
 		Session session = HibernateUtil.openSession();
 		Transaction t = session.beginTransaction();
-		session.save(c.getDireccion());
-		session.save(c);
-		t.commit();
+
+		try {
+			session.save(c.getDireccion());
+			session.save(c);
+			t.commit();
+		} catch (ConstraintViolationException e) {
+			throw e;
+		}
 	}
 
 	public static ArrayList<Cliente> buscarCliente(ParametrosDeBusqueda c) {

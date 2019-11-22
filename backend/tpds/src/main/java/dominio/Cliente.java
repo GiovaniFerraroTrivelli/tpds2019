@@ -14,6 +14,7 @@ public class Cliente {
 	private String nombre;
 	private String apellido;
 	private Documento documento;
+	// TODO: Cambiar a Integer
 	private String cuil;
 	private Sexo sexo;
 	private Date fechaNacimiento;

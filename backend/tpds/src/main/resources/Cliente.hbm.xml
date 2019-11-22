@@ -29,8 +29,8 @@
             </type>
         </property>
         
-        <property name="email" column="email" unique="true"/>
-        <property name="cuil" column="cuil" unique="true"/>
+        <property name="email" column="email" unique="true" unique-key="email_unico"/>
+        <property name="cuil" column="cuil" unique="true" unique-key="cuil_unico"/>
 
         <property name="condicionIva" column="condicion_iva" length="30">
             <type name="org.hibernate.type.EnumType">

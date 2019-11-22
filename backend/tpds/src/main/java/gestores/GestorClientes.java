@@ -2,8 +2,10 @@ package gestores;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 
+import org.hibernate.PersistentObjectException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -26,8 +28,8 @@ public class GestorClientes {
 		return c;
 	}
 	
-	public static void saveCliente(Cliente c) throws java.sql.SQLIntegrityConstraintViolationException{
-			DaoCliente.save(c);
+	public static void guardarCliente(Cliente c) throws java.sql.SQLIntegrityConstraintViolationException{
+			DaoCliente.guardarCliente(c);
 	}
 	
 	public static void altaCliente(altaClienteDTO clienteDTO) throws DatoNoEncontradoException, java.sql.SQLIntegrityConstraintViolationException {
@@ -58,6 +60,10 @@ public class GestorClientes {
 		cliente.setEmail(clienteDTO.getEmail());
 		cliente.setCondicionIva(clienteDTO.getCondicionIva());
 		
-		GestorClientes.saveCliente(cliente);
+		try {
+		GestorClientes.guardarCliente(cliente);
+		} catch (ConstraintViolationException e) {
+			throw e;
+		}
 	}
 }

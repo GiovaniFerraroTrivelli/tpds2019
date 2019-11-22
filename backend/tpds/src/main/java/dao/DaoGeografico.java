@@ -14,7 +14,7 @@ public class DaoGeografico {
 		return localidad;
 	}
 
-	public static void save(Localidad l) {
+	public static void guardarLocalidad(Localidad l) {
 		Session session = HibernateUtil.openSession();
 		Transaction t = session.beginTransaction();
 		session.save(l);
