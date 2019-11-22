@@ -1,5 +1,6 @@
 package restControllers;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
 import org.springframework.http.HttpStatus;
@@ -12,8 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import dao.DaoCliente;
 import dataTransferObjects.ClienteDTO;
 import dataTransferObjects.ParametrosDeBusqueda;
+import dataTransferObjects.altaClienteDTO;
 import dominio.Cliente;
+import dominio.Direccion;
+import excepciones.DatoNoEncontradoException;
 import excepciones.NoExisteClienteException;
+import gestores.GestorClientes;
+import gestores.GestorGeografico;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -27,5 +33,23 @@ public class ControladorCliente {
 			result.add(c.getDTO());
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@PostMapping("/altaCliente")
+	public ResponseEntity<Object> altaCliente(@RequestBody altaClienteDTO clienteDTO) {
+		try {
+			GestorClientes.altaCliente(clienteDTO);
+		} catch (DatoNoEncontradoException e) {
+			return new ResponseEntity<>(new Error("No existe la localidad indicada"), HttpStatus.PRECONDITION_FAILED);
+		} catch (NullPointerException e) {
+			return new ResponseEntity<>(
+					new Error("Error, no se han especificado todos los parámetros necesarios para generar el cliente"),
+					HttpStatus.BAD_REQUEST);
+		}catch (java.sql.SQLIntegrityConstraintViolationException e) {
+			System.out.println("iuigu");
+			return new ResponseEntity<>(new Error("No se puede crear un cliente con datos duplicados. Error: ".concat(e.getMessage())), HttpStatus.OK);
+		}
+
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

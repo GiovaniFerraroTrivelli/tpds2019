@@ -1,9 +1,11 @@
 package dao;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
 import javax.persistence.NoResultException;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -23,9 +25,10 @@ public class DaoCliente {
 		return cliente;
 	}
 
-	public static void save(Cliente c) {
+	public static void save(Cliente c) throws java.sql.SQLIntegrityConstraintViolationException {
 		Session session = HibernateUtil.openSession();
 		Transaction t = session.beginTransaction();
+		session.save(c.getDireccion());
 		session.save(c);
 		t.commit();
 	}
