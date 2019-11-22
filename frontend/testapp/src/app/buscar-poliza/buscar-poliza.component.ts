@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BuscarpolizaService } from './buscarpoliza.service'
 
 @Component({
   selector: 'app-buscar-poliza',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BuscarPolizaComponent implements OnInit {
 
-  constructor() { }
+  constructor(private BuscarpolizaService: BuscarpolizaService) { }
+  private idPoliza: number;
 
   ngOnInit() {
   }
-
+  onSubmit(idPoliza: number){
+    this.BuscarpolizaService.postBuscarPoliza(idPoliza);
+    console.log(this.idPoliza);
+  }
 }
