@@ -2,7 +2,7 @@
     <h4 class="m-1">Registrar pago de póliza Nro:</h4>
     <div id='nroPoliza' class=" mb-1">
         <div class="input-group">
-            <input type="number" readonly="readonly" name="nroPoliza" class="form-control unclickable dis-arrows">
+            <input placeholder="{{poliza.idPoliza}}" type="number" readonly="readonly" name="nroPoliza" class="form-control unclickable dis-arrows">
         </div>
     </div>
 </div>
@@ -15,7 +15,7 @@
             <div class="input-group-prepend">
                 <div class="input-group-text">#</div>
             </div>
-            <input type="number" readonly="readonly" name="idCliente" id="idCliente" class="form-control unclickable dis-arrows">
+            <input placeholder="{{cliente.idCliente}}" type="number" readonly="readonly" name="idCliente" id="idCliente" class="form-control unclickable dis-arrows">
         </div>
     </div>
 
@@ -23,14 +23,14 @@
         <div class="col mb-1">
             <label class="control-label pt-2" for="nombre">Nombre(s)</label>
             <div class="input-group">
-            <input type="text" readonly="readonly" name="nombre" id="nombre" class="form-control unclickable dis-arrows">
+            <input placeholder="{{cliente.nombre}}" type="text" readonly="readonly" name="nombre" id="nombre" class="form-control unclickable dis-arrows">
             </div>
         </div>
 
         <div class="col mb-1">
             <label class="control-label pt-2" for="apellido">Apellido(s)</label>
             <div class="input-group">
-            <input type="text" readonly="readonly" name="apellido" id="apellido" class="form-control unclickable dis-arrows">
+            <input placeholder="{{cliente.apellido}}" type="text" readonly="readonly" name="apellido" id="apellido" class="form-control unclickable dis-arrows">
             </div>
         </div>
     </div>
@@ -39,16 +39,16 @@
         <label class="control-label pt-2" for="apellido">Tipo y nro. de documento</label>
         <div class="input-group">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1"></span>
+                <span class="input-group-text" id="basic-addon1">{{cliente.documento.tipoDocumento}}</span>
             </div>
-            <input type="text" readonly="readonly" class="form-control unclickable dis-arrows" name="nroDocumento" />
+            <input placeholder="{{cliente.documento.nroDocumento}}" type="text" readonly="readonly" class="form-control unclickable dis-arrows" name="nroDocumento" />
         </div>
     </div>
 
     <div class="mb-1">
         <label class="control-label pt-2" for="direccion">Dirección</label>
         <div class="input-group">
-        <input type="text" readonly="readonly" name="direccion" id="direccion" class="form-control unclickable dis-arrows">
+        <input placeholder="{{cliente.direccion}}" type="text" readonly="readonly" name="direccion" id="direccion" class="form-control unclickable dis-arrows">
         </div>
     </div>
 </div>
@@ -59,42 +59,42 @@
     <div class="col mb-1">
         <label class="control-label pt-2" for="marca">Marca</label>
         <div class="input-group">
-        <input type="text" readonly="readonly" class="form-control unclickable dis-arrows">
+        <input placeholder="{{poliza.marca}}" type="text" readonly="readonly" class="form-control unclickable dis-arrows">
         </div>
     </div>
 
     <div class="col mb-1">
         <label class="control-label pt-2" for="modelo">Modelo</label>
         <div class="input-group">
-        <input type="text" readonly="readonly" class="form-control unclickable dis-arrows">
+        <input placeholder="{{poliza.modelo}}" type="text" readonly="readonly" class="form-control unclickable dis-arrows">
         </div>
     </div>
 
     <div class="col mb-1">
         <label class="control-label pt-2" for="año">Año</label>
         <div class="input-group">
-        <input type="number" readonly="readonly" class="form-control unclickable dis-arrows">
+        <input placeholder="{{poliza.anio}}" type="number" readonly="readonly" class="form-control unclickable dis-arrows">
         </div>
     </div>
 
     <div class="col mb-1">
         <label class="control-label pt-2" for="motor">Motor</label>
         <div class="input-group">
-        <input type="text" readonly="readonly" class="form-control unclickable dis-arrows">
+        <input placeholder="{{poliza.motor}}" type="text" readonly="readonly" class="form-control unclickable dis-arrows">
         </div>
     </div>
 
     <div class="col mb-1">
         <label class="control-label pt-2" for="chasis">Chasis</label>
         <div class="input-group">
-        <input type="text" readonly="readonly" class="form-control unclickable dis-arrows">
+        <input placeholder="{{poliza.chasis}}" type="text" readonly="readonly" class="form-control unclickable dis-arrows">
         </div>
     </div>
 
     <div class="col mb-1">
         <label class="control-label pt-2" for="patente">Patente del vehículo</label>
         <div class="input-group">
-        <input type="text" readonly="readonly" class="form-control unclickable dis-arrows">
+        <input placeholder="{{poliza.patente}}" type="text" readonly="readonly" class="form-control unclickable dis-arrows">
         </div>
     </div>
 </div>

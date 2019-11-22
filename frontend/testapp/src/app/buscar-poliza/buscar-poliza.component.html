@@ -4,7 +4,7 @@
             Buscar póliza
         </div>
         <div class="card-body">
-            <input class="form-control" type="number" placeholder="Número de póliza" [(ngModel)]="idPoliza">
+            <input class="form-control" min=0 type="number" placeholder="Número de póliza" [(ngModel)]="idPoliza">
             <div class="d-flex flex-row-reverse">
                 <button id='searchBtn' type="button" class="btn btn-primary p-2" (click)='onSubmit(idPoliza)'>Buscar</button>
             </div>
