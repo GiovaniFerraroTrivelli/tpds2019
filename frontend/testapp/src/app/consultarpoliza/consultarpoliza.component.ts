@@ -41,7 +41,7 @@ export class ConsultarpolizaComponent implements OnInit {
 			'apellido': new FormControl(null),
 			'marca': new FormControl(null),
 			'modelo': new FormControl(null),
-			'patente': new FormControl(null),
+			'patente': new FormControl(null, Validators.pattern('^(|[A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{3}[A-Z]{2})$')),
 			'inicioVigencia': new FormControl(null),
 			'finVigencia': new FormControl(null),
 			'estadoPoliza': new FormControl(null)
@@ -85,6 +85,10 @@ export class ConsultarpolizaComponent implements OnInit {
 		}
 
 		return false;
+	}
+
+	convertToUppercase(thisField) {
+		this.consultarPolizaForm.controls[thisField].setValue(this.consultarPolizaForm.get(thisField).value.toUpperCase());
 	}
 
 	onSubmit(f : NgForm) {

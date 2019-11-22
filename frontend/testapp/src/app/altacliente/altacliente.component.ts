@@ -52,8 +52,10 @@ export class AltaclienteComponent implements OnInit {
 			'idCliente': new FormControl({ value: '', disabled: true }),
 			'nombre': new FormControl(null, Validators.required),
 			'apellido': new FormControl(null, Validators.required),
-			'tipoDocumento': new FormControl(null, Validators.required),
-			'nroDocumento': new FormControl(null, Validators.required),
+			'documento': new FormGroup({
+				'tipoDocumento': new FormControl(null, Validators.required),
+				'nroDocumento': new FormControl(null, Validators.required),
+			}),
 			'cuil': new FormControl(null, Validators.required),
 			'sexo': new FormControl(null, Validators.required),
 			'fechaNacimiento': new FormControl(null, [ Validators.required, FechaNacimientoValidator ]),
@@ -82,8 +84,8 @@ export class AltaclienteComponent implements OnInit {
 	get idCliente() { return this.altaClienteForm.get('idCliente'); }
 	get nombre() { return this.altaClienteForm.get('nombre'); }
 	get apellido() { return this.altaClienteForm.get('apellido'); }
-	get tipoDocumento() { return this.altaClienteForm.get('tipoDocumento'); }
-	get nroDocumento() { return this.altaClienteForm.get('nroDocumento'); }
+	get tipoDocumento() { return this.altaClienteForm.get('documento.tipoDocumento'); }
+	get nroDocumento() { return this.altaClienteForm.get('documento.nroDocumento'); }
 	get cuil() { return this.altaClienteForm.get('cuil'); }
 	get sexo() { return this.altaClienteForm.get('sexo'); }
 	get fechaNacimiento() { return this.altaClienteForm.get('fechaNacimiento'); }
