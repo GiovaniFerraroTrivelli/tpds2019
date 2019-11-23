@@ -71,7 +71,7 @@ public class DaoCliente {
 
 			if (c.getDocumento().getNroDocumento() != null) {
 				str.append("C.documento.nroDocumento = :nroDocumento AND ");
-				parametros.add(new Parametro("nro", c.getDocumento().getNroDocumento()));
+				parametros.add(new Parametro("nroDocumento", c.getDocumento().getNroDocumento()));
 			}
 		}
 
