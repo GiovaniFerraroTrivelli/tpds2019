@@ -3,6 +3,8 @@ package restControllers;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.PersistentObjectException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -27,18 +29,23 @@ import gestores.GestorGeografico;
 @CrossOrigin(origins = "http://localhost:4200")
 public class ControladorCliente {
 	@PostMapping("/buscarCliente")
-	public ResponseEntity<Object> buscarCliente(@RequestBody ParametrosDeBusqueda parametros)
-			throws NoExisteClienteException {
-		ArrayList<Cliente> listaClientes = DaoCliente.buscarCliente(parametros);
-		ArrayList<ClienteDTO> result = new ArrayList<>();
-		for (Cliente c : listaClientes) {
-			result.add(c.getDTO());
+	public ResponseEntity<Object> buscarCliente(@RequestBody ParametrosDeBusqueda parametros) {
+		try {
+			ArrayList<Cliente> listaClientes = DaoCliente.buscarCliente(parametros);
+			ArrayList<ClienteDTO> result = new ArrayList<>();
+			for (Cliente c : listaClientes) {
+				result.add(c.getDTO());
+			}
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (NoResultException e) {
+			return new ResponseEntity<>(new Error("No se encontró un cliente con los campos especificados"),
+					HttpStatus.OK);
 		}
-		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@PostMapping("/altaCliente")
-	public ResponseEntity<Object> altaCliente(@RequestBody altaClienteDTO clienteDTO) throws SQLIntegrityConstraintViolationException {
+	public ResponseEntity<Object> altaCliente(@RequestBody altaClienteDTO clienteDTO)
+			throws SQLIntegrityConstraintViolationException {
 		try {
 			GestorClientes.altaCliente(clienteDTO);
 		} catch (DatoNoEncontradoException e) {

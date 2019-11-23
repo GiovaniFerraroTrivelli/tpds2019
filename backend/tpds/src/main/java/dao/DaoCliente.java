@@ -46,18 +46,19 @@ public class DaoCliente {
 		StringBuffer str = new StringBuffer();
 		str.append("FROM Cliente C WHERE ");
 		ArrayList<Parametro> parametros = new ArrayList<Parametro>();
+		// System.out.println(c.getIdCliente().getClass());
 
 		if (c.getIdCliente() != null) {
 			str.append("C.idCliente = :idCliente AND ");
 			parametros.add(new Parametro("idCliente", c.getIdCliente()));
 		}
 
-		if (c.getNombre() != null) {
+		if (c.getNombre() != null && c.getNombre() != "") {
 			str.append("C.nombre = :nombre AND ");
 			parametros.add(new Parametro("nombre", c.getNombre()));
 		}
 
-		if (c.getApellido() != null) {
+		if (c.getApellido() != null && c.getApellido() != "") {
 			str.append("C.apellido = :apellido AND ");
 			parametros.add(new Parametro("apellido", c.getApellido()));
 		}
@@ -83,11 +84,8 @@ public class DaoCliente {
 		try {
 			ArrayList<Cliente> listaClientes = new ArrayList<Cliente>(query.list());
 			return listaClientes;
-
 		} catch (NoResultException e) {
-			System.out.println("NO SE ENCONTRO CLIENTE");
-			ArrayList<Cliente> listaClientes = new ArrayList<Cliente>();
-			return listaClientes;
+			throw e;
 		}
 	}
 }
