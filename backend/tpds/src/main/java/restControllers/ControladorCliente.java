@@ -59,10 +59,9 @@ public class ControladorCliente {
 					new Error("Error, no se han especificado todos los parámetros necesarios para generar el cliente"),
 					HttpStatus.BAD_REQUEST);
 		} catch (ConstraintViolationException e) {
-			System.out.println("iuigu");
 			return new ResponseEntity<>(
 					new Error("No se puede crear un cliente con datos duplicados. Error: ".concat(e.getMessage())),
-					HttpStatus.OK);
+					HttpStatus.OK); 
 		}
 
 		return new ResponseEntity<>(HttpStatus.OK);

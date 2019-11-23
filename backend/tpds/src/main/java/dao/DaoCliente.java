@@ -37,6 +37,7 @@ public class DaoCliente {
 			session.save(c);
 			t.commit();
 		} catch (ConstraintViolationException e) {
+			t.rollback();
 			throw e;
 		}
 	}

@@ -28,7 +28,7 @@ public class GestorClientes {
 		return c;
 	}
 	
-	public static void guardarCliente(Cliente c) throws java.sql.SQLIntegrityConstraintViolationException{
+	public static void guardarCliente(Cliente c) throws ConstraintViolationException{
 			DaoCliente.guardarCliente(c);
 	}
 	
