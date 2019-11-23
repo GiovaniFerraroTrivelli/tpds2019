@@ -54,13 +54,13 @@ public class DaoCliente {
 		}
 
 		if (c.getNombre() != null && c.getNombre() != "") {
-			str.append("C.nombre = :nombre AND ");
-			parametros.add(new Parametro("nombre", c.getNombre()));
+			str.append("C.nombre LIKE :nombre AND ");
+			parametros.add(new Parametro("nombre", "%" + c.getNombre() + "%"));
 		}
 
 		if (c.getApellido() != null && c.getApellido() != "") {
-			str.append("C.apellido = :apellido AND ");
-			parametros.add(new Parametro("apellido", c.getApellido()));
+			str.append("C.apellido LIKE :apellido AND ");
+			parametros.add(new Parametro("apellido", "%" + c.getApellido() + "%"));
 		}
 
 		if (c.getDocumento() != null) {
@@ -95,7 +95,8 @@ public class DaoCliente {
 	}
 
 	public static Boolean validarParametros(ParametrosDeBusqueda parametros) {
-		// TODO: verificar. Tal vez no sea lo mas correcto que el DAO haga esta validación
+		// TODO: verificar. Tal vez no sea lo mas correcto que el DAO haga esta
+		// validación
 		Boolean idClienteValido = true;
 		Boolean nombreValido = true;
 		Boolean apellidoValido = true;
