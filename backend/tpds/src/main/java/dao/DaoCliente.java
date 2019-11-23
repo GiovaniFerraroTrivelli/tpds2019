@@ -83,9 +83,39 @@ public class DaoCliente {
 
 		try {
 			ArrayList<Cliente> listaClientes = new ArrayList<Cliente>(query.list());
+			// TODO: Revisar esto
+			if (listaClientes.size() == 0) {
+				throw new NoResultException();
+			}
+
 			return listaClientes;
 		} catch (NoResultException e) {
 			throw e;
 		}
+	}
+
+	public static Boolean validarParametros(ParametrosDeBusqueda parametros) {
+		// TODO: verificar. Tal vez no sea lo mas correcto que el DAO haga esta validación
+		Boolean idClienteValido = true;
+		Boolean nombreValido = true;
+		Boolean apellidoValido = true;
+		Boolean documentoValido = true;
+
+		if (parametros.getIdCliente() == null)
+			idClienteValido = false;
+		if (parametros.getNombre() == null || parametros.getNombre() == "")
+			nombreValido = false;
+		if (parametros.getApellido() == null || parametros.getApellido() == "")
+			apellidoValido = false;
+		if (parametros.getDocumento() == null)
+			documentoValido = false;
+		else {
+			if (parametros.getDocumento().getTipoDocumento() == null)
+				documentoValido = false;
+			if (parametros.getDocumento().getNroDocumento() == null)
+				documentoValido = false;
+		}
+
+		return idClienteValido || nombreValido || apellidoValido || documentoValido;
 	}
 }

@@ -39,6 +39,10 @@ public class ClienteDTO {
 		this.direccion = direccion;
 	}
 
+	public ClienteDTO() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Integer getIdCliente() {
 		return idCliente;
 	}

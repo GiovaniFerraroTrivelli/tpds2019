@@ -16,6 +16,7 @@ import java.util.Set;
 import javax.persistence.NoResultException;
 
 import dataAccess.HibernateUtil;
+import dataTransferObjects.ClienteDTO;
 import dataTransferObjects.ParametrosDeBusqueda;
 import dataTransferObjects.PolizaDTO;
 import dominio.Cotizacion;
@@ -38,11 +39,53 @@ import gestores.GestorGeografico;
 public class Test {
 
 	public static void main(String[] args) {
+		ClienteDTO c = new ClienteDTO();
+		c.setNombre("Francisco");
+		ArrayList<Parametro> parametros = new ArrayList<Parametro>();
+		
 		Session session = HibernateUtil.openSession();
-		Cliente c = session.get(Cliente.class, 1);
-		session.close();
-		HibernateUtil.shutdown();
-		System.out.println(c.getNombre());
+		StringBuffer str = new StringBuffer();
+		str.append("FROM Cliente C WHERE ");
+		
+		if (c.getIdCliente() != null) {
+			str.append("C.idCliente = :idCliente AND ");
+			parametros.add(new Parametro("idCliente", c.getIdCliente()));
+		}
+
+		if (c.getNombre() != null && c.getNombre() != "") {
+			str.append("C.nombre = :nombre AND ");
+			parametros.add(new Parametro("nombre", c.getNombre()));
+		}
+
+		if (c.getApellido() != null && c.getApellido() != "") {
+			str.append("C.apellido = :apellido AND ");
+			parametros.add(new Parametro("apellido", c.getApellido()));
+		}
+
+		if (c.getDocumento() != null) {
+			if (c.getDocumento().getTipoDocumento() != null) {
+				str.append("C.documento.tipoDocumento = :tipoDocumento AND ");
+				parametros.add(new Parametro("tipoDocumento", c.getDocumento().getTipoDocumento()));
+			}
+
+			if (c.getDocumento().getNroDocumento() != null) {
+				str.append("C.documento.nroDocumento = :nroDocumento AND ");
+				parametros.add(new Parametro("nro", c.getDocumento().getNroDocumento()));
+			}
+		}
+
+		String hql = str.toString().substring(0, str.toString().length() - 5);
+		Query<Cliente> query = session.createQuery(hql);
+		for (Parametro p : parametros) {
+			query.setParameter(p.getNombre(), p.getValor());
+		}
+
+		try {
+			ArrayList<Cliente> listaClientes = new ArrayList<Cliente>(query.list());
+			System.out.println(listaClientes.size());
+		} catch (NoResultException e) {
+			throw e;
+		}
 	}
 
 	public static ArrayList<Cliente> buscarCliente(ParametrosDeBusqueda c) {

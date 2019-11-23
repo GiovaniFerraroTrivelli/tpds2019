@@ -30,6 +30,10 @@ import gestores.GestorGeografico;
 public class ControladorCliente {
 	@PostMapping("/buscarCliente")
 	public ResponseEntity<Object> buscarCliente(@RequestBody ParametrosDeBusqueda parametros) {
+		if (!DaoCliente.validarParametros(parametros)) {
+			return new ResponseEntity<>(new Error("Ningún campo de búsqueda fue completado"), HttpStatus.OK);
+		}
+
 		try {
 			ArrayList<Cliente> listaClientes = DaoCliente.buscarCliente(parametros);
 			ArrayList<ClienteDTO> result = new ArrayList<>();
