@@ -12,6 +12,7 @@ import { AltaPolizaService } from './altapoliza.service';
 import { LoadingService } from '../loading/loading.service';
 import { DialogService } from '../dialog/dialog.service';
 
+import { MedidasSeguridad } from '../enums/medidas-seguridad.enum';
 import { Hijo } from '../hijos/hijo';
 import { Provincia } from '../geografia/provincia';
 import { Localidad } from '../geografia/localidad';
@@ -34,6 +35,7 @@ export class AltapolizaComponent implements OnInit {
 	@ViewChild(HijosComponent, { static: false }) childComp: HijosComponent;
 
 	public title = "Alta de póliza";
+	public MedidasSeguridad = MedidasSeguridad;
 
 	private provincias : Provincia[];
 	private localidades : Localidad[];

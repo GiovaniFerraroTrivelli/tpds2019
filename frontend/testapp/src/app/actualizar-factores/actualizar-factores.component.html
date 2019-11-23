@@ -8,10 +8,10 @@
 		<ng-template ngbTabContent>
 			<div class="p-5">
 				<div class="form-group row" *ngFor="let enum of TipoCobertura | keyvalue">
-					<label for="inputPassword" class="col-sm-6 col-form-label">{{ enum.value }}</label>
+					<label for="{{ enum.key }}" class="col-sm-6 col-form-label">{{ enum.value }}</label>
 					<div class="col-sm-6">
 						<div class="input-group mb-3">
-							<input type="text" name="{{ enum.key }}" id="{{ enum.key }}" class="form-control">
+							<input type="text" [ngModel] name="{{ enum.key }}" id="{{ enum.key }}" class="form-control">
 							<div class="input-group-append">
 								<span class="input-group-text">%</span>
 							</div>
@@ -41,10 +41,10 @@
 		<ng-template ngbTabContent>
 			<div class="p-5">
 				<div class="form-group row" *ngFor="let enum of MedidasSeguridad | keyvalue">
-					<label for="inputPassword" class="col-sm-6 col-form-label">{{ enum.value }}</label>
+					<label for="{{ enum.key }}" class="col-sm-6 col-form-label">{{ enum.value }}</label>
 					<div class="col-sm-6">
 						<div class="input-group mb-3">
-							<input type="text" name="{{ enum.key }}" id="{{ enum.key }}" class="form-control">
+							<input type="text" [ngModel] name="{{ enum.key }}" id="{{ enum.key }}" class="form-control">
 							<div class="input-group-append">
 								<span class="input-group-text">%</span>
 							</div>
@@ -58,10 +58,10 @@
 		<ng-template ngbTabContent>
 			<div class="p-5">
 				<div class="form-group row">
-					<label for="inputPassword" class="col-sm-6 col-form-label">Ajuste por kilómetros realizados (cada 10.000 km)</label>
+					<label for="ajusteKmRealizados" class="col-sm-6 col-form-label">Ajuste por kilómetros realizados (cada 10.000 km)</label>
 					<div class="col-sm-6">
 						<div class="input-group mb-3">
-							<input type="text" id="ajusteKmRealizados" class="form-control">
+							<input type="text" [ngModel] id="ajusteKmRealizados" class="form-control">
 							<div class="input-group-append">
 								<span class="input-group-text">%</span>
 							</div>
@@ -69,10 +69,10 @@
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="inputPassword" class="col-sm-6 col-form-label">Ajuste por cantidad de siniestros - sin siniestros</label>
+					<label for="ajusteSiniestros0" class="col-sm-6 col-form-label">Ajuste por cantidad de siniestros - sin siniestros</label>
 					<div class="col-sm-6">
 						<div class="input-group mb-3">
-							<input type="text" id="ajusteKmRealizados" class="form-control">
+							<input type="text" [ngModel] name="ajusteSiniestros0" id="ajusteSiniestros0" class="form-control">
 							<div class="input-group-append">
 								<span class="input-group-text">%</span>
 							</div>
@@ -80,10 +80,10 @@
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="inputPassword" class="col-sm-6 col-form-label">Ajuste por cantidad de siniestros - un siniestro</label>
+					<label for="ajusteSiniestros1" class="col-sm-6 col-form-label">Ajuste por cantidad de siniestros - un siniestro</label>
 					<div class="col-sm-6">
 						<div class="input-group mb-3">
-							<input type="text" id="ajusteKmRealizados" class="form-control">
+							<input type="text" [ngModel] name="ajusteSiniestros1" id="ajusteSiniestros1" class="form-control">
 							<div class="input-group-append">
 								<span class="input-group-text">%</span>
 							</div>
@@ -91,10 +91,10 @@
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="inputPassword" class="col-sm-6 col-form-label">Ajuste por cantidad de siniestros - dos siniestros</label>
+					<label for="ajusteSiniestros2" class="col-sm-6 col-form-label">Ajuste por cantidad de siniestros - dos siniestros</label>
 					<div class="col-sm-6">
 						<div class="input-group mb-3">
-							<input type="text" id="ajusteKmRealizados" class="form-control">
+							<input type="text" [ngModel] name="ajusteSiniestros2" id="ajusteSiniestros2" class="form-control">
 							<div class="input-group-append">
 								<span class="input-group-text">%</span>
 							</div>
@@ -102,10 +102,10 @@
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="inputPassword" class="col-sm-6 col-form-label">Ajuste por cantidad de siniestros - más de dos siniestros</label>
+					<label for="ajusteSiniestros3" class="col-sm-6 col-form-label">Ajuste por cantidad de siniestros - más de dos siniestros</label>
 					<div class="col-sm-6">
 						<div class="input-group mb-3">
-							<input type="text" id="ajusteKmRealizados" class="form-control">
+							<input type="text" [ngModel] name="ajusteSiniestros3" id="ajusteSiniestros3" class="form-control">
 							<div class="input-group-append">
 								<span class="input-group-text">%</span>
 							</div>
@@ -113,10 +113,10 @@
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="inputPassword" class="col-sm-6 col-form-label">Ajuste por cantidad de hijos (entre 18 y 30 años)</label>
+					<label for="ajusteCantidadHijos" class="col-sm-6 col-form-label">Ajuste por cantidad de hijos (entre 18 y 30 años)</label>
 					<div class="col-sm-6">
 						<div class="input-group mb-3">
-							<input type="text" id="ajusteKmRealizados" class="form-control">
+							<input type="text" [ngModel] name="ajusteCantidadHijos" id="ajusteCantidadHijos" class="form-control">
 							<div class="input-group-append">
 								<span class="input-group-text">%</span>
 							</div>
@@ -124,21 +124,21 @@
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="inputPassword" class="col-sm-6 col-form-label">Derechos de emisión</label>
+					<label for="derechosEmision" class="col-sm-6 col-form-label">Derechos de emisión</label>
 					<div class="col-sm-6">
 						<div class="input-group mb-3">
 							<div class="input-group-prepend">
 								<span class="input-group-text">$</span>
 							</div>
-							<input type="text" id="ajusteKmRealizados" class="form-control">
+							<input type="text" [ngModel] name="derechosEmision" id="derechosEmision" class="form-control">
 						</div>
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="inputPassword" class="col-sm-6 col-form-label">Descuento por unidad adicional</label>
+					<label for="descuentoUnidadAdicional" class="col-sm-6 col-form-label">Descuento por unidad adicional</label>
 					<div class="col-sm-6">
 						<div class="input-group mb-3">
-							<input type="text" id="ajusteKmRealizados" class="form-control">
+							<input type="text" [ngModel] name="descuentoUnidadAdicional" id="descuentoUnidadAdicional" class="form-control">
 							<div class="input-group-append">
 								<span class="input-group-text">%</span>
 							</div>
