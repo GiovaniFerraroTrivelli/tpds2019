@@ -1,12 +1,14 @@
+import { NgForm, FormGroup, FormControl, Validators, AbstractControl, FormBuilder, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { Cliente } from '../cliente/cliente';
 import { Documento } from '../cliente/documento';
 import { TipoDNI } from '../enums/tipo-dni.enum';
-import { BusquedaClienteService } from './busquedacliente.service';
+
 import { DialogService } from '../dialog/dialog.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoadingService } from '../loading/loading.service';
+import { BusquedaClienteService } from './busquedacliente.service';
 
 @Component({
   selector: 'app-buscarcliente',
@@ -20,6 +22,8 @@ export class BuscarclienteComponent implements OnInit {
 	private resultados : Cliente[];
 	private selectedClient : Cliente;
 
+	buscarClienteForm: FormGroup;
+
 	@Output()
 	emitter = new EventEmitter<Cliente>();
 
@@ -31,7 +35,23 @@ export class BuscarclienteComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
+		this.buscarClienteForm = new FormGroup({
+			'idCliente': new FormControl(null),
+			'nombre': new FormControl(null),
+			'apellido': new FormControl(null),
+			'documento': new FormGroup({
+				'tipoDocumento': new FormControl(null),
+				'nroDocumento': new FormControl(null)
+			})
+		}, { validators: this.atLeastOneValidator });
 	}
+
+	get idCliente() { return this.buscarClienteForm.get('idCliente'); }
+	get nombre() { return this.buscarClienteForm.get('nombre'); }
+	get apellido() { return this.buscarClienteForm.get('apellido'); }
+	get documento() { return this.buscarClienteForm.get('documento'); }
+	get tipoDocumento() { return this.buscarClienteForm.get('documento.tipoDocumento'); }
+	get nroDocumento() { return this.buscarClienteForm.get('documento.nroDocumento'); }
 
 	getSelectedClient(){
 		return this.selectedClient;
@@ -45,15 +65,23 @@ export class BuscarclienteComponent implements OnInit {
 		this.emitter.emit(this.selectedClient);
 	}
 
-	isValidForm(f: NgForm)
-	{
-		for(let prop in f.value) {
-			if(prop != "tipoDocumento" && f.value[prop] !== null && f.value[prop] !== '') {
-				return true;
+	public atLeastOneValidator(form: FormGroup): ValidationErrors {
+		let isAtLeastOne = false;
+		
+		if (form && form.controls) {
+			for (const control in form.controls) {
+				if (form.controls.hasOwnProperty(control) && form.controls[control].valid && form.controls[control].value && control != "documento") {
+					isAtLeastOne = true;
+					break;
+				}
 			}
 		}
+		
+		if(form.get('documento.nroDocumento').value !== null) {
+			isAtLeastOne = true;
+		}
 
-		return false;
+		return isAtLeastOne ? null : { 'required': true };
 	}
 
 	onSubmit(f: NgForm, content) {
