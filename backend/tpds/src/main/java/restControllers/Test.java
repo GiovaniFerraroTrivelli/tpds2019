@@ -41,12 +41,12 @@ import gestores.GestorGeografico;
 public class Test {
 
 	public static void main(String[] args) {
-		ParametrosDeBusqueda p = new ParametrosDeBusqueda(null, "Ignacio", null, null);
+		/*ParametrosDeBusqueda p = new ParametrosDeBusqueda(null, "Ignacio", null, null);
 		ArrayList<Cliente> listaClinetes = new ArrayList<Cliente>(DaoCliente.buscarCliente(p));
 		for(Cliente c : listaClinetes) {
 			System.out.println(c.getNombre());
 		}
-		HibernateUtil.shutdown();
+		HibernateUtil.shutdown();*/
 	}
 
 	public static ArrayList<Cliente> buscarCliente(ParametrosDeBusqueda c) {

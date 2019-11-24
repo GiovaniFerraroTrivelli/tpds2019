@@ -51,4 +51,27 @@ public class ParametrosDeBusqueda {
 		this.documento = documento;
 	}
 
+	public boolean nulo() {
+		Boolean idClienteNulo = false;
+		Boolean nombreNulo = false;
+		Boolean apellidoNulo = false;
+		Boolean documentoNulo = false;
+
+		if (this.getIdCliente() == null)
+			idClienteNulo = true;
+		if (this.getNombre() == null || this.getNombre() == "")
+			nombreNulo = true;
+		if (this.getApellido() == null || this.getApellido() == "")
+			apellidoNulo = true;
+		if (this.getDocumento() == null)
+			documentoNulo = true;
+		else {
+			if (this.getDocumento().getTipoDocumento() == null)
+				documentoNulo = true;
+			if (this.getDocumento().getNroDocumento() == null)
+				documentoNulo = true;
+		}
+
+		return idClienteNulo && nombreNulo && apellidoNulo && documentoNulo;
+	}
 }

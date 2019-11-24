@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dao.DaoCliente;
 import dataTransferObjects.ClienteDTO;
 import dataTransferObjects.ParametrosDeBusqueda;
+import dataTransferObjects.ParametrosDeConsulta;
 import dataTransferObjects.altaClienteDTO;
 import dominio.Cliente;
 import dominio.Direccion;
@@ -30,12 +31,31 @@ import gestores.GestorGeografico;
 public class ControladorCliente {
 	@PostMapping("/buscarCliente")
 	public ResponseEntity<Object> buscarCliente(@RequestBody ParametrosDeBusqueda parametros) {
-		if (!DaoCliente.validarParametros(parametros)) {
+		if (parametros.nulo()) {
 			return new ResponseEntity<>(new Error("Ningún campo de búsqueda fue completado"), HttpStatus.OK);
 		}
 
 		try {
-			ArrayList<Cliente> listaClientes = DaoCliente.buscarCliente(parametros);
+			ArrayList<Cliente> listaClientes = GestorClientes.buscarClientes(parametros);
+			ArrayList<ClienteDTO> result = new ArrayList<>();
+			for (Cliente c : listaClientes) {
+				result.add(c.getDTO());
+			}
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (NoResultException e) {
+			return new ResponseEntity<>(new Error("No se encontró un cliente con los campos especificados"),
+					HttpStatus.OK);
+		}
+	}
+
+	@PostMapping("/consultarCliente")
+	public ResponseEntity<Object> consultarCliente(@RequestBody ParametrosDeConsulta parametros) {
+		if (parametros.nulo()) {
+			return new ResponseEntity<>(new Error("Ningún campo de búsqueda fue completado"), HttpStatus.OK);
+		}
+
+		try {
+			ArrayList<Cliente> listaClientes = GestorClientes.consultarClientes(parametros);
 			ArrayList<ClienteDTO> result = new ArrayList<>();
 			for (Cliente c : listaClientes) {
 				result.add(c.getDTO());
@@ -61,7 +81,7 @@ public class ControladorCliente {
 		} catch (ConstraintViolationException e) {
 			return new ResponseEntity<>(
 					new Error("No se puede crear un cliente con datos duplicados. Error: ".concat(e.getMessage())),
-					HttpStatus.OK); 
+					HttpStatus.OK);
 		}
 
 		return new ResponseEntity<>(HttpStatus.OK);
