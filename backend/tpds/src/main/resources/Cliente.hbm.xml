@@ -32,6 +32,13 @@
         <property name="email" column="email" unique="true" unique-key="email_unico"/>
         <property name="cuil" column="cuil" unique="true" unique-key="cuil_unico"/>
 
+        <property name="condicionCliente" column="condicion_cliente" length="10">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">enumeradores.CondicionCliente</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+
         <property name="condicionIva" column="condicion_iva" length="30">
             <type name="org.hibernate.type.EnumType">
                 <param name="enumClass">enumeradores.CondicionIva</param>

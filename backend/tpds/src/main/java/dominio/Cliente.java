@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Set;
 
 import dataTransferObjects.ClienteDTO;
+import enumeradores.CondicionCliente;
 import enumeradores.CondicionIva;
 import enumeradores.EstadoCivil;
 import enumeradores.Sexo;
@@ -21,6 +22,7 @@ public class Cliente {
 	private String profesion;
 	private EstadoCivil estadoCivil;
 	private String email;
+	private CondicionCliente condicionCliente;
 	private CondicionIva condicionIva;
 	private Direccion direccion;
 
@@ -122,6 +124,14 @@ public class Cliente {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public CondicionCliente getCondicionCliente() {
+		return condicionCliente;
+	}
+
+	public void setCondicionCliente(CondicionCliente condicionCliente) {
+		this.condicionCliente = condicionCliente;
 	}
 
 	public CondicionIva getCondicionIva() {

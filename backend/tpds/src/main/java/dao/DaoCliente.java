@@ -19,6 +19,7 @@ import dataTransferObjects.ParametrosDeBusqueda;
 import dataTransferObjects.ParametrosDeConsulta;
 import dominio.Cliente;
 import dominio.Documento;
+import enumeradores.CondicionCliente;
 import enumeradores.TipoDocumento;
 import restControllers.Parametro;
 
@@ -133,7 +134,8 @@ public class DaoCliente {
 			parametros.add(new Parametro("condicionIva", p.getCondicionIva()));
 		}
 		
-		// TODO: Agregar el parametro del estado de clientes
+		str.append("C.condicionCliente = :condicionCliente AND ");
+		parametros.add(new Parametro("condicionCliente", CondicionCliente.Activo));
 
 		String hql = str.toString().substring(0, str.toString().length() - 5);
 		Query query = session.createQuery(hql);
