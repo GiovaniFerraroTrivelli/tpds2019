@@ -23,18 +23,104 @@
 	  </ngb-tab>
 	  <ngb-tab title="Estadísticas de robo">
 		<ng-template ngbTabContent>
-			<p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
-			master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh
-			dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum
-			iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+			<div class="p-5">
+				<div class="row" [formGroup]="estadisticasForm">
+					<div class="col-5">
+						<div class="form-group mb-1">
+							<label class="control-label pt-2" for="marca">Marca</label>
+							<div class="input-group">
+								<select formControlName="marca" name="modelo" class="form-control mb-1 optional">
+									<option id="selectMarca{{marca.idMarca}}" value="{{ marca.idMarca }}" *ngFor="let marca of marcas">{{ marca.nombre }}</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-5">
+						<div class="form-group mb-1">
+							<label class="control-label pt-2" for="modelo">Modelo</label>
+							<div class="input-group">
+								<select formControlName="modelo" name="modelo" class="form-control mb-1 optional">
+									<option id="selectModelo{{modelo.idModelo}}" value="{{ modelo.idModelo }}" *ngFor="let modelo of modelos" >{{ modelo.nombre }}</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-2">
+						<label class="control-label pt-2" for="addModelo">&nbsp;</label>
+						<div class="input-group">
+							<button name="addModelo" class="btn btn-outline-primary ml-2"><i class="fa fa-plus"></i> Añadir</button>
+						</div>
+					</div>
+				</div>
+
+				<table class="table table-hover mt-5 w-75 ml-auto mr-auto">
+					<thead>
+						<tr>
+							<th scope="col">Marca y modelo</th>
+							<th scope="col">Valor porcentual</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Marca modelo</td>
+							<td>input</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</ng-template>
 	  </ngb-tab>
 	  <ngb-tab title="Domicilios de riesgo">
 		<ng-template ngbTabContent>
-			<p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
-			master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh
-			dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum
-			iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+			<div class="p-5">
+				<div class="row" [formGroup]="domiciliosForm">
+					<div class="col-5">
+						<div class="form-group mb-1">
+							<label class="control-label pt-2" for="provincia">Provincia</label>
+							<div class="input-group">
+								<select formControlName="provincia" name="provincia" class="form-control mb-1 optional">
+									<option value="{{ provincia.idProvincia }}" *ngFor="let provincia of provincias">{{ provincia.nombre }}</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-5">
+						<div class="form-group mb-1">
+							<label class="control-label pt-2" for="localidad">Localidad</label>
+							<div class="input-group">
+								<select formControlName="localidad" name="localidad" class="form-control mb-1 optional">
+									<option value="{{ localidad.idLocalidad }}" *ngFor="let localidad of localidades">{{ localidad.nombre }}</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-2">
+						<label class="control-label pt-2" for="addLocalidad">&nbsp;</label>
+						<div class="input-group">
+							<button name="addLocalidad" class="btn btn-outline-primary ml-2"><i class="fa fa-plus"></i> Añadir</button>
+						</div>
+					</div>
+				</div>
+
+				<table class="table table-hover mt-5 w-75 ml-auto mr-auto">
+					<thead>
+						<tr>
+							<th scope="col">Provincia y localidad</th>
+							<th scope="col">Valor porcentual</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Provincia localidad</td>
+							<td>input</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</ng-template>
 	  </ngb-tab>
 	  <ngb-tab title="Medidas de seguridad">
