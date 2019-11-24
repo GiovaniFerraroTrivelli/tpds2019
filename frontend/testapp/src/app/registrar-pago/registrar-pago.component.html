@@ -1,3 +1,85 @@
+<ng-template #confirmar let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Confirmar pago</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="row justify-content-center">
+            <div class="col-sm text-center"> 
+                <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                    <label for="montoPagar">Monto a pagar</label>
+                    <div id="montoPagar" class="input-group mb-3 medium-input">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">$</span>
+                        </div>
+                        <input name="montoPagar" readonly="readonly" class="form-control unclickable dis-arrows" type="number" aria-label="montoPagar" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                    <label for="montoAbonado">Monto abonado</label>
+                    <div id="montoAbonado" class="input-group mb-3 medium-input">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">$</span>
+                        </div>
+                        <input oninput="this.value = Math.abs(this.value)" min=0 name="montoAbonado" type="number" class="form-control" aria-label="montoAbonado" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="openModal(aceptar)">Confirmar</button>
+    </div>
+</ng-template>
+
+<ng-template #aceptar let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title">Pago confirmado</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="row justify-content-center">
+                <div class="col-sm text-center"> 
+                    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                        <label for="montoPagar2">Monto total</label>
+                        <div id="montoPagar2" class="input-group mb-3 medium-input">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">$</span>
+                            </div>
+                            <input name="montoPagar2" readonly="readonly" class="form-control unclickable dis-arrows" type="number" aria-label="montoPagar" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                        <label for="montoAbonado2">Monto abonado</label>
+                        <div id="montoAbonado2" class="input-group mb-3 medium-input">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">$</span>
+                            </div>
+                            <input name="montoAbonar2" readonly="readonly" class="form-control unclickable dis-arrows" type="number" aria-label="montoAbonado" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                        <label for="vuelto">Vuelto</label>
+                        <div id="vuelto" class="input-group mb-3 medium-input">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">$</span>
+                            </div>
+                            <input name="vuelto" readonly="readonly" class="form-control unclickable dis-arrows" type="number" aria-label="vuelto" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Aceptar</button>
+        </div>
+    </ng-template>
+
 <div class="row d-flex justify-content-center">
     <h4 class="m-1">Registrar pago de póliza Nro:</h4>
     <div id='nroPoliza' class=" mb-1">
@@ -137,6 +219,6 @@
     </div>
 </div>
 <div class="d-flex flex-row-reverse">
-    <button type="button" class="btn btn-primary p-2" style="margin-left: 8px;">Abonar</button>
+    <button (click)="openModal(confirmar)" type="button" class="btn btn-primary p-2" style="margin-left: 8px;">Abonar</button>
     <button type="button" class="btn btn-secondary p-2">Cancelar</button>
 </div>

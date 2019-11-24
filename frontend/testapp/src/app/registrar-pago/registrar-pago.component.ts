@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Cliente } from '../cliente/cliente';
 import { Poliza } from '../poliza/poliza';
 import { Cuota } from '../poliza/cuota';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Documento } from '../cliente/documento';
 
 @Component({
   selector: 'app-registrar-pago',
@@ -15,8 +17,11 @@ export class RegistrarPagoComponent implements OnInit {
   //private cuotas: Cuota[];
   cuotas = [{'asd':'asd'},{'asd':'asd'},{'asd':'asd'}]
   
-  constructor() { 
+  constructor(private modal: NgbModal) { 
     this.index = 0;
+    this.poliza = new Poliza();
+    this.cliente = new Cliente();
+    this.cliente.documento = new Documento();
   }
 
   ngOnInit() {
@@ -32,4 +37,9 @@ export class RegistrarPagoComponent implements OnInit {
   onChecked(isChecked: boolean){
     isChecked? this.index++ : this.index--;
   }
+
+  openModal(content) {
+    this.modal.open(content, {centered: true});
+  }
+
 }
