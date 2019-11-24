@@ -83,6 +83,9 @@
 				<div *ngIf="cuil.errors.required">
 					El CUIL es obligatorio.
 				</div>
+				<div *ngIf="cuil.errors.pattern">
+					El formato del CUIL no es válido.
+				</div>
 			</div>
 
 			<div class="form-group mb-1 required">

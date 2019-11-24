@@ -56,7 +56,7 @@ export class AltaclienteComponent implements OnInit {
 				'tipoDocumento': new FormControl(null, Validators.required),
 				'nroDocumento': new FormControl(null, Validators.required),
 			}),
-			'cuil': new FormControl(null, Validators.required),
+			'cuil': new FormControl(null, [ Validators.required, Validators.pattern('^([0-9]{2}-[0-9]{8}-[0-9]{1}|[0-9]{11})$') ]),
 			'sexo': new FormControl(null, Validators.required),
 			'fechaNacimiento': new FormControl(null, [ Validators.required, FechaNacimientoValidator ]),
 			'direccion': new FormGroup({
@@ -117,6 +117,26 @@ export class AltaclienteComponent implements OnInit {
 			    this.localidades = data;
 		    });
 		});
+
+		this.altaClienteForm.get('cuil').valueChanges.subscribe(cuil => {
+			if(cuil.length == 11) {
+				let tempValue;
+
+		        if(cuil.length > 2) {
+		            tempValue = cuil.slice(0,2) + '-' + cuil.slice(2);
+		        }
+
+		        if(cuil.length >= 11) {
+		            tempValue = tempValue.slice(0,11) + '-' + tempValue.slice(11);
+		        }
+
+		        this.altaClienteForm.controls['cuil'].setValue(tempValue);
+			} else if(cuil.length == 12) {
+				this.altaClienteForm.controls['cuil'].setValue(cuil.split('-').join(''));
+			} else if(cuil.length > 13) {
+				this.altaClienteForm.controls['cuil'].setValue(cuil.substr(0, 13));
+			}
+		});
 	}
 
 	getListaPaises(): void {
@@ -136,8 +156,7 @@ export class AltaclienteComponent implements OnInit {
 	}
 
 	onSubmit(f: NgForm) {
-		console.log("aca abajo");
-		let formJSON = f.value;
+		f.value.cuil = f.value.cuil.split('-').join('');
 		console.log(f.value);
 	}
 }
