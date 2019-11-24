@@ -41,13 +41,23 @@ export class ConsultarclientesComponent implements OnInit {
 			'idCliente': new FormControl(null, [ Validators.min(0), Validators.pattern('^[0-9]*$') ]),
 			'nombre': new FormControl(null),
 			'apellido': new FormControl(null),
-			'tipoDocumento': new FormControl(null),
-			'numeroDocumento': new FormControl(null),
+			'documento': new FormGroup({
+				'tipoDocumento': new FormControl(null),
+				'nroDocumento': new FormControl(null),
+			}),
 			'condicionIva': new FormControl(null)
 		});
 
 		this.results = [];
 	}
+
+	get idCliente() { return this.consultarClientesForm.get('idCliente'); }
+	get nombre() { return this.consultarClientesForm.get('nombre'); }
+	get apellido() { return this.consultarClientesForm.get('apellido'); }
+	get documento() { return this.consultarClientesForm.get('documento'); }
+	get tipoDocumento() { return this.consultarClientesForm.get('documento.tipoDocumento'); }
+	get nroDocumento() { return this.consultarClientesForm.get('documento.nroDocumento'); }
+	get condicionIva() { return this.consultarClientesForm.get('condicionIva'); }
 
 	isValidForm(f: NgForm)
 	{

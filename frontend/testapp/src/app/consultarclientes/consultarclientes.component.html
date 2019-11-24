@@ -25,6 +25,8 @@
 				<input type="text" formControlName="apellido" name="apellido" id="apellido" class="form-control optional">
 			</div>
 		</div>
+	</div>
+	<div class="row" [formGroup]="documento">
 		<div class="form-group col-sm-9 col-lg-4">
 			<label class="pt-2" for="tipoDocumento">Documento</label>
 			
@@ -33,9 +35,11 @@
 			</select>
 		</div>
 		<div class="form-group col-sm-9 col-lg-4">
-			<label class="pt-2" for="numeroDocumento">Número de documento</label>
-			<input type="number" formControlName="numeroDocumento" name="numeroDocumento" id="numeroDocumento" class="form-control optional dis-arrows">
+			<label class="pt-2" for="nroDocumento">Número de documento</label>
+			<input type="number" formControlName="nroDocumento" name="nroDocumento" id="nroDocumento" class="form-control optional dis-arrows">
 		</div>
+	</div>
+	<div class="row">
 		<div class="form-group col-sm-9 col-lg-4">
 			<label class="pt-2" for="condicionIva">Condición IVA</label>
 			
