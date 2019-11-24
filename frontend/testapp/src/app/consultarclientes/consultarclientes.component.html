@@ -25,21 +25,7 @@
 				<input type="text" formControlName="apellido" name="apellido" id="apellido" class="form-control optional">
 			</div>
 		</div>
-	</div>
-	<div class="row" [formGroup]="documento">
-		<div class="form-group col-sm-9 col-lg-4">
-			<label class="pt-2" for="tipoDocumento">Documento</label>
-			
-			<select name="tipoDocumento" formControlName="tipoDocumento" class="form-control optional" id="tipoDocumento">
-				<option value="{{ enum.key }}" *ngFor="let enum of TipoDNI | keyvalue">{{ enum.key }}</option>
-			</select>
-		</div>
-		<div class="form-group col-sm-9 col-lg-4">
-			<label class="pt-2" for="nroDocumento">Número de documento</label>
-			<input type="number" formControlName="nroDocumento" name="nroDocumento" id="nroDocumento" class="form-control optional dis-arrows">
-		</div>
-	</div>
-	<div class="row">
+
 		<div class="form-group col-sm-9 col-lg-4">
 			<label class="pt-2" for="condicionIva">Condición IVA</label>
 			
@@ -48,11 +34,45 @@
 			</select>
 		</div>
 
-		<button [disabled]="!isValidForm(ccForm) || !consultarClientesForm.valid || !loadingService.isHidden()" type="submit" class="btn btn-primary ml-auto pull-right" id="consultarClientes">Buscar</button>
+		<div class="row col-sm-9 col-lg-8" [formGroup]="documento">
+			<div class="form-group col-sm-9 col-lg-4">
+				<label class="pt-2" for="tipoDocumento">Documento</label>
+				
+				<select name="tipoDocumento" formControlName="tipoDocumento" class="form-control optional" id="tipoDocumento">
+					<option value="{{ enum.key }}" *ngFor="let enum of TipoDNI | keyvalue">{{ enum.key }}</option>
+				</select>
+			</div>
+			<div class="form-group col-sm-9 col-lg-8">
+				<label class="pt-2" for="nroDocumento">Número de documento</label>
+				<input type="number" formControlName="nroDocumento" name="nroDocumento" id="nroDocumento" class="form-control optional dis-arrows">
+			</div>
+		</div>
+
+		<div class="col-lg-8"></div>
+
+		<div class="col-sm-9 col-lg-3 text-right">
+			<div class="form-group">
+				<div class="input-group mb-3 text-center">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Mostrar</span>
+					</div>
+					
+					<input class="form-control optional" type="number" id="results" name="results" formControlName="results">
+
+					<div class="input-group-append">
+						<span class="input-group-text">resultados</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-9 col-lg-1 text-center">
+			<button [disabled]="!consultarClientesForm.valid || !loadingService.isHidden()" type="submit" class="btn btn-primary ml-auto" id="consultarClientes">Buscar</button>
+		</div>
 	</div>
 </form>
 
-<div *ngIf="this.results.length" class="table-responsive mt-4">
+<div *ngIf="this.resultados.length" class="table-responsive mt-4">
 	<table class="table">
 		<thead>
 			<tr>
@@ -65,13 +85,13 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td>99-99999999</td>
-				<td>Ferraro Trivelli, Giovani</td>
-				<td>DNI 41405573</td>
-				<td>20414055738</td>
-				<td>Responsable Inscripto</td>
-				<td>shiobi@ngamers.net</td>
+			<tr *ngFor="let resultado of resultados">
+				<td>{{ resultado.idCliente }}</td>
+				<td>{{ resultado.apellido }}, {{resultado.nombre}}</td>
+				<td>{{ resultado.documento.tipoDocumento }} {{ resultado.documento.nroDocumento | number: '' : 'es-AR' }}</td>
+				<td>{{ this.cuilFormat(resultado.cuil) }}</td>
+				<td>{{ CondicionIva[resultado.condicionIva] }}</td>
+				<td>{{ resultado.email }}</td>
 			</tr>
 		</tbody>
 	</table>

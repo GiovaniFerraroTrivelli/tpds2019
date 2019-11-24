@@ -6,25 +6,28 @@ import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
-import { UserListComponent } from './user-list/user-list.component';
+
 import { UserService } from './user-service.service';
+import { DialogService } from './dialog/dialog.service';
+import { GeografiaService } from './geografia/geografia.service';
+import { ModelosService } from './modelos/modelos.service';
+import { AltaPolizaService } from './altapoliza/altapoliza.service';
+import { BusquedaClienteService } from './buscarcliente/busquedacliente.service';
+import { ConsultarclientesService } from './consultarclientes/consultarclientes.service';
+import { LoadingService } from './loading/loading.service';
+
+import { UserListComponent } from './user-list/user-list.component';
 import { AltapolizaComponent } from './altapoliza/altapoliza.component';
 import { ConsultarpolizaComponent } from './consultarpoliza/consultarpoliza.component';
 import { LoginComponent } from './login/login.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { DialogComponent } from './dialog/dialog.component';
-import { DialogService } from './dialog/dialog.service';
 import { IndexComponent } from './index/index.component';
 import { BuscarclienteComponent } from './buscarcliente/buscarcliente.component';
 import { AltaclienteComponent } from './altacliente/altacliente.component';
 import { HijosComponent } from './hijos/hijos.component';
 import { TipocoberturaComponent } from './tipocobertura/tipocobertura.component';
-import { GeografiaService } from './geografia/geografia.service';
-import { ModelosService } from './modelos/modelos.service';
-import { AltaPolizaService } from './altapoliza/altapoliza.service';
-import { BusquedaClienteService } from './buscarcliente/busquedacliente.service';
-import { LoadingService } from './loading/loading.service';
 import { LoadingComponent } from './loading/loading.component';
 import { ConsultarclientesComponent } from './consultarclientes/consultarclientes.component';
 import { RegistrarPagoComponent } from './registrar-pago/registrar-pago.component';
@@ -75,6 +78,7 @@ registerLocaleData(localeEsAr, 'es-AR');
 		ModelosService,
 		AltaPolizaService,
 		BusquedaClienteService,
+		ConsultarclientesService,
 		LoadingService
 	],
 	

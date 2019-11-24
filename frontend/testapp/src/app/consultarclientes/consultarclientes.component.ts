@@ -1,6 +1,6 @@
 import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
-import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators, AbstractControl, FormBuilder, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { Router } from "@angular/router";
 
 import { TipoDNI } from '../enums/tipo-dni.enum';
@@ -9,6 +9,7 @@ import { Cliente } from '../cliente/cliente';
 
 import { LoadingService } from '../loading/loading.service';
 import { DialogService } from '../dialog/dialog.service';
+import { ConsultarclientesService } from './consultarclientes.service';
 
 @Component({
   selector: 'app-consultarclientes',
@@ -21,11 +22,12 @@ export class ConsultarclientesComponent implements OnInit {
 	public TipoDNI = TipoDNI;
 	public CondicionIva = CondicionIva;
 
-	private results: Cliente[];
+	private resultados: Cliente[];
 
 	consultarClientesForm: FormGroup;
 
 	constructor(
+		private consultarClientesService: ConsultarclientesService,
 		private titleService: Title,
 		private dialogService: DialogService,
 		private loadingService: LoadingService,
@@ -45,10 +47,11 @@ export class ConsultarclientesComponent implements OnInit {
 				'tipoDocumento': new FormControl(null),
 				'nroDocumento': new FormControl(null),
 			}),
-			'condicionIva': new FormControl(null)
-		});
+			'condicionIva': new FormControl(null),
+			'results': new FormControl(25, [ Validators.required, Validators.min(1), Validators.max(500), Validators.pattern('^[0-9]*$') ]),
+		}, { validators: this.atLeastOneValidator });
 
-		this.results = [];
+		this.resultados = [];
 	}
 
 	get idCliente() { return this.consultarClientesForm.get('idCliente'); }
@@ -58,24 +61,57 @@ export class ConsultarclientesComponent implements OnInit {
 	get tipoDocumento() { return this.consultarClientesForm.get('documento.tipoDocumento'); }
 	get nroDocumento() { return this.consultarClientesForm.get('documento.nroDocumento'); }
 	get condicionIva() { return this.consultarClientesForm.get('condicionIva'); }
+	get results() { return this.consultarClientesForm.get('results'); }
 
-	isValidForm(f: NgForm)
-	{
-		for(let prop in f.value) {
-			if(prop != "tipoDocumento" && f.value[prop] !== null && f.value[prop] !== '') {
-				return true;
+	public atLeastOneValidator(form: FormGroup): ValidationErrors {
+		let isAtLeastOne = false;
+		
+		if (form && form.controls) {
+			for (const control in form.controls) {
+				if (form.controls.hasOwnProperty(control) && form.controls[control].valid && form.controls[control].value && control != "documento" && control != "results") {
+					isAtLeastOne = true;
+					break;
+				}
 			}
 		}
+		
+		if(form.get('documento.nroDocumento').value !== null) {
+			isAtLeastOne = true;
+		}
 
-		return false;
+		return isAtLeastOne ? null : { 'required': true };
 	}
 
-	onSubmit(f : NgForm) {
-		console.log(f.value);
-
-		this.results = [ new Cliente() ];
-
-		console.log(this.results);
+	cuilFormat(cuil) {
+		return cuil.substr(0, 2) + '-' + cuil.substr(2, 8) + '-' + cuil.substr(10);
 	}
 
+	onSubmit(f: NgForm, content) {
+		this.loadingService.i();
+
+		this.consultarClientesService.postClienteBusqueda(f.value).subscribe(
+			data => {
+			    this.resultados = data;
+
+			    if(this.resultados.length) {
+			    	console.log(this.resultados);
+			    } else {
+			    	this.dialogService.alert(
+			    		'Resultados de búsqueda',
+			    		'Ningún cliente coincide con los criterios de búsqueda. Intente nuevamente.'
+			    	);
+			    }
+			    
+			    this.loadingService.d();
+		    },
+		    err => {
+        		this.dialogService.alert(
+		    		'Ha ocurrido un error',
+		    		'No se pudo realizar lo solicitado: ' + err.error.error
+		    	);
+			    
+			    this.loadingService.d();
+      		}
+	    );
+	}
 }
