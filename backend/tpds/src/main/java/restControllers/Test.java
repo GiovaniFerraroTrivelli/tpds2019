@@ -37,16 +37,32 @@ import enumeradores.TipoDocumento;
 import excepciones.DatoNoEncontradoException;
 import gestores.GestorClientes;
 import gestores.GestorGeografico;
+import historialValor.Entrada;
+import historialValor.EntradaLocalidad;
 
 public class Test {
 
 	public static void main(String[] args) {
-		/*ParametrosDeBusqueda p = new ParametrosDeBusqueda(null, "Ignacio", null, null);
-		ArrayList<Cliente> listaClinetes = new ArrayList<Cliente>(DaoCliente.buscarCliente(p));
-		for(Cliente c : listaClinetes) {
-			System.out.println(c.getNombre());
+		Session s = HibernateUtil.openSession();
+		Transaction tx = s.beginTransaction();
+
+		try { // Code here:
+
+			/*Localidad l = s.get(Localidad.class, 2);
+			for (EntradaLocalidad e : l.getHistorialValores()) {
+				System.out.println(e.getValor());
+			}*/
+
+		} catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+			s.close();
+			HibernateUtil.shutdown();
 		}
-		HibernateUtil.shutdown();*/
+		s.close();
+		HibernateUtil.shutdown();
+		System.out.println("DONE");
+
 	}
 
 	public static ArrayList<Cliente> buscarCliente(ParametrosDeBusqueda c) {

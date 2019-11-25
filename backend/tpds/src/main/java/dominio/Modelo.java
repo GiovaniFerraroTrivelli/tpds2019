@@ -3,12 +3,15 @@ package dominio;
 import java.util.Set;
 
 import dataTransferObjects.ModeloDTO;
+import historialValor.EntradaModelo;
+import historialValor.EntradaTipoCobertura;
 
 public class Modelo {
 	private Integer idModelo;
 	private String nombre;
 	private Marca marca;
 	private Set<Cotizacion> anios;
+	private Set<EntradaModelo> historialValores;
 
 	public Modelo() {
 
@@ -51,6 +54,14 @@ public class Modelo {
 
 	public void setAnios(Set<Cotizacion> anios) {
 		this.anios = anios;
+	}
+
+	public Set<EntradaModelo> getHistorialValores() {
+		return historialValores;
+	}
+
+	public void setHistorialValores(Set<EntradaModelo> historialValores) {
+		this.historialValores = historialValores;
 	}
 
 	public ModeloDTO getDTO() {

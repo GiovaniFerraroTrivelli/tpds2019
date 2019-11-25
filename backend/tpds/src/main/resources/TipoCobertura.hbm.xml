@@ -8,9 +8,14 @@
         <id name="idCobertura" type="java.lang.Integer" column="id_cobertura">
             <generator class="native" />
         </id>
-
+        
         <property name="nombre" column="nombre" length="60"/>
         <property name="descripcion" column="descripcion" length="500"/>
+        
+        <set name="historialValores" table="historial_valor_tipos_cobertura" inverse="true" lazy="true" fetch="select">
+            <key><column name="id_entrada" not-null="true"/></key>
+        	<one-to-many class="historialValor.EntradaTipoCobertura"/>
+        </set>
 
     </class>
 </hibernate-mapping>

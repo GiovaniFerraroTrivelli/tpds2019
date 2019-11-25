@@ -31,6 +31,11 @@
         <mapping resource="Cotizacion.hbm.xml"/>
         <mapping resource="Direccion.hbm.xml"/>
         <mapping resource="Cuota.hbm.xml"/>
+        <mapping resource="HistorialValorLocalidad.hbm.xml"/>
+        <mapping resource="HistorialValorTipoCobertura.hbm.xml"/>
+        <mapping resource="HistorialValorModelo.hbm.xml"/>
+        
+
         
     </session-factory>
 </hibernate-configuration>

@@ -9,15 +9,16 @@ import org.hibernate.query.Query;
 import dataAccess.HibernateUtil;
 import dominio.TipoCobertura;
 import excepciones.DatoNoEncontradoException;
-import historialValor.HistorialValor;
 
 public class GestorCoberturas {
 	public static ArrayList<TipoCobertura> getCoberturas() throws DatoNoEncontradoException {
 		try {
+			
+			//TODO: Corregir esto con la arquitectura nueva
 			String hql = "FROM TipoCobertura ORDER BY nombre ASC";
 			Query<TipoCobertura> query = HibernateUtil.openSession().createQuery(hql);
 			for (TipoCobertura c : query.list()) {
-				c.setHistorialFactorCobertura(GestorCoberturas.getHistorialFactorCobertura(c.getIdCobertura()));
+				//c.setHistorialFactorCobertura(GestorCoberturas.getHistorialFactorCobertura(c.getIdCobertura()));
 			}
 			return new ArrayList<TipoCobertura>(query.list());
 		} catch (HibernateException e) {
@@ -25,12 +26,14 @@ public class GestorCoberturas {
 		}
 	}
 
+	/*
 	private static HistorialValor<Float> getHistorialFactorCobertura(Integer idCobertura) {
 		HistorialValor<Float> historial = new HistorialValor<>();
 		return historial;
 
 		// historial.setHistorial(historial);
 	}
+	 */
 
 	public static TipoCobertura getCoberturaContraTerceros() throws DatoNoEncontradoException {
 		Session session = HibernateUtil.openSession();
