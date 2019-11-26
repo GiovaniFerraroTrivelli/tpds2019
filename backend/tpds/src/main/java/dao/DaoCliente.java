@@ -7,6 +7,8 @@ import javax.persistence.NoResultException;
 
 import org.hibernate.HibernateException;
 import org.hibernate.PersistentObjectException;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
@@ -84,6 +86,10 @@ public class DaoCliente {
 		}
 
 		try {
+			// TODO: no se que errores puede lanzar esto
+			query.setFirstResult((c.getNumeroPagina() - 1) * c.getResultadosPorPagina());
+			query.setMaxResults(c.getResultadosPorPagina());
+
 			ArrayList<Cliente> listaClientes = new ArrayList<Cliente>(query.list());
 			// TODO: Revisar esto
 			if (listaClientes.size() == 0) {
@@ -95,7 +101,7 @@ public class DaoCliente {
 			throw e;
 		}
 	}
-	
+
 	public static ArrayList<Cliente> buscarClientes(ParametrosDeConsulta p) {
 		Session session = HibernateUtil.openSession();
 		StringBuffer str = new StringBuffer();
@@ -128,12 +134,12 @@ public class DaoCliente {
 				parametros.add(new Parametro("nroDocumento", p.getDocumento().getNroDocumento()));
 			}
 		}
-		
+
 		if (p.getCondicionIva() != null) {
 			str.append("C.condicionIva = :condicionIva AND ");
 			parametros.add(new Parametro("condicionIva", p.getCondicionIva()));
 		}
-		
+
 		str.append("C.condicionCliente = :condicionCliente AND ");
 		parametros.add(new Parametro("condicionCliente", CondicionCliente.Activo));
 
@@ -154,6 +160,6 @@ public class DaoCliente {
 		} catch (NoResultException e) {
 			throw e;
 		}
-	} 
+	}
 
 }

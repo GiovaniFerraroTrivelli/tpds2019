@@ -31,6 +31,10 @@ import gestores.GestorGeografico;
 public class ControladorCliente {
 	@PostMapping("/buscarCliente")
 	public ResponseEntity<Object> buscarCliente(@RequestBody ParametrosDeBusqueda parametros) {
+		if (!parametros.paginaValida()) {
+			return new ResponseEntity<>(new Error("Parámetros de paginación inválidos"), HttpStatus.OK);
+		}
+
 		if (parametros.nulo()) {
 			return new ResponseEntity<>(new Error("Ningún campo de búsqueda fue completado"), HttpStatus.OK);
 		}
