@@ -54,6 +54,10 @@ public class ControladorCliente {
 
 	@PostMapping("/consultarCliente")
 	public ResponseEntity<Object> consultarCliente(@RequestBody ParametrosDeConsulta parametros) {
+		if (!parametros.paginaValida()) {
+			return new ResponseEntity<>(new Error("Parámetros de paginación inválidos"), HttpStatus.OK);
+		}
+		
 		if (parametros.nulo()) {
 			return new ResponseEntity<>(new Error("Ningún campo de búsqueda fue completado"), HttpStatus.OK);
 		}

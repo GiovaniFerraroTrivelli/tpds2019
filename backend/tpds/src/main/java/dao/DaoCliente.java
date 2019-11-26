@@ -150,6 +150,9 @@ public class DaoCliente {
 		}
 
 		try {
+			query.setFirstResult((p.getNumeroPagina() - 1) * p.getResultadosPorPagina());
+			query.setMaxResults(p.getResultadosPorPagina());
+			
 			ArrayList<Cliente> listaClientes = new ArrayList<Cliente>(query.list());
 			// TODO: Revisar esto
 			if (listaClientes.size() == 0) {

@@ -9,6 +9,8 @@ public class ParametrosDeConsulta {
 	private String apellido;
 	private Documento documento;
 	private CondicionIva condicionIva;
+	private Integer numeroPagina;
+	private Integer resultadosPorPagina;
 
 	public ParametrosDeConsulta() {
 		// TODO Auto-generated constructor stub
@@ -54,6 +56,22 @@ public class ParametrosDeConsulta {
 		this.condicionIva = condicionIva;
 	}
 
+	public Integer getNumeroPagina() {
+		return numeroPagina;
+	}
+
+	public void setNumeroPagina(Integer numeroPagina) {
+		this.numeroPagina = numeroPagina;
+	}
+
+	public Integer getResultadosPorPagina() {
+		return resultadosPorPagina;
+	}
+
+	public void setResultadosPorPagina(Integer resultadosPorPagina) {
+		this.resultadosPorPagina = resultadosPorPagina;
+	}
+
 	public boolean nulo() {
 		Boolean idClienteNulo = false;
 		Boolean nombreNulo = false;
@@ -79,6 +97,11 @@ public class ParametrosDeConsulta {
 		}
 
 		return idClienteNulo && nombreNulo && apellidoNulo && documentoNulo && condicionIvaNulo;
+	}
+
+	public boolean paginaValida() {
+		return (this.getNumeroPagina() != null && this.getNumeroPagina() >= 1 && this.getResultadosPorPagina() != null
+				&& this.getResultadosPorPagina() >= 1);
 	}
 
 }
