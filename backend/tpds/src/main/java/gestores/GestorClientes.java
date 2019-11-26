@@ -41,7 +41,7 @@ public class GestorClientes {
 	}
 
 	public static ArrayList<Cliente> consultarClientes(ParametrosDeConsulta p) {
-		return DaoCliente.buscarClientes(p);
+		return DaoCliente.consultarClientes(p);
 	}	
 
 	public static void altaCliente(altaClienteDTO clienteDTO)

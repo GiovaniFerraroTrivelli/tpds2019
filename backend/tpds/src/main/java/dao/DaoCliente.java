@@ -102,7 +102,7 @@ public class DaoCliente {
 		}
 	}
 
-	public static ArrayList<Cliente> buscarClientes(ParametrosDeConsulta p) {
+	public static ArrayList<Cliente> consultarClientes(ParametrosDeConsulta p) {
 		Session session = HibernateUtil.openSession();
 		StringBuffer str = new StringBuffer();
 		str.append("FROM Cliente C WHERE ");

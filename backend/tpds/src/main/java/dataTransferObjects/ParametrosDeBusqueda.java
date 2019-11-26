@@ -84,9 +84,7 @@ public class ParametrosDeBusqueda {
 		if (this.getDocumento() == null)
 			documentoNulo = true;
 		else {
-			if (this.getDocumento().getTipoDocumento() == null)
-				documentoNulo = true;
-			if (this.getDocumento().getNroDocumento() == null)
+			if (this.getDocumento().getTipoDocumento() == null && this.getDocumento().getNroDocumento() == null)
 				documentoNulo = true;
 		}
 
@@ -94,10 +92,7 @@ public class ParametrosDeBusqueda {
 	}
 
 	public boolean paginaValida() {
-		return (
-			this.getNumeroPagina() != null && 
-			this.getNumeroPagina() >= 1 && 
-			this.getResultadosPorPagina() != null && 
-			this.getResultadosPorPagina() >= 1);
+		return (this.getNumeroPagina() != null && this.getNumeroPagina() >= 1 && this.getResultadosPorPagina() != null
+				&& this.getResultadosPorPagina() >= 1);
 	}
 }
