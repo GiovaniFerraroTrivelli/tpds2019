@@ -1,67 +1,56 @@
 package restControllers;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
-import org.springframework.boot.SpringApplication;
-import org.springframework.util.ReflectionUtils;
-
-import dao.DaoCliente;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.NoResultException;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+import org.springframework.util.ReflectionUtils;
+
+import dao.DaoCliente;
 import dataAccess.HibernateUtil;
-import dataTransferObjects.ClienteDTO;
 import dataTransferObjects.ParametrosDeBusqueda;
-import dataTransferObjects.PolizaDTO;
-import dominio.Cotizacion;
-import dominio.Direccion;
 import dominio.Cliente;
+import dominio.Cotizacion;
 import dominio.Documento;
-import dominio.Poliza;
 import dominio.Hijo;
-import dominio.Localidad;
 import dominio.Modelo;
+import dominio.NumeroCliente;
+import dominio.Poliza;
 import dominio.TipoCobertura;
-import enumeradores.CondicionIva;
 import enumeradores.EstadoCivil;
 import enumeradores.Sexo;
 import enumeradores.TipoDocumento;
-import excepciones.DatoNoEncontradoException;
-import gestores.GestorClientes;
-import gestores.GestorGeografico;
-import historialValor.Entrada;
-import historialValor.EntradaLocalidad;
 
 public class Test {
 
-	/*
-	 * public static void main(String[] args) { Session s =
-	 * HibernateUtil.openSession(); Transaction tx = s.beginTransaction();
-	 * 
-	 * try { // Code here:
-	 * 
-	 * Localidad l = s.get(Localidad.class, 2); for (EntradaLocalidad e :
-	 * l.getHistorialValores()) { System.out.println(e.getValor()); }
-	 * 
-	 * } catch (Exception e) { tx.rollback(); e.printStackTrace(); s.close();
-	 * HibernateUtil.shutdown(); } s.close(); HibernateUtil.shutdown();
-	 * System.out.println("DONE");
-	 * 
-	 * }
-	 */
+	public static void main(String[] args) {
+		Session s = HibernateUtil.openSession();
+		Transaction tx = s.beginTransaction();
 
-	public static void main() {
-		
-		
+		try { // Code here:
+			NumeroCliente n = new NumeroCliente(1, 1);
+			
+			Cliente c = DaoCliente.buscarCliente(n);
+			//Cliente c = s.get(Cliente.class, n);
+			System.out.println(c.getNombre());
+			
+			
+
+		} catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+			s.close();
+			HibernateUtil.shutdown();
+		}
+		s.close();
+		HibernateUtil.shutdown();
+		System.out.println("DONE");
+
 	}
 
 	public static ArrayList<Cliente> buscarCliente(ParametrosDeBusqueda c) {

@@ -26,6 +26,7 @@ public class Poliza {
 	private Set<Hijo> hijos;
 	private FormaPago formaPago;
 	private Set<Cuota> cuotas;
+	private Pais pais;
 
 	public Poliza() {
 
@@ -181,6 +182,14 @@ public class Poliza {
 
 	public void setCuotas(Set<Cuota> cuotas) {
 		this.cuotas = cuotas;
+	}
+
+	public Pais getPais() {
+		return pais;
+	}
+
+	public void setPais(Pais pais) {
+		this.pais = pais;
 	}
 
 }
