@@ -3,6 +3,7 @@ package restControllers;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.boot.SpringApplication;
 import org.springframework.util.ReflectionUtils;
 
 import dao.DaoCliente;
@@ -42,27 +43,25 @@ import historialValor.EntradaLocalidad;
 
 public class Test {
 
-	public static void main(String[] args) {
-		Session s = HibernateUtil.openSession();
-		Transaction tx = s.beginTransaction();
+	/*
+	 * public static void main(String[] args) { Session s =
+	 * HibernateUtil.openSession(); Transaction tx = s.beginTransaction();
+	 * 
+	 * try { // Code here:
+	 * 
+	 * Localidad l = s.get(Localidad.class, 2); for (EntradaLocalidad e :
+	 * l.getHistorialValores()) { System.out.println(e.getValor()); }
+	 * 
+	 * } catch (Exception e) { tx.rollback(); e.printStackTrace(); s.close();
+	 * HibernateUtil.shutdown(); } s.close(); HibernateUtil.shutdown();
+	 * System.out.println("DONE");
+	 * 
+	 * }
+	 */
 
-		try { // Code here:
-
-			/*Localidad l = s.get(Localidad.class, 2);
-			for (EntradaLocalidad e : l.getHistorialValores()) {
-				System.out.println(e.getValor());
-			}*/
-
-		} catch (Exception e) {
-			tx.rollback();
-			e.printStackTrace();
-			s.close();
-			HibernateUtil.shutdown();
-		}
-		s.close();
-		HibernateUtil.shutdown();
-		System.out.println("DONE");
-
+	public static void main() {
+		
+		
 	}
 
 	public static ArrayList<Cliente> buscarCliente(ParametrosDeBusqueda c) {
