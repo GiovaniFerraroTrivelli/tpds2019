@@ -1,32 +1,26 @@
 package dataTransferObjects;
 
 import dominio.Documento;
+import dominio.NumeroCliente;
 
 public class ParametrosDeBusqueda {
-	private Integer idCliente;
+	private NumeroCliente nroCliente;
 	private String nombre;
 	private String apellido;
 	private Documento documento;
 	private Integer numeroPagina;
 	private Integer resultadosPorPagina;
 
-	public ParametrosDeBusqueda(Integer idCliente, String nombre, String apellido, Documento documento) {
-		this.idCliente = idCliente;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.documento = documento;
-	}
-
 	public ParametrosDeBusqueda(String nombre) {
 		this.nombre = nombre;
 	}
 
-	public Integer getIdCliente() {
-		return idCliente;
+	public NumeroCliente getNroCliente() {
+		return nroCliente;
 	}
 
-	public void setIdCliente(Integer idCliente) {
-		this.idCliente = idCliente;
+	public void setNroCliente(NumeroCliente nroCliente) {
+		this.nroCliente = nroCliente;
 	}
 
 	public String getNombre() {
@@ -75,7 +69,8 @@ public class ParametrosDeBusqueda {
 		Boolean apellidoNulo = false;
 		Boolean documentoNulo = false;
 
-		if (this.getIdCliente() == null)
+		if (this.getNroCliente() == null || this.getNroCliente().getIdCliente() == null
+				|| this.getNroCliente().getIdPais() == null)
 			idClienteNulo = true;
 		if (this.getNombre() == null || this.getNombre() == "")
 			nombreNulo = true;

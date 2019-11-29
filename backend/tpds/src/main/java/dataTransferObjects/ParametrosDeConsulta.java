@@ -1,10 +1,11 @@
 package dataTransferObjects;
 
 import dominio.Documento;
+import dominio.NumeroCliente;
 import enumeradores.CondicionIva;
 
 public class ParametrosDeConsulta {
-	private Integer idCliente;
+	private NumeroCliente nroCliente;
 	private String nombre;
 	private String apellido;
 	private Documento documento;
@@ -16,12 +17,12 @@ public class ParametrosDeConsulta {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Integer getIdCliente() {
-		return idCliente;
+	public NumeroCliente getNroCliente() {
+		return nroCliente;
 	}
 
-	public void setIdCliente(Integer idCliente) {
-		this.idCliente = idCliente;
+	public void setNroCliente(NumeroCliente nroCliente) {
+		this.nroCliente = nroCliente;
 	}
 
 	public String getNombre() {
@@ -79,7 +80,8 @@ public class ParametrosDeConsulta {
 		Boolean documentoNulo = false;
 		Boolean condicionIvaNulo = false;
 
-		if (this.getIdCliente() == null)
+		if (this.getNroCliente() == null || this.getNroCliente().getIdCliente() == null
+				|| this.getNroCliente().getIdPais() == null)
 			idClienteNulo = true;
 		if (this.getNombre() == null || this.getNombre() == "")
 			nombreNulo = true;

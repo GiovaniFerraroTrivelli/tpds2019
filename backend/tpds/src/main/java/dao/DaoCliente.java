@@ -1,29 +1,20 @@
 package dao;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
 import javax.persistence.NoResultException;
 
-import org.hibernate.HibernateException;
-import org.hibernate.PersistentObjectException;
-import org.hibernate.ScrollMode;
-import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.exception.DataException;
 import org.hibernate.query.Query;
-import org.springframework.util.ReflectionUtils;
 
 import dataAccess.HibernateUtil;
 import dataTransferObjects.ParametrosDeBusqueda;
 import dataTransferObjects.ParametrosDeConsulta;
 import dominio.Cliente;
-import dominio.Documento;
 import dominio.NumeroCliente;
 import enumeradores.CondicionCliente;
-import enumeradores.TipoDocumento;
 import restControllers.Parametro;
 
 public class DaoCliente {
@@ -53,9 +44,11 @@ public class DaoCliente {
 		str.append("FROM Cliente C WHERE ");
 		ArrayList<Parametro> parametros = new ArrayList<Parametro>();
 
-		if (c.getIdCliente() != null) {
-			str.append("C.idCliente = :idCliente AND ");
-			parametros.add(new Parametro("idCliente", c.getIdCliente()));
+		if (c.getNroCliente() != null && c.getNroCliente().getIdCliente() != null && c.getNroCliente().getIdPais() != null) {
+			str.append("C.nroCliente.idCliente = :idCliente AND ");
+			parametros.add(new Parametro("idCliente", c.getNroCliente().getIdCliente()));
+			str.append("C.nroCliente.idPais = :idPais AND ");
+			parametros.add(new Parametro("idPais", c.getNroCliente().getIdPais()));
 		}
 
 		if (c.getNombre() != null && c.getNombre() != "") {
@@ -119,11 +112,14 @@ public class DaoCliente {
 		StringBuffer str = new StringBuffer();
 		str.append("FROM Cliente C WHERE ");
 		ArrayList<Parametro> parametros = new ArrayList<Parametro>();
-
-		if (p.getIdCliente() != null) {
-			str.append("C.idCliente = :idCliente AND ");
-			parametros.add(new Parametro("idCliente", p.getIdCliente()));
+		
+		if (p.getNroCliente() != null && p.getNroCliente().getIdCliente() != null && p.getNroCliente().getIdPais() != null) {
+			str.append("C.nroCliente.idCliente = :idCliente AND ");
+			parametros.add(new Parametro("idCliente", p.getNroCliente().getIdCliente()));
+			str.append("C.nroCliente.idPais = :idPais AND ");
+			parametros.add(new Parametro("idPais", p.getNroCliente().getIdPais()));
 		}
+		
 
 		if (p.getNombre() != null && p.getNombre() != "") {
 			str.append("C.nombre LIKE :nombre AND ");
