@@ -1,7 +1,6 @@
 package dominio;
 
 import java.util.Date;
-import java.util.Set;
 
 import dataTransferObjects.ClienteDTO;
 import enumeradores.CondicionCliente;
@@ -12,6 +11,9 @@ import enumeradores.Sexo;
 public class Cliente {
 	// TODO: El número del cliente tiene que ser un entero largo
 	private Integer idCliente;
+
+	private NumeroCliente nroCliente;
+
 	private String nombre;
 	private String apellido;
 	private Documento documento;
@@ -25,24 +27,13 @@ public class Cliente {
 	private CondicionCliente condicionCliente;
 	private CondicionIva condicionIva;
 	private Direccion direccion;
+	private Pais pais;
 
 	public ClienteDTO getDTO() {
 		ClienteDTO result = new ClienteDTO(this.idCliente, this.nombre, this.apellido, this.documento, this.cuil,
 				this.sexo, this.fechaNacimiento, this.profesion, this.estadoCivil, this.email, this.condicionIva,
 				this.direccion.getDTO());
 		return result;
-	}
-
-	public Direccion getDireccion() {
-		return direccion;
-	}
-
-	public void setDireccion(Direccion direccion) {
-		this.direccion = direccion;
-	}
-
-	public Cliente() {
-
 	}
 
 	public Integer getIdCliente() {
@@ -53,9 +44,16 @@ public class Cliente {
 		this.idCliente = idCliente;
 	}
 
+	public NumeroCliente getNroCliente() {
+		return nroCliente;
+	}
+
+	public void setNroCliente(NumeroCliente nroCliente) {
+		this.nroCliente = nroCliente;
+	}
+
 	public String getNombre() {
 		return nombre;
-
 	}
 
 	public void setNombre(String nombre) {
@@ -70,6 +68,14 @@ public class Cliente {
 		this.apellido = apellido;
 	}
 
+	public Documento getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(Documento documento) {
+		this.documento = documento;
+	}
+
 	public String getCuil() {
 		return cuil;
 	}
@@ -82,14 +88,6 @@ public class Cliente {
 		return sexo;
 	}
 
-	public Documento getDocumento() {
-		return documento;
-	}
-
-	public void setDocumento(Documento documento) {
-		this.documento = documento;
-	}
-
 	public void setSexo(Sexo sexo) {
 		this.sexo = sexo;
 	}
@@ -98,8 +96,8 @@ public class Cliente {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(Date nacimiento) {
-		this.fechaNacimiento = nacimiento;
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
 	public String getProfesion() {
@@ -140,6 +138,22 @@ public class Cliente {
 
 	public void setCondicionIva(CondicionIva condicionIva) {
 		this.condicionIva = condicionIva;
+	}
+
+	public Direccion getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(Direccion direccion) {
+		this.direccion = direccion;
+	}
+
+	public Pais getPais() {
+		return pais;
+	}
+
+	public void setPais(Pais pais) {
+		this.pais = pais;
 	}
 
 }

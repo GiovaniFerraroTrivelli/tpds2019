@@ -21,6 +21,7 @@ import dataTransferObjects.ParametrosDeBusqueda;
 import dataTransferObjects.ParametrosDeConsulta;
 import dominio.Cliente;
 import dominio.Documento;
+import dominio.NumeroCliente;
 import enumeradores.CondicionCliente;
 import enumeradores.TipoDocumento;
 import restControllers.Parametro;
@@ -100,6 +101,17 @@ public class DaoCliente {
 		} catch (NoResultException e) {
 			throw e;
 		}
+	}
+	
+	public static Cliente buscarCliente(NumeroCliente n) {
+		Session session  = HibernateUtil.openSession();
+		/*String hql = "FROM Cliente C WHERE C.nroCliente.idCliente = :idCliente AND C.nroCliente.idPais = :idPais";
+		Query query = session.createQuery(hql);
+		query.setParameter(":idCliente", n.getIdCliente());
+		query.setParameter(":idPais", n.getIdPais());
+		System.out.println("HERE");
+		return (Cliente) query.uniqueResult();*/
+		return session.get(Cliente.class, n);
 	}
 
 	public static ArrayList<Cliente> consultarClientes(ParametrosDeConsulta p) {
