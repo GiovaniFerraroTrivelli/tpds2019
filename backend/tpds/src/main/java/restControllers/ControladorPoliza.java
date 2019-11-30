@@ -33,7 +33,7 @@ import gestores.GestorPoliza;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*", allowCredentials="true")
 public class ControladorPoliza {
 	@PostMapping("/altaPoliza/1")
 	public ResponseEntity<Object> validarDatos(@RequestBody PolizaDTO p)

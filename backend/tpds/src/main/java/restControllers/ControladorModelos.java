@@ -17,7 +17,7 @@ import dominio.Modelo;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*", allowCredentials="true")
 public class ControladorModelos {
 	
 	

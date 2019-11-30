@@ -18,7 +18,7 @@ import excepciones.DatoNoEncontradoException;
 import gestores.GestorGeografico;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*", allowCredentials="true")
 public class ControladorGeografico {
 
 	@GetMapping("/provincias/{idPais}")
