@@ -12,11 +12,11 @@ export class AuthenticationService {
 	private usersUrl: string;
 
 	constructor(private http: HttpClient, private dialogService: DialogService) {
-		this.usersUrl = 'http://localhost:8080/login';
+		this.usersUrl = window.location.protocol + '//' + window.location.hostname + ':8080/login';
 	}
 
 	authenticate(userLogin : UserLogin) {
-		return this.http.post<UserLogin>(this.usersUrl, userLogin);
+		return this.http.post<UserLogin>(this.usersUrl, userLogin, { withCredentials: true });
 	}
 
 	isUserLoggedIn() {

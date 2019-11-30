@@ -12,20 +12,20 @@ export class ModelosService {
 	private aniosUrl: string;
 
 	constructor(private http: HttpClient) {
-		this.marcasUrl = 'http://localhost:8080/marcas';
-		this.modelosUrl = 'http://localhost:8080/modelos';
-		this.aniosUrl = 'http://localhost:8080/anios';
+		this.marcasUrl = window.location.protocol + '//' + window.location.hostname + ':8080/marcas';
+		this.modelosUrl = window.location.protocol + '//' + window.location.hostname + ':8080/modelos';
+		this.aniosUrl = window.location.protocol + '//' + window.location.hostname + ':8080/anios';
 	}
 
 	public getMarcas(): Observable<Marca[]> {
-		return this.http.get<Marca[]>(this.marcasUrl);
+		return this.http.get<Marca[]>(this.marcasUrl, { withCredentials: true });
 	}
 
 	public getModelosByMarca(idMarca : number): Observable<Modelo[]> {
-		return this.http.get<Modelo[]>(this.modelosUrl + "/" + idMarca);
+		return this.http.get<Modelo[]>(this.modelosUrl + "/" + idMarca, { withCredentials: true });
 	}
 
 	public getAniosByModelo(idModelo : number): Observable<number[]> {
-		return this.http.get<number[]>(this.aniosUrl + "/" + idModelo);
+		return this.http.get<number[]>(this.aniosUrl + "/" + idModelo, { withCredentials: true });
 	}
 }
