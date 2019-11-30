@@ -112,7 +112,7 @@ public class DaoCliente {
 		StringBuffer str = new StringBuffer();
 		str.append("FROM Cliente C WHERE ");
 		ArrayList<Parametro> parametros = new ArrayList<Parametro>();
-		
+
 		if (p.getNroCliente() != null && p.getNroCliente().getIdCliente() != null && p.getNroCliente().getIdPais() != null) {
 			str.append("C.nroCliente.idCliente = :idCliente AND ");
 			parametros.add(new Parametro("idCliente", p.getNroCliente().getIdCliente()));
@@ -120,7 +120,6 @@ public class DaoCliente {
 			parametros.add(new Parametro("idPais", p.getNroCliente().getIdPais()));
 		}
 		
-
 		if (p.getNombre() != null && p.getNombre() != "") {
 			str.append("C.nombre LIKE :nombre AND ");
 			parametros.add(new Parametro("nombre", "%" + p.getNombre() + "%"));

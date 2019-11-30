@@ -6,17 +6,12 @@ public class NumeroCliente implements Serializable {
 	private Integer idCliente;
 	private Integer idPais;
 
+	public NumeroCliente() {
 
-	public Integer getIdPais() {
-		return idPais;
 	}
 
 	public NumeroCliente(Integer idCliente, Integer idPais) {
-		this.idPais = idPais;
 		this.idCliente = idCliente;
-	}
-
-	public void setIdPais(Integer idPais) {
 		this.idPais = idPais;
 	}
 
@@ -26,6 +21,14 @@ public class NumeroCliente implements Serializable {
 
 	public void setIdCliente(Integer idCliente) {
 		this.idCliente = idCliente;
+	}
+
+	public Integer getIdPais() {
+		return idPais;
+	}
+
+	public void setIdPais(Integer idPais) {
+		this.idPais = idPais;
 	}
 
 }

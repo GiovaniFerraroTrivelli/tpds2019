@@ -14,7 +14,7 @@ public class ParametrosDeConsulta {
 	private Integer resultadosPorPagina;
 
 	public ParametrosDeConsulta() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public NumeroCliente getNroCliente() {

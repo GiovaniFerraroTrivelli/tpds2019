@@ -14,6 +14,7 @@ import org.springframework.util.ReflectionUtils;
 import dao.DaoCliente;
 import dataAccess.HibernateUtil;
 import dataTransferObjects.ParametrosDeBusqueda;
+import dataTransferObjects.ParametrosDeConsulta;
 import dominio.Cliente;
 import dominio.Cotizacion;
 import dominio.Documento;
@@ -33,12 +34,16 @@ public class Test {
 		Transaction tx = s.beginTransaction();
 
 		try { // Code here:
-			NumeroCliente n = new NumeroCliente(1, 1);
+			ParametrosDeConsulta p = new ParametrosDeConsulta();
+			NumeroCliente n = new NumeroCliente(2, 1);
+			p.setNroCliente(n);
+			p.setNumeroPagina(1);
+			p.setResultadosPorPagina(1);
 			
-			Cliente c = DaoCliente.buscarCliente(n);
-			//Cliente c = s.get(Cliente.class, n);
-			System.out.println(c.getNombre());
-			
+			ArrayList<Cliente> l = new ArrayList<Cliente>(DaoCliente.consultarClientes(p));
+			for(Cliente c : l) {
+				System.out.println(c.getNombre());
+			}
 			
 
 		} catch (Exception e) {
