@@ -7,7 +7,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 
-import { UserService } from './user-service.service';
 import { DialogService } from './dialog/dialog.service';
 import { GeografiaService } from './geografia/geografia.service';
 import { ModelosService } from './modelos/modelos.service';
@@ -16,7 +15,6 @@ import { BusquedaClienteService } from './buscarcliente/busquedacliente.service'
 import { ConsultarclientesService } from './consultarclientes/consultarclientes.service';
 import { LoadingService } from './loading/loading.service';
 
-import { UserListComponent } from './user-list/user-list.component';
 import { AltapolizaComponent } from './altapoliza/altapoliza.component';
 import { ConsultarpolizaComponent } from './consultarpoliza/consultarpoliza.component';
 import { LoginComponent } from './login/login.component';
@@ -41,7 +39,6 @@ registerLocaleData(localeEsAr, 'es-AR');
 @NgModule({
 	declarations: [
 		AppComponent,
-		UserListComponent,
 		AltapolizaComponent,
 		ConsultarpolizaComponent,
 		LoginComponent,
@@ -71,7 +68,6 @@ registerLocaleData(localeEsAr, 'es-AR');
 
 	providers: [
 		{ provide: LOCALE_ID, useValue: 'es-AR' },
-		UserService,
 		DialogService,
 		Title,
 		GeografiaService,

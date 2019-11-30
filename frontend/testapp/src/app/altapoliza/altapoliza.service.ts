@@ -14,9 +14,9 @@ export class AltaPolizaService {
 	private validarUrl3: string;
 
 	constructor(private http: HttpClient) {
-		this.validarUrl1 = 'http://localhost:8080/altaPoliza/1';
-		this.validarUrl2 = 'http://localhost:8080/altaPoliza/2';
-		this.validarUrl3 = 'http://localhost:8080/altaPoliza/3';
+		this.validarUrl1 = window.location.protocol + '//' + window.location.hostname + ':8080/altaPoliza/1';
+		this.validarUrl2 = window.location.protocol + '//' + window.location.hostname + ':8080/altaPoliza/2';
+		this.validarUrl3 = window.location.protocol + '//' + window.location.hostname + ':8080/altaPoliza/3';
 	}
 
 	public postValidarDatos1(poliza : Poliza): Observable<RespuestaValidacion> {

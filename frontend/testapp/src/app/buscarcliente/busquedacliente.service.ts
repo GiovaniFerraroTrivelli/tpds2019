@@ -9,7 +9,7 @@ export class BusquedaClienteService {
 	private buscarUrl: string;
 
 	constructor(private http: HttpClient) {
-		this.buscarUrl = 'http://localhost:8080/buscarCliente';
+		this.buscarUrl = window.location.protocol + '//' + window.location.hostname + ':8080/buscarCliente';
 	}
 
 	public postClienteBusqueda(cliente : Cliente): Observable<Cliente[]> {

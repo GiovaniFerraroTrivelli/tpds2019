@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { UserLogin } from '../user-login';
+import { UserLogin } from '../login/user-login';
 import { DialogService } from '../dialog/dialog.service';
 
 @Injectable({
@@ -20,12 +20,12 @@ export class AuthenticationService {
 	}
 
 	isUserLoggedIn() {
-		let user = sessionStorage.getItem('username');
+		let user = sessionStorage.getItem('login');
 		return !(user === null);
 	}
 
 	logOut() {
 		this.dialogService.confirm('Cerrar sesión', '¿Está seguro que desea cerrar su sesión?', true)
-			.then((confirmed) => { if(confirmed) sessionStorage.removeItem('username') });
+			.then((confirmed) => { if(confirmed) sessionStorage.clear() });
 	}
 }

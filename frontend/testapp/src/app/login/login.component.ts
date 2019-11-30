@@ -1,8 +1,10 @@
+import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../service/authentication.service';
-import { UserLogin } from '../user-login';
 import { Title } from '@angular/platform-browser';
+
+import { AuthenticationService } from '../authentication/authentication.service';
+import { UserLogin } from './user-login';
 
 @Component({
 	selector: 'app-login',
@@ -11,37 +13,44 @@ import { Title } from '@angular/platform-browser';
 })
 export class LoginComponent implements OnInit {
 
-	username = ''
-	password = ''
 	invalidLogin = false
+	loginForm: FormGroup;
 
-	userLogin = new UserLogin();
+	public title = "Iniciar sesión";
 
-	constructor(private router: Router,
-	private loginservice: AuthenticationService,
-	private titleService: Title) { }
+	constructor(
+		private router: Router,
+		private loginService: AuthenticationService,
+		private titleService: Title
+	) { }
 
 	ngOnInit() {
-		this.titleService.setTitle("Iniciar sesión");
+		this.titleService.setTitle(this.title);
+
+		this.loginForm = new FormGroup({
+			'username': new FormControl(null, Validators.required),
+			'password': new FormControl(null, Validators.required),
+		});
 	}
 
-	checkLogin() {
-		let pepito = this.loginservice.authenticate(this.userLogin);
+	get username() { return this.loginForm.get('username'); }
+	get password() { return this.loginForm.get('password'); }
 
-		pepito.subscribe(result => {
+	onSubmit(f : NgForm) {
+		this.loginService.authenticate(f.value).subscribe(result => {
 				if(result)
 				{
-					sessionStorage.setItem('username', this.userLogin.username)
-					this.router.navigate([''])
-					this.invalidLogin = false
+					sessionStorage.setItem('login', JSON.stringify(result));
+					console.log(result);
+					this.router.navigate(['']);
+					this.invalidLogin = false;
 				}
 				else
 				{
-					this.invalidLogin = true
+					this.invalidLogin = true;
 				}
 			}
 		);
-
-		return false;
 	}
+
 }

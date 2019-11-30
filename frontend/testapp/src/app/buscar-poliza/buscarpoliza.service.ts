@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 export class BuscarpolizaService {
   private url: string;
   constructor(private http: HttpClient) { 
-    this.url = 'localhost:8080/buscarPoliza'
+    this.url = window.location.protocol + '//' + window.location.hostname + ':8080/buscarPoliza'
   }
 
   public postBuscarPoliza(nroPoliza: number) {
