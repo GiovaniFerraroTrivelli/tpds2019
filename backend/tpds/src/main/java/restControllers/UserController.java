@@ -1,34 +1,38 @@
 package restControllers;
 
-import java.util.List;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import gestores.GestorUsuarios;
+import usuarios.Usuario;
+
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*", allowCredentials = "true")
 public class UserController {
 
-	@GetMapping("/users")
-	public List<User> getUsers() {
-		User.blankList();
-
-		User pepe = new User(1, "Capo");
-		User bode = new User(2, "Bode");
-
-		User.addToList(pepe);
-		User.addToList(bode);
-
-		return (List<User>) User.getLista();
-	}
-
 	@PostMapping("/login")
-	public Boolean login(@RequestBody UserLogin userLogin) {
-		System.out.println("lalala");
-		return userLogin.getUsername().equals("giovi") && userLogin.getPassword().contentEquals("capo");
+	public ResponseEntity<Object> login(@RequestBody UserLogin userLogin, HttpSession session) {
+		try {
+			String nombreUsuario = userLogin.getNombreUsuario();
+			String password = userLogin.getPassword();
+			Usuario usuario = GestorUsuarios.getUsuario(nombreUsuario);
+			if (GestorUsuarios.autenticarUsuario(usuario, password)) {
+				if (!usuario.equals(session.getAttribute("usuario"))) {
+					return new ResponseEntity<>(new Error("Su sesión ya se encuentra asociada a otro usuario"),
+							HttpStatus.UNPROCESSABLE_ENTITY);
+				} else {
+					session.setAttribute("usuario", usuario);
+					return new ResponseEntity<>(usuario.getDTO(), HttpStatus.OK);
+				}
+			}
+			return new ResponseEntity<>(new Error("Usuario o contraseña inválidos"), HttpStatus.UNPROCESSABLE_ENTITY);
+		} catch (NullPointerException e) {
+			return new ResponseEntity<>(new Error("No se especificó el nombre de usuario o contraseña"),
+					HttpStatus.BAD_REQUEST);
+		}
 	}
 
-	/*
-	 * @PostMapping("/users") void addUser(@RequestBody User user) {
-	 * userRepository.save(user); }
-	 */
 }

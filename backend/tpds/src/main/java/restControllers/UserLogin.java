@@ -1,14 +1,14 @@
 package restControllers;
 
 public class UserLogin {
-	private String username;
+	private String nombreUsuario;
 	private String password;
 	
-	public String getUsername() {
-		return username;
+	public String getNombreUsuario() {
+		return nombreUsuario;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setNombreUsuario(String username) {
+		this.nombreUsuario = username;
 	}
 	public String getPassword() {
 		return password;

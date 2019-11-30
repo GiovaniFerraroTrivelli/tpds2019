@@ -9,6 +9,7 @@ import javax.persistence.NoResultException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.util.ReflectionUtils;
 
 import dao.DaoCliente;
@@ -24,8 +25,10 @@ import dominio.NumeroCliente;
 import dominio.Poliza;
 import dominio.TipoCobertura;
 import enumeradores.EstadoCivil;
+import enumeradores.Rol;
 import enumeradores.Sexo;
 import enumeradores.TipoDocumento;
+import usuarios.Usuario;
 
 public class Test {
 
@@ -44,6 +47,21 @@ public class Test {
 			for(Cliente c : l) {
 				System.out.println(c.getNombre());
 			}
+			
+			Usuario usuario = new Usuario();
+			usuario.setApellido("Storani");
+			usuario.setEmail("miguelignaciostorani@gmail.com");
+			usuario.setNombre("Miguel");
+			usuario.setNombreUsuario("miguelstorani");
+			usuario.setRol(Rol.Gerente);
+			
+			String salt = BCrypt.gensalt();
+			usuario.setSalt(salt);
+			
+			usuario.setHashedPassword(BCrypt.hashpw("123456789", salt));
+			
+			s.save(usuario);
+			tx.commit();
 			
 
 		} catch (Exception e) {

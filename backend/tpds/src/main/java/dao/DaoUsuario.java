@@ -1,0 +1,16 @@
+package dao;
+
+import java.io.Serializable;
+
+import org.hibernate.Session;
+
+import dataAccess.HibernateUtil;
+import usuarios.Usuario;
+
+public class DaoUsuario {
+	public static Usuario getUsuario(String nombreUsuario) {
+		Session session = HibernateUtil.openSession();
+		Usuario usuario = session.get(Usuario.class, nombreUsuario);
+		return usuario;
+	}
+}

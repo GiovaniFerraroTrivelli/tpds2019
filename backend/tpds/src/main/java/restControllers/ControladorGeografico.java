@@ -79,6 +79,5 @@ public class ControladorGeografico {
 		} catch (DatoNoEncontradoException e) {
 			return new ResponseEntity<>(new Error("No se pudo recuperar la lista de paises"), HttpStatus.NOT_FOUND);
 		}
-
 	}
 }
