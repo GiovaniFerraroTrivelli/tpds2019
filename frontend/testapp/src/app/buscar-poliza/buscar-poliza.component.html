@@ -1,3 +1,34 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Seleccionar póliza</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <table class="table table-hover text-center">
+        <thead>
+            <tr>
+                <th width="25%" scope="col">Número de cliente</th>
+                <th width="25%" scope="col">Número de póliza</th>
+                <th width="45%" scope="col">Apellido y Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let poliza of listaPolizas' [ngClass]="['cursor-pointer' , (poliza==polizaSeleccionada ? 'table-active' : '') ]" (click)='loadPolizaSeleccionada(poliza)'>
+                <td>{{poliza.idcliente}}</td>
+                <td>{{poliza.nroPoliza}}</td>
+                <td>{{poliza.apellido}}, {{poliza.nombre}}</td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="cancelSeleccionarPoliza()">Cancelar</button>
+            <button type="button" class="btn btn-primary" (click)="submitSeleccionarPoliza()">Seleccionar</button>
+    </div>
+</ng-template>
+
 <div class="d-flex justify-content-center">
     <div class="card" id="searchCard">
         <div class="card-header">
@@ -6,7 +37,7 @@
         <div class="card-body">
             <input class="form-control" oninput="this.value = Math.abs(this.value)" min=0 type="number" placeholder="Número de póliza" [(ngModel)]="idPoliza">
             <div class="d-flex flex-row-reverse">
-                <button id='searchBtn' type="button" class="btn btn-primary p-2" (click)='onSubmit(idPoliza)'>Buscar</button>
+                <button id='searchBtn' type="button" class="btn btn-primary p-2" (click)='onSubmit(idPoliza, content)'>Buscar</button>
             </div>
         </div>
     </div>
