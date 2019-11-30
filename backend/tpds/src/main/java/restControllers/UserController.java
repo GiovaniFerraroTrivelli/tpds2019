@@ -16,12 +16,13 @@ public class UserController {
 	@PostMapping("/login")
 	public ResponseEntity<Object> login(@RequestBody UserLogin userLogin, HttpSession session) {
 		try {
+			System.out.println("kfjghsdr");
 			String nombreUsuario = userLogin.getNombreUsuario();
 			String password = userLogin.getPassword();
 			Usuario usuario = GestorUsuarios.getUsuario(nombreUsuario);
 			if (GestorUsuarios.autenticarUsuario(usuario, password)) {
-				if (!usuario.equals(session.getAttribute("usuario"))) {
-					return new ResponseEntity<>(new Error("Su sesión ya se encuentra asociada a otro usuario"),
+				if (session.getAttribute("usuario") != null) {
+					return new ResponseEntity<>(new Error("Usted ya está autenticado en el sistema"),
 							HttpStatus.UNPROCESSABLE_ENTITY);
 				} else {
 					session.setAttribute("usuario", usuario);

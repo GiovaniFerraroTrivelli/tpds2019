@@ -8,7 +8,6 @@ import enumeradores.Rol;
 public class Usuario {
 	private String nombreUsuario;
 	private String hashedPassword;
-	private String salt;
 	private String nombre;
 	private String apellido;
 	private String email;
@@ -101,14 +100,6 @@ public class Usuario {
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getSalt() {
-		return salt;
-	}
-
-	public void setSalt(String salt) {
-		this.salt = salt;
 	}
 
 }

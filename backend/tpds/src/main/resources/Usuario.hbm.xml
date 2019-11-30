@@ -7,8 +7,7 @@
 
         <id name="nombreUsuario" type="java.lang.String" column="nombre_usuario"/>
 
-        <property name="hashedPassword" column="hashed_password" not-null="true"/>
-        <property name="salt" column="salt" not-null="true"/>
+        <property name="hashedPassword" column="hashed_password" not-null="true" length="60"/>
         <property name="email" column="email" unique="true"/>
         <property name="nombre" column="nombre"/>
         <property name="apellido" column="apellido"/> 
@@ -18,20 +17,5 @@
                 <param name="useNamed">false</param>
             </type>
         </property>
-        
-<!--
-        <set name="roles" table="roles_usuarios" inverse="true" cascade="save-update" lazy="false" fetch="select">
-			<key>
-				<column name="nombre_usuario" not-null="true" />
-                <property name="rol" column="rol"
-                length="30">
-                <type name="org.hibernate.type.EnumType">
-                    <param name="enumClass">enumeradores.Rol</param>
-                    <param name="useNamed">true</param>
-                </type>
-		    </property>
-			</key>
-		</set>
--->
     </class>
 </hibernate-mapping>
