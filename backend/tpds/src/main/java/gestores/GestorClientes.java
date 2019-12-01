@@ -15,7 +15,7 @@ import dataAccess.HibernateUtil;
 import dataTransferObjects.ClienteDTO;
 import dataTransferObjects.ParametrosDeBusqueda;
 import dataTransferObjects.ParametrosDeConsulta;
-import dataTransferObjects.altaClienteDTO;
+import dataTransferObjects.AltaClienteDTO;
 import dominio.Cliente;
 import dominio.Direccion;
 import dominio.Documento;
@@ -44,7 +44,7 @@ public class GestorClientes {
 		return DaoCliente.consultarClientes(p);
 	}	
 
-	public static void altaCliente(altaClienteDTO clienteDTO)
+	public static void altaCliente(AltaClienteDTO clienteDTO)
 			throws DatoNoEncontradoException, java.sql.SQLIntegrityConstraintViolationException {
 		Cliente cliente = new Cliente();
 		Direccion direccion = new Direccion();

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import javax.persistence.NoResultException;
 
-import org.hibernate.PersistentObjectException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,23 +13,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import dao.DaoCliente;
+import dataTransferObjects.AltaClienteDTO;
 import dataTransferObjects.ClienteDTO;
 import dataTransferObjects.ParametrosDeBusqueda;
 import dataTransferObjects.ParametrosDeConsulta;
-import dataTransferObjects.altaClienteDTO;
 import dominio.Cliente;
-import dominio.Direccion;
 import excepciones.DatoNoEncontradoException;
-import excepciones.NoExisteClienteException;
 import gestores.GestorClientes;
-import gestores.GestorGeografico;
 
 @RestController
-@CrossOrigin(origins = "*", allowCredentials="true")
+@CrossOrigin(origins = "*", allowCredentials = "true")
 public class ControladorCliente {
 	@PostMapping("/buscarCliente")
 	public ResponseEntity<Object> buscarCliente(@RequestBody ParametrosDeBusqueda parametros) {
+		if (!parametros.nroClienteValido()) {
+			return new ResponseEntity<>(new Error("Número de cliente inválido"), HttpStatus.OK);
+		}
+
 		if (!parametros.paginaValida()) {
 			return new ResponseEntity<>(new Error("Parámetros de paginación inválidos"), HttpStatus.OK);
 		}
@@ -54,10 +53,14 @@ public class ControladorCliente {
 
 	@PostMapping("/consultarCliente")
 	public ResponseEntity<Object> consultarCliente(@RequestBody ParametrosDeConsulta parametros) {
+		if (!parametros.nroClienteValido()) {
+			return new ResponseEntity<>(new Error("Número de cliente inválido"), HttpStatus.OK);
+		}
+
 		if (!parametros.paginaValida()) {
 			return new ResponseEntity<>(new Error("Parámetros de paginación inválidos"), HttpStatus.OK);
 		}
-		
+
 		if (parametros.nulo()) {
 			return new ResponseEntity<>(new Error("Ningún campo de búsqueda fue completado"), HttpStatus.OK);
 		}
@@ -76,7 +79,7 @@ public class ControladorCliente {
 	}
 
 	@PostMapping("/altaCliente")
-	public ResponseEntity<Object> altaCliente(@RequestBody altaClienteDTO clienteDTO)
+	public ResponseEntity<Object> altaCliente(@RequestBody AltaClienteDTO clienteDTO)
 			throws SQLIntegrityConstraintViolationException {
 		try {
 			GestorClientes.altaCliente(clienteDTO);

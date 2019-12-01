@@ -30,7 +30,7 @@ public class HibernateUtil {
 		sessionFactory.close();
 	}
 
-	public static SessionFactory createSessionFactory() {
+	public static SessionFactory buildSessionFactory() {
 		return sessionFactory;
 	}
 	

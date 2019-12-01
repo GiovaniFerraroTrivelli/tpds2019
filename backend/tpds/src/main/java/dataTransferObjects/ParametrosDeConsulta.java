@@ -1,11 +1,10 @@
 package dataTransferObjects;
 
 import dominio.Documento;
-import dominio.NumeroCliente;
 import enumeradores.CondicionIva;
 
 public class ParametrosDeConsulta {
-	private NumeroCliente nroCliente;
+	private String nroCliente;
 	private String nombre;
 	private String apellido;
 	private Documento documento;
@@ -17,11 +16,11 @@ public class ParametrosDeConsulta {
 
 	}
 
-	public NumeroCliente getNroCliente() {
+	public String getNroCliente() {
 		return nroCliente;
 	}
 
-	public void setNroCliente(NumeroCliente nroCliente) {
+	public void setNroCliente(String nroCliente) {
 		this.nroCliente = nroCliente;
 	}
 
@@ -73,6 +72,28 @@ public class ParametrosDeConsulta {
 		this.resultadosPorPagina = resultadosPorPagina;
 	}
 
+	public Integer getIdCliente() {
+		return Integer.parseInt(this.nroCliente.substring(2, this.nroCliente.length()));
+	}
+
+	public Integer getIdPais() {
+		return Integer.parseInt(this.nroCliente.substring(0, 2));
+	}
+
+	public boolean nroClienteValido() {
+		if (this.nroCliente == null || this.nroCliente.length() != 10) {
+			return false;
+		}
+
+		try {
+			Integer.parseInt(this.nroCliente);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public boolean nulo() {
 		Boolean idClienteNulo = false;
 		Boolean nombreNulo = false;
@@ -80,8 +101,7 @@ public class ParametrosDeConsulta {
 		Boolean documentoNulo = false;
 		Boolean condicionIvaNulo = false;
 
-		if (this.getNroCliente() == null || this.getNroCliente().getIdCliente() == null
-				|| this.getNroCliente().getIdPais() == null)
+		if (this.getNroCliente() == null || this.getNroCliente() == "")
 			idClienteNulo = true;
 		if (this.getNombre() == null || this.getNombre() == "")
 			nombreNulo = true;

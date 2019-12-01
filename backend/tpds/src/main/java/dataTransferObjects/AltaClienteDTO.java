@@ -7,7 +7,7 @@ import enumeradores.CondicionIva;
 import enumeradores.EstadoCivil;
 import enumeradores.Sexo;
 
-public class altaClienteDTO {
+public class AltaClienteDTO {
 
 	public class AltaClienteDireccion {
 		private String calle;
@@ -60,9 +60,11 @@ public class altaClienteDTO {
 		public Integer getLocalidad() {
 			return Localidad;
 		}
+
 		public Integer getIdLocalidad() {
 			return Localidad;
 		}
+
 		public void setLocalidad(Integer localidad) {
 			Localidad = localidad;
 		}
@@ -177,5 +179,5 @@ public class altaClienteDTO {
 	public void setDireccion(AltaClienteDireccion direccion) {
 		this.direccion = direccion;
 	}
-	
+
 }
