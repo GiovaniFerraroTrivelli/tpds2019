@@ -18,14 +18,7 @@ public class Test {
 
 
 		try { // Code here:
-			ParametrosDeBusqueda p = new ParametrosDeBusqueda();
-			p.setNumeroPagina(1);
-			p.setResultadosPorPagina(1);
-			p.setNroCliente("0100000001");
-			
-			for(Cliente c : DaoCliente.buscarClientes(p)) {
-				System.out.println(c.getNombre());
-			}
+
 			
 			
 

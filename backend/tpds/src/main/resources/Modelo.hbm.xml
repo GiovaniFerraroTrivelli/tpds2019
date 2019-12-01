@@ -21,7 +21,7 @@
         </set>
 
         <set name="historialValores" table="historial_valor_modelos" inverse="true" lazy="true" fetch="select">
-            <key><column name="id_entrada" not-null="true"/></key>
+            <key><column name="id_modelo" not-null="true"/></key>
         	<one-to-many class="historialValor.EntradaModelo"/>
         </set>
         
