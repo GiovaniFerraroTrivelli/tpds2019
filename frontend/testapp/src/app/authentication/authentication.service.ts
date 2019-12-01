@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { UserLogin } from '../login/user-login';
+
 import { DialogService } from '../dialog/dialog.service';
+import { UserLogin } from '../login/user-login';
+import { Rol } from '../enums/rol.enum';
 
 @Injectable({
 	providedIn: 'root'
@@ -10,9 +12,11 @@ import { DialogService } from '../dialog/dialog.service';
 export class AuthenticationService {
 
 	private usersUrl: string;
+	private logoutUrl: string;
 
 	constructor(private http: HttpClient, private dialogService: DialogService) {
 		this.usersUrl = window.location.protocol + '//' + window.location.hostname + ':8080/login';
+		this.logoutUrl = window.location.protocol + '//' + window.location.hostname + ':8080/logout';
 	}
 
 	authenticate(userLogin : UserLogin) {
@@ -20,12 +24,34 @@ export class AuthenticationService {
 	}
 
 	isUserLoggedIn() {
-		let user = sessionStorage.getItem('login');
+		let user = sessionStorage.getItem('nombreUsuario');
 		return !(user === null);
+	}
+
+	getUserName() {
+		return sessionStorage.getItem('nombreUsuario');
+	}
+
+	getFullUserName() {
+		return sessionStorage.getItem('nombre') + " " + sessionStorage.getItem('apellido');
+	}
+
+	getRol() {
+		return sessionStorage.getItem('rol');
+	}
+
+	hasPermission(required : Rol) {
+		let rol = sessionStorage.getItem('rol');
+		return (required === rol);
 	}
 
 	logOut() {
 		this.dialogService.confirm('Cerrar sesión', '¿Está seguro que desea cerrar su sesión?', true)
-			.then((confirmed) => { if(confirmed) sessionStorage.clear() });
+			.then((confirmed) => {
+				if(confirmed) {
+					sessionStorage.clear();
+					this.http.post(this.logoutUrl, null, { withCredentials: true }).subscribe();
+				}
+			});
 	}
 }

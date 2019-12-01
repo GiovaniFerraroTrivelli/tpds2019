@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { Router } from "@angular/router";
+import { Rol } from '../enums/rol.enum';
 
 @Component({
 	selector: 'app-header',
@@ -18,6 +19,14 @@ export class HeaderComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
+	}
+
+	hasPermission(rol : Rol) {
+		return this.loginService.hasPermission(rol);
+	}
+
+	getUserName() {
+		return this.loginService.getUserName();
 	}
 
 	isUserLoggedIn() {

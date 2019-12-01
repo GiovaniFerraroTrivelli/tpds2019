@@ -11,19 +11,19 @@
 				<a class="nav-link" routerLink="/">Inicio</a>
 			</li>
 
-			<li class="nav-item" [class.active]="isCurrentRouter('/alta-poliza')">
+			<li *ngIf="hasPermission('ProductorDeSeguros')" class="nav-item" [class.active]="isCurrentRouter('/alta-poliza')">
 				<a routerLink="/alta-poliza" class="nav-link">Alta de póliza</a>
 			</li>
 
-			<li class="nav-item" [class.active]="isCurrentRouter('/alta-cliente')">
+			<li *ngIf="hasPermission('ProductorDeSeguros')" class="nav-item" [class.active]="isCurrentRouter('/alta-cliente')">
 				<a routerLink="/alta-cliente" class="nav-link">Alta de cliente</a>
 			</li>
 
-			<li class="nav-item" [class.active]="isCurrentRouter('/consultar-poliza')">
+			<li *ngIf="hasPermission('ProductorDeSeguros')" class="nav-item" [class.active]="isCurrentRouter('/consultar-poliza')">
 				<a routerLink="/consultar-poliza" class="nav-link">Consultar póliza</a>
 			</li>
 
-			<li class="nav-item" [class.active]="isCurrentRouter('/registrar-pago')">
+			<li *ngIf="hasPermission('Cobrador')" class="nav-item" [class.active]="isCurrentRouter('/registrar-pago')">
 				<a routerLink="/registrar-pago" class="nav-link">Registrar Pago</a>
 			</li>
 
@@ -31,20 +31,29 @@
 				<a routerLink="/buscar-poliza" class="nav-link">Buscar póliza</a>
 			</li>
 
-			<li class="nav-item" [class.active]="isCurrentRouter('/consultar-clientes')">
+			<li *ngIf="hasPermission('ProductorDeSeguros')" class="nav-item" [class.active]="isCurrentRouter('/consultar-clientes')">
 				<a routerLink="/consultar-clientes" class="nav-link">Consultar clientes</a>
 			</li>
 
-			<li class="nav-item" [class.active]="isCurrentRouter('/actualizar-factores')">
+			<li *ngIf="hasPermission('ProductorDeSeguros')" class="nav-item" [class.active]="isCurrentRouter('/actualizar-factores')">
 				<a routerLink="/actualizar-factores" class="nav-link">Actualizar factores</a>
 			</li>
 			<!-- <li class="nav-item"><a *ngIf="isUserLoggedIn()" routerLink="/" class="nav-link">View Employees</a></li>
 			<li class="nav-item"><a *ngIf="isUserLoggedIn()" routerLink="/addemployee" class="nav-link">Add New Employee</a></li> -->
 		</ul>
 
-		<ul class="navbar-nav float-right">
-			<li class="nav-item"><a *ngIf="!isUserLoggedIn()" routerLink="/login" class="btn btn-info">Iniciar sesión</a></li>
-			<li class="nav-item"><a (click)="userLogOut()" *ngIf="isUserLoggedIn()" routerLink="/logout" class="btn btn-danger">Cerrar sesión</a></li>
-		</ul>
+		<div class="my-2 my-lg-0">
+			<ul class="navbar-nav mr-auto" ngbDropdown *ngIf="isUserLoggedIn()">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" ngbDropdownToggle data-toggle="dropdown" href="#" id="download" aria-expanded="false"><i class="fa fa-user"></i> {{ getUserName() }} <span class="caret"></span></a>
+				
+					<div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu aria-labelledby="download">
+						<a ngbDropdownItem (click)="userLogOut()" routerLink="/" class="dropdown-item"><i class="fa fa-sign-out"></i> Cerrar sesión</a>
+					</div>
+				</li>
+			</ul>
+
+			<a *ngIf="!isUserLoggedIn()" routerLink="/login" class="btn btn-info">Iniciar sesión</a>
+		</div>
 	</div>
 </nav>

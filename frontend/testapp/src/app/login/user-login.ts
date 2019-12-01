@@ -1,4 +1,9 @@
+import { Rol } from '../enums/rol.enum';
+
 export class UserLogin {
-	username: string;
-    password: string;
+	nombreUsuario: string;
+    nombre: string;
+    apellido: string;
+    email: string;
+    rol: Rol;
 }

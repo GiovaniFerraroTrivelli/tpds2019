@@ -25,22 +25,31 @@ export class LoginComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
+		if(this.loginService.isUserLoggedIn()) {
+			this.router.navigate(['']);
+		}
+
 		this.titleService.setTitle(this.title);
 
 		this.loginForm = new FormGroup({
-			'username': new FormControl(null, Validators.required),
+			'nombreUsuario': new FormControl(null, Validators.required),
 			'password': new FormControl(null, Validators.required),
 		});
 	}
 
-	get username() { return this.loginForm.get('username'); }
+	get nombreUsuario() { return this.loginForm.get('nombreUsuario'); }
 	get password() { return this.loginForm.get('password'); }
 
 	onSubmit(f : NgForm) {
 		this.loginService.authenticate(f.value).subscribe(result => {
 				if(result)
 				{
-					sessionStorage.setItem('login', JSON.stringify(result));
+					sessionStorage.setItem('nombreUsuario', result.nombreUsuario);
+					sessionStorage.setItem('nombre', result.nombre);
+					sessionStorage.setItem('apellido', result.apellido);
+					sessionStorage.setItem('email', result.email);
+					sessionStorage.setItem('rol', result.rol);
+
 					console.log(result);
 					this.router.navigate(['']);
 					this.invalidLogin = false;
