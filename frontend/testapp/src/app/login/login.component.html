@@ -1,8 +1,8 @@
 <div class="login-form mr-auto ml-auto">
 	<h2 class="text-center">Iniciar sesión</h2>
-
+	<p class="lead text-center">Por favor, ingrese con los datos que la administración le ha asignado.</p>
 	<div *ngIf="this.invalidLogin" class="alert alert-dismissible alert-danger">
-		Usuario o contraseña inválidos.
+		{{ error }}
 	</div>
 
 	<form #lForm="ngForm" [formGroup]="loginForm" (ngSubmit)="onSubmit(lForm)">

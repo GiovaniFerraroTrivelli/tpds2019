@@ -45,7 +45,7 @@
 		<div class="my-2 my-lg-0">
 			<ul class="navbar-nav mr-auto" ngbDropdown *ngIf="isUserLoggedIn()">
 				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" ngbDropdownToggle data-toggle="dropdown" href="#" id="download" aria-expanded="false"><i class="fa fa-user"></i> {{ getUserName() }} <span class="caret"></span></a>
+					<span class="nav-link dropdown-toggle cursor-pointer" ngbDropdownToggle data-toggle="dropdown" id="download" aria-expanded="false"><i class="fa fa-user"></i> {{ getUserName() }} <span class="caret"></span></span>
 				
 					<div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu aria-labelledby="download">
 						<a ngbDropdownItem (click)="userLogOut()" routerLink="/" class="dropdown-item"><i class="fa fa-sign-out"></i> Cerrar sesión</a>

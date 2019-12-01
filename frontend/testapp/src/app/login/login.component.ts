@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
 
 	invalidLogin = false
 	loginForm: FormGroup;
+	error = "";
 
 	public title = "Iniciar sesión";
 
@@ -41,9 +42,8 @@ export class LoginComponent implements OnInit {
 	get password() { return this.loginForm.get('password'); }
 
 	onSubmit(f : NgForm) {
-		this.loginService.authenticate(f.value).subscribe(result => {
-				if(result)
-				{
+		this.loginService.authenticate(f.value).subscribe(
+			result => {
 					sessionStorage.setItem('nombreUsuario', result.nombreUsuario);
 					sessionStorage.setItem('nombre', result.nombre);
 					sessionStorage.setItem('apellido', result.apellido);
@@ -53,12 +53,12 @@ export class LoginComponent implements OnInit {
 					console.log(result);
 					this.router.navigate(['']);
 					this.invalidLogin = false;
-				}
-				else
-				{
-					this.invalidLogin = true;
-				}
-			}
+			},
+		    err => {
+		    	console.log(err);
+				this.invalidLogin = true;
+		    	this.error = err.error.mensaje;
+		    }
 		);
 	}
 
