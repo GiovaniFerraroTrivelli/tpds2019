@@ -16,10 +16,12 @@ public class UserController {
 	@PostMapping("/login")
 	public ResponseEntity<Object> login(@RequestBody UserLogin userLogin, HttpSession session) {
 		try {
-			System.out.println("kfjghsdr");
 			String nombreUsuario = userLogin.getNombreUsuario();
 			String password = userLogin.getPassword();
+			if (nombreUsuario == null || nombreUsuario.isEmpty()) throw new NullPointerException();
+			if (password == null || password.isEmpty()) throw new NullPointerException();
 			Usuario usuario = GestorUsuarios.getUsuario(nombreUsuario);
+			if (usuario == null) throw new IllegalArgumentException();
 			if (GestorUsuarios.autenticarUsuario(usuario, password)) {
 				if (session.getAttribute("usuario") != null) {
 					return new ResponseEntity<>(new Error("Usted ya está autenticado en el sistema"),
@@ -30,10 +32,19 @@ public class UserController {
 				}
 			}
 			return new ResponseEntity<>(new Error("Usuario o contraseña inválidos"), HttpStatus.UNPROCESSABLE_ENTITY);
+		} catch (IllegalArgumentException e) {
+			return new ResponseEntity<>(new Error("Usuario o contraseña inválido"),
+					HttpStatus.UNPROCESSABLE_ENTITY);
 		} catch (NullPointerException e) {
 			return new ResponseEntity<>(new Error("No se especificó el nombre de usuario o contraseña"),
 					HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@PostMapping("/logout")
+	public ResponseEntity<Object> logout(HttpSession session){
+		session.invalidate();
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

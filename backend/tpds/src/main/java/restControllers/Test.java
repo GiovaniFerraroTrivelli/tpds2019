@@ -33,47 +33,46 @@ import usuarios.Usuario;
 public class Test {
 
 	public static void main(String[] args) {
-//		Session s = HibernateUtil.openSession();
-//		Transaction tx = s.beginTransaction();
+		Session s = HibernateUtil.openSession();
+		Transaction tx = s.beginTransaction();
 
 		try { // Code here:
-//			ParametrosDeConsulta p = new ParametrosDeConsulta();
-//			NumeroCliente n = new NumeroCliente(2, 1);
-//			p.setNroCliente(n);
-//			p.setNumeroPagina(1);
-//			p.setResultadosPorPagina(1);
-//			
-//			ArrayList<Cliente> l = new ArrayList<Cliente>(DaoCliente.consultarClientes(p));
-//			for(Cliente c : l) {
-//				System.out.println(c.getNombre());
-//			}
+
+			ParametrosDeConsulta p = new ParametrosDeConsulta();
+			NumeroCliente n = new NumeroCliente(2, 1);
+			p.setNroCliente(n);
+			p.setNumeroPagina(1);
+			p.setResultadosPorPagina(1);
 			
-//			Usuario usuario = new Usuario();
-//			usuario.setApellido("Storani");
-//			usuario.setEmail("miguelignaciostorani@gmail.com");
-//			usuario.setNombre("Miguel");
-//			usuario.setNombreUsuario("miguelstorani");
-//			usuario.setRol(Rol.Gerente);
-//			
+			ArrayList<Cliente> l = new ArrayList<Cliente>(DaoCliente.consultarClientes(p));
+			for(Cliente c : l) {
+				System.out.println(c.getNombre());
+			}
+			
+			Usuario usuario = new Usuario();
+			usuario.setApellido("Ferraro Trivelli");
+			usuario.setEmail("gftrivelli@frsf.utn.edu.ar");
+			usuario.setNombre("Giovani");
+			usuario.setNombreUsuario("shiobi");
+			usuario.setRol(Rol.Cobrador);
+			
 			String salt = BCrypt.gensalt();
 			
-			String hashedPassword = BCrypt.hashpw("123456789", salt);
-			
+			String hashedPassword = BCrypt.hashpw("123456", salt);
+			usuario.setHashedPassword(hashedPassword);
 			if ( BCrypt.checkpw("123456789", hashedPassword)) System.out.println("Correcto");
 			
-//			s.save(usuario);
-//			tx.commit();
-			
-
+			s.update(usuario);
+			tx.commit();
 		} catch (Exception e) {
-//			tx.rollback();
-//			e.printStackTrace();
-//			s.close();
-//			HibernateUtil.shutdown();
+			tx.rollback();
+			e.printStackTrace();
+			s.close();
+			HibernateUtil.shutdown();
 		}
-//		s.close();
-//		HibernateUtil.shutdown();
-//		System.out.println("DONE");
+		s.close();
+		HibernateUtil.shutdown();
+		System.out.println("DONE");
 
 	}
 
