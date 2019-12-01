@@ -42,7 +42,9 @@ export class BuscarclienteComponent implements OnInit {
 			'documento': new FormGroup({
 				'tipoDocumento': new FormControl(null),
 				'nroDocumento': new FormControl(null)
-			})
+			}),
+			'resultadosPorPagina': new FormControl(25),
+			'numeroPagina': new FormControl(1)
 		}, { validators: this.atLeastOneValidator });
 	}
 
@@ -52,6 +54,8 @@ export class BuscarclienteComponent implements OnInit {
 	get documento() { return this.buscarClienteForm.get('documento'); }
 	get tipoDocumento() { return this.buscarClienteForm.get('documento.tipoDocumento'); }
 	get nroDocumento() { return this.buscarClienteForm.get('documento.nroDocumento'); }
+	get resultadosPorPagina() { return this.buscarClienteForm.get('resultadosPorPagina'); }
+	get numeroPagina() { return this.buscarClienteForm.get('numeroPagina'); }
 
 	getSelectedClient(){
 		return this.selectedClient;

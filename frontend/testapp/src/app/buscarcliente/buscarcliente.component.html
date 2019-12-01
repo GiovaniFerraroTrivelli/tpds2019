@@ -76,7 +76,29 @@
 			<label class="pt-2" for="nroDocumento">Número de documento</label>
 			<input type="number" formControlName="nroDocumento" name="nroDocumento" id="nroDocumento" class="form-control optional dis-arrows">
 		</div>
-		<div class="form-group col-sm-12 col-lg-12">
+	</div>
+	<div class="row">
+		<div class="col-lg-8"></div>
+		
+		<div class="col-sm-9 col-lg-3 text-right">
+			<div class="form-group">
+				<div class="input-group mb-3 text-center">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Mostrar</span>
+					</div>
+					
+					<input class="form-control optional" type="number" id="resultadosPorPagina" name="resultadosPorPagina" formControlName="resultadosPorPagina">
+
+					<div class="input-group-append">
+						<span class="input-group-text">resultados</span>
+					</div>
+
+					<input type="hidden" name="numeroPagina" formControlName="numeroPagina" />
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-9 col-lg-1 text-center">
 			<button name="search" [disabled]="!buscarClienteForm.valid || !loadingService.isHidden()" type="submit" class="btn btn-primary ml-auto pull-right" id="buscarCliente">Buscar</button>
 		</div>
 	</div>
