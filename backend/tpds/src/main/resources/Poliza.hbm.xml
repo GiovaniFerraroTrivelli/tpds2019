@@ -9,6 +9,12 @@
 			<generator class="identity" />
 		</id>
 		
+		<component name="nroPoliza">
+			<property name="idSucursal" column="id_sucursal" />
+			<property name="autoCliente" column="auto_cliente" />
+			<property name="renovacionPoliza" column="secuencia_renovación" />
+		</component>
+		
 		<!-- relacion entre la poliza y el cliente -->
         <many-to-one name="cliente" class="dominio.Cliente" fetch="select">
             <column name="id_cliente" not-null="true" />
@@ -20,8 +26,6 @@
       		<column name = "id_cobertura" not-null="true"/>
         </many-to-one>
 
-		<property name="idSucursal" column="id_sucursal" />
-		<property name="nroPoliza" column="nro_poliza" />
 		<property name="inicioVigencia" column="inicio_vigencia" />
 		<property name="finVigencia" column="fin_vigencia" />
 		<property name="kmsAnuales" column="kms_anuales" />

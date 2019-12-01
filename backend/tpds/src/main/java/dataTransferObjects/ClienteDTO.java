@@ -8,7 +8,7 @@ import enumeradores.EstadoCivil;
 import enumeradores.Sexo;
 
 public class ClienteDTO {
-	private Integer idCliente;
+	private String nroCliente;
 	private String nombre;
 	private String apellido;
 	private Documento documento;
@@ -21,11 +21,10 @@ public class ClienteDTO {
 	private CondicionIva condicionIva;
 	private DireccionDTO direccion;
 
-	public ClienteDTO(Integer idCliente, String nombre, String apellido, Documento documento, String cuil, Sexo sexo,
+	public ClienteDTO(String idCliente, String nombre, String apellido, Documento documento, String cuil, Sexo sexo,
 			Date fechaNacimiento, String profesion, EstadoCivil estadoCivil, String email, CondicionIva condicionIva,
 			DireccionDTO direccion) {
-		super();
-		this.idCliente = idCliente;
+		this.nroCliente = idCliente;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.documento = documento;
@@ -40,15 +39,7 @@ public class ClienteDTO {
 	}
 
 	public ClienteDTO() {
-		// TODO Auto-generated constructor stub
-	}
 
-	public Integer getIdCliente() {
-		return idCliente;
-	}
-
-	public void setIdCliente(Integer idCliente) {
-		this.idCliente = idCliente;
 	}
 
 	public String getNombre() {

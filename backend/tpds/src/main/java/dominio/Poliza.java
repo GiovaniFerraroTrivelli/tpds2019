@@ -1,6 +1,5 @@
 package dominio;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
@@ -8,8 +7,7 @@ import enumeradores.EstadoPoliza;
 
 public class Poliza {
 	private Integer idPoliza;
-	private Integer idSucursal;
-	private Integer nroPoliza;
+	private NumeroPoliza nroPoliza;
 	private TipoCobertura tipoCobertura;
 	private Date inicioVigencia;
 	private Date finVigencia;
@@ -40,19 +38,11 @@ public class Poliza {
 		this.idPoliza = idPoliza;
 	}
 
-	public Integer getIdSucursal() {
-		return idSucursal;
-	}
-
-	public void setIdSucursal(Integer idSucursal) {
-		this.idSucursal = idSucursal;
-	}
-
-	public Integer getNroPoliza() {
+	public NumeroPoliza getNroPoliza() {
 		return nroPoliza;
 	}
 
-	public void setNroPoliza(Integer nroPoliza) {
+	public void setNroPoliza(NumeroPoliza nroPoliza) {
 		this.nroPoliza = nroPoliza;
 	}
 

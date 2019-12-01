@@ -9,15 +9,10 @@ import enumeradores.EstadoCivil;
 import enumeradores.Sexo;
 
 public class Cliente {
-	// TODO: El número del cliente tiene que ser un entero largo
-	private Integer idCliente;
-
 	private NumeroCliente nroCliente;
-
 	private String nombre;
 	private String apellido;
 	private Documento documento;
-	// TODO: Cambiar a Integer
 	private String cuil;
 	private Sexo sexo;
 	private Date fechaNacimiento;
@@ -30,18 +25,10 @@ public class Cliente {
 	private Pais pais;
 
 	public ClienteDTO getDTO() {
-		ClienteDTO result = new ClienteDTO(this.idCliente, this.nombre, this.apellido, this.documento, this.cuil,
+		ClienteDTO result = new ClienteDTO(this.nroCliente(), this.nombre, this.apellido, this.documento, this.cuil,
 				this.sexo, this.fechaNacimiento, this.profesion, this.estadoCivil, this.email, this.condicionIva,
 				this.direccion.getDTO());
 		return result;
-	}
-
-	public Integer getIdCliente() {
-		return idCliente;
-	}
-
-	public void setIdCliente(Integer idCliente) {
-		this.idCliente = idCliente;
 	}
 
 	public NumeroCliente getNroCliente() {
@@ -154,6 +141,23 @@ public class Cliente {
 
 	public void setPais(Pais pais) {
 		this.pais = pais;
+	}
+
+	public String nroCliente() {
+		String idPais = Integer.toString(this.nroCliente.getIdPais());
+		String idCliente = Integer.toString(this.nroCliente.getIdCliente());
+
+		StringBuilder result = new StringBuilder();
+		if (idPais.length() != 2) {
+			result.append("0");
+		}
+		result.append(idPais);
+		Integer ceros = 10 - idCliente.length();
+		for (int i = 0; i < ceros; i++) {
+			result.append("0");
+		}
+		result.append(idCliente);
+		return new String(result);
 	}
 
 }

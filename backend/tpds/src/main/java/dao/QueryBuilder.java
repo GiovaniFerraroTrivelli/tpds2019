@@ -1,10 +1,13 @@
-package dataTransferObjects;
+package dao;
 
 import java.util.ArrayList;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import dataTransferObjects.ParametrosDeBusqueda;
+import dataTransferObjects.ParametrosDeConsulta;
+import dominio.NumeroPoliza;
 import enumeradores.CondicionCliente;
 
 public class QueryBuilder {
@@ -74,7 +77,7 @@ public class QueryBuilder {
 		return query;
 
 	}
-	
+
 	public Query getQuery(ParametrosDeConsulta p, Session s) {
 		StringBuffer str = new StringBuffer();
 		str.append("FROM Cliente C WHERE ");
@@ -86,15 +89,15 @@ public class QueryBuilder {
 			str.append("C.nroCliente.idPais = :idPais AND ");
 			parametros.add(new Parametro("idPais", p.getIdPais()));
 		}
-		
+
 		if (p.getNombre() != null && p.getNombre() != "") {
 			str.append("C.nombre LIKE :nombre AND ");
-			parametros.add(new Parametro("nombre", "%" + p.getNombre() + "%"));
+			parametros.add(new Parametro("nombre", p.getNombre() + "%"));
 		}
 
 		if (p.getApellido() != null && p.getApellido() != "") {
 			str.append("C.apellido LIKE :apellido AND ");
-			parametros.add(new Parametro("apellido", "%" + p.getApellido() + "%"));
+			parametros.add(new Parametro("apellido", p.getApellido() + "%"));
 		}
 
 		if (p.getDocumento() != null) {
@@ -125,6 +128,15 @@ public class QueryBuilder {
 
 		return query;
 
+	}
+
+	public Query getQuery(NumeroPoliza n, Session s) {
+		String hql = "FROM Poliza p WHERE p.nroPoliza.idSucursal = :idSucursal AND p.nroPoliza.autoCliente = :autoCliente AND p.nroPoliza.renovacionPoliza = :renovacionPoliza";
+		Query query = s.createQuery(hql);
+		query.setParameter("idSucursal", n.getIdSucursal());
+		query.setParameter("autoCliente", n.getAutoCliente());
+		query.setParameter("renovacionPoliza", n.getRenovacionPoliza());
+		return query;
 	}
 
 }

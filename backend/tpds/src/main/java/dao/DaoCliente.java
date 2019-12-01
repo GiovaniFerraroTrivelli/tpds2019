@@ -12,7 +12,6 @@ import org.hibernate.query.Query;
 import dataAccess.HibernateUtil;
 import dataTransferObjects.ParametrosDeBusqueda;
 import dataTransferObjects.ParametrosDeConsulta;
-import dataTransferObjects.QueryBuilder;
 import dominio.Cliente;
 import dominio.NumeroCliente;
 
