@@ -75,7 +75,11 @@ public class ParametrosDeBusqueda {
 	}
 
 	public boolean nroClienteValido() {
-		if (this.nroCliente == null || this.nroCliente.length() != 10) {
+		if (this.getNroCliente() == null || this.getNroCliente() == "") {
+			return true;
+		}
+
+		if (this.nroCliente.length() != 10) {
 			return false;
 		}
 
@@ -86,6 +90,10 @@ public class ParametrosDeBusqueda {
 		}
 
 		return true;
+	}
+
+	public boolean nroClienteNulo() {
+		return (this.getNroCliente() == null || this.getNroCliente() == "");
 	}
 
 	public boolean nulo() {

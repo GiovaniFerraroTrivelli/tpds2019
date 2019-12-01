@@ -36,7 +36,7 @@ public class QueryBuilder {
 		str.append("FROM Cliente C WHERE ");
 		ArrayList<Parametro> parametros = new ArrayList<Parametro>();
 
-		if (p.getNroCliente() != null && p.getIdCliente() != null && p.getIdPais() != null) {
+		if (!p.nroClienteNulo()) {
 			str.append("C.nroCliente.idCliente = :idCliente AND ");
 			parametros.add(new Parametro("idCliente", p.getIdCliente()));
 			str.append("C.nroCliente.idPais = :idPais AND ");
@@ -80,7 +80,7 @@ public class QueryBuilder {
 		str.append("FROM Cliente C WHERE ");
 		ArrayList<Parametro> parametros = new ArrayList<Parametro>();
 
-		if (p.getNroCliente() != null && p.getIdCliente() != null && p.getIdPais() != null) {
+		if (!p.nroClienteNulo()) {
 			str.append("C.nroCliente.idCliente = :idCliente AND ");
 			parametros.add(new Parametro("idCliente", p.getIdCliente()));
 			str.append("C.nroCliente.idPais = :idPais AND ");

@@ -81,7 +81,11 @@ public class ParametrosDeConsulta {
 	}
 
 	public boolean nroClienteValido() {
-		if (this.nroCliente == null || this.nroCliente.length() != 10) {
+		if (this.getNroCliente() == null || this.getNroCliente() == "") {
+			return true;
+		}
+
+		if (this.nroCliente.length() != 10) {
 			return false;
 		}
 
@@ -93,6 +97,11 @@ public class ParametrosDeConsulta {
 
 		return true;
 	}
+
+	public boolean nroClienteNulo() {
+		return (this.getNroCliente() == null || this.getNroCliente() == "");
+	}
+
 
 	public boolean nulo() {
 		Boolean idClienteNulo = false;
