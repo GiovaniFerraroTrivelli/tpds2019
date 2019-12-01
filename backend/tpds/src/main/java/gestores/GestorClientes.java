@@ -35,31 +35,39 @@ public class GestorClientes {
 	public static void guardarCliente(Cliente c) throws ConstraintViolationException {
 		DaoCliente.guardarCliente(c);
 	}
-	
+
 	public static ArrayList<Cliente> buscarClientes(ParametrosDeBusqueda p) {
 		return DaoCliente.buscarClientes(p);
 	}
 
 	public static ArrayList<Cliente> consultarClientes(ParametrosDeConsulta p) {
 		return DaoCliente.consultarClientes(p);
-	}	
+	}
 
 	public static void altaCliente(AltaClienteDTO clienteDTO)
 			throws DatoNoEncontradoException, java.sql.SQLIntegrityConstraintViolationException {
 		Cliente cliente = new Cliente();
 		Direccion direccion = new Direccion();
+
 		direccion.setCalle(clienteDTO.getDireccion().getCalle());
-		if (clienteDTO.getDireccion().getDepartamento() != null)
+
+		if (clienteDTO.getDireccion().getDepartamento() != null) {
 			direccion.setDepartamento(clienteDTO.getDireccion().getDepartamento());
+		}
+
 		direccion.setNumero(clienteDTO.getDireccion().getNumero());
-		if (clienteDTO.getDireccion().getPiso() != null)
+
+		if (clienteDTO.getDireccion().getPiso() != null) {
 			direccion.setPiso(clienteDTO.getDireccion().getPiso());
+		}
+
 		try {
 			direccion.setLocalidad(GestorGeografico.getLocalidad(clienteDTO.getDireccion().getIdLocalidad()));
 		} catch (DatoNoEncontradoException e) {
 			throw e;
 		}
 
+		cliente.getNroCliente().setIdPais(direccion.getLocalidad().getProvincia().getPais().getIdPais());
 		cliente.setDireccion(direccion);
 		cliente.setNombre(clienteDTO.getNombre());
 		cliente.setApellido(clienteDTO.getApellido());
