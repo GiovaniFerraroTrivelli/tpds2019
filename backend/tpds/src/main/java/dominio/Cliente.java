@@ -152,7 +152,7 @@ public class Cliente {
 			result.append("0");
 		}
 		result.append(idPais);
-		Integer ceros = 10 - idCliente.length();
+		Integer ceros = 8 - idCliente.length();
 		for (int i = 0; i < ceros; i++) {
 			result.append("0");
 		}
