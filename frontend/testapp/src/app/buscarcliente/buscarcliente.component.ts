@@ -1,6 +1,7 @@
 import { NgForm, FormGroup, FormControl, Validators, AbstractControl, FormBuilder, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from "@angular/router";
 
 import { Cliente } from '../cliente/cliente';
 import { Documento } from '../cliente/documento';
@@ -33,6 +34,7 @@ export class BuscarclienteComponent implements OnInit {
 		private dialogService: DialogService,
 		private modalService: NgbModal,
 		private loadingService: LoadingService,
+		private router: Router,
 		private global: GlobalScriptsService
 	) { }
 
@@ -122,10 +124,14 @@ export class BuscarclienteComponent implements OnInit {
 			    		size: 'lg'
 			    	});
 			    } else {
-			    	this.dialogService.alert(
+			    	this.dialogService.confirm(
 			    		'Resultados de búsqueda',
-			    		'Ningún cliente coincide con los criterios de búsqueda. Intente nuevamente.'
-			    	);
+			    		'Ningún cliente coincide con los criterios de búsqueda. ¿Desea dar de alta un nuevo cliente?', true,
+			    		'Dar de alta cliente', 'Realizar otra búsqueda'
+					).then((confirmed) => {
+						if(confirmed)
+							this.router.navigate(['/alta-cliente']);
+					});
 			    }
 			    
 			    this.loadingService.d();

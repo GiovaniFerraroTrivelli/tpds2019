@@ -12,6 +12,9 @@ export class GlobalScriptsService {
 	}
 
 	removeHyphen(text) {
+		if(text === null)
+			return null;
+		
 		return text.split('-').join('');
 	}
 }

@@ -27,7 +27,7 @@
 			  </tr>
 			</thead>
 			<tbody>
-			  <tr *ngFor='let resultado of resultados' [ngClass]="['cursor-pointer' , (getSelectedClient() ? 'table-active' : '') ]" (click)='loadSelectedClient(resultado)'>
+			  <tr *ngFor='let resultado of resultados' [ngClass]="['cursor-pointer' , (getSelectedClient() == resultado ? 'table-active' : '') ]" (click)='loadSelectedClient(resultado)'>
 				<th scope="row">{{ global.nroClienteFormat(resultado.nroCliente) }}</th>
 				<td>{{resultado.apellido}}, {{resultado.nombre}}</td>
 				<td>{{resultado.documento.tipoDocumento}} {{resultado.documento.nroDocumento | number: '' : 'es-AR' }}</td>

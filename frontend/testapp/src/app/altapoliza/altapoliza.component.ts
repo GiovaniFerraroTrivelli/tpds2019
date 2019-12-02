@@ -127,6 +127,8 @@ export class AltapolizaComponent implements OnInit {
 
 	onChanges(): void {
 		this.altaPolizaForm.get('marca').valueChanges.subscribe(idMarca => {
+			this.modelos = undefined;
+			
 			this.modelosService.getModelosByMarca(idMarca).subscribe(data => {
 			    this.modelos = data;
 			    this.anios = undefined;
