@@ -4,7 +4,7 @@ import { Documento } from './documento';
 import { CondicionIva } from '../enums/condicion-iva.enum';
 
 export class Cliente {
-	idCliente: number;
+	nroCliente: string;
 	nombre: string;
 	apellido: string;
 	documento: Documento;

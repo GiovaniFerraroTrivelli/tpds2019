@@ -9,6 +9,7 @@ import { TipoDNI } from '../enums/tipo-dni.enum';
 import { DialogService } from '../dialog/dialog.service';
 import { LoadingService } from '../loading/loading.service';
 import { BusquedaClienteService } from './busquedacliente.service';
+import { GlobalScriptsService } from '../global-scripts.service';
 
 @Component({
   selector: 'app-buscarcliente',
@@ -31,12 +32,13 @@ export class BuscarclienteComponent implements OnInit {
 		private busquedaClienteService: BusquedaClienteService,
 		private dialogService: DialogService,
 		private modalService: NgbModal,
-		private loadingService: LoadingService
+		private loadingService: LoadingService,
+		private global: GlobalScriptsService
 	) { }
 
 	ngOnInit() {
 		this.buscarClienteForm = new FormGroup({
-			'idCliente': new FormControl(null),
+			'nroCliente': new FormControl(null, Validators.pattern('^([0-9]{10}|[0-9]{2}-[0-9]{8})$')),
 			'nombre': new FormControl(null),
 			'apellido': new FormControl(null),
 			'documento': new FormGroup({
@@ -48,7 +50,7 @@ export class BuscarclienteComponent implements OnInit {
 		}, { validators: this.atLeastOneValidator });
 	}
 
-	get idCliente() { return this.buscarClienteForm.get('idCliente'); }
+	get nroCliente() { return this.buscarClienteForm.get('nroCliente'); }
 	get nombre() { return this.buscarClienteForm.get('nombre'); }
 	get apellido() { return this.buscarClienteForm.get('apellido'); }
 	get documento() { return this.buscarClienteForm.get('documento'); }
@@ -56,6 +58,16 @@ export class BuscarclienteComponent implements OnInit {
 	get nroDocumento() { return this.buscarClienteForm.get('documento.nroDocumento'); }
 	get resultadosPorPagina() { return this.buscarClienteForm.get('resultadosPorPagina'); }
 	get numeroPagina() { return this.buscarClienteForm.get('numeroPagina'); }
+
+	onBlurNroCliente(nroCliente) {
+		if(nroCliente.length == 10) {
+			this.buscarClienteForm.controls['nroCliente'].setValue(this.global.nroClienteFormat(nroCliente));
+		}
+	}
+
+	onFocusNroCliente(nroCliente) {
+		this.buscarClienteForm.controls['nroCliente'].setValue(this.global.removeHyphen(nroCliente));
+	}
 
 	getSelectedClient(){
 		return this.selectedClient;
@@ -74,7 +86,14 @@ export class BuscarclienteComponent implements OnInit {
 		
 		if (form && form.controls) {
 			for (const control in form.controls) {
-				if (form.controls.hasOwnProperty(control) && form.controls[control].valid && form.controls[control].value && control != "documento") {
+				if (
+					form.controls.hasOwnProperty(control)
+					&& form.controls[control].valid
+					&& form.controls[control].value
+					&& control != "documento"
+					&& control != "resultadosPorPagina"
+					&& control != "numeroPagina"
+				) {
 					isAtLeastOne = true;
 					break;
 				}
@@ -90,6 +109,9 @@ export class BuscarclienteComponent implements OnInit {
 
 	onSubmit(f: NgForm, content) {
 		this.loadingService.i();
+
+		f.value.nroCliente = this.global.removeHyphen(f.value.nroCliente);
+		console.log(f.value);
 
 		this.busquedaClienteService.postClienteBusqueda(f.value).subscribe(
 			data => {
@@ -129,5 +151,4 @@ export class BuscarclienteComponent implements OnInit {
 		this.loadSelectedClient(null);
 		modal.close();
 	}
-
 }

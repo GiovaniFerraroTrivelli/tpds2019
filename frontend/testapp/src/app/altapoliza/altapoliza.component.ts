@@ -11,6 +11,7 @@ import { ModelosService } from '../modelos/modelos.service';
 import { AltaPolizaService } from './altapoliza.service';
 import { LoadingService } from '../loading/loading.service';
 import { DialogService } from '../dialog/dialog.service';
+import { GlobalScriptsService } from '../global-scripts.service';
 
 import { MedidasSeguridad } from '../enums/medidas-seguridad.enum';
 import { Hijo } from '../hijos/hijo';
@@ -57,7 +58,8 @@ export class AltapolizaComponent implements OnInit {
 		private modelosService: ModelosService,
 		private altaPolizaService: AltaPolizaService,
 		private loadingService: LoadingService,
-		private router: Router
+		private router: Router,
+		private global: GlobalScriptsService
 	) { 
 	}
 
@@ -158,6 +160,7 @@ export class AltapolizaComponent implements OnInit {
 
 	onSubmit(f: NgForm) {
 		f.value.hijos = this.childComp.hijos;
+		f.value.idCliente = this.global.removeHyphen(f.value.idCliente);
 
 		console.info(f.value);
 
@@ -186,7 +189,7 @@ export class AltapolizaComponent implements OnInit {
 	processCliente(cliente) {
 		this.cliente = cliente;
 
-		this.altaPolizaForm.controls['idCliente'].setValue(this.cliente.idCliente);
+		this.altaPolizaForm.controls['idCliente'].setValue(this.global.nroClienteFormat(this.cliente.nroCliente));
 		this.altaPolizaForm.controls['nombre'].setValue(this.cliente.nombre);
 		this.altaPolizaForm.controls['apellido'].setValue(this.cliente.apellido);
 		this.altaPolizaForm.controls['nroDocumento'].setValue(this.cliente.documento.nroDocumento);

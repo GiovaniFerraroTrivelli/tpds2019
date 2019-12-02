@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { Rol } from '../enums/rol.enum';
 
 @Component({
 	selector: 'app-index',
@@ -8,6 +9,8 @@ import { AuthenticationService } from '../authentication/authentication.service'
 	styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
+
+	public Rol = Rol;
 
 	constructor(
 		private titleService: Title,
@@ -27,7 +30,7 @@ export class IndexComponent implements OnInit {
 	}
 
 	getRol() {
-		return this.loginService.getRol();
+		return Rol[this.loginService.getRol()];
 	}
 
 	isUserLoggedIn() {

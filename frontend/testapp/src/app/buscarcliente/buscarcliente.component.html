@@ -10,7 +10,7 @@
 		<div class="alert alert-light">
 			<h5><strong>Criterios de búsqueda aplicados</strong></h5>
 			<div class="row font-weight-light">
-		  		<div class="col-4"><small>Id de cliente: {{ buscarClienteForm.value.idCliente === null ? "sin filtros" : buscarClienteForm.value.idCliente }}</small></div>
+		  		<div class="col-4"><small>Nro. de cliente: {{ buscarClienteForm.value.nroCliente == '' || buscarClienteForm.value.nroCliente === null ? "sin filtros" : global.nroClienteFormat(buscarClienteForm.value.nroCliente) }}</small></div>
 		  		<div class="col-4"><small>Nombre: {{ buscarClienteForm.value.nombre === null ? "sin filtros" : buscarClienteForm.value.nombre }}</small></div>
 		  		<div class="col-4"><small>Apellido: {{ buscarClienteForm.value.apellido === null ? "sin filtros" : buscarClienteForm.value.apellido }}</small></div>
 		  		<div class="col-4"><small>Tipo de documento: {{ buscarClienteForm.value.documento.tipoDocumento === null ? "sin filtros" : buscarClienteForm.value.tipoDocumento }}</small></div>
@@ -28,7 +28,7 @@
 			</thead>
 			<tbody>
 			  <tr *ngFor='let resultado of resultados' [ngClass]="['cursor-pointer' , (getSelectedClient() ? 'table-active' : '') ]" (click)='loadSelectedClient(resultado)'>
-				<th scope="row">{{resultado.idCliente}}</th>
+				<th scope="row">{{ global.nroClienteFormat(resultado.nroCliente) }}</th>
 				<td>{{resultado.apellido}}, {{resultado.nombre}}</td>
 				<td>{{resultado.documento.tipoDocumento}} {{resultado.documento.nroDocumento | number: '' : 'es-AR' }}</td>
 			  </tr>			  
@@ -44,12 +44,12 @@
 <form #bcForm="ngForm" [formGroup]="buscarClienteForm" (ngSubmit)="onSubmit(bcForm, content)">
 	<div class="row">      
 		<div class="form-group col-sm-12 col-lg-4">
-			<label class="pt-2" for="idCliente">Nro. de cliente</label>
+			<label class="pt-2" for="nroCliente">Nro. de cliente</label>
 			<div class="input-group">
 				<div class="input-group-prepend">
 					<div class="input-group-text">#</div>
 				</div>
-				<input type="number" formControlName="idCliente" name="idCliente" id="idCliente" class="form-control dis-arrows optional">
+				<input type="text" (blur)="onBlurNroCliente($event.target.value)" (focus)="onFocusNroCliente($event.target.value)" formControlName="nroCliente" name="nroCliente" id="nroCliente" class="form-control optional">
 			</div>
 		</div>
 		<div class="form-group col-sm-12 col-lg-4">
