@@ -2,7 +2,7 @@ package dataTransferObjects;
 
 import java.util.Date;
 
-import dominio.Documento;
+import dominio.Cliente.Documento;
 import enumeradores.CondicionIva;
 import enumeradores.EstadoCivil;
 import enumeradores.Sexo;
@@ -24,7 +24,7 @@ public class ClienteDTO {
 	public ClienteDTO(String idCliente, String nombre, String apellido, Documento documento, String cuil, Sexo sexo,
 			Date fechaNacimiento, String profesion, EstadoCivil estadoCivil, String email, CondicionIva condicionIva,
 			DireccionDTO direccion) {
-		this.nroCliente = idCliente;
+		this.setNroCliente(idCliente);
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.documento = documento;
@@ -128,6 +128,14 @@ public class ClienteDTO {
 
 	public void setDireccion(DireccionDTO direccion) {
 		this.direccion = direccion;
+	}
+
+	public String getNroCliente() {
+		return nroCliente;
+	}
+
+	public void setNroCliente(String nroCliente) {
+		this.nroCliente = nroCliente;
 	}
 
 }

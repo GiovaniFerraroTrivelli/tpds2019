@@ -23,8 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 import dataTransferObjects.PolizaDTO;
 import dataTransferObjects.TipoCoberturaDTO;
 import dominio.Cliente;
+import dominio.Cliente.Documento;
 import dominio.Cuota;
 import dominio.Modelo;
+import dominio.NumeroPoliza;
+import dominio.Pago.PagoDTO;
 import dominio.Poliza;
 import dominio.Poliza.ResumenPoliza;
 import dominio.TipoCobertura;
@@ -34,6 +37,7 @@ import excepciones.NoExisteClienteException;
 import excepciones.NoHayValorException;
 import gestores.GestorClientes;
 import gestores.GestorModelos;
+import gestores.GestorPagos;
 import gestores.GestorPoliza;
 import usuarios.Usuario;
 
@@ -116,8 +120,8 @@ public class ControladorPoliza {
 		return new ResponseEntity<>(poliza.getResumenPoliza(), HttpStatus.OK);
 	}
 
-	@GetMapping("/poliza/{nroPoliza}")
-	public ResponseEntity<Object> getPoliza(@PathVariable("nroPoliza") Integer nroPoliza, HttpSession session) {
+	@PostMapping("/buscarPoliza")
+	public ResponseEntity<Object> getPoliza(@RequestBody Integer nroPoliza, HttpSession session) {
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		if (usuario == null)
 			return new ResponseEntity(new Error("No se encuentra autenticado en el sistema"), HttpStatus.FORBIDDEN);
@@ -126,7 +130,72 @@ public class ControladorPoliza {
 			return new ResponseEntity<>(new Error("No tiene permisos suficientes para realizar esta operación"),
 					HttpStatus.FORBIDDEN);
 
-		Poliza poliza = GestorPoliza.getPoliza(nroPoliza);
-		return new ResponseEntity<>(poliza.getResumenPoliza(), HttpStatus.OK);
+		ArrayList<Poliza> polizas = GestorPoliza.buscarPoliza(nroPoliza.toString());
+		
+		
+		ArrayList<EntradaListado> lista = new ArrayList<>();
+		for (Poliza p : polizas) {
+			EntradaListado e =new EntradaListado();
+			e.setApellidoCliente(p.getCliente().getApellido());
+			e.setNombreCliente(p.getCliente().getNombre());
+			e.setDocumento(p.getCliente().getDocumento());
+			e.setNumeroPoliza(p.getNroPoliza());
+			e.setDocumento(p.getCliente().getDocumento());
+			e.setIdPoliza(p.getIdPoliza());
+			
+			//e.setUltimoPago(GestorPagos.getUltimoPago(p.getCliente()).getDTO());
+		}
+		return new ResponseEntity<>(lista, HttpStatus.OK);
 	}
+	
+	private class EntradaListado{
+		private Integer idPoliza;
+		private String numeroPoliza;
+		private String nombreCliente;
+		private String apellidoCliente;
+		private Documento documento;
+		private PagoDTO ultimoPago;
+		
+		
+		public Integer getIdPoliza() {
+			return idPoliza;
+		}
+		public void setIdPoliza(Integer idPoliza) {
+			this.idPoliza = idPoliza;
+		}
+		public String getNumeroPoliza() {
+			return numeroPoliza;
+		}
+		public void setNumeroPoliza(NumeroPoliza numeroPoliza2) {
+			this.numeroPoliza = numeroPoliza2.toString();
+		}
+		public String getNombreCliente() {
+			return nombreCliente;
+		}
+		public void setNombreCliente(String nombreCliente) {
+			this.nombreCliente = nombreCliente;
+		}
+		public String getApellidoCliente() {
+			return apellidoCliente;
+		}
+		public void setApellidoCliente(String apellidoCliente) {
+			this.apellidoCliente = apellidoCliente;
+		}
+		public Documento getDocumento() {
+			return documento;
+		}
+		public void setDocumento(Documento documento) {
+			this.documento = documento;
+		}
+		public PagoDTO getUltimoPago() {
+			return ultimoPago;
+		}
+		public void setUltimoPago(PagoDTO ultimoPago) {
+			this.ultimoPago = ultimoPago;
+		}
+		
+	}
+	
 }
+
+

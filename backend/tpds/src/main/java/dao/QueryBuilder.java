@@ -9,6 +9,7 @@ import dataTransferObjects.ParametrosDeBusqueda;
 import dataTransferObjects.ParametrosDeConsulta;
 import dominio.NumeroPoliza;
 import enumeradores.CondicionCliente;
+import dominio.Cliente.Documento;
 
 public class QueryBuilder {
 

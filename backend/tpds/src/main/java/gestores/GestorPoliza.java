@@ -257,4 +257,8 @@ public class GestorPoliza {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public static ArrayList<Poliza> buscarPoliza(String numeroPoliza) {
+		return DaoPoliza.buscarPoliza(numeroPoliza);
+	}
 }

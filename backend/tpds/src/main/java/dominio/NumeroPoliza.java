@@ -40,4 +40,32 @@ public class NumeroPoliza {
 	public void setRenovacionPoliza(Integer renovacionPoliza) {
 		this.renovacionPoliza = renovacionPoliza;
 	}
+	
+	 public String toString() {    
+		    String idSucursal = Integer.toString(this.idSucursal);
+		    String autoCliente = Integer.toString(this.autoCliente);
+		    String renovacionPoliza = Integer.toString(this.renovacionPoliza);
+
+		    StringBuilder result = new StringBuilder();
+		    
+		    Integer ceros = 4 - idSucursal.length();
+		    for (int i = 0; i < ceros; i++) {
+		      result.append("0");
+		    }
+		    result.append(idSucursal);
+		    
+		    ceros = 7 - autoCliente.length();
+		    for (int i = 0; i < ceros; i++) {
+		      result.append("0");
+		    }
+		    result.append(autoCliente);
+		    
+		    ceros = 2 - renovacionPoliza.length();
+		    for (int i = 0; i < ceros; i++) {
+		      result.append("0");
+		    }
+		    result.append(renovacionPoliza);
+
+		    return new String(result);
+	 }
 }

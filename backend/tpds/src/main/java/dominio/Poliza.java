@@ -40,6 +40,8 @@ public class Poliza {
 	private Money descuentos;
 
 	public class PolizaDTO {
+		private Integer idPoliza;
+		private NumeroPoliza nroPoliza;
 		private Integer idCliente;
 		private Integer modelo;
 		private Integer anio;
@@ -59,6 +61,30 @@ public class Poliza {
 		private Integer kmAnio;
 		private String modalidadPago;
 		private ArrayList<CuotaDTO> cuotas;
+		
+		public Integer getIdPoliza() {
+			return idPoliza;
+		}
+
+		public void setIdPoliza(Integer idPoliza) {
+			this.idPoliza = idPoliza;
+		}
+
+		public NumeroPoliza getNroPoliza() {
+			return nroPoliza;
+		}
+
+		public void setNroPoliza(NumeroPoliza nroPoliza) {
+			this.nroPoliza = nroPoliza;
+		}
+
+		public ArrayList<CuotaDTO> getCuotas() {
+			return cuotas;
+		}
+
+		public void setCuotas(ArrayList<CuotaDTO> cuotas) {
+			this.cuotas = cuotas;
+		}
 
 		public Integer getIdCliente() {
 			return idCliente;

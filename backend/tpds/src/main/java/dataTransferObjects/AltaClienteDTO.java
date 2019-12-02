@@ -2,7 +2,7 @@ package dataTransferObjects;
 
 import java.util.Date;
 
-import dominio.Documento;
+import dominio.Cliente.Documento;
 import enumeradores.CondicionIva;
 import enumeradores.EstadoCivil;
 import enumeradores.Sexo;

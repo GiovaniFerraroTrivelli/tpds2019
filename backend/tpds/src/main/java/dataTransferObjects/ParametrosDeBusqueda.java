@@ -1,6 +1,6 @@
 package dataTransferObjects;
 
-import dominio.Documento;
+import dominio.Cliente.Documento;
 
 public class ParametrosDeBusqueda {
 	private String nroCliente;

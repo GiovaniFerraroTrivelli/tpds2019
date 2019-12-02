@@ -1,6 +1,6 @@
 package dataTransferObjects;
 
-import dominio.Documento;
+import dominio.Cliente.Documento;
 import enumeradores.CondicionIva;
 
 public class ParametrosDeConsulta {
