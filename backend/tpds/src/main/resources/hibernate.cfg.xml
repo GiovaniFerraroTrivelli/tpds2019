@@ -35,6 +35,8 @@
         <mapping resource="HistorialValorTipoCobertura.hbm.xml"/>
         <mapping resource="HistorialValorModelo.hbm.xml"/>
         <mapping resource="Usuario.hbm.xml"/>
+        <mapping resource="Pago.hbm.xml"/>
+        <mapping resource="PagoCuota.hbm.xml"/>
 
         
 

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="dominio.PagoCuota" table="pago_cuota">
+
+		<id name="idPagoCuota" type="java.lang.Integer"
+			column="id_pago_cuota">
+			<generator class="native" />
+		</id>
+
+		<many-to-one name="pago" class="dominio.Pago"
+			fetch="select">
+			<column name="id_pago" not-null="true" />
+		</many-to-one>
+
+		<property name="recargoMora" column="recargo_mora" />
+		<property name="bonificacionPagoAdelentado" column="bonificacion_pago_adelentado" />
+		<one-to-one name="cuota" class="dominio.Cuota" cascade="save-update"></one-to-one>
+	</class>
+</hibernate-mapping>

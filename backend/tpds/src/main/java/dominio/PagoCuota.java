@@ -3,14 +3,23 @@ package dominio;
 import org.javamoney.moneta.Money;
 
 public class PagoCuota implements Comparable<PagoCuota> {
+	private Integer idPagoCuota;
 	private Pago pago;
 	private Cuota cuota;
 	private Money recargoMora;
 	private Money bonificacionPagoAdelentado;
-	
+
 	@Override
 	public int compareTo(PagoCuota o) {
 		return this.getCuota().compareTo(o.getCuota());
+	}
+
+	public Integer getIdPagoCuota() {
+		return idPagoCuota;
+	}
+
+	public void setIdPagoCuota(Integer idPagoCuota) {
+		this.idPagoCuota = idPagoCuota;
 	}
 
 	public Pago getPago() {
@@ -43,5 +52,5 @@ public class PagoCuota implements Comparable<PagoCuota> {
 
 	public void setBonificacionPagoAdelentado(Money bonificacionPagoAdelentado) {
 		this.bonificacionPagoAdelentado = bonificacionPagoAdelentado;
-	}	
+	}
 }
