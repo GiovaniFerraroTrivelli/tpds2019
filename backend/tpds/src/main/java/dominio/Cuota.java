@@ -2,13 +2,44 @@ package dominio;
 
 import java.util.Date;
 
-import dataTransferObjects.CuotaDTO;
+
+import org.javamoney.moneta.Money;
+
 
 public class Cuota implements Comparable<Cuota>{
 	private Integer idCuota;
 	private Poliza poliza;
-	private Double importe;
+	private Money importe;
 	private Date fechaVencimiento;
+	
+
+	public class CuotaDTO implements Comparable<CuotaDTO> {
+		private String importe;
+		private Date fechaVencimiento;
+	
+		public String getImporte() {
+			return importe;
+		}
+	
+		public void setImporte(String importe) {
+			this.importe = importe;
+		}
+	
+		public Date getFechaVencimiento() {
+			return fechaVencimiento;
+		}
+	
+		public void setFechaVencimiento(Date fechaVencimiento) {
+			this.fechaVencimiento = fechaVencimiento;
+		}
+	
+		@Override
+		public int compareTo(CuotaDTO o) {
+	
+			return this.fechaVencimiento.compareTo(o.getFechaVencimiento());
+		}
+	
+	}
 
 	public Cuota() {
 
@@ -30,11 +61,11 @@ public class Cuota implements Comparable<Cuota>{
 		this.poliza = poliza;
 	}
 
-	public Double getImporte() {
+	public Money getImporte() {
 		return importe;
 	}
 
-	public void setImporte(Double importe) {
+	public void setImporte(Money importe) {
 		this.importe = importe;
 	}
 

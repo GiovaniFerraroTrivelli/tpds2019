@@ -1,6 +1,7 @@
 package gestores;
 
 import java.time.LocalDate;
+
 import java.time.Period;
 import java.time.Year;
 import java.time.ZoneId;
@@ -9,6 +10,10 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.money.MonetaryAmount;
+
+import org.javamoney.moneta.*;
+
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -16,6 +21,7 @@ import org.hibernate.query.Query;
 
 import dao.DaoCliente;
 import dao.DaoGeografico;
+import dao.DaoPoliza;
 import dao.DaoVehiculo;
 import dataAccess.HibernateUtil;
 import dataTransferObjects.PolizaDTO;
@@ -137,7 +143,6 @@ public class GestorPoliza {
 
 		return errores;
 	}
-
 	private static boolean existePolizaConPatente(String patente) {
 		Session session = HibernateUtil.openSession();
 		String hql = "FROM Poliza WHERE dominio=\'" + patente + "\'";
@@ -208,7 +213,7 @@ public class GestorPoliza {
 				Cuota cuota = new Cuota();
 				cuota.setFechaVencimiento(java.sql.Date.valueOf(inicioVigencia.minusDays(1).plusMonths(i)));
 				// TODO: Cambiar el importe
-				cuota.setImporte(100.0);
+				cuota.setImporte(Money.of(100, "ARS"));
 				cuota.setPoliza(poliza);
 
 				cuotas.add(cuota);
@@ -216,7 +221,7 @@ public class GestorPoliza {
 		} else {
 			Cuota cuota = new Cuota();
 			cuota.setFechaVencimiento(java.sql.Date.valueOf(inicioVigencia.minusDays(1)));
-			cuota.setImporte(100.0);
+			cuota.setImporte(Money.of(100, "ARS"));
 			cuota.setPoliza(poliza);
 			cuotas.add(cuota);
 		}
@@ -242,5 +247,14 @@ public class GestorPoliza {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+	
+	public static Poliza getPoliza(Integer nroPoliza) {
+		return DaoPoliza.getPoliza(nroPoliza);
+	}
+
+	public static String getSumaAsegurada(Poliza p) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
