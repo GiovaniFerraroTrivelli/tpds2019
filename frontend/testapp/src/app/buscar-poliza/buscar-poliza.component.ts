@@ -35,41 +35,42 @@ export class BuscarPolizaComponent implements OnInit {
 	private polizaSeleccionada: PolizasRta;
 	private respuestaPolizas: respuestaBuscarPoliza;
 	private busquedaPolizaForm: FormGroup;
-  private listaPolizas: PolizasRta[];
+  	private listaPolizas: PolizasRta[];
 
 	ngOnInit() {
 		this.polizaSeleccionada = null;
 		this.busquedaPolizaForm = new FormGroup({
 			'numeroPoliza': new FormControl(null, [ Validators.required, Validators.pattern('^([0-9]{13})$') ])
-    });
-    this.onChanges();
-  }
+    	});
+    	
+    	this.onChanges();
+  	}
   
-  get numeroPoliza() { return this.busquedaPolizaForm.get('numeroPoliza'); }
+  	get numeroPoliza() { return this.busquedaPolizaForm.get('numeroPoliza'); }
 
-  onChanges(): void {
-    this.busquedaPolizaForm.get('numeroPoliza').valueChanges.subscribe(
-      numeroPoliza => {
-        if(numeroPoliza.length > 13){
-          this.busquedaPolizaForm.controls['numeroPoliza'].setValue(numeroPoliza.substr(0,13));
-        }
-      }
-    );
-  }
+	onChanges(): void {
+		this.busquedaPolizaForm.get('numeroPoliza').valueChanges.subscribe(
+			numeroPoliza => {
+				if(numeroPoliza.length > 13){
+					this.busquedaPolizaForm.controls['numeroPoliza'].setValue(numeroPoliza.substr(0,13));
+				}
+			}
+		);
+	}
   
-  onSubmit(f: NgForm, content) {
+	onSubmit(f: NgForm, content) {
 	    this.loadingService.i();
 
 		this.BuscarpolizaService.postBuscarPoliza(f.value).subscribe(
 			data => {
-        this.loadingService.d();
-        this.modalService.open(content, { centered: true });
-        this.respuestaPolizas = data;
-        this.listaPolizas = this.respuestaPolizas.polizas;
-        console.log(this.respuestaPolizas);
+	      		this.loadingService.d();
+	      		this.modalService.open(content, { centered: true });
+	      		this.respuestaPolizas = data;
+	      		this.listaPolizas = this.respuestaPolizas.polizas;
+	      		console.log(this.respuestaPolizas);
 			},
 			err => {
-			  this.loadingService.d();
+				this.loadingService.d();
 
 				if(err.status == 403) {
 					this.dialogService.alert(
