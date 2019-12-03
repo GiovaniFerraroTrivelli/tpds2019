@@ -155,6 +155,7 @@ public class ControladorPoliza {
 			EntradaListado e =new EntradaListado();
 			e.setApellidoCliente(p.getCliente().getApellido());
 			e.setNombreCliente(p.getCliente().getNombre());
+			e.setNumeroCliente(p.getCliente().nroCliente());
 			e.setDocumento(p.getCliente().getDocumento());
 			e.setNumeroPoliza(p.getNroPoliza());
 			e.setDocumento(p.getCliente().getDocumento());
@@ -175,6 +176,7 @@ public class ControladorPoliza {
 		private String numeroPoliza;
 		private String nombreCliente;
 		private String apellidoCliente;
+		private String numeroCliente;
 		private Documento documento;
 		private PagoDTO ultimoPago;
 		
@@ -214,6 +216,12 @@ public class ControladorPoliza {
 		}
 		public void setUltimoPago(PagoDTO ultimoPago) {
 			this.ultimoPago = ultimoPago;
+		}
+		public String getNumeroCliente() {
+			return numeroCliente;
+		}
+		public void setNumeroCliente(String numeroCliente) {
+			this.numeroCliente = numeroCliente;
 		}
 		
 	}
