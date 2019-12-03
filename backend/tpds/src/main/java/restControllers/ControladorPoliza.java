@@ -144,6 +144,8 @@ public class ControladorPoliza {
 		if (!(usuario.getRol() == Rol.ProductorDeSeguros) && !(usuario.getRol() == Rol.Cobrador))
 			return new ResponseEntity<>(new Error("No tiene permisos suficientes para realizar esta operación"),
 					HttpStatus.FORBIDDEN);
+		if (nroPoliza.numeroPoliza.length() != 13) return new ResponseEntity<>(new Error("No se indicó un número de póliza válido (debe tener exactamente 13 dígitos"),
+				HttpStatus.BAD_REQUEST);
 
 		ArrayList<Poliza> polizas = GestorPoliza.buscarPoliza(nroPoliza.numeroPoliza);
 		
@@ -153,6 +155,7 @@ public class ControladorPoliza {
 			EntradaListado e =new EntradaListado();
 			e.setApellidoCliente(p.getCliente().getApellido());
 			e.setNombreCliente(p.getCliente().getNombre());
+			e.setNumeroCliente(p.getCliente().nroCliente());
 			e.setDocumento(p.getCliente().getDocumento());
 			e.setNumeroPoliza(p.getNroPoliza());
 			e.setDocumento(p.getCliente().getDocumento());
@@ -173,6 +176,7 @@ public class ControladorPoliza {
 		private String numeroPoliza;
 		private String nombreCliente;
 		private String apellidoCliente;
+		private String numeroCliente;
 		private Documento documento;
 		private PagoDTO ultimoPago;
 		
@@ -212,6 +216,12 @@ public class ControladorPoliza {
 		}
 		public void setUltimoPago(PagoDTO ultimoPago) {
 			this.ultimoPago = ultimoPago;
+		}
+		public String getNumeroCliente() {
+			return numeroCliente;
+		}
+		public void setNumeroCliente(String numeroCliente) {
+			this.numeroCliente = numeroCliente;
 		}
 		
 	}
