@@ -20,14 +20,14 @@ export class AltaPolizaService {
 	}
 
 	public postValidarDatos1(poliza : Poliza): Observable<RespuestaValidacion> {
-		return this.http.post<RespuestaValidacion>(this.validarUrl1, poliza);
+		return this.http.post<RespuestaValidacion>(this.validarUrl1, poliza, { withCredentials: true });
 	}
 
 	public postValidarDatos2(poliza : Poliza): Observable<RespuestaResumen> {
-		return this.http.post<RespuestaResumen>(this.validarUrl2, poliza);
+		return this.http.post<RespuestaResumen>(this.validarUrl2, poliza, { withCredentials: true });
 	}
 
 	public postValidarDatos3(poliza : Poliza): Observable<boolean> {
-		return this.http.post<boolean>(this.validarUrl3, poliza);
+		return this.http.post<boolean>(this.validarUrl3, poliza, { withCredentials: true });
 	}
 }

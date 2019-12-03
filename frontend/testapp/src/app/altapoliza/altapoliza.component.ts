@@ -168,20 +168,37 @@ export class AltapolizaComponent implements OnInit {
 
 		this.loadingService.i();
 
-		this.altaPolizaService.postValidarDatos1(f.value).subscribe(data => {
-		    this.loadingService.d();
+		this.altaPolizaService.postValidarDatos1(f.value).subscribe(
+			data => {
+			    this.loadingService.d();
 
-		    if(data.errores.length) {
-		    	this.dialogService.alert(
-		    		'Errores detectados',
-		    		data.errores.map(e => e.mensaje).join(". ")
-		    	);
-		    } else {
-		    	this.polizaValues = f.value;
-		    	this.coberturasDisponibles = data.coberturasDisponibles;
-				this.nextStep = true;
-		    }
-		});
+			    if(data.errores.length) {
+			    	this.dialogService.alert(
+			    		'Errores detectados',
+			    		data.errores.map(e => e.mensaje).join(". ")
+			    	);
+			    } else {
+			    	this.polizaValues = f.value;
+			    	this.coberturasDisponibles = data.coberturasDisponibles;
+					this.nextStep = true;
+			    }
+			},
+			err => {
+			    this.loadingService.d();
+
+				if(err.status == 403) {
+					this.dialogService.alert(
+						'Error al dar de alta una póliza',
+						err.error.mensaje
+					);
+				} else {
+					this.dialogService.alert(
+						'Error al dar de alta una póliza',
+						err.error.error
+					);
+				}
+			}
+		);
 	}
 
 	convertToUppercase(thisField) {
