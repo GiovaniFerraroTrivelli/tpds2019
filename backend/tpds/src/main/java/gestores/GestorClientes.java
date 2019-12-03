@@ -89,4 +89,8 @@ public class GestorClientes {
 			throw e;
 		}
 	}
+
+	public static Long resultados(ParametrosDeBusqueda parametros) {
+		return DaoCliente.resultados(parametros);
+	}
 }

@@ -90,4 +90,11 @@ public class DaoCliente {
 		}
 	}
 
+	public static Long resultados(ParametrosDeBusqueda parametros) {
+		Session session = HibernateUtil.openSession();
+		QueryBuilder qb = new QueryBuilder();
+		Query query = qb.getCountQuery(parametros, session);
+		return (Long) query.uniqueResult();
+	}
+
 }

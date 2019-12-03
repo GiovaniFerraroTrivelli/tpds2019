@@ -63,7 +63,8 @@ public class ControladorCliente {
 		respuesta.pagina = parametros.getNumeroPagina();
 		respuesta.resultadosPorPagina = parametros.getResultadosPorPagina();
 		respuesta.clientes = result;
-		respuesta.cantidadPaginas = 1;
+		respuesta.cantidadPaginas = (int) Math.ceil((double)GestorClientes.resultados(parametros)/parametros.getResultadosPorPagina());
+		
 		return new ResponseEntity<>(respuesta, HttpStatus.OK);
 	}
 

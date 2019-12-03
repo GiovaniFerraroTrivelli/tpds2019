@@ -140,4 +140,47 @@ public class QueryBuilder {
 		return query;
 	}
 
+	public Query getCountQuery(ParametrosDeBusqueda p, Session s) {
+		StringBuffer str = new StringBuffer();
+		str.append("SELECT COUNT(*) FROM Cliente C WHERE ");
+		ArrayList<Parametro> parametros = new ArrayList<Parametro>();
+
+		if (!p.nroClienteNulo()) {
+			str.append("C.nroCliente.idCliente = :idCliente AND ");
+			parametros.add(new Parametro("idCliente", p.getIdCliente()));
+			str.append("C.nroCliente.idPais = :idPais AND ");
+			parametros.add(new Parametro("idPais", p.getIdPais()));
+		}
+
+		if (p.getNombre() != null && p.getNombre() != "") {
+			str.append("C.nombre LIKE :nombre AND ");
+			parametros.add(new Parametro("nombre", p.getNombre() + "%"));
+		}
+
+		if (p.getApellido() != null && p.getApellido() != "") {
+			str.append("C.apellido LIKE :apellido AND ");
+			parametros.add(new Parametro("apellido", p.getApellido() + "%"));
+		}
+
+		if (p.getDocumento() != null) {
+			if (p.getDocumento().getTipoDocumento() != null) {
+				str.append("C.documento.tipoDocumento = :tipoDocumento AND ");
+				parametros.add(new Parametro("tipoDocumento", p.getDocumento().getTipoDocumento()));
+			}
+
+			if (p.getDocumento().getNroDocumento() != null) {
+				str.append("C.documento.nroDocumento = :nroDocumento AND ");
+				parametros.add(new Parametro("nroDocumento", p.getDocumento().getNroDocumento()));
+			}
+		}
+
+		String hql = str.toString().substring(0, str.toString().length() - 5);
+		Query query = s.createQuery(hql);
+		for (Parametro parametro : parametros) {
+			query.setParameter(parametro.getNombre(), parametro.getValor());
+		}
+		
+		return query;
+	}
+
 }
