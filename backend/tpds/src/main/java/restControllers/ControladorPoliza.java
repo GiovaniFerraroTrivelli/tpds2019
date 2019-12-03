@@ -83,7 +83,7 @@ public class ControladorPoliza {
 
 		Poliza poliza = GestorPoliza.generarPoliza(p);
 		Token token = new Token();
-		
+		poliza.setUsuario(usuario);
 		session.setAttribute(token.token, poliza);
 		result.setDatosPoliza(poliza.getResumenPoliza());
 		result.setToken(token.token);
