@@ -32,6 +32,7 @@ import dominio.Hijo;
 import dominio.MedidasSeguridad;
 import dominio.Modelo;
 import dominio.NumeroCliente;
+import dominio.NumeroPoliza;
 import dominio.Poliza;
 import dominio.TipoCobertura;
 import enumeradores.EstadoPoliza;
@@ -269,5 +270,10 @@ public class GestorPoliza {
 	
 	public static ArrayList<Poliza> buscarPoliza(String numeroPoliza) {
 		return DaoPoliza.buscarPoliza(numeroPoliza);
+	}
+	
+	public static Boolean altaPoliza(Poliza p) {
+		p.setNroPoliza(new NumeroPoliza(1,2351,1));
+		return GestorPoliza.savePoliza(p);
 	}
 }

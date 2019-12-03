@@ -24,6 +24,7 @@ public class Cliente {
 	private CondicionIva condicionIva;
 	private Direccion direccion;
 	private Pais pais;
+	private Integer cantidadPolizas;
 
 	public ClienteDTO getDTO() {
 		ClienteDTO result = new ClienteDTO(this.nroCliente(), this.nombre, this.apellido, this.documento, this.cuil,
@@ -159,6 +160,14 @@ public class Cliente {
 		}
 		result.append(idCliente);
 		return new String(result);
+	}
+
+	public Integer getCantidadPolizas() {
+		return cantidadPolizas;
+	}
+
+	public void setCantidadPolizas(Integer cantidadPolizas) {
+		this.cantidadPolizas = cantidadPolizas;
 	}
 
 	public static class Documento {

@@ -17,6 +17,7 @@
 
 		<property name="nombre" column="nombre" />
 		<property name="apellido" column="apellido" />
+		<property name="cantidadPolizas" column="cantidad_polizas" default="0" not-null="true" />
 
 		<property name="sexo" column="sexo" length="10">
 			<type name="org.hibernate.type.EnumType">
