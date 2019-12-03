@@ -39,13 +39,25 @@ export class BuscarPolizaComponent implements OnInit {
 
 	ngOnInit() {
 		this.polizaSeleccionada = null;
-
 		this.busquedaPolizaForm = new FormGroup({
-			'numeroPoliza': new FormControl(null)
-		});
-	}
+			'numeroPoliza': new FormControl(null, [ Validators.required, Validators.pattern('^([0-9]{13})$') ])
+    });
+    this.onChanges();
+  }
+  
+  get numeroPoliza() { return this.busquedaPolizaForm.get('numeroPoliza'); }
 
-	onSubmit(f: NgForm, content) {
+  onChanges(): void {
+    this.busquedaPolizaForm.get('numeroPoliza').valueChanges.subscribe(
+      numeroPoliza => {
+        if(numeroPoliza.length > 13){
+          this.busquedaPolizaForm.controls['numeroPoliza'].setValue(numeroPoliza.substr(0,13));
+        }
+      }
+    );
+  }
+  
+  onSubmit(f: NgForm, content) {
 	    this.loadingService.i();
 
 		this.BuscarpolizaService.postBuscarPoliza(f.value).subscribe(
@@ -89,7 +101,8 @@ export class BuscarPolizaComponent implements OnInit {
 			this.router.navigate(['/registrar-pago']);
 			/*this.sendData();*/
 		};
-	}
+  }
+
   /*
 	sendData() {
 		this.data.changePolizaMessage(this.polizaSeleccionada);
