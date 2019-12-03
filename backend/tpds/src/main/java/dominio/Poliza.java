@@ -291,35 +291,34 @@ public class Poliza {
 
 		public ResumenPoliza(Poliza p) {
 			super();
-			
-			System.out.println(p.getAnioFabricacion());
-			
-			System.out.println(p.getModelo().getSumaAsegurada(p.getAnioFabricacion()));
-			
-			
-			this.nombreTitular = p.getCliente().getNombre();
-			this.apellidoTitular = p.getCliente().getApellido();
-			this.marca = p.getModelo().getMarca().getNombre();
-			this.modelo = p.getModelo().getNombre();
-			this.motor = p.getMotor();
-			this.chasis = p.getChasis();
-			this.patente = p.getDominio();
-			this.inicioVigencia = p.getInicioVigencia();
-			this.finVigencia = p.getFinVigencia();
-			this.sumaAsegurada = p.getModelo().getSumaAsegurada(p.getAnioFabricacion()).toString();
-			this.premio = p.getPremio().toString();
-			this.descuentos = p.getDescuentos().toString();
-			this.derechoEmision = (p.getDerechoEmision().toString());
-			// this.ultimoDiaPago = p.getUltimoDiaPago();
-			this.montoTotal = p.getMontoTotal().toString();
 
-			ArrayList<CuotaDTO> c = new ArrayList<CuotaDTO>();
-			for (Cuota cuota : p.getCuotas()) {
-				c.add(cuota.getDTO());
+			try {
+				this.nombreTitular = p.getCliente().getNombre();
+				this.apellidoTitular = p.getCliente().getApellido();
+				this.marca = p.getModelo().getMarca().getNombre();
+				this.modelo = p.getModelo().getNombre();
+				this.motor = p.getMotor();
+				this.chasis = p.getChasis();
+				this.patente = p.getDominio();
+				this.inicioVigencia = p.getInicioVigencia();
+				this.finVigencia = p.getFinVigencia();
+				this.sumaAsegurada = p.getModelo().getSumaAsegurada(p.getAnioFabricacion()).toString();
+				this.premio = p.getPremio().toString();
+				this.descuentos = p.getDescuentos().toString();
+				this.derechoEmision = (p.getDerechoEmision().toString());
+				// this.ultimoDiaPago = p.getUltimoDiaPago();
+				this.montoTotal = p.getMontoTotal().toString();
+
+				ArrayList<CuotaDTO> c = new ArrayList<CuotaDTO>();
+				for (Cuota cuota : p.getCuotas()) {
+					c.add(cuota.getDTO());
+				}
+				Collections.sort(c);
+				this.cuotas = c;
+			} catch (NullPointerException e) {
+				System.out.println("NPE: DEBEN HABER VALORES SIN MAPEAR");
 			}
-			Collections.sort(c);
 
-			this.cuotas = c;
 		}
 
 		public String getNombreTitular() {
@@ -465,7 +464,7 @@ public class Poliza {
 	}
 
 	public BigDecimal getMontoTotal() {
-		return this.getPrima().add(this.getDerechoEmision()).subtract(this.getDescuentos());	
+		return this.getPrima().add(this.getDerechoEmision()).subtract(this.getDescuentos());
 	}
 
 	public Integer getIdPoliza() {
@@ -688,6 +687,4 @@ public class Poliza {
 		this.derechoEmision = derechoEmision;
 	}
 
-	
-	
 }
