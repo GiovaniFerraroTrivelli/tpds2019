@@ -8,7 +8,7 @@ import org.hibernate.cfg.Configuration;
 public class HibernateUtil {
 
 	private static final SessionFactory sessionFactory;
-	private static final Session session;
+	private static Session session;
 
 	static {
 		try {
@@ -21,7 +21,12 @@ public class HibernateUtil {
 	
 	public static Session getSession() throws HibernateException {
 		try {
-			return session;
+			if (session.isOpen()) return session;
+			else {
+				session = sessionFactory.openSession();
+				return session;
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

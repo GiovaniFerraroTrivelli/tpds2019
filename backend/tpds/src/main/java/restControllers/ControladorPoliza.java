@@ -247,6 +247,7 @@ public class ControladorPoliza {
 		if (!(usuario.getRol() == Rol.ProductorDeSeguros) && !(usuario.getRol() == Rol.Cobrador))
 			return new ResponseEntity<>(new Error("No tiene permisos suficientes para realizar esta operación"),
 					HttpStatus.FORBIDDEN);
+		
 		Poliza poliza = GestorPoliza.getPoliza(idPoliza);
 		
 		if (poliza == null) return new ResponseEntity<>(new Error("La poliza solicitada no existe"),

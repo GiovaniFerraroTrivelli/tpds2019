@@ -51,7 +51,7 @@
 			<property name="poseeTuercasAntirrobo" column="posee_tuercas_antirrobo" />
 		</component>
 
-		<many-to-one name="modelo" class="dominio.Modelo" fetch="select">
+		<many-to-one name="modelo" class="dominio.Modelo" fetch="select" lazy="false">
             <column name="id_modelo" not-null="true" />
         </many-to-one>
         
