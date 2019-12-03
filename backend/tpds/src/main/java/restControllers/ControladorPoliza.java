@@ -144,6 +144,8 @@ public class ControladorPoliza {
 		if (!(usuario.getRol() == Rol.ProductorDeSeguros) && !(usuario.getRol() == Rol.Cobrador))
 			return new ResponseEntity<>(new Error("No tiene permisos suficientes para realizar esta operación"),
 					HttpStatus.FORBIDDEN);
+		if (nroPoliza.numeroPoliza.length() != 13) return new ResponseEntity<>(new Error("No se indicó un número de póliza válido (debe tener exactamente 13 dígitos"),
+				HttpStatus.BAD_REQUEST);
 
 		ArrayList<Poliza> polizas = GestorPoliza.buscarPoliza(nroPoliza.numeroPoliza);
 		
