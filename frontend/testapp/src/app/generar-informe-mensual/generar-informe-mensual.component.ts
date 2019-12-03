@@ -36,12 +36,10 @@ export class GenerarInformeMensualComponent implements OnInit {
 
 	ngOnInit() {
 		this.titleService.setTitle(this.title);
-
 		this.generarInformeForm = new FormGroup({
 			'mes': new FormControl(null),
 			'anio': new FormControl(null)
 		});
-
 		// mostrar los últimos 5 años nomás
 		this.years = [];
 		for(let i = 0, j = new Date().getFullYear(); i <= 5; i++, j--)
@@ -63,6 +61,33 @@ export class GenerarInformeMensualComponent implements OnInit {
 		};
 
 		this.informeGenerado = false;
+	}
+
+	valorPorOmision(){
+		let today = new Date();
+		if(this.generarInformeForm.controls['mes'].value == 1 && this.generarInformeForm.controls['anio'].value == null){
+			this.generarInformeForm.controls['anio'].setValue(today.getFullYear()-1);
+		} 
+		else if(this.generarInformeForm.controls['mes'].value == null){
+			this.generarInformeForm.controls['mes'].setValue(today.getMonth());
+		}
+		else if(this.generarInformeForm.controls['mes'].value != 1 && this.generarInformeForm.controls['anio'].value == null){
+			this.generarInformeForm.controls['anio'].setValue(today.getFullYear());
+		}
+	}
+
+	checkMonthCurrentYear(){
+		let today = new Date();
+		if(this.generarInformeForm.controls['anio'].value == today.getFullYear() && this.generarInformeForm.controls['mes'].value >= today.getMonth()+1){
+			return true;
+		} else false;
+	}
+
+	disableButton(){
+		if(this.generarInformeForm.controls['mes'].value == null && this.generarInformeForm.controls['anio'].value == null){
+			return true;
+		}
+		else return false;
 	}
 
 	disableSort() {
