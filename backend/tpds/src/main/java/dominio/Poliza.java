@@ -11,6 +11,7 @@ import org.javamoney.moneta.Money;
 
 import dominio.Cuota.CuotaDTO;
 import enumeradores.EstadoPoliza;
+import usuarios.Usuario;
 
 public class Poliza {
 	private Integer idPoliza;
@@ -38,6 +39,7 @@ public class Poliza {
 	private Money prima;
 	private Money premio;
 	private Money descuentos;
+	private Usuario usuario;
 
 	public class PolizaDTO {
 		private Integer idPoliza;
@@ -643,5 +645,13 @@ public class Poliza {
 
 	public void setPagos(Set<Pago> pagos) {
 		this.pagos = pagos;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 }
