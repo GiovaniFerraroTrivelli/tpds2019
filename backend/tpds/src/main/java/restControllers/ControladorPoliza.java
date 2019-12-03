@@ -27,6 +27,7 @@ import dominio.Cliente.Documento;
 import dominio.Cuota;
 import dominio.Modelo;
 import dominio.NumeroPoliza;
+import dominio.Pago;
 import dominio.Pago.PagoDTO;
 import dominio.Poliza;
 import dominio.Poliza.ResumenPoliza;
@@ -129,6 +130,10 @@ public class ControladorPoliza {
 			this.numeroPoliza = numero;
 		}
 	}
+	
+	public static class RespuestaBuscarPoliza{
+		public ArrayList<EntradaListado> polizas;
+	}
 	@PostMapping("/buscarPoliza")
 	public ResponseEntity<Object> getPoliza(@RequestBody NroPoliza nroPoliza, HttpSession session) {
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
@@ -151,10 +156,15 @@ public class ControladorPoliza {
 			e.setNumeroPoliza(p.getNroPoliza());
 			e.setDocumento(p.getCliente().getDocumento());
 			e.setIdPoliza(p.getIdPoliza());
-			e.setUltimoPago(GestorPagos.getUltimoPago(p).getDTO());
+			Pago pago = GestorPagos.getUltimoPago(p);
+			if (pago != null) e.setUltimoPago(pago.getDTO());
+			lista.add(e);
 		}
 		
-		return new ResponseEntity<>(lista, HttpStatus.OK);
+		RespuestaBuscarPoliza respuesta = new RespuestaBuscarPoliza();
+		respuesta.polizas = lista;
+		
+		return new ResponseEntity<>(respuesta, HttpStatus.OK);
 	}
 	
 	private class EntradaListado{

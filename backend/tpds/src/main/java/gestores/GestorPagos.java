@@ -27,7 +27,7 @@ public class GestorPagos {
 		ArrayList<Pago> pagos = new ArrayList();
 		pagos.addAll(poliza.getPagos());
 		Collections.sort(pagos);
-		
-		return pagos.get(pagos.size());
+		if (pagos.size()!=0) return pagos.get(pagos.size()-1);
+		else return null;
 	}
 }
