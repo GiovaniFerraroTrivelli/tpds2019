@@ -5,6 +5,7 @@ import { Poliza } from '../poliza/poliza';
 import { ResumenPoliza } from '../poliza/resumen-poliza';
 import { RespuestaResumen } from '../poliza/respuesta-resumen';
 import { RespuestaValidacion } from './respuesta-validacion';
+import { TokenContainer } from '../tipocobertura/tokencontainer';
 
 @Injectable()
 export class AltaPolizaService {
@@ -16,7 +17,7 @@ export class AltaPolizaService {
 	constructor(private http: HttpClient) {
 		this.validarUrl1 = window.location.protocol + '//' + window.location.hostname + ':8080/altaPoliza/1';
 		this.validarUrl2 = window.location.protocol + '//' + window.location.hostname + ':8080/altaPoliza/2';
-		this.validarUrl3 = window.location.protocol + '//' + window.location.hostname + ':8080/altaPoliza/3';
+		this.validarUrl3 = window.location.protocol + '//' + window.location.hostname + ':8080/altaPoliza/confirmar';
 	}
 
 	public postValidarDatos1(poliza : Poliza): Observable<RespuestaValidacion> {
@@ -27,7 +28,7 @@ export class AltaPolizaService {
 		return this.http.post<RespuestaResumen>(this.validarUrl2, poliza, { withCredentials: true });
 	}
 
-	public postValidarDatos3(poliza : Poliza): Observable<boolean> {
-		return this.http.post<boolean>(this.validarUrl3, poliza, { withCredentials: true });
+	public postValidarDatos3(tokenContainer : TokenContainer): Observable<boolean> {
+		return this.http.post<boolean>(this.validarUrl3, tokenContainer, { withCredentials: true });
 	}
 }

@@ -7,12 +7,14 @@ import { TipoCobertura } from 'TipoCobertura';
 import { AltaPolizaService } from '../altapoliza/altapoliza.service';
 import { LoadingService } from '../loading/loading.service';
 import { DialogService } from '../dialog/dialog.service';
+import { GlobalScriptsService } from '../global-scripts.service';
 
 import { Poliza } from '../poliza/poliza';
 import { RespuestaResumen } from '../poliza/respuesta-resumen';
 import { ResumenPoliza } from '../poliza/resumen-poliza';
 import { ModalidadPago } from '../enums/modalidad-pago.enum';
 import { FechaVigenciaValidator } from './fechavigencia.validator';
+import { TokenContainer } from './tokencontainer';
 
 @Component({
 	selector: 'app-tipocobertura',
@@ -29,6 +31,8 @@ export class TipocoberturaComponent implements OnInit {
 	vencimientoCuota: String;
 	coberturaSeleccionada: TipoCobertura;
 	resumenPoliza: ResumenPoliza;
+	private tokenContainer: TokenContainer;
+	private token: string;
 
 	public ModalidadPago = ModalidadPago;
 
@@ -37,6 +41,7 @@ export class TipocoberturaComponent implements OnInit {
 		private dialogService: DialogService,
 		private altaPolizaService: AltaPolizaService,
 		private loadingService: LoadingService,
+		private global: GlobalScriptsService,
 		private router: Router
 	) { }
 	
@@ -49,6 +54,7 @@ export class TipocoberturaComponent implements OnInit {
 
 		this.polizaValues = new Poliza();
 		this.resumenPoliza = new ResumenPoliza();
+		this.tokenContainer = new TokenContainer();
 	}
 
 	get idCobertura() { return this.selCobForm.get('idCobertura'); }
@@ -97,6 +103,7 @@ export class TipocoberturaComponent implements OnInit {
 					this.clearCobertura();
 			    } else {
 			    	this.resumenPoliza = data.datosPoliza;
+			    	this.token = data.token;
 			    }
 
 			    this.loadingService.d();
@@ -132,7 +139,8 @@ export class TipocoberturaComponent implements OnInit {
 	endStepGenerar() {
 		this.loadingService.i();
 
-		this.altaPolizaService.postValidarDatos3(this.polizaValues).subscribe(data => {
+		this.tokenContainer.token = this.token;
+		this.altaPolizaService.postValidarDatos3(this.tokenContainer).subscribe(data => {
 		    this.loadingService.d();
 		    console.log(data);
 

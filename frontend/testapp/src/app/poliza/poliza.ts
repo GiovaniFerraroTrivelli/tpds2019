@@ -5,7 +5,7 @@ export class Poliza {
 	anio: number;
 	chasis: string;
 	hijos: Hijo[];
-	idcliente: number;
+	nroCliente: number;
 	localidad: number;
 	marca: number;
 	modelo: number;

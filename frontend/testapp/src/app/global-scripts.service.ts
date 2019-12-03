@@ -17,4 +17,8 @@ export class GlobalScriptsService {
 		
 		return text.split('-').join('');
 	}
+
+	parseMoney(text) {
+		return text.substr(4);
+	}
 }

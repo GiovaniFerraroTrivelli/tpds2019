@@ -70,7 +70,7 @@ export class AltapolizaComponent implements OnInit {
 		this.cliente.documento = new Documento();
 
 		this.altaPolizaForm = new FormGroup({
-			'idCliente': new FormControl(null, Validators.required),
+			'nroCliente': new FormControl(null, Validators.required),
 			'nombre': new FormControl({ value: '', disabled: true }),
 			'apellido': new FormControl({ value: '', disabled: true }),
 			'nroDocumento': new FormControl({ value: '', disabled: true }),
@@ -105,7 +105,7 @@ export class AltapolizaComponent implements OnInit {
 		this.getListaMarcas();
 	}
 
-	get idCliente() { return this.altaPolizaForm.get('idCliente'); }
+	get nroCliente() { return this.altaPolizaForm.get('nroCliente'); }
 	get nombre() { return this.altaPolizaForm.get('nombre'); }
 	get apellido() { return this.altaPolizaForm.get('apellido'); }
 	get nroDocumento() { return this.altaPolizaForm.get('nroDocumento'); }
@@ -162,7 +162,7 @@ export class AltapolizaComponent implements OnInit {
 
 	onSubmit(f: NgForm) {
 		f.value.hijos = this.childComp.hijos;
-		f.value.idCliente = this.global.removeHyphen(f.value.idCliente);
+		f.value.nroCliente = this.global.removeHyphen(f.value.nroCliente);
 
 		console.info(f.value);
 
@@ -208,7 +208,7 @@ export class AltapolizaComponent implements OnInit {
 	processCliente(cliente) {
 		this.cliente = cliente;
 
-		this.altaPolizaForm.controls['idCliente'].setValue(this.global.nroClienteFormat(this.cliente.nroCliente));
+		this.altaPolizaForm.controls['nroCliente'].setValue(this.global.nroClienteFormat(this.cliente.nroCliente));
 		this.altaPolizaForm.controls['nombre'].setValue(this.cliente.nombre);
 		this.altaPolizaForm.controls['apellido'].setValue(this.cliente.apellido);
 		this.altaPolizaForm.controls['nroDocumento'].setValue(this.cliente.documento.nroDocumento);

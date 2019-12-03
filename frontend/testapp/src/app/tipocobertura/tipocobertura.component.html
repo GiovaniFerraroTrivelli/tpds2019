@@ -72,7 +72,7 @@
 	<div class="card mb-3 w-50 m-auto">
 	  <div class="card-body">
 	    <p class="lead mb-0">{{ resumenPoliza.apellidoTitular }}, {{ resumenPoliza.nombreTitular }}</p>
-	    <h6 class="card-subtitle mt-1"><strong>Id de cliente</strong>: {{ polizaValues.idCliente }}</h6>
+	    <h6 class="card-subtitle mt-1"><strong>Id de cliente</strong>: {{ global.nroClienteFormat(polizaValues.nroCliente) }}</h6>
 	  </div>
 	  <ul class="list-group list-group-flush">
 	  	<li class="list-group-item">
@@ -86,20 +86,20 @@
 	    	<strong>Vigencia</strong>: {{ resumenPoliza.inicioVigencia | date: 'dd/MM/yyyy' }} hasta {{ resumenPoliza.finVigencia | date: 'dd/MM/yyyy' }}
 	    </li>
 	    <li class="list-group-item">
-	    	<strong>Suma asegurada</strong>: ${{ resumenPoliza.sumaAsegurada }}<br />
-	    	<strong>Premio</strong>: ${{ resumenPoliza.premio }}<br />
-	    	<strong>Importe por descuentos</strong>: ${{ resumenPoliza.descuentos }}
+	    	<strong>Suma asegurada</strong>: $ {{ resumenPoliza.sumaAsegurada | number: '1.2-2' : 'es-AR' }}<br />
+	    	<strong>Premio</strong>: $ {{ global.parseMoney(resumenPoliza.premio) | number: '1.2-2' : 'es-AR' }}<br />
+	    	<strong>Importe por descuentos</strong>: $ {{ global.parseMoney(resumenPoliza.descuentos) | number: '1.2-2' : 'es-AR' }}
 	    </li>
 	    <li class="list-group-item">
 	    	<strong>Último día de pago</strong>: {{ resumenPoliza.ultimoDiaPago | date: 'dd/MM/yyyy' }}
 		</li>
 		<li class="list-group-item" *ngIf="polizaValues.modalidadPago == 'MENSUAL'">
 			<div *ngFor="let cuota of resumenPoliza.cuotas; let row = index">
-				<strong>Cuota {{ row + 1 }}/{{ resumenPoliza.cuotas.length }}</strong>: ${{ cuota.importe }} - <strong>Vencimiento: </strong> {{ cuota.fechaVencimiento | date: 'dd/MM/yyyy' }}
+				<strong>Cuota {{ row + 1 }} de {{ resumenPoliza.cuotas.length }}</strong>: $ {{ global.parseMoney(cuota.importe)  | number: '1.2-2' : 'es-AR' }} - <strong>Vencimiento: </strong> {{ cuota.fechaVencimiento | date: 'dd/MM/yyyy' }}
 			</div>	
 		</li>	
 	    <li class="list-group-item text-right">
-	    	<strong>Monto total a abonar</strong>: ${{ resumenPoliza.montoTotal }}
+	    	<strong>Monto total a abonar</strong>: $ {{ global.parseMoney(resumenPoliza.montoTotal) | number: '1.2-2' : 'es-AR' }}
 	    </li>
 	  </ul>
 	  <div class="card-footer text-muted text-center">
