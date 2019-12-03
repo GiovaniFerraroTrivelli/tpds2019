@@ -19,6 +19,7 @@ export class GlobalScriptsService {
 	}
 
 	parseMoney(text) {
-		return text.substr(4);
+		return text;
+		//return text.substr(4);
 	}
 }
