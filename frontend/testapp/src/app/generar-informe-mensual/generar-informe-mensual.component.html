@@ -7,7 +7,7 @@
 		<div class="form-group col-sm-12 col-lg-4">
 			<label class="pt-2" for="nroCliente">Mes</label>
 			<div class="input-group">
-				<select name="mes" formControlName="mes" class="form-control" id="mes">
+				<select name="mes" formControlName="mes" class="form-control" id="mes" (change)='valorPorOmision()'>
 					<option value="{{ month.key }}" *ngFor="let month of months | keyvalue: disableSort">{{ month.value }}</option>
 				</select>
 			</div>
@@ -15,7 +15,7 @@
 		<div class="form-group col-sm-12 col-lg-4">
 			<label class="pt-2" for="anio">Año</label>
 			<div class="input-group">
-				<select formControlName="anio" name="anio" class="form-control mb-1">
+				<select formControlName="anio" name="anio" class="form-control mb-1" (change)='valorPorOmision()'>
 					<option value="{{ year }}" *ngFor="let year of years">{{ year }}</option>
 				</select>
 			</div>
@@ -23,7 +23,7 @@
 		<div class="form-group col-sm-12 col-lg-4">
 			<label class="pt-2" for="">&nbsp;</label>
 			<div class="input-group">
-				<button class="btn btn-primary btn-block" type="submit">Generar informe</button>
+				<button [disabled]="(disableButton() || checkMonthCurrentYear())  == true ? 'disabled' : null " class="btn btn-primary btn-block" type="submit">Generar informe</button>
 			</div>
 		</div>
 	</div>
