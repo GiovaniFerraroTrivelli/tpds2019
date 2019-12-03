@@ -71,35 +71,35 @@
 
 	<div class="card mb-3 w-50 m-auto">
 	  <ul class="list-group list-group-flush">
-	  	<li class="list-group-item">
+	  	<li class="list-group-item disabled">
 	  		<strong>Información del cliente</strong>
 	  	</li>
 	  	<li class="list-group-item pt-2 pb-0">
-	  		Titular: {{ resumenPoliza.apellidoTitular }}, {{ resumenPoliza.nombreTitular }}
+	  		<strong>Titular</strong>: {{ resumenPoliza.apellidoTitular }}, {{ resumenPoliza.nombreTitular }}
 	  	</li>
 	  	<li class="list-group-item border-top-0 pt-0 pb-2">
-	  		Número de cliente: {{ global.nroClienteFormat(polizaValues.nroCliente) }}
+	  		<strong>Número de cliente</strong>: {{ global.nroClienteFormat(polizaValues.nroCliente) }}
 	  	</li>
-	  	<li class="list-group-item">
+	  	<li class="list-group-item disabled">
 	  		<strong>Información del vehículo</strong>
 	  	</li>
 	  	<li class="list-group-item pt-2 pb-0">
-	  		{{ resumenPoliza.marca }} {{ resumenPoliza.modelo }}
+	  		<strong>{{ resumenPoliza.marca }} {{ resumenPoliza.modelo }}</strong>
 	  	</li>
 	  	<li class="list-group-item border-top-0 pt-0 pb-0">
-	  		Motor: {{ resumenPoliza.motor }}
+	  		<strong>Motor</strong>: {{ resumenPoliza.motor }}
 	  	</li>
 	  	<li class="list-group-item border-top-0 pt-0 pb-0">
-	  		Chasis: {{ resumenPoliza.chasis }}
+	  		<strong>Chasis</strong>: {{ resumenPoliza.chasis }}
 	  	</li>
 	  	<li class="list-group-item border-top-0 pt-0 pb-2">
-	  		Patente: {{ resumenPoliza.patente ? resumenPoliza.patente : "en trámite" }}
+	  		<strong>Patente</strong>: {{ resumenPoliza.patente ? resumenPoliza.patente : "en trámite" }}
 	  	</li>
-	  	<li class="list-group-item">
+	  	<li class="list-group-item disabled">
 	  		<strong>Información de la póliza</strong>
 	  	</li>
 	  	<li class="list-group-item pt-2 pb-0">
-	  		Vigencia: {{ resumenPoliza.inicioVigencia | date: 'dd/MM/yyyy' }} hasta {{ resumenPoliza.finVigencia | date: 'dd/MM/yyyy' }}
+	  		<strong>Vigencia</strong>: {{ resumenPoliza.inicioVigencia | date: 'dd/MM/yyyy' }} hasta {{ resumenPoliza.finVigencia | date: 'dd/MM/yyyy' }}
 	  	</li>
 	  	<li class="list-group-item border-top-0 pt-0 pb-0">
 	    	<strong>Suma asegurada</strong>: $ {{ resumenPoliza.sumaAsegurada | number: '1.2-2' : 'es-AR' }}<br />
@@ -110,7 +110,7 @@
 	  	<li class="list-group-item border-top-0 pt-0 pb-2">
 	    	<strong>Importe por descuentos</strong>: $ {{ global.parseMoney(resumenPoliza.descuentos) | number: '1.2-2' : 'es-AR' }}
 	  	</li>
-	  	<li class="list-group-item">
+	  	<li class="list-group-item disabled">
 	  		<strong>Información de pagos</strong>
 	  	</li>
 	  	<li class="list-group-item pt-2 pb-2">

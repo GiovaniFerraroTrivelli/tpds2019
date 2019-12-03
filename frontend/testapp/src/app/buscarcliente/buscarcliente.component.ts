@@ -50,7 +50,7 @@ export class BuscarclienteComponent implements OnInit {
 				'tipoDocumento': new FormControl(null),
 				'nroDocumento': new FormControl(null)
 			}),
-			'resultadosPorPagina': new FormControl(25),
+			'resultadosPorPagina': new FormControl(25, [ Validators.required, Validators.min(1) , Validators.max(100), Validators.pattern('^[0-9]+$') ]),
 			'numeroPagina': new FormControl(1)
 		}, { validators: this.atLeastOneValidator });
 	}
