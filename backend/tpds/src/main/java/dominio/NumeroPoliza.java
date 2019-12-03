@@ -16,6 +16,8 @@ public class NumeroPoliza {
 		this.autoCliente = Integer.parseInt(numeroPoliza.substring(4, 11));
 		this.renovacionPoliza = Integer.parseInt(numeroPoliza.substring(11, 13));
 	}
+	public NumeroPoliza() {
+	}
 
 	public Integer getIdSucursal() {
 		return idSucursal;

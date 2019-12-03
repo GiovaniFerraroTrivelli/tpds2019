@@ -2,6 +2,7 @@ package gestores;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import dominio.Cliente;
 import dominio.Cuota;
@@ -22,8 +23,11 @@ public class GestorPagos {
 		return null;
 	}
 
-	public static Pago getUltimoPago(Cliente cliente) {
+	public static Pago getUltimoPago(Poliza poliza) {
+		ArrayList<Pago> pagos = new ArrayList();
+		pagos.addAll(poliza.getPagos());
+		Collections.sort(pagos);
 		
-		return null;
+		return pagos.get(pagos.size());
 	}
 }

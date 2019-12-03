@@ -7,7 +7,7 @@ import usuarios.Usuario;
 
 import org.javamoney.moneta.Money;
 
-public class Pago {
+public class Pago implements Comparable<Pago> {
 	private Integer idPago;
 	private Date fechaHora;
 	private Usuario usuario;
@@ -109,5 +109,11 @@ public class Pago {
 		}
 
 	}
+	
+	@Override
+	public int compareTo(Pago p) {
+		return this.fechaHora.compareTo(p.getFechaHora());
+	}
+
 
 }

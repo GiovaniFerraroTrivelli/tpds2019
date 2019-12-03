@@ -122,8 +122,15 @@ public class ControladorPoliza {
 		return new ResponseEntity<>(poliza.getResumenPoliza(), HttpStatus.OK);
 	}
 
+	public static class NroPoliza{
+		public String numeroPoliza;
+		
+		public void setNumeroPoliza(String numero) {
+			this.numeroPoliza = numero;
+		}
+	}
 	@PostMapping("/buscarPoliza")
-	public ResponseEntity<Object> getPoliza(@RequestBody Integer nroPoliza, HttpSession session) {
+	public ResponseEntity<Object> getPoliza(@RequestBody NroPoliza nroPoliza, HttpSession session) {
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		if (usuario == null)
 			return new ResponseEntity(new Error("No se encuentra autenticado en el sistema"), HttpStatus.FORBIDDEN);
@@ -132,7 +139,7 @@ public class ControladorPoliza {
 			return new ResponseEntity<>(new Error("No tiene permisos suficientes para realizar esta operación"),
 					HttpStatus.FORBIDDEN);
 
-		ArrayList<Poliza> polizas = GestorPoliza.buscarPoliza(nroPoliza.toString());
+		ArrayList<Poliza> polizas = GestorPoliza.buscarPoliza(nroPoliza.numeroPoliza);
 		
 		
 		ArrayList<EntradaListado> lista = new ArrayList<>();
@@ -144,9 +151,9 @@ public class ControladorPoliza {
 			e.setNumeroPoliza(p.getNroPoliza());
 			e.setDocumento(p.getCliente().getDocumento());
 			e.setIdPoliza(p.getIdPoliza());
-			
-			//e.setUltimoPago(GestorPagos.getUltimoPago(p.getCliente()).getDTO());
+			e.setUltimoPago(GestorPagos.getUltimoPago(p).getDTO());
 		}
+		
 		return new ResponseEntity<>(lista, HttpStatus.OK);
 	}
 	
