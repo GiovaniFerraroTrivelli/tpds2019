@@ -33,7 +33,24 @@
 				<td>{{resultado.documento.tipoDocumento}} {{resultado.documento.nroDocumento | number: '' : 'es-AR' }}</td>
 			  </tr>			  
 			</tbody>
-		  </table>
+		</table>
+
+		<nav>
+			<ul class="pagination justify-content-center">
+				<li class="page-item" *ngIf="paginaActual > 1">
+					<span class="page-link cursor-pointer" (click)="[ modal.close(), onSubmit(bcForm, content, paginaActual - 1) ]" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</span>
+				</li>
+				<li [ngClass]="['page-item', x + 1 == paginaActual ? 'active' : '' ]"
+					*ngFor="let dummy of ' '.repeat(cantidadPaginas).split(''), let x = index"><span class="page-link cursor-pointer" (click)="[ modal.close(), onSubmit(bcForm, content, x + 1) ]">{{ x + 1 }}</span></li>
+				<li class="page-item" *ngIf="paginaActual < cantidadPaginas">
+					<span class="page-link cursor-pointer" (click)="[ modal.close(), onSubmit(bcForm, content, paginaActual + 1) ]" aria-label="Previous">
+						<span aria-hidden="true">&raquo;</span>
+					</span>
+				</li>
+			</ul>
+		</nav>
 	</div>
 	<div class="modal-footer">
 	  <button type="button" class="btn btn-light" (click)="cancelarBusquedaCliente(modal)">Cancelar</button>
@@ -41,7 +58,7 @@
 	</div>
 </ng-template>
 
-<form #bcForm="ngForm" [formGroup]="buscarClienteForm" (ngSubmit)="onSubmit(bcForm, content)">
+<form #bcForm="ngForm" [formGroup]="buscarClienteForm" (ngSubmit)="onSubmit(bcForm, content, 1)">
 	<div class="row">      
 		<div class="form-group col-sm-12 col-lg-4">
 			<label class="pt-2" for="nroCliente">Nro. de cliente</label>

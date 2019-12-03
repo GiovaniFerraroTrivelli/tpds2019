@@ -24,6 +24,9 @@ export class BuscarclienteComponent implements OnInit {
 	private resultados : Cliente[];
 	private selectedClient : Cliente;
 
+	private cantidadPaginas: number;
+	private paginaActual: number;
+
 	buscarClienteForm: FormGroup;
 
 	@Output()
@@ -109,7 +112,8 @@ export class BuscarclienteComponent implements OnInit {
 		return isAtLeastOne ? null : { 'required': true };
 	}
 
-	onSubmit(f: NgForm, content) {
+	onSubmit(f: NgForm, content, page) {
+		this.buscarClienteForm.controls['numeroPagina'].setValue(page);
 		this.loadingService.i();
 
 		f.value.nroCliente = this.global.removeHyphen(f.value.nroCliente);
@@ -117,7 +121,10 @@ export class BuscarclienteComponent implements OnInit {
 
 		this.busquedaClienteService.postClienteBusqueda(f.value).subscribe(
 			data => {
-			    this.resultados = data;
+			    this.resultados = data.clientes;
+			    this.cantidadPaginas = data.cantidadPaginas;
+				this.paginaActual = data.pagina;
+
 			    if(this.resultados.length) {
 			    	this.modalService.open(content, {
 			    		centered: true,
@@ -139,7 +146,7 @@ export class BuscarclienteComponent implements OnInit {
 		    err => {
         		this.dialogService.alert(
 		    		'Ha ocurrido un error',
-		    		'No se pudo realizar lo solicitado: ' + err.error.error
+		    		'No se pudo realizar lo solicitado: ' + err.error.mensaje
 		    	);
 			    
 			    this.loadingService.d();
