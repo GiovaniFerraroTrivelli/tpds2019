@@ -1,5 +1,6 @@
 package dominio;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
@@ -12,8 +13,8 @@ public class Pago implements Comparable<Pago> {
 	private Date fechaHora;
 	private Usuario usuario;
 	private Poliza poliza;
-	private Money premio;
-	private Money importe;
+	private BigDecimal premio;
+	private BigDecimal importe;
 	private Recibo recibo;
 	private Set<PagoCuota> cuotas;
 
@@ -49,21 +50,6 @@ public class Pago implements Comparable<Pago> {
 		this.poliza = poliza;
 	}
 
-	public Money getPremio() {
-		return premio;
-	}
-
-	public void setPremio(Money premio) {
-		this.premio = premio;
-	}
-
-	public Money getImporte() {
-		return importe;
-	}
-
-	public void setImporte(Money importe) {
-		this.importe = importe;
-	}
 
 	public Recibo getRecibo() {
 		return recibo;
@@ -90,7 +76,7 @@ public class Pago implements Comparable<Pago> {
 
 	public class PagoDTO {
 		private Date fechaHora;
-		private Money importe;
+		private BigDecimal importe;
 
 		public Date getFechaHora() {
 			return fechaHora;
@@ -100,14 +86,14 @@ public class Pago implements Comparable<Pago> {
 			this.fechaHora = fechaHora;
 		}
 
-		public Money getImporte() {
+		public BigDecimal getImporte() {
 			return importe;
 		}
 
-		public void setImporte(Money importe) {
+		public void setImporte(BigDecimal importe) {
 			this.importe = importe;
 		}
-
+		
 	}
 	
 	@Override
@@ -115,5 +101,22 @@ public class Pago implements Comparable<Pago> {
 		return this.fechaHora.compareTo(p.getFechaHora());
 	}
 
+	public BigDecimal getPremio() {
+		return premio;
+	}
+
+	public void setPremio(BigDecimal premio) {
+		this.premio = premio;
+	}
+
+	public BigDecimal getImporte() {
+		return importe;
+	}
+
+	public void setImporte(BigDecimal importe) {
+		this.importe = importe;
+	}
+	
+	
 
 }
