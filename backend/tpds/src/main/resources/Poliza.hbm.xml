@@ -16,7 +16,7 @@
 		</component>
 		
 		<!-- relacion entre la poliza y el cliente -->
-        <many-to-one name="cliente" class="dominio.Cliente" fetch="select">
+        <many-to-one name="cliente" class="dominio.Cliente" fetch="select" lazy="false">
             <column name="id_cliente" not-null="true" />
 			<column name="id_pais" not-null="true" />
         </many-to-one>

@@ -134,8 +134,9 @@ public class ControladorPoliza {
 	public static class RespuestaBuscarPoliza{
 		public ArrayList<EntradaListado> polizas;
 	}
+	
 	@PostMapping("/buscarPoliza")
-	public ResponseEntity<Object> getPoliza(@RequestBody NroPoliza nroPoliza, HttpSession session) {
+	public ResponseEntity<Object> buscarPolizas(@RequestBody NroPoliza nroPoliza, HttpSession session) {
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		if (usuario == null)
 			return new ResponseEntity(new Error("No se encuentra autenticado en el sistema"), HttpStatus.FORBIDDEN);
@@ -215,6 +216,22 @@ public class ControladorPoliza {
 		
 	}
 	
+	@GetMapping("/poliza/{idPoliza}")
+	public ResponseEntity<Object> getPoliza(@PathVariable("idPoliza") Integer idPoliza, HttpSession session){
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		if (usuario == null)
+			return new ResponseEntity<>(new Error("No se encuentra autenticado en el sistema"), HttpStatus.FORBIDDEN);
+
+		if (!(usuario.getRol() == Rol.ProductorDeSeguros) && !(usuario.getRol() == Rol.Cobrador))
+			return new ResponseEntity<>(new Error("No tiene permisos suficientes para realizar esta operación"),
+					HttpStatus.FORBIDDEN);
+		Poliza poliza = GestorPoliza.getPoliza(idPoliza);
+		
+		if (poliza == null) return new ResponseEntity<>(new Error("La poliza solicitada no existe"),
+				HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(poliza.getResumenPoliza(),
+				HttpStatus.OK);
+	}
 }
 
 
