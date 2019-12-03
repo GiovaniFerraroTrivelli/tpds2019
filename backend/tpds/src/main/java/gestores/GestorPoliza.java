@@ -31,6 +31,7 @@ import dominio.Cuota;
 import dominio.Hijo;
 import dominio.MedidasSeguridad;
 import dominio.Modelo;
+import dominio.NumeroCliente;
 import dominio.Poliza;
 import dominio.TipoCobertura;
 import enumeradores.EstadoPoliza;
@@ -61,9 +62,9 @@ public class GestorPoliza {
 		ArrayList<Error> errores = new ArrayList<>();
 
 		// Validar idUsuario
-		if (p.getIdCliente() == null)
+		if (p.getNroCliente() == null)
 			errores.add(new Error("Falta definir el cliente"));
-		else if (DaoCliente.getCliente(p.getIdCliente()) == null)
+		else if (p.getNroCliente().length() != 10 || DaoCliente.buscarCliente(new NumeroCliente(p.getNroCliente())) == null)
 			errores.add(new Error("No existe el cliente especificado"));
 
 		// Validar Domicilio de riesgo
@@ -174,7 +175,7 @@ public class GestorPoliza {
 		poliza.setChasis(p.getChasis());
 		poliza.setMotor(p.getMotor());
 
-		Cliente c = DaoCliente.getCliente(p.getIdCliente());
+		Cliente c = DaoCliente.buscarCliente(new NumeroCliente(p.getNroCliente()));
 		poliza.setCliente(c);
 
 		MedidasSeguridad m = new MedidasSeguridad();

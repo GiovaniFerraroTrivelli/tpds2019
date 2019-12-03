@@ -15,7 +15,10 @@ public class NumeroCliente implements Serializable {
 		this.idCliente = idCliente;
 		this.idPais = idPais;
 	}
-
+	public NumeroCliente(String nroCliente) {
+		this.idPais = Integer.parseInt(nroCliente.substring(0,2));
+		this.idCliente = Integer.parseInt(nroCliente.substring(2));
+	}
 	public Integer getIdCliente() {
 		return idCliente;
 	}

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import dominio.Hijo;
 
 public class PolizaDTO {
-	private Integer idCliente;
+	private String nroCliente;
 	private Integer modelo;
 	private Integer anio;
 	private String dominio;
@@ -23,14 +23,7 @@ public class PolizaDTO {
 	private String fechaVigencia;
 	private Integer kmAnio;
 	private String modalidadPago;
-
-	public Integer getIdCliente() {
-		return idCliente;
-	}
-
-	public void setIdCliente(Integer idCliente) {
-		this.idCliente = idCliente;
-	}
+	private Integer token;
 
 	public Integer getModelo() {
 		return modelo;
@@ -168,6 +161,20 @@ public class PolizaDTO {
 		this.modalidadPago = modalidadPago;
 	}
 
-	
+	public String getNroCliente() {
+		return nroCliente;
+	}
+
+	public void setNroCliente(String nroCliente) {
+		this.nroCliente = nroCliente;
+	}
+
+	public Integer getToken() {
+		return token;
+	}
+
+	public void setToken(Integer token) {
+		this.token = token;
+	}
 
 }
