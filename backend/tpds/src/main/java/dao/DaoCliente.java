@@ -54,10 +54,9 @@ public class DaoCliente {
 
 			return listaClientes;
 		} catch (NoResultException e) {
-			throw e;
+			return new ArrayList<>();
 		}
 	}
-
 	public static Cliente buscarCliente(NumeroCliente n) {
 		Session session = HibernateUtil.openSession();
 		/*

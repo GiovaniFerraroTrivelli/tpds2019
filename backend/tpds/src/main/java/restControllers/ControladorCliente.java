@@ -47,6 +47,12 @@ public class ControladorCliente {
 		if (parametros.nulo()) {
 			return new ResponseEntity<>(new Error("Ningún campo de búsqueda fue completado"), HttpStatus.OK);
 		}
+
+		ArrayList<Cliente> listaClientes = GestorClientes.buscarClientes(parametros);
+		ArrayList<ClienteDTO> result = new ArrayList<>();
+		for (Cliente c : listaClientes) {
+			result.add(c.getDTO());
+		}
 		class Respuesta{
 			public Integer pagina;
 			public Integer resultadosPorPagina;
@@ -56,21 +62,9 @@ public class ControladorCliente {
 		Respuesta respuesta = new Respuesta();
 		respuesta.pagina = parametros.getNumeroPagina();
 		respuesta.resultadosPorPagina = parametros.getResultadosPorPagina();
-		
-		try {
-			ArrayList<Cliente> listaClientes = GestorClientes.buscarClientes(parametros);
-			ArrayList<ClienteDTO> result = new ArrayList<>();
-			for (Cliente c : listaClientes) {
-				result.add(c.getDTO());
-			}
-			respuesta.clientes = result;		
-			respuesta.cantidadPaginas = 1;
-			return new ResponseEntity<>(respuesta, HttpStatus.OK);
-		} catch (NoResultException e) {
-			respuesta.clientes = new ArrayList<>();		
-			respuesta.cantidadPaginas = 0;
-			return new ResponseEntity<>(respuesta, HttpStatus.OK);
-		}
+		respuesta.clientes = result;
+		respuesta.cantidadPaginas = 1;
+		return new ResponseEntity<>(respuesta, HttpStatus.OK);
 	}
 
 	@PostMapping("/consultarCliente")
