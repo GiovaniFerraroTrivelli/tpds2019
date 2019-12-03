@@ -12,6 +12,7 @@ import { BuscarPolizaComponent } from './buscar-poliza/buscar-poliza.component';
 import { RegistrarPagoComponent } from './registrar-pago/registrar-pago.component';
 import { ConsultarclientesComponent } from './consultarclientes/consultarclientes.component';
 import { ActualizarFactoresComponent } from './actualizar-factores/actualizar-factores.component';
+import { GenerarInformeMensualComponent } from './generar-informe-mensual/generar-informe-mensual.component';
  
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'registrar-pago', component: RegistrarPagoComponent },
   { path: 'consultar-clientes', component: ConsultarclientesComponent },
   { path: 'actualizar-factores', component: ActualizarFactoresComponent },
+  { path: 'generar-informe-mensual', component: GenerarInformeMensualComponent },
   { path: '', component: IndexComponent }
 ];
  

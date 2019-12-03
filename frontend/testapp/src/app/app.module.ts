@@ -31,6 +31,7 @@ import { ConsultarclientesComponent } from './consultarclientes/consultarcliente
 import { RegistrarPagoComponent } from './registrar-pago/registrar-pago.component';
 import { BuscarPolizaComponent } from './buscar-poliza/buscar-poliza.component';
 import { ActualizarFactoresComponent } from './actualizar-factores/actualizar-factores.component';
+import { GenerarInformeMensualComponent } from './generar-informe-mensual/generar-informe-mensual.component';
 
 import localeEsAr from '@angular/common/locales/es-AR';
 
@@ -54,7 +55,8 @@ registerLocaleData(localeEsAr, 'es-AR');
 		BuscarPolizaComponent,
 		RegistrarPagoComponent,
 		ConsultarclientesComponent,
-		ActualizarFactoresComponent
+		ActualizarFactoresComponent,
+		GenerarInformeMensualComponent
 	],
 
 	imports: [
