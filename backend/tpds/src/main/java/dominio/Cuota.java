@@ -1,7 +1,7 @@
 package dominio;
 
+import java.math.BigDecimal;
 import java.util.Date;
-
 
 import org.javamoney.moneta.Money;
 
@@ -9,7 +9,7 @@ import org.javamoney.moneta.Money;
 public class Cuota implements Comparable<Cuota>{
 	private Integer idCuota;
 	private Poliza poliza;
-	private Money importe;
+	private BigDecimal importe;
 	private Date fechaVencimiento;
 	
 
@@ -61,11 +61,11 @@ public class Cuota implements Comparable<Cuota>{
 		this.poliza = poliza;
 	}
 
-	public Money getImporte() {
+	public BigDecimal getImporte() {
 		return importe;
 	}
 
-	public void setImporte(Money importe) {
+	public void setImporte(BigDecimal importe) {
 		this.importe = importe;
 	}
 

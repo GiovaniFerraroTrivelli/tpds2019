@@ -1,5 +1,6 @@
 package gestores;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import java.time.Period;
@@ -212,10 +213,14 @@ public class GestorPoliza {
 		
 		
 		//TODO: Revisar hardcode
-		poliza.setPremio(Money.of(100, "ARS"));
-		poliza.setDescuentos(Money.of(100, "ARS"));
-		poliza.setPrima(Money.of(100, "ARS"));
-		poliza.setDerechoEmision(Money.of(100, "ARS"));
+//		poliza.setPremio(Money.of(100, "ARS"));
+//		poliza.setDescuentos(Money.of(100, "ARS"));
+//		poliza.setPrima(Money.of(100, "ARS"));
+//		poliza.setDerechoEmision(Money.of(100, "ARS"));
+		poliza.setPremio(new BigDecimal(100));
+		poliza.setDescuentos(new BigDecimal(100));
+		poliza.setPrima(new BigDecimal(100));
+		poliza.setDerechoEmision(new BigDecimal(100));
 
 		Set<Cuota> cuotas = new HashSet<Cuota>();
 		if (p.getModalidadPago().equals("MENSUAL")) {
@@ -223,7 +228,8 @@ public class GestorPoliza {
 				Cuota cuota = new Cuota();
 				cuota.setFechaVencimiento(java.sql.Date.valueOf(inicioVigencia.minusDays(1).plusMonths(i)));
 				// TODO: Cambiar el importe
-				cuota.setImporte(Money.of(100, "ARS"));
+//				cuota.setImporte(Money.of(100, "ARS"));
+				cuota.setImporte(new BigDecimal(100));
 				cuota.setPoliza(poliza);
 
 				cuotas.add(cuota);
@@ -231,7 +237,8 @@ public class GestorPoliza {
 		} else {
 			Cuota cuota = new Cuota();
 			cuota.setFechaVencimiento(java.sql.Date.valueOf(inicioVigencia.minusDays(1)));
-			cuota.setImporte(Money.of(100, "ARS"));
+//			cuota.setImporte(Money.of(100, "ARS"));
+			cuota.setImporte(new BigDecimal(100));
 			cuota.setPoliza(poliza);
 			cuotas.add(cuota);
 		}

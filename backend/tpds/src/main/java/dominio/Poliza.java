@@ -1,5 +1,6 @@
 package dominio;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -35,12 +36,12 @@ public class Poliza {
 	private Set<Cuota> cuotas;
 	private Set<Pago> pagos;
 	private Pais pais;
-	private Money sumaAsegurada;
-	private Money prima;
-	private Money premio;
-	private Money descuentos;
+	private BigDecimal sumaAsegurada;
+	private BigDecimal prima;
+	private BigDecimal premio;
+	private BigDecimal descuentos;
 	private Usuario usuario;
-	private Money derechoEmision;
+	private BigDecimal derechoEmision;
 
 	public class PolizaDTO {
 		private Integer idPoliza;
@@ -463,7 +464,7 @@ public class Poliza {
 
 	}
 
-	public Money getMontoTotal() {
+	public BigDecimal getMontoTotal() {
 		return this.getPrima().add(this.getDerechoEmision()).subtract(this.getDescuentos());	
 	}
 
@@ -627,38 +628,6 @@ public class Poliza {
 		this.localidad = localidad;
 	}
 
-	public Money getSumaAsegurada() {
-		return sumaAsegurada;
-	}
-
-	public void setSumaAsegurada(Money sumaAsegurada) {
-		this.sumaAsegurada = sumaAsegurada;
-	}
-
-	public Money getPrima() {
-		return prima;
-	}
-
-	public void setPrima(Money prima) {
-		this.prima = prima;
-	}
-
-	public Money getDescuentos() {
-		return descuentos;
-	}
-
-	public void setDescuentos(Money descuentos) {
-		this.descuentos = descuentos;
-	}
-
-	public Money getPremio() {
-		return premio;
-	}
-
-	public void setPremio(Money premio) {
-		this.premio = premio;
-	}
-
 	public ResumenPoliza getResumenPoliza() {
 		return new ResumenPoliza(this);
 	}
@@ -679,11 +648,46 @@ public class Poliza {
 		this.usuario = usuario;
 	}
 
-	public Money getDerechoEmision() {
+	public BigDecimal getSumaAsegurada() {
+		return sumaAsegurada;
+	}
+
+	public void setSumaAsegurada(BigDecimal sumaAsegurada) {
+		this.sumaAsegurada = sumaAsegurada;
+	}
+
+	public BigDecimal getPrima() {
+		return prima;
+	}
+
+	public void setPrima(BigDecimal prima) {
+		this.prima = prima;
+	}
+
+	public BigDecimal getPremio() {
+		return premio;
+	}
+
+	public void setPremio(BigDecimal premio) {
+		this.premio = premio;
+	}
+
+	public BigDecimal getDescuentos() {
+		return descuentos;
+	}
+
+	public void setDescuentos(BigDecimal descuentos) {
+		this.descuentos = descuentos;
+	}
+
+	public BigDecimal getDerechoEmision() {
 		return derechoEmision;
 	}
 
-	public void setDerechoEmision(Money derechoEmision) {
+	public void setDerechoEmision(BigDecimal derechoEmision) {
 		this.derechoEmision = derechoEmision;
 	}
+
+	
+	
 }

@@ -130,9 +130,9 @@ public class ControladorPoliza {
 		
 		Poliza poliza = (Poliza) session.getAttribute(token.token);
 		if (poliza == null) return new ResponseEntity<>(new Error("No existe una póliza a confirmar en el contexto"), HttpStatus.BAD_REQUEST);
-		GestorPoliza.altaPoliza(poliza);
+		Boolean result = GestorPoliza.altaPoliza(poliza);
 		session.removeAttribute(token.token);
-		return new ResponseEntity<>(poliza.getResumenPoliza(), HttpStatus.OK);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	public static class NroPoliza{
