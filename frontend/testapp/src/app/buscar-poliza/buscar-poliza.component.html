@@ -29,15 +29,16 @@
     </div>
 </ng-template>
 
+<form #bpForm="ngForm" [formGroup]="busquedaPolizaForm" (ngSubmit)="onSubmit(bpForm, content)">
 <div class="d-flex justify-content-center">
     <div class="card" id="searchCard">
         <div class="card-header">
             Buscar póliza
         </div>
         <div class="card-body">
-            <input class="form-control" oninput="this.value = Math.abs(this.value)" min=0 type="number" placeholder="Número de póliza" [(ngModel)]="idPoliza">
+            <input class="form-control" oninput="this.value = Math.abs(this.value)" min=0 type="number" placeholder="Número de póliza" formControlName="numeroPoliza">
             <div class="d-flex flex-row-reverse">
-                <button id='searchBtn' type="button" class="btn btn-primary p-2" (click)='onSubmit(idPoliza, content)'>Buscar</button>
+                <button id='searchBtn' type="submit" class="btn btn-primary p-2">Buscar</button>
             </div>
         </div>
     </div>
