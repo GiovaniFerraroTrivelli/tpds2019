@@ -48,6 +48,8 @@ public class ControladorPoliza {
 	public ResponseEntity<Object> validarDatos(@RequestBody PolizaDTO p, HttpSession session)
 			throws NoHayValorException, DatoNoEncontradoException {
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		if (usuario==null) return new ResponseEntity<>(new Error("No está autenticado en el sistema"),
+				HttpStatus.FORBIDDEN);
 		if (usuario.getRol() != Rol.ProductorDeSeguros)
 			return new ResponseEntity<>(new Error("No tiene permisos para realizar esta operación"),
 					HttpStatus.FORBIDDEN);
