@@ -18,7 +18,4 @@ export class DatashareService {
   changePolizaMessage(poliza: Poliza){
     this.sendPoliza.next(poliza);
   }
-  changeClienteMessage(cliente: Cliente){
-    this.sendCliente.next(cliente);
-  }
 }

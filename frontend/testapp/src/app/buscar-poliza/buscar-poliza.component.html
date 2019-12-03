@@ -9,16 +9,19 @@
         <table class="table table-hover text-center">
         <thead>
             <tr>
-                <th width="25%" scope="col">Número de cliente</th>
-                <th width="25%" scope="col">Número de póliza</th>
-                <th width="45%" scope="col">Apellido y Nombre</th>
+                <th scope="col">Número de cliente</th>
+                <th scope="col">Número de póliza</th>
+                <th scope="col">Apellido y Nombre</th>
+                <th scope="col">Documento</th>
+                <!--<th scope="col">Último pago</th>-->
             </tr>
         </thead>
         <tbody>
             <tr *ngFor='let poliza of listaPolizas' [ngClass]="['cursor-pointer' , (poliza==polizaSeleccionada ? 'table-active' : '') ]" (click)='loadPolizaSeleccionada(poliza)'>
                 <td>{{poliza.idcliente}}</td>
-                <td>{{poliza.nroPoliza}}</td>
-                <td>{{poliza.apellido}}, {{poliza.nombre}}</td>
+                <td>{{poliza.idPoliza}}</td>
+                <td>{{poliza.apellidoCliente}}, {{poliza.nombreCliente}}</td>
+                <td>{{poliza.documento.tipoDocumento}} {{poliza.documento.nroDocumento}}</td>
             </tr>
         </tbody>
         </table>
@@ -36,7 +39,7 @@
             Buscar póliza
         </div>
         <div class="card-body">
-            <input class="form-control" oninput="this.value = Math.abs(this.value)" min=0 type="number" placeholder="Número de póliza" formControlName="numeroPoliza">
+            <input class="form-control" type="text" placeholder="Número de póliza" formControlName="numeroPoliza">
             <div class="d-flex flex-row-reverse">
                 <button id='searchBtn' type="submit" class="btn btn-primary p-2">Buscar</button>
             </div>

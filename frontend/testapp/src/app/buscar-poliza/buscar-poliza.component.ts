@@ -11,6 +11,8 @@ import { BuscarpolizaService } from './buscarpoliza.service'
 import { DialogService } from '../dialog/dialog.service';
 import { LoadingService } from '../loading/loading.service';
 import { DatashareService } from '../datashare.service'
+import { PolizasRta } from './polizaRespuesta';
+import { respuestaBuscarPoliza } from './respuestaBuscarPoliza';
 
 @Component({
 	selector: 'app-buscar-poliza',
@@ -30,19 +32,10 @@ export class BuscarPolizaComponent implements OnInit {
 	) {}
 
 	private busquedaPoliza: BusquedaPoliza;
-	private polizaSeleccionada: Poliza;
-	private poliza: Poliza[];
-	private cliente: Cliente;
+	private polizaSeleccionada: PolizasRta;
+	private respuestaPolizas: respuestaBuscarPoliza;
 	private busquedaPolizaForm: FormGroup;
-
-	/*private listaPolizas: Poliza[];*/
-	
-	private listaPolizas = [
-		{ idcliente: 2, nroPoliza: 5, apellido: "weqew", nombre: "juan" },
-		{ idcliente: 2, nroPoliza: 5, apellido: "asdf", nombre: "powp" },
-		{ idcliente: 2, nroPoliza: 5, apellido: "erwr", nombre: "iuiu" },
-		{ idcliente: 2, nroPoliza: 5, apellido: "jvbn", nombre: "vbc" }
-	];
+  private listaPolizas: PolizasRta[];
 
 	ngOnInit() {
 		this.polizaSeleccionada = null;
@@ -57,11 +50,14 @@ export class BuscarPolizaComponent implements OnInit {
 
 		this.BuscarpolizaService.postBuscarPoliza(f.value).subscribe(
 			data => {
-				console.log(data);
-				this.modalService.open(content, { centered: true });
+        this.loadingService.d();
+        this.modalService.open(content, { centered: true });
+        this.respuestaPolizas = data;
+        this.listaPolizas = this.respuestaPolizas.polizas;
+        console.log(this.respuestaPolizas);
 			},
 			err => {
-			    this.loadingService.d();
+			  this.loadingService.d();
 
 				if(err.status == 403) {
 					this.dialogService.alert(
@@ -78,7 +74,7 @@ export class BuscarPolizaComponent implements OnInit {
 		);
 	}
 
-	loadPolizaSeleccionada(poliza) {
+	loadPolizaSeleccionada(poliza : PolizasRta) {
 		this.polizaSeleccionada = poliza;
 	}
 
@@ -91,12 +87,12 @@ export class BuscarPolizaComponent implements OnInit {
 		if(this.polizaSeleccionada != null) {
 			this.modalService.dismissAll();
 			this.router.navigate(['/registrar-pago']);
-			this.sendData();
+			/*this.sendData();*/
 		};
 	}
-
+  /*
 	sendData() {
 		this.data.changePolizaMessage(this.polizaSeleccionada);
 		this.data.changeClienteMessage(this.cliente);
-	}
+	}*/
 }

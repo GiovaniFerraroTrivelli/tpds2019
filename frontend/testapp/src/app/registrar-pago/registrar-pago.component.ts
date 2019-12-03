@@ -26,10 +26,10 @@ export class RegistrarPagoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.data.poliza.subscribe( poliza => this.poliza = poliza);
+    /*this.data.poliza.subscribe( poliza => this.poliza = poliza);
     this.data.cliente.subscribe( cliente => this.cliente = cliente);
     console.log(this.poliza);
-    console.log(this.cliente);
+    console.log(this.cliente);*/
   }
 
   disableCheckbox(index){
