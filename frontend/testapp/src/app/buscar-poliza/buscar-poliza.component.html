@@ -18,8 +18,8 @@
         </thead>
         <tbody>
             <tr *ngFor='let poliza of listaPolizas' [ngClass]="['cursor-pointer' , (poliza==polizaSeleccionada ? 'table-active' : '') ]" (click)='loadPolizaSeleccionada(poliza)'>
-                <td>{{poliza.idcliente}}</td>
-                <td>{{poliza.idPoliza}}</td>
+                <td>{{poliza.numeroCliente}}</td>
+                <td>{{poliza.numeroPoliza}}</td>
                 <td>{{poliza.apellidoCliente}}, {{poliza.nombreCliente}}</td>
                 <td>{{poliza.documento.tipoDocumento}} {{poliza.documento.nroDocumento}}</td>
             </tr>

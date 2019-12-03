@@ -12,13 +12,19 @@ import { respuestaBuscarPoliza } from './respuestaBuscarPoliza';
 })
 
 export class BuscarpolizaService {
-	private url: string;
+	private url1: string;
+	private url2: string;
 
 	constructor(private http: HttpClient) { 
-		this.url = window.location.protocol + '//' + window.location.hostname + ':8080/buscarPoliza'
+		this.url1 = window.location.protocol + '//' + window.location.hostname + ':8080/buscarPoliza';
+		this.url2 = window.location.protocol + '//' + window.location.hostname + ':8080/poliza';
 	}
 
 	public postBuscarPoliza(busquedaPoliza: BusquedaPoliza) {
-		return this.http.post<respuestaBuscarPoliza>(this.url, busquedaPoliza, { withCredentials: true });
+		return this.http.post<respuestaBuscarPoliza>(this.url1, busquedaPoliza, { withCredentials: true });
+	}
+	public getPolizaSeleccionada(idPoliza: number){
+		console.log(this.url2+idPoliza);
+		return this.http.get(this.url2 + "/" + idPoliza, { withCredentials: true });
 	}
 }

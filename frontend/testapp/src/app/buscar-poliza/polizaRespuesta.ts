@@ -7,4 +7,5 @@ export class PolizasRta{
     nombreCliente: string;
     documento: Documento;
     numeroPoliza: string;
+    numeroCliente: string;
 }

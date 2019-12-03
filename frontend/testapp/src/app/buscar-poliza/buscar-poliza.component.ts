@@ -64,7 +64,7 @@ export class BuscarPolizaComponent implements OnInit {
 		this.BuscarpolizaService.postBuscarPoliza(f.value).subscribe(
 			data => {
 	      		this.loadingService.d();
-	      		this.modalService.open(content, { centered: true });
+	      		this.modalService.open(content, { centered: true, size: 'lg' });
 	      		this.respuestaPolizas = data;
 	      		this.listaPolizas = this.respuestaPolizas.polizas;
 	      		console.log(this.respuestaPolizas);
@@ -98,11 +98,16 @@ export class BuscarPolizaComponent implements OnInit {
 
 	submitSeleccionarPoliza() {
 		if(this.polizaSeleccionada != null) {
+			console.log(this.polizaSeleccionada);
+			this.BuscarpolizaService.getPolizaSeleccionada(this.polizaSeleccionada.idPoliza).subscribe(
+				data=>{
+				}
+			)
 			this.modalService.dismissAll();
 			this.router.navigate(['/registrar-pago']);
 			/*this.sendData();*/
 		};
-  }
+    }
 
   /*
 	sendData() {
