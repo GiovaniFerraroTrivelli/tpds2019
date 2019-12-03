@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import { Router } from "@angular/router";
 
 import { DialogService } from '../dialog/dialog.service';
 import { UserLogin } from '../login/user-login';
@@ -15,7 +16,11 @@ export class AuthenticationService {
 	private usersUrl: string;
 	private logoutUrl: string;
 
-	constructor(private http: HttpClient, private dialogService: DialogService) {
+	constructor(
+		private http: HttpClient,
+		private dialogService: DialogService,
+		private router: Router
+	) {
 		this.usersUrl = window.location.protocol + '//' + window.location.hostname + ':8080/login';
 		this.logoutUrl = window.location.protocol + '//' + window.location.hostname + ':8080/logout';
 	}
@@ -52,6 +57,7 @@ export class AuthenticationService {
 				if(confirmed) {
 					sessionStorage.clear();
 					this.http.post(this.logoutUrl, null, { withCredentials: true }).subscribe();
+					this.router.navigate(['/']);
 				}
 			});
 	}
