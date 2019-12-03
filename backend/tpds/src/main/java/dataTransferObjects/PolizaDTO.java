@@ -23,7 +23,6 @@ public class PolizaDTO {
 	private String fechaVigencia;
 	private Integer kmAnio;
 	private String modalidadPago;
-	private Integer token;
 
 	public Integer getModelo() {
 		return modelo;
@@ -167,14 +166,6 @@ public class PolizaDTO {
 
 	public void setNroCliente(String nroCliente) {
 		this.nroCliente = nroCliente;
-	}
-
-	public Integer getToken() {
-		return token;
-	}
-
-	public void setToken(Integer token) {
-		this.token = token;
 	}
 
 }

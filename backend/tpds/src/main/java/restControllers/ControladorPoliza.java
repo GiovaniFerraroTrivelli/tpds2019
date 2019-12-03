@@ -11,6 +11,7 @@ import java.util.Comparator;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -81,40 +82,53 @@ public class ControladorPoliza {
 			return new ResponseEntity<>(result, HttpStatus.OK);
 
 		Poliza poliza = GestorPoliza.generarPoliza(p);
-		session.setAttribute("polizaGeneradaSinConfirmar", poliza);
+		Token token = new Token();
+		
+		session.setAttribute(token.token, poliza);
 		result.setDatosPoliza(poliza.getResumenPoliza());
+		result.setToken(token.token);
 
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@PostMapping("/altaPoliza/3")
-	public ResponseEntity<Object> altaPoliza(@RequestBody PolizaDTO p, HttpSession session) {
-		Usuario usuario = (Usuario) session.getAttribute("usuario");
-		if (usuario.getRol() != Rol.ProductorDeSeguros)
-			return new ResponseEntity<>(new Error("No tiene permisos para realizar esta operación"),
-					HttpStatus.FORBIDDEN);
-
-		RespuestaResumenPoliza result = new RespuestaResumenPoliza();
-		ArrayList<Error> errores = GestorPoliza.validarDatos(p);
-		result.setErrores(errores);
-		if (!errores.isEmpty())
-			return new ResponseEntity<>(result, HttpStatus.OK);
-
-		Poliza polizaPreviaGenerada = (Poliza) session.getAttribute("polizaGeneradaSinConfirmar");
-
-		Boolean resultSave = GestorPoliza.savePoliza(polizaPreviaGenerada);
-		return new ResponseEntity<>(resultSave, HttpStatus.OK);
+//	@PostMapping("/altaPoliza/3")
+//	public ResponseEntity<Object> altaPoliza(@RequestBody PolizaDTO p, HttpSession session) {
+//		Usuario usuario = (Usuario) session.getAttribute("usuario");
+//		if (usuario.getRol() != Rol.ProductorDeSeguros)
+//			return new ResponseEntity<>(new Error("No tiene permisos para realizar esta operación"),
+//					HttpStatus.FORBIDDEN);
+//
+//		RespuestaResumenPoliza result = new RespuestaResumenPoliza();
+//		ArrayList<Error> errores = GestorPoliza.validarDatos(p);
+//		result.setErrores(errores);
+//		if (!errores.isEmpty())
+//			return new ResponseEntity<>(result, HttpStatus.OK);
+//
+//		Poliza polizaPreviaGenerada = (Poliza) session.getAttribute(p.getToken());
+//
+//		Boolean resultSave = GestorPoliza.savePoliza(polizaPreviaGenerada);
+//		return new ResponseEntity<>(resultSave, HttpStatus.OK);
+//	}
+	
+	public static class Token{
+		public String token;
+		
+		public Token() {
+			this.token = RandomStringUtils.random(32, true, true);
+		}
+		public Token(String arg) {
+			token = arg;
+		}
 	}
-
 	@PostMapping("/altaPoliza/confirmar")
-	public ResponseEntity<Object> confirmarAltaPoliza(@RequestBody PolizaDTO p, HttpSession session){
+	public ResponseEntity<Object> confirmarAltaPoliza(@RequestBody Token token, HttpSession session){
 		
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		if (usuario.getRol() != Rol.ProductorDeSeguros)
 			return new ResponseEntity<>(new Error("No tiene permisos para realizar esta operación"),
 					HttpStatus.FORBIDDEN);
 		
-		Poliza poliza = (Poliza) session.getAttribute("polizaGeneradaSinConfirmar");
+		Poliza poliza = (Poliza) session.getAttribute(token.token);
 		if (poliza == null) return new ResponseEntity<>(new Error("No existe una póliza a confirmar en el contexto"), HttpStatus.BAD_REQUEST);
 		
 		Boolean resultSave = GestorPoliza.savePoliza(poliza);
