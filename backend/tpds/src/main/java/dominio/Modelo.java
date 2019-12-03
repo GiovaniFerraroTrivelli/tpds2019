@@ -63,6 +63,21 @@ public class Modelo {
 	public void setHistorialValores(Set<EntradaModelo> historialValores) {
 		this.historialValores = historialValores;
 	}
+	
+	public Integer getSumaAsegurada(Integer anio) {
+		for(Cotizacion c : this.anios) {
+			if(c.getAnio().equals(anio)) {
+				Double ajuste = 1.0;
+				if(c.getUnidad() != "ARS") {
+					ajuste = 59.89;
+				}
+				return (int) ((int) c.getCotizacion()*1000*ajuste);
+			}
+		}
+		
+		System.out.println("here");
+		return null;
+	}
 
 	public ModeloDTO getDTO() {
 		return new ModeloDTO(this.idModelo, this.nombre, this.marca.getDTO());

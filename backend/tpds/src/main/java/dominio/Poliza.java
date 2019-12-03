@@ -40,6 +40,7 @@ public class Poliza {
 	private Money premio;
 	private Money descuentos;
 	private Usuario usuario;
+	private Money derechoEmision;
 
 	public class PolizaDTO {
 		private Integer idPoliza;
@@ -56,6 +57,7 @@ public class Poliza {
 		private Boolean poseeAlarma;
 		private Boolean poseeRastreoVehicular;
 		private Boolean poseeTuercasAntirrobo;
+		private Money derechoEmision;
 		private Integer siniestros;
 		private ArrayList<Hijo> hijos;
 		private Integer idCobertura;
@@ -232,9 +234,17 @@ public class Poliza {
 			this.modalidadPago = modalidadPago;
 		}
 
+		public Money getDerechoEmision() {
+			return derechoEmision;
+		}
+
+		public void setDerechoEmision(Money derechoEmision) {
+			this.derechoEmision = derechoEmision;
+		}
+
 	}
 
-	public class ResumenPoliza {
+	public static class ResumenPoliza {
 		private String nombreTitular;
 		private String apellidoTitular;
 		private String marca;
@@ -246,6 +256,7 @@ public class Poliza {
 		private Date finVigencia;
 		private String sumaAsegurada;
 		private String premio;
+		private String derechoEmision;
 		private String descuentos;
 		private Date ultimoDiaPago;
 		private String montoTotal;
@@ -279,6 +290,12 @@ public class Poliza {
 
 		public ResumenPoliza(Poliza p) {
 			super();
+			
+			System.out.println(p.getAnioFabricacion());
+			
+			System.out.println(p.getModelo().getSumaAsegurada(p.getAnioFabricacion()));
+			
+			
 			this.nombreTitular = p.getCliente().getNombre();
 			this.apellidoTitular = p.getCliente().getApellido();
 			this.marca = p.getModelo().getMarca().getNombre();
@@ -288,17 +305,18 @@ public class Poliza {
 			this.patente = p.getDominio();
 			this.inicioVigencia = p.getInicioVigencia();
 			this.finVigencia = p.getFinVigencia();
-			this.sumaAsegurada = p.getSumaAsegurada().toString();
+			this.sumaAsegurada = p.getModelo().getSumaAsegurada(p.getAnioFabricacion()).toString();
 			this.premio = p.getPremio().toString();
 			this.descuentos = p.getDescuentos().toString();
+			this.derechoEmision = (p.getDerechoEmision().toString());
 			// this.ultimoDiaPago = p.getUltimoDiaPago();
 			this.montoTotal = p.getMontoTotal().toString();
 
-			ArrayList<CuotaDTO> c = new ArrayList<>();
+			ArrayList<CuotaDTO> c = new ArrayList<CuotaDTO>();
 			for (Cuota cuota : p.getCuotas()) {
 				c.add(cuota.getDTO());
 			}
-			Collections.sort(cuotas);
+			Collections.sort(c);
 
 			this.cuotas = c;
 		}
@@ -431,6 +449,14 @@ public class Poliza {
 			FormaPago = formaPago;
 		}
 
+		public String getDerechoEmision() {
+			return derechoEmision;
+		}
+
+		public void setDerechoEmision(String derechoEmision) {
+			this.derechoEmision = derechoEmision;
+		}
+
 	}
 
 	public Poliza() {
@@ -438,8 +464,7 @@ public class Poliza {
 	}
 
 	public Money getMontoTotal() {
-
-		return null;
+		return this.getPrima().add(this.getDerechoEmision()).subtract(this.getDescuentos());	
 	}
 
 	public Integer getIdPoliza() {
@@ -635,7 +660,6 @@ public class Poliza {
 	}
 
 	public ResumenPoliza getResumenPoliza() {
-
 		return new ResumenPoliza(this);
 	}
 
@@ -653,5 +677,13 @@ public class Poliza {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public Money getDerechoEmision() {
+		return derechoEmision;
+	}
+
+	public void setDerechoEmision(Money derechoEmision) {
+		this.derechoEmision = derechoEmision;
 	}
 }

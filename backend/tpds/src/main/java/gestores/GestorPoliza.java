@@ -203,10 +203,18 @@ public class GestorPoliza {
 
 		Modelo mod = DaoVehiculo.getModelo(p.getModelo());
 		poliza.setModelo(mod);
+		poliza.setAnioFabricacion(p.getAnio());
 
 		poliza.setKmsAnuales(p.getKmAnio());
 		poliza.setDominio(p.getPatente());
 		poliza.setEstadoPoliza(EstadoPoliza.GENERADA);
+		
+		
+		//TODO: Revisar hardcode
+		poliza.setPremio(Money.of(100, "ARS"));
+		poliza.setDescuentos(Money.of(100, "ARS"));
+		poliza.setPrima(Money.of(100, "ARS"));
+		poliza.setDerechoEmision(Money.of(100, "ARS"));
 
 		Set<Cuota> cuotas = new HashSet<Cuota>();
 		if (p.getModalidadPago().equals("MENSUAL")) {
