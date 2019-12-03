@@ -19,7 +19,7 @@ public class HibernateUtil {
 		}
 	}
 	
-	public static Session openSession() throws HibernateException {
+	public static Session getSession() throws HibernateException {
 		try {
 			return session;
 		} catch (Exception e) {

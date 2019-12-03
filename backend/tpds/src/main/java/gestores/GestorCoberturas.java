@@ -16,7 +16,7 @@ public class GestorCoberturas {
 			
 			//TODO: Corregir esto con la arquitectura nueva
 			String hql = "FROM TipoCobertura ORDER BY nombre ASC";
-			Query<TipoCobertura> query = HibernateUtil.openSession().createQuery(hql);
+			Query<TipoCobertura> query = HibernateUtil.getSession().createQuery(hql);
 			for (TipoCobertura c : query.list()) {
 				//c.setHistorialFactorCobertura(GestorCoberturas.getHistorialFactorCobertura(c.getIdCobertura()));
 			}
@@ -36,7 +36,7 @@ public class GestorCoberturas {
 	 */
 
 	public static TipoCobertura getCoberturaContraTerceros() throws DatoNoEncontradoException {
-		Session session = HibernateUtil.openSession();
+		Session session = HibernateUtil.getSession();
 		Query<TipoCobertura> query;
 		TipoCobertura cobertura = null;
 		try {

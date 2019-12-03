@@ -12,7 +12,7 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		Session s = HibernateUtil.openSession();
+		Session s = HibernateUtil.getSession();
 		Transaction tx = s.beginTransaction();
 
 

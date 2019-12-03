@@ -9,7 +9,7 @@ import usuarios.Usuario;
 
 public class DaoUsuario {
 	public static Usuario getUsuario(String nombreUsuario) {
-		Session session = HibernateUtil.openSession();
+		Session session = HibernateUtil.getSession();
 		Usuario usuario = session.get(Usuario.class, nombreUsuario);
 		return usuario;
 	}

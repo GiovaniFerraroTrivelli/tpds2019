@@ -13,14 +13,14 @@ import dominio.Poliza;
 
 public class DaoPoliza {
 	public static Poliza getPoliza(Integer nroPoliza) {
-		Session session = HibernateUtil.openSession();
+		Session session = HibernateUtil.getSession();
 		Poliza poliza = session.get(Poliza.class, nroPoliza);
 		session.close();
 		return poliza;
 	}
 	
 	public static ArrayList<Poliza> buscarPoliza(String numeroPoliza) {
-		Session session = HibernateUtil.openSession();
+		Session session = HibernateUtil.getSession();
 		QueryBuilder qb = new QueryBuilder();
 		Query query = qb.getQuery(new NumeroPoliza(numeroPoliza), session);
 		ArrayList<Poliza> listaPolizas = new ArrayList<Poliza>(query.list());

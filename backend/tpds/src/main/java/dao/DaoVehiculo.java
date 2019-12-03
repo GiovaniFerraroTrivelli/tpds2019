@@ -10,13 +10,13 @@ import dominio.Modelo;
 public class DaoVehiculo {
 
 	public static Modelo getModelo(Integer idModelo) {
-		Session session = HibernateUtil.openSession();
+		Session session = HibernateUtil.getSession();
 		Modelo modelo = session.get(Modelo.class, idModelo);
 		return modelo;
 	}
 
 	public static void save(Modelo m) {
-		Session session = HibernateUtil.openSession();
+		Session session = HibernateUtil.getSession();
 		Transaction t = session.beginTransaction();
 		session.save(m);
 		t.commit();
