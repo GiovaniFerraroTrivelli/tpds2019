@@ -3,7 +3,9 @@ package gestores;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import dominio.Cliente;
 import dominio.Cuota;
+import dominio.Pago;
 import dominio.Poliza;
 
 public class GestorPagos {
@@ -17,6 +19,11 @@ public class GestorPagos {
 	}
 	
 	public static Boolean altaPago(ArrayList<Cuota> cuotas) {
+		return null;
+	}
+
+	public static Pago getUltimoPago(Cliente cliente) {
+		
 		return null;
 	}
 }
