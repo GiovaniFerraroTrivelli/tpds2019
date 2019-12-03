@@ -41,35 +41,35 @@ public class ControladorCliente {
 		}
 
 		if (!parametros.paginaValida()) {
-			return new ResponseEntity<>(new Error("Parámetros de paginación inválidos"), HttpStatus.OK);
+			return new ResponseEntity<>(new Error("Parámetros de paginación inválidos"), HttpStatus.BAD_REQUEST);
 		}
 
 		if (parametros.nulo()) {
 			return new ResponseEntity<>(new Error("Ningún campo de búsqueda fue completado"), HttpStatus.OK);
 		}
-
+		class Respuesta{
+			public Integer pagina;
+			public Integer resultadosPorPagina;
+			public Integer cantidadPaginas;
+			public ArrayList<ClienteDTO> clientes;
+		}
+		Respuesta respuesta = new Respuesta();
+		respuesta.pagina = parametros.getNumeroPagina();
+		respuesta.resultadosPorPagina = parametros.getResultadosPorPagina();
+		
 		try {
 			ArrayList<Cliente> listaClientes = GestorClientes.buscarClientes(parametros);
 			ArrayList<ClienteDTO> result = new ArrayList<>();
 			for (Cliente c : listaClientes) {
 				result.add(c.getDTO());
 			}
-			class Respuesta{
-				public Integer pagina;
-				public Integer resultadosPorPagina;
-				public Integer cantidadPaginas;
-				public ArrayList<ClienteDTO> clientes;
-			}
-			
-			Respuesta respuesta = new Respuesta();
-			respuesta.pagina = parametros.getNumeroPagina();
-			respuesta.resultadosPorPagina = parametros.getResultadosPorPagina();
-			respuesta.clientes = result;
+			respuesta.clientes = result;		
 			respuesta.cantidadPaginas = 1;
 			return new ResponseEntity<>(respuesta, HttpStatus.OK);
 		} catch (NoResultException e) {
-			return new ResponseEntity<>(new Error("No se encontró un cliente con los campos especificados"),
-					HttpStatus.OK);
+			respuesta.clientes = new ArrayList<>();		
+			respuesta.cantidadPaginas = 0;
+			return new ResponseEntity<>(respuesta, HttpStatus.OK);
 		}
 	}
 

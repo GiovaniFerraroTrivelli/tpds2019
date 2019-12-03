@@ -49,12 +49,12 @@ public class QueryBuilder {
 
 		if (p.getNombre() != null && p.getNombre() != "") {
 			str.append("C.nombre LIKE :nombre AND ");
-			parametros.add(new Parametro("nombre", "%" + p.getNombre() + "%"));
+			parametros.add(new Parametro("nombre", p.getNombre() + "%"));
 		}
 
 		if (p.getApellido() != null && p.getApellido() != "") {
 			str.append("C.apellido LIKE :apellido AND ");
-			parametros.add(new Parametro("apellido", "%" + p.getApellido() + "%"));
+			parametros.add(new Parametro("apellido", p.getApellido() + "%"));
 		}
 
 		if (p.getDocumento() != null) {
