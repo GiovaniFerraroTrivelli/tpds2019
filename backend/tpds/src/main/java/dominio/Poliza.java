@@ -32,11 +32,11 @@ public class Poliza {
 	private Set<Hijo> hijos;
 	private FormaPago formaPago;
 	private Set<Cuota> cuotas;
+	private Set<Pago> pagos;
 	private Pais pais;
 	private Money sumaAsegurada;
 	private Money prima;
 	private Money premio;
-
 	private Money descuentos;
 
 	public class PolizaDTO {
@@ -61,7 +61,7 @@ public class Poliza {
 		private Integer kmAnio;
 		private String modalidadPago;
 		private ArrayList<CuotaDTO> cuotas;
-		
+
 		public Integer getIdPoliza() {
 			return idPoliza;
 		}
@@ -289,7 +289,7 @@ public class Poliza {
 			this.sumaAsegurada = p.getSumaAsegurada().toString();
 			this.premio = p.getPremio().toString();
 			this.descuentos = p.getDescuentos().toString();
-			//this.ultimoDiaPago = p.getUltimoDiaPago();
+			// this.ultimoDiaPago = p.getUltimoDiaPago();
 			this.montoTotal = p.getMontoTotal().toString();
 
 			ArrayList<CuotaDTO> c = new ArrayList<>();
@@ -436,7 +436,7 @@ public class Poliza {
 	}
 
 	public Money getMontoTotal() {
-		
+
 		return null;
 	}
 
@@ -633,7 +633,15 @@ public class Poliza {
 	}
 
 	public ResumenPoliza getResumenPoliza() {
-		
+
 		return new ResumenPoliza(this);
+	}
+
+	public Set<Pago> getPagos() {
+		return pagos;
+	}
+
+	public void setPagos(Set<Pago> pagos) {
+		this.pagos = pagos;
 	}
 }
