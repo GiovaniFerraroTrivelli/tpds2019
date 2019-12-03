@@ -36,8 +36,6 @@
 		<property name="anioFabricacion" column="anio_fabricacion" />
 
 
-		<!-- tipoCobertura -->
-
 		<property name="estadoPoliza" column="estado_poliza"
 			length="15">
 			<type name="org.hibernate.type.EnumType">
@@ -53,7 +51,13 @@
 			<property name="poseeTuercasAntirrobo" column="posee_tuercas_antirrobo" />
 		</component>
 
-
+		<many-to-one name="modelo" class="dominio.Modelo" fetch="select">
+            <column name="id_modelo" not-null="true" />
+        </many-to-one>
+        
+        <many-to-one name="usuario" class="usuarios.Usuario" fetch="select">
+            <column name="nombre_usuario" not-null="true" />
+        </many-to-one>
 
 		<!-- relacion entre la poliza y los hijos -->
 		<set name="hijos" table="hijos_poliza" inverse="true" cascade="save-update" lazy="true" fetch="select">
