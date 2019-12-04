@@ -44,15 +44,17 @@ export class LoginComponent implements OnInit {
 	onSubmit(f : NgForm) {
 		this.loginService.authenticate(f.value).subscribe(
 			result => {
-					sessionStorage.setItem('nombreUsuario', result.nombreUsuario);
-					sessionStorage.setItem('nombre', result.nombre);
-					sessionStorage.setItem('apellido', result.apellido);
-					sessionStorage.setItem('email', result.email);
-					sessionStorage.setItem('rol', result.rol);
+				sessionStorage.clear();
+				
+				sessionStorage.setItem('nombreUsuario', result.nombreUsuario);
+				sessionStorage.setItem('nombre', result.nombre);
+				sessionStorage.setItem('apellido', result.apellido);
+				sessionStorage.setItem('email', result.email);
+				sessionStorage.setItem('rol', result.rol);
 
-					console.log(result);
-					this.router.navigate(['']);
-					this.invalidLogin = false;
+				console.log(result);
+				this.router.navigate(['']);
+				this.invalidLogin = false;
 			},
 		    err => {
 		    	console.log(err);

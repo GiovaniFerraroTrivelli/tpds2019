@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Router } from "@angular/router";
+import { Router, CanActivate, ActivatedRouteSnapshot } from "@angular/router";
 
 import { DialogService } from '../dialog/dialog.service';
 import { UserLogin } from '../login/user-login';
@@ -11,10 +11,23 @@ import { Rol } from '../enums/rol.enum';
 	providedIn: 'root'
 })
 
-export class AuthenticationService {
+export class AuthenticationService implements CanActivate {
 
 	private usersUrl: string;
+	private checkLoginUrl: string;
 	private logoutUrl: string;
+
+	routesRol = {
+		"alta-poliza": Rol.ProductorDeSeguros,
+		"consultar-poliza": Rol.ProductorDeSeguros,
+		"buscar-cliente": Rol.ProductorDeSeguros,
+		"alta-cliente": Rol.ProductorDeSeguros,
+		"buscar-poliza": Rol.Cobrador,
+		"consultar-clientes": Rol.ProductorDeSeguros,
+		"actualizar-factores": Rol.ProductorDeSeguros,
+		"generar-informe-mensual": Rol.Gerente,
+		"registrar-pago-poliza": Rol.Cobrador
+	};
 
 	constructor(
 		private http: HttpClient,
@@ -22,7 +35,67 @@ export class AuthenticationService {
 		private router: Router
 	) {
 		this.usersUrl = window.location.protocol + '//' + window.location.hostname + ':8080/login';
+		this.checkLoginUrl = window.location.protocol + '//' + window.location.hostname + ':8080/checkLogin';
 		this.logoutUrl = window.location.protocol + '//' + window.location.hostname + ':8080/logout';
+	}
+
+	canActivate(route : ActivatedRouteSnapshot): boolean {
+		if (!this.isUserLoggedIn()) {
+			this.router.navigate(['login']);
+			return false;
+		}
+
+		console.log("Chequeando permisos -> requerido: %s, tiene: %s", this.routesRol[route.url.toString()], Rol[this.getRol()]);
+
+		if(this.routesRol[route.url.toString()] !== Rol[this.getRol()]) {
+			console.warn("Sin permisos para entrar a esta ruta");
+
+			this.router.navigate(['/']);
+			return false;
+		}
+
+		this.checkLoginValid();
+		return true;
+	}
+
+	checkLoginValid() {
+		this.http.get<UserLogin>(this.checkLoginUrl, { withCredentials: true }).subscribe(
+			res => {
+				if(res.nombreUsuario != this.getUserName())
+				{
+					sessionStorage.clear();
+
+					this.dialogService.confirm(
+						'Sesión cerrada',
+						'Ha iniciado sesión con otra cuenta. Inicie sesión nuevamente.',
+						true, 'Iniciar sesión', 'Ir al inicio'
+					).then(confirmed => {
+							if(confirmed) {
+								this.router.navigate(['login']);
+							} else {
+								this.router.navigate(['']);
+							}
+						}
+					);
+				}
+			},
+			err => {
+				sessionStorage.clear();
+
+				this.dialogService.confirm(
+					'Sesión cerrada',
+					'Su sesión fue cerrada por el servidor. Inicie sesión nuevamente.',
+					true, 'Iniciar sesión', 'Ir al inicio'
+				).then(confirmed => {
+						if(confirmed) {
+							this.router.navigate(['login']);
+						} else {
+							this.router.navigate(['']);
+						}
+					}
+				);
+			}
+		);
 	}
 
 	authenticate(userLogin : UserLogin): Observable<UserLogin> {
