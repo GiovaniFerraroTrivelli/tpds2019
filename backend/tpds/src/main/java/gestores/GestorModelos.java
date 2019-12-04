@@ -1,8 +1,6 @@
 package gestores;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -10,10 +8,12 @@ import org.hibernate.query.Query;
 import dao.DaoVehiculo;
 import dataAccess.HibernateUtil;
 import dominio.Cotizacion;
-import dominio.Localidad;
 import dominio.Marca;
 import dominio.Modelo;
 import excepciones.DatoNoEncontradoException;
+
+
+@SuppressWarnings("unchecked")
 
 public class GestorModelos {
 	public static ArrayList<Marca> getMarcas() throws DatoNoEncontradoException {

@@ -15,6 +15,7 @@ import dominio.Cuota.CuotaDTO;
 import enumeradores.EstadoPoliza;
 import enumeradores.FormaPago;
 import excepciones.NoHayValorException;
+import gestores.GestorPagos;
 import usuarios.Usuario;
 
 public class Poliza {
@@ -315,9 +316,7 @@ public class Poliza {
 				this.sumaAsegurada = p.getModelo().getSumaAsegurada(p.getAnioFabricacion()).toString();
 				this.premio = p.getPremio().toString();
 				this.derechoEmision = (p.getDerechoEmision().toString());
-
-				// TODO: Revisar el tema del ultimo dia de pago
-				// this.ultimoDiaPago = p.getUltimoDiaPago();
+				this.ultimoDiaPago = GestorPagos.getUltimoPago(p).getFechaHora();
 				this.montoTotal = p.getMontoTotal().toString();
 				this.formaPago = p.getFormaPago().toString();
 				try {

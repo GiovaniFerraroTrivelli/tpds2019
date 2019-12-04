@@ -11,7 +11,7 @@
 		
 		<component name="nroPoliza">
 			<property name="idSucursal" column="id_sucursal" />
-			<property name="autoCliente" column="auto_cliente" generated="insert"/>
+			<property name="autoCliente" column="auto_cliente"/>
 			<property name="renovacionPoliza" column="secuencia_renovación" />
 		</component>
 		
@@ -66,7 +66,7 @@
             <column name="id_modelo" not-null="true" />
         </many-to-one>
         
-        <many-to-one name="usuario" class="usuarios.Usuario" fetch="select">
+        <many-to-one name="usuario" class="usuarios.Usuario" fetch="select" lazy="false">
             <column name="nombre_usuario" not-null="true" />
         </many-to-one>
 
@@ -78,7 +78,7 @@
 			<one-to-many class="dominio.Hijo" />
 		</set>
 
-		<set name="cuotas" table="cuotas_poliza" inverse="true" cascade="save-update" lazy="false" fetch="select">
+		<set name="cuotas" table="cuotas_poliza" inverse="true" cascade="save-update" lazy="true" fetch="select">
 			<key>
 				<column name="id_poliza" not-null="true" />
 			</key>

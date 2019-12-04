@@ -7,15 +7,9 @@ import java.time.Period;
 import java.time.Year;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.money.MonetaryAmount;
-
-import org.javamoney.moneta.*;
-
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -55,11 +49,6 @@ public class GestorPoliza {
 			e.printStackTrace();
 		}
 		return coberturasDisponibles;
-	}
-
-	// TODO: Corregir esto
-	public static ArrayList<Error> validarDatos2(PolizaDTO p) {
-		return new ArrayList<>();
 	}
 
 	public static ArrayList<Error> validarDatos(PolizaDTO p) {
@@ -111,8 +100,9 @@ public class GestorPoliza {
 		else if (existePolizaConChasis(p.getChasis()))
 			errores.add(new Error("Ya existe una póliza con el número de chasis indicado"));
 
-		if (p.getPatente() != null && existePolizaConPatente(p.getPatente()))
-			errores.add(new Error("Ya existe una póliza con el dominio ingresado"));
+		if (p.getPatente() != null)
+			if (existePolizaConPatente(p.getPatente()))
+				errores.add(new Error("Ya existe una póliza con el dominio ingresado"));
 
 		// Validar Medidas de Seguridad
 		if (p.getPoseeAlarma() == null || p.getPoseeRastreoVehicular() == null || p.getPoseeTuercasAntirrobo() == null
@@ -147,28 +137,19 @@ public class GestorPoliza {
 		return errores;
 	}
 
-	// TODO: Me parece que esto deberian hacerlo los dao
-	private static boolean existePolizaConPatente(String patente) {
-		Session session = HibernateUtil.getSession();
-		String hql = "FROM Poliza WHERE dominio=\'" + patente + "\'";
-		Query<Poliza> query = session.createQuery(hql);
-		return !query.getResultList().isEmpty();
+	private static boolean existePolizaConPatente(String dominio) {
+		ArrayList<Poliza> polizas = DaoPoliza.getPolizasVigentesOGeneradasConDominio(dominio);
+		return !polizas.isEmpty();
 	}
 
 	private static boolean existePolizaConMotor(String motor) {
-		Session session = HibernateUtil.getSession();
-		String hql = "FROM Poliza WHERE motor=\'" + motor + "\'";
-		Query<Poliza> query = session.createQuery(hql);
-		return !query.getResultList().isEmpty();
-
+		ArrayList<Poliza> polizas = DaoPoliza.getPolizasVigentesOGeneradasConMotor(motor);
+		return !polizas.isEmpty();
 	}
 
 	private static boolean existePolizaConChasis(String chasis) {
-		Session session = HibernateUtil.getSession();
-		String hql = "FROM Poliza WHERE chasis=\'" + chasis + "\'";
-		Query<Poliza> query = session.createQuery(hql);
-		return !query.getResultList().isEmpty();
-
+		ArrayList<Poliza> polizas = DaoPoliza.getPolizasVigentesOGeneradasConChasis(chasis);
+		return !polizas.isEmpty();
 	}
 
 	// TODO: Modificar (hibernate)
@@ -236,6 +217,7 @@ public class GestorPoliza {
 			cuota.setFechaVencimiento(java.sql.Date.valueOf(inicioVigencia.minusDays(1)));
 //			cuota.setImporte(Money.of(100, "ARS"));
 			cuota.setImporte(new BigDecimal("100"));
+			cuota.setEstadoCuota(EstadoCuota.PENDIENTE);
 			cuota.setPoliza(poliza);
 			cuotas.add(cuota);
 		}
@@ -283,6 +265,7 @@ public class GestorPoliza {
 		Boolean result = GestorPoliza.savePoliza(p);
 		p.setNroPoliza(new NumeroPoliza(1, p.getIdPoliza(), 1));
 		DaoPoliza.update(p);
+		GestorClientes.actualizarCondicionCliente(p.getCliente());
 		return result;
 	}
 

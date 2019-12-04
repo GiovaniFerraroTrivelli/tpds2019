@@ -1,27 +1,24 @@
 package gestores;
 
-import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 
-import org.hibernate.PersistentObjectException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 import dao.DaoCliente;
-import dataAccess.HibernateUtil;
-import dataTransferObjects.ClienteDTO;
 import dataTransferObjects.ParametrosDeBusqueda;
 import dataTransferObjects.ParametrosDeConsulta;
 import dataTransferObjects.AltaClienteDTO;
 import dominio.Cliente;
+import dominio.Cuota;
 import dominio.Cliente.Documento;
+import enumeradores.CondicionCliente;
+import enumeradores.EstadoCuota;
+import enumeradores.EstadoPoliza;
 import dominio.Direccion;
+import dominio.Poliza;
 import excepciones.DatoNoEncontradoException;
 import excepciones.NoExisteClienteException;
-import restControllers.Error;
 
 public class GestorClientes {
 
@@ -92,5 +89,97 @@ public class GestorClientes {
 
 	public static Long resultados(ParametrosDeBusqueda parametros) {
 		return DaoCliente.resultados(parametros);
+	}
+	
+
+	public static void actualizarCondicionCliente(Cliente c) {
+		if (clienteNormal(c)) {
+			c.setCondicionCliente(CondicionCliente.Normal);
+		}
+
+		else if (clientePlata(c)) {
+			c.setCondicionCliente(CondicionCliente.Plata);
+		}
+		
+	}
+
+	private static Boolean clienteNormal(Cliente c) {
+		// Si la póliza es la primera que se le asocia al cliente, pasa a ser
+		// considerado un cliente “Normal”
+		if (c.getPolizas().size() == 1) {
+			return true;
+		}
+
+		for (Poliza p : c.getPolizas()) {
+
+			// Si el cliente poseía otras pólizas asociadas pero ninguna de ellas se
+			// encuentra vigente el cliente debe considerarse “Normal”.
+			if (p.getEstadoPoliza() != EstadoPoliza.VIGENTE) {
+				return true;
+			}
+
+			// Si el cliente posee siniestros en el último año debe ser considerado un
+			// cliente “Normal”.
+			if (p.getSiniestros() != 0) {
+				return true;
+			}
+
+			// Si el cliente posee alguna cuota impaga debe ser considerado un cliente
+			// “Normal”.
+			for (Cuota cuota : p.getCuotas()) {
+				if (cuota.getEstadoCuota() == EstadoCuota.MORA) {
+					return true;
+				}
+			}
+		}
+
+		return (!clienteActivo(c));
+	}
+
+	public static Boolean clientePlata(Cliente c) {
+		if (clienteNormal(c)) {
+			return false;
+		}
+
+		for (Poliza p : c.getPolizas()) {
+			if (p.getSiniestros() != 0) {
+				return false;
+			}
+
+			for (Cuota cuota : p.getCuotas()) {
+				if (cuota.getEstadoCuota() == EstadoCuota.MORA) {
+					return false;
+				}
+			}
+		}
+
+		return clienteActivo(c);
+	}
+
+	private static Boolean clienteActivo(Cliente c) {
+		int i = 0;
+		boolean flag = true;
+
+		while (flag && i < 24) {
+			boolean innerFlag = false;
+
+			Date date = Date.from(ZonedDateTime.now().minusMonths(i).toInstant());
+			for (Poliza p : c.getPolizas()) {
+				if (p.getInicioVigencia().compareTo(date) * date.compareTo(p.getFinVigencia()) >= 0) {
+					innerFlag = true;
+				}
+			}
+
+			if (innerFlag) {
+				i++;
+			}
+
+			else {
+				flag = false;
+			}
+		}
+
+		return flag;
+
 	}
 }
