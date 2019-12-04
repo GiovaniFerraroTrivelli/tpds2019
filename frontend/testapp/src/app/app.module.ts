@@ -28,7 +28,6 @@ import { HijosComponent } from './hijos/hijos.component';
 import { TipocoberturaComponent } from './tipocobertura/tipocobertura.component';
 import { LoadingComponent } from './loading/loading.component';
 import { ConsultarclientesComponent } from './consultarclientes/consultarclientes.component';
-import { RegistrarPagoComponent } from './registrar-pago/registrar-pago.component';
 import { BuscarPolizaComponent } from './buscar-poliza/buscar-poliza.component';
 import { ActualizarFactoresComponent } from './actualizar-factores/actualizar-factores.component';
 import { GenerarInformeMensualComponent } from './generar-informe-mensual/generar-informe-mensual.component';
@@ -54,7 +53,6 @@ registerLocaleData(localeEsAr, 'es-AR');
 		TipocoberturaComponent,
 		LoadingComponent,
 		BuscarPolizaComponent,
-		RegistrarPagoComponent,
 		ConsultarclientesComponent,
 		ActualizarFactoresComponent,
 		GenerarInformeMensualComponent,
