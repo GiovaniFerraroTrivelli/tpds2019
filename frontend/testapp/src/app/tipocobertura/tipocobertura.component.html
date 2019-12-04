@@ -45,7 +45,7 @@
 </ng-template>
 
 <div *ngIf="!hasResponsePost2()">
-	<h4 class="mb-3">Tipos de cobertura disponibles</h4>
+	<h4 class="mb-3 mt-4">Tipos de cobertura disponibles</h4>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -67,7 +67,7 @@
 </div>
 
 <div *ngIf="hasResponsePost2()">
-	<h4 class="mb-3">Confirmación de datos</h4>
+	<h4 class="mb-3 mt-4">Confirmación de datos</h4>
 
 	<div class="card mb-3 w-50 m-auto">
 	  <ul class="list-group list-group-flush">
@@ -102,6 +102,9 @@
 	  		<strong>Vigencia</strong>: {{ resumenPoliza.inicioVigencia | date: 'dd/MM/yyyy' }} hasta {{ resumenPoliza.finVigencia | date: 'dd/MM/yyyy' }}
 	  	</li>
 	  	<li class="list-group-item border-top-0 pt-0 pb-0">
+	  		<strong>Tipo de cobertura</strong>: {{ resumenPoliza.tipoCobertura.nombre }}
+	  	</li>
+	  	<li class="list-group-item border-top-0 pt-0 pb-0">
 	    	<strong>Suma asegurada</strong>: $ {{ resumenPoliza.sumaAsegurada | number: '1.2-2' : 'es-AR' }}<br />
 	  	</li>
 	  	<li class="list-group-item border-top-0 pt-0 pb-0">
@@ -113,10 +116,7 @@
 	  	<li class="list-group-item disabled">
 	  		<strong>Información de pagos</strong>
 	  	</li>
-	  	<li class="list-group-item pt-2 pb-2">
-	    	<strong>Último día de pago</strong>: {{ resumenPoliza.ultimoDiaPago | date: 'dd/MM/yyyy' }}
-	  	</li>
-		<li class="list-group-item pt-2 pb-2" *ngIf="polizaValues.modalidadPago == 'MENSUAL'">
+		<li class="list-group-item pt-2 pb-2">
 			<div *ngFor="let cuota of resumenPoliza.cuotas; let row = index">
 				<strong>Cuota {{ row + 1 }} de {{ resumenPoliza.cuotas.length }}</strong>: $ {{ global.parseMoney(cuota.importe)  | number: '1.2-2' : 'es-AR' }} - <strong>Vencimiento: </strong> {{ cuota.fechaVencimiento | date: 'dd/MM/yyyy' }}
 			</div>	
