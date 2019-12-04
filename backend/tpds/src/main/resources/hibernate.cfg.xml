@@ -40,6 +40,8 @@
         <mapping resource="Usuario.hbm.xml"/>
         <mapping resource="Pago.hbm.xml"/>
         <mapping resource="PagoCuota.hbm.xml"/>
+        <mapping resource="Descuento.hbm.xml"/>
+        <mapping resource="Recargo.hbm.xml"/>
 
         
 

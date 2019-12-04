@@ -37,7 +37,6 @@
 		<property name="sumaAsegurada" column="suma_asegurada" />
 		<property name="prima" column="prima" />
 		<property name="premio" column="premio" />
-		<property name="descuentos" column="descuentos" />
 		<property name="derechoEmision" column="derecho_emision" />
 
 		<property name="estadoPoliza" column="estado_poliza"

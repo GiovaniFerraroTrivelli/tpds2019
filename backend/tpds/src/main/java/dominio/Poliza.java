@@ -42,7 +42,6 @@ public class Poliza {
 	private BigDecimal sumaAsegurada;
 	private BigDecimal prima;
 	private BigDecimal premio;
-	private BigDecimal descuentos;
 	private Usuario usuario;
 	private BigDecimal derechoEmision;
 
@@ -296,14 +295,12 @@ public class Poliza {
 			this.finVigencia = finVigencia;
 			this.sumaAsegurada = sumaAsegurada;
 			this.premio = premio;
-			this.descuentos = descuentos;
 			this.ultimoDiaPago = ultimoDiaPago;
 			this.montoTotal = montoTotal;
 			this.cuotas = cuotas;
 		}
 
 		public ResumenPoliza(Poliza p) {
-			super();
 
 			try {
 				this.nombreTitular = p.getCliente().getNombre();
@@ -317,8 +314,9 @@ public class Poliza {
 				this.finVigencia = p.getFinVigencia();
 				this.sumaAsegurada = p.getModelo().getSumaAsegurada(p.getAnioFabricacion()).toString();
 				this.premio = p.getPremio().toString();
-				this.descuentos = p.getDescuentos().toString();
 				this.derechoEmision = (p.getDerechoEmision().toString());
+
+				// TODO: Revisar el tema del ultimo dia de pago
 				// this.ultimoDiaPago = p.getUltimoDiaPago();
 				this.montoTotal = p.getMontoTotal().toString();
 				this.formaPago = p.getFormaPago().toString();
@@ -489,7 +487,7 @@ public class Poliza {
 	}
 
 	public BigDecimal getMontoTotal() {
-		return this.getPrima().add(this.getDerechoEmision()).subtract(this.getDescuentos());
+		return this.getPrima().add(this.getDerechoEmision());
 	}
 
 	public Integer getIdPoliza() {
@@ -694,14 +692,6 @@ public class Poliza {
 
 	public void setPremio(BigDecimal premio) {
 		this.premio = premio;
-	}
-
-	public BigDecimal getDescuentos() {
-		return descuentos;
-	}
-
-	public void setDescuentos(BigDecimal descuentos) {
-		this.descuentos = descuentos;
 	}
 
 	public BigDecimal getDerechoEmision() {

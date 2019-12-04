@@ -2,6 +2,7 @@ package dominio;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
 import org.javamoney.moneta.Money;
 
@@ -13,34 +14,8 @@ public class Cuota implements Comparable<Cuota> {
 	private BigDecimal importe;
 	private Date fechaVencimiento;
 	private EstadoCuota estadoCuota;
-
-	public class CuotaDTO implements Comparable<CuotaDTO> {
-		private String importe;
-		private Date fechaVencimiento;
-
-		public String getImporte() {
-			return importe;
-		}
-
-		public void setImporte(String importe) {
-			this.importe = importe;
-		}
-
-		public Date getFechaVencimiento() {
-			return fechaVencimiento;
-		}
-
-		public void setFechaVencimiento(Date fechaVencimiento) {
-			this.fechaVencimiento = fechaVencimiento;
-		}
-
-		@Override
-		public int compareTo(CuotaDTO o) {
-
-			return this.fechaVencimiento.compareTo(o.getFechaVencimiento());
-		}
-
-	}
+	private Set<Descuento> descuentos;
+	private Set<Recargo> recargos;
 
 	public Cuota() {
 
@@ -79,11 +54,12 @@ public class Cuota implements Comparable<Cuota> {
 	}
 
 	public CuotaDTO getDTO() {
-		CuotaDTO c = new CuotaDTO();
-		c.setFechaVencimiento(this.fechaVencimiento);
-		c.setImporte(this.importe.toString());
-		// TODO Auto-generated method stub
-		return c;
+		CuotaDTO cuotaDTO = new CuotaDTO();
+		cuotaDTO.setFechaVencimiento(this.fechaVencimiento);
+		cuotaDTO.setImporte(this.importe.toString());
+		cuotaDTO.setDescuentos(this.descuentos);
+		cuotaDTO.setRecargos(this.recargos);
+		return cuotaDTO;
 	}
 
 	@Override
@@ -98,6 +74,67 @@ public class Cuota implements Comparable<Cuota> {
 
 	public void setEstadoCuota(EstadoCuota estadoCuota) {
 		this.estadoCuota = estadoCuota;
+	}
+
+	public Set<Descuento> getDescuentos() {
+		return descuentos;
+	}
+
+	public void setDescuentos(Set<Descuento> descuentos) {
+		this.descuentos = descuentos;
+	}
+
+	public Set<Recargo> getRecargos() {
+		return recargos;
+	}
+
+	public void setRecargos(Set<Recargo> recargos) {
+		this.recargos = recargos;
+	}
+
+	public class CuotaDTO implements Comparable<CuotaDTO> {
+		private String importe;
+		private Date fechaVencimiento;
+		private Set<Descuento> descuentos;
+		private Set<Recargo> recargos;
+
+		public String getImporte() {
+			return importe;
+		}
+
+		public void setImporte(String importe) {
+			this.importe = importe;
+		}
+
+		public Date getFechaVencimiento() {
+			return fechaVencimiento;
+		}
+
+		public void setFechaVencimiento(Date fechaVencimiento) {
+			this.fechaVencimiento = fechaVencimiento;
+		}
+
+		public Set<Descuento> getDescuentos() {
+			return descuentos;
+		}
+
+		public void setDescuentos(Set<Descuento> descuentos) {
+			this.descuentos = descuentos;
+		}
+
+		public Set<Recargo> getRecargos() {
+			return recargos;
+		}
+
+		public void setRecargos(Set<Recargo> recargos) {
+			this.recargos = recargos;
+		}
+
+		@Override
+		public int compareTo(CuotaDTO o) {
+			return this.fechaVencimiento.compareTo(o.getFechaVencimiento());
+		}
+
 	}
 
 }

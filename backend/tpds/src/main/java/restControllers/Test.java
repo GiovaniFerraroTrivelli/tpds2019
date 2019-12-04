@@ -1,16 +1,11 @@
 package restControllers;
 
-import java.util.Date;
-
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import dao.DaoCliente;
 import dataAccess.HibernateUtil;
-import dataTransferObjects.ParametrosDeBusqueda;
-import dominio.Cliente;
-import dominio.NumeroCliente;
-import dominio.Poliza;
+import dominio.Cuota;
+import dominio.Descuento;
 
 public class Test {
 
@@ -19,12 +14,13 @@ public class Test {
 		Session s = HibernateUtil.getSession();
 		Transaction tx = s.beginTransaction();
 
-
-
 		try { // Code here:
-			System.out.println(new Date());
-			
-			
+
+			Cuota c = s.get(Cuota.class, 1);
+
+			for (Descuento d : c.getDescuentos()) {
+				System.out.println("CONCEPTO: " + d.getConcepto());
+			}
 
 		} catch (Exception e) {
 			tx.rollback();

@@ -36,6 +36,7 @@ import dominio.NumeroCliente;
 import dominio.NumeroPoliza;
 import dominio.Poliza;
 import dominio.TipoCobertura;
+import enumeradores.EstadoCuota;
 import enumeradores.EstadoPoliza;
 import enumeradores.FormaPago;
 import excepciones.DatoNoEncontradoException;
@@ -67,7 +68,8 @@ public class GestorPoliza {
 		// Validar idUsuario
 		if (p.getNroCliente() == null)
 			errores.add(new Error("Falta definir el cliente"));
-		else if (p.getNroCliente().length() != 10 || DaoCliente.buscarCliente(new NumeroCliente(p.getNroCliente())) == null)
+		else if (p.getNroCliente().length() != 10
+				|| DaoCliente.buscarCliente(new NumeroCliente(p.getNroCliente())) == null)
 			errores.add(new Error("No existe el cliente especificado"));
 
 		// Validar Domicilio de riesgo
@@ -97,23 +99,20 @@ public class GestorPoliza {
 		// Validar existencia de anio de fabricación
 		if (p.getAnio() == null)
 			errores.add(new Error("No de definió un año de fabricación"));
-		
-		
 
 		// Validar Motor
 		if (p.getMotor() == null)
 			errores.add(new Error("No se ingresó el número de motor"));
-		else if(GestorPoliza.existePolizaConMotor(p.getMotor()))
+		else if (GestorPoliza.existePolizaConMotor(p.getMotor()))
 			errores.add(new Error("Ya existe una poliza con el número de motor indicado"));
-		
-		if(p.getChasis() == null)
+
+		if (p.getChasis() == null)
 			errores.add(new Error("No se ingresó el número de chasis"));
 		else if (existePolizaConChasis(p.getChasis()))
 			errores.add(new Error("Ya existe una póliza con el número de chasis indicado"));
-		
-		if (p.getPatente()!=null && existePolizaConPatente(p.getPatente()))
+
+		if (p.getPatente() != null && existePolizaConPatente(p.getPatente()))
 			errores.add(new Error("Ya existe una póliza con el dominio ingresado"));
-			
 
 		// Validar Medidas de Seguridad
 		if (p.getPoseeAlarma() == null || p.getPoseeRastreoVehicular() == null || p.getPoseeTuercasAntirrobo() == null
@@ -147,6 +146,8 @@ public class GestorPoliza {
 
 		return errores;
 	}
+
+	//TODO: Me parece que esto deberian hacerlo los dao
 	private static boolean existePolizaConPatente(String patente) {
 		Session session = HibernateUtil.getSession();
 		String hql = "FROM Poliza WHERE dominio=\'" + patente + "\'";
@@ -159,7 +160,7 @@ public class GestorPoliza {
 		String hql = "FROM Poliza WHERE motor=\'" + motor + "\'";
 		Query<Poliza> query = session.createQuery(hql);
 		return !query.getResultList().isEmpty();
-		
+
 	}
 
 	private static boolean existePolizaConChasis(String chasis) {
@@ -167,9 +168,9 @@ public class GestorPoliza {
 		String hql = "FROM Poliza WHERE chasis=\'" + chasis + "\'";
 		Query<Poliza> query = session.createQuery(hql);
 		return !query.getResultList().isEmpty();
-		
+
 	}
-	
+
 	// TODO: Modificar (hibernate)
 	public static Poliza generarPoliza(PolizaDTO p) {
 
@@ -211,7 +212,6 @@ public class GestorPoliza {
 		poliza.setDominio(p.getPatente());
 		poliza.setEstadoPoliza(EstadoPoliza.GENERADA);
 		poliza.setPremio(new BigDecimal("100"));
-		poliza.setDescuentos(new BigDecimal("100.23"));
 		poliza.setPrima(new BigDecimal("100.54"));
 		poliza.setDerechoEmision(new BigDecimal("100.65"));
 
@@ -219,6 +219,7 @@ public class GestorPoliza {
 		if (p.getModalidadPago().equals("MENSUAL")) {
 			for (int i = 0; i < 6; i++) {
 				Cuota cuota = new Cuota();
+				cuota.setEstadoCuota(EstadoCuota.PENDIENTE);
 				cuota.setFechaVencimiento(java.sql.Date.valueOf(inicioVigencia.minusDays(1).plusMonths(i)));
 				// TODO: Cambiar el importe
 //				cuota.setImporte(Money.of(100, "ARS"));
@@ -260,7 +261,7 @@ public class GestorPoliza {
 			return false;
 		}
 	}
-	
+
 	public static Poliza getPoliza(Integer nroPoliza) {
 		return DaoPoliza.getPoliza(nroPoliza);
 	}
@@ -269,16 +270,15 @@ public class GestorPoliza {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public static ArrayList<Poliza> buscarPoliza(String numeroPoliza) {
 		return DaoPoliza.buscarPoliza(numeroPoliza);
 	}
-	
+
 	public static Boolean altaPoliza(Poliza p) {
-		
-		
+
 		Boolean result = GestorPoliza.savePoliza(p);
-		p.setNroPoliza(new NumeroPoliza(1,p.getIdPoliza(),1));
+		p.setNroPoliza(new NumeroPoliza(1, p.getIdPoliza(), 1));
 		DaoPoliza.update(p);
 		return result;
 	}

@@ -3,18 +3,19 @@
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="dominio.Cuota" table="cuotas_poliza">
+	<class name="dominio.Cuota" table="cuotas_poliza">
 
-        <id name="idCuota" type="java.lang.Integer" column="id_cuota">
-            <generator class="native" />
-        </id>
+		<id name="idCuota" type="java.lang.Integer" column="id_cuota">
+			<generator class="native" />
+		</id>
 
-        <many-to-one name="poliza" class="dominio.Poliza" fetch="select">
-            <column name="id_poliza" not-null="true" />
-        </many-to-one>
+		<many-to-one name="poliza" class="dominio.Poliza"
+			fetch="select">
+			<column name="id_poliza" not-null="true" />
+		</many-to-one>
 
-		<property name="importe" column="importe"/>
-		<property name="fechaVencimiento" column="fecha_vencimiento"/>
+		<property name="importe" column="importe" />
+		<property name="fechaVencimiento" column="fecha_vencimiento" />
 
 		<property name="estadoCuota" column="estado_cuota"
 			length="10">
@@ -24,6 +25,26 @@
 			</type>
 		</property>
 
+		<set name="descuentos" table="descuentos_cuotas" inverse="false"
+			lazy="true" fetch="select" cascade="all">
+			<key>
+				<column name="id_cuota" not-null="true" />
+			</key>
+			<many-to-many entity-name="dominio.Descuento">
+				<column name="id_descuento" not-null="true" />
+			</many-to-many>
+		</set>
 
-    </class>
+		<set name="recargos" table="recargos_cuotas" inverse="false"
+			lazy="true" fetch="select" cascade="all">
+			<key>
+				<column name="id_cuota" not-null="true" />
+			</key>
+			<many-to-many entity-name="dominio.Descuento">
+				<column name="id_recargo" not-null="true" />
+			</many-to-many>
+		</set>
+
+
+	</class>
 </hibernate-mapping>
