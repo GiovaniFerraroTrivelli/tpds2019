@@ -67,6 +67,7 @@ public class Poliza {
 		private Integer kmAnio;
 		private String modalidadPago;
 		private FormaPago formaPago;
+		private TipoCobertura tipoCobertura;
 		private ArrayList<CuotaDTO> cuotas;
 
 		public Integer getIdPoliza() {
@@ -253,6 +254,14 @@ public class Poliza {
 			this.formaPago = formaPago;
 		}
 
+		public TipoCobertura getTipoCobertura() {
+			return tipoCobertura;
+		}
+
+		public void setTipoCobertura(TipoCobertura tipoCobertura) {
+			this.tipoCobertura = tipoCobertura;
+		}
+
 	}
 
 	public static class ResumenPoliza {
@@ -272,6 +281,7 @@ public class Poliza {
 		private Date ultimoDiaPago;
 		private String montoTotal;
 		private String formaPago;
+		private TipoCobertura tipoCobertura;
 		private ArrayList<CuotaDTO> cuotas;
 
 		public ResumenPoliza() {
@@ -319,7 +329,7 @@ public class Poliza {
 				// this.ultimoDiaPago = p.getUltimoDiaPago();
 				this.montoTotal = p.getMontoTotal().toString();
 				this.formaPago = p.getFormaPago().toString();
-
+				this.tipoCobertura = p.getTipoCobertura();
 				ArrayList<CuotaDTO> c = new ArrayList<CuotaDTO>();
 				for (Cuota cuota : p.getCuotas()) {
 					c.add(cuota.getDTO());
@@ -465,6 +475,14 @@ public class Poliza {
 
 		public void setDerechoEmision(String derechoEmision) {
 			this.derechoEmision = derechoEmision;
+		}
+
+		public TipoCobertura getTipoCobertura() {
+			return tipoCobertura;
+		}
+
+		public void setTipoCobertura(TipoCobertura tipoCobertura) {
+			this.tipoCobertura = tipoCobertura;
 		}
 
 	}

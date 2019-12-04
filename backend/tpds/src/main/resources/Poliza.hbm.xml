@@ -22,7 +22,7 @@
         </many-to-one>
 
 		<!-- relacion entre la poliza y el tipo de cobertura -->
-      	<many-to-one name = "tipoCobertura" class="dominio.TipoCobertura">
+      	<many-to-one name = "tipoCobertura" class="dominio.TipoCobertura" lazy="false">
       		<column name = "id_cobertura" not-null="true"/>
         </many-to-one>
 
