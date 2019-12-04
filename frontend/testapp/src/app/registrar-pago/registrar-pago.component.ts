@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { NgForm, FormGroup, FormControl, Validators, AbstractControl, FormBuilder, ValidatorFn, ValidationErrors } from '@angular/forms';
+import { Component, OnInit} from '@angular/core';
 import { Cliente } from '../cliente/cliente';
 import { Poliza } from '../poliza/poliza';
 import { Cuota } from '../poliza/cuota';
@@ -6,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Documento } from '../cliente/documento';
 import { DatashareService } from '../datashare.service'
 import { ResumenPoliza } from '../poliza/resumen-poliza';
-import { Subscription } from 'rxjs';
+import { LoadingService } from '../loading/loading.service';
 
 @Component({
   selector: 'app-registrar-pago',
@@ -21,7 +22,9 @@ export class RegistrarPagoComponent implements OnInit {
   private nroCliente: string;
   private vigencia: string;
   private vencimientoCuota: string;
-
+  private importeTotal: number;
+  private registrarPagoForm: FormGroup;
+  
   months = {
     1: "Enero",
     2: "Febrero",
@@ -37,15 +40,29 @@ export class RegistrarPagoComponent implements OnInit {
     12: "Diciembre"
   };
 
-  constructor(private modal: NgbModal, private data: DatashareService) { 
+  constructor(
+      private modal: NgbModal, 
+      private data: DatashareService,
+      private loadingService: LoadingService
+    ) { 
     this.index = 0;
+    this.importeTotal = 0;
     this.data.poliza.subscribe(poliza => this.resumenPoliza = poliza);
     this.data.nroPoliza.subscribe(nroPoliza => this.nroPoliza = nroPoliza);
     this.data.nroCliente.subscribe(nroCliente => this.nroCliente = nroCliente);
-    this.cuotas = this.resumenPoliza.cuotas;
   }
 
   ngOnInit() {
+    this.registrarPagoForm = new FormGroup({
+        'montoAbonado': new FormControl(null, [Validators.required])
+      });
+    this.cuotas = this.resumenPoliza.cuotas;
+  }
+
+  checkMontoAbonado(){
+    if(this.importeTotal > this.registrarPagoForm.controls['montoAbonado'].value){
+      this.registrarPagoForm.controls.montoAbonado.setErrors({'incorrect': true});
+    }
   }
 
   setVigencia(){
@@ -69,16 +86,22 @@ export class RegistrarPagoComponent implements OnInit {
   }
 
   onChecked(isChecked: boolean){
-    isChecked? this.index++ : this.index--;
+    if(isChecked){
+      this.importeTotal += Number(this.cuotas[this.index].importe);
+      this.index++;
+    } else {
+      this.index--;
+      this.importeTotal -= Number(this.cuotas[this.index].importe);
+    }
   }
 
   openModal(content) {
     this.modal.open(content, {centered: true});
-  }
+  }/*
   hayCuotas(){
     if(this.cuotas == null){
       return false;
     } 
     else return true;
-  }
+  }*/
 }
