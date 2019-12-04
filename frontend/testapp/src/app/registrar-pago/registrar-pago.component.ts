@@ -45,18 +45,23 @@ export class RegistrarPagoComponent implements OnInit {
       private data: DatashareService,
       private loadingService: LoadingService
     ) { 
-    this.index = 0;
-    this.importeTotal = 0;
-    this.data.poliza.subscribe(poliza => this.resumenPoliza = poliza);
-    this.data.nroPoliza.subscribe(nroPoliza => this.nroPoliza = nroPoliza);
-    this.data.nroCliente.subscribe(nroCliente => this.nroCliente = nroCliente);
   }
 
   ngOnInit() {
+    this.index = 0;
+    this.importeTotal = 0;
+    this.data.poliza.subscribe(poliza => {
+      this.resumenPoliza = poliza
+      this.cuotas = this.resumenPoliza.cuotas;
+    });
+    this.data.nroPoliza.subscribe(nroPoliza => this.nroPoliza = nroPoliza);
+    this.data.nroCliente.subscribe(nroCliente => {
+      this.nroCliente = nroCliente;
+    });
+
     this.registrarPagoForm = new FormGroup({
         'montoAbonado': new FormControl(null, [Validators.required])
       });
-    this.cuotas = this.resumenPoliza.cuotas;
   }
 
   checkMontoAbonado(){
