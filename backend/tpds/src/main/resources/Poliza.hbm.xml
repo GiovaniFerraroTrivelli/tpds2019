@@ -11,7 +11,7 @@
 		
 		<component name="nroPoliza">
 			<property name="idSucursal" column="id_sucursal" />
-			<property name="autoCliente" column="auto_cliente" />
+			<property name="autoCliente" column="auto_cliente" generated="insert"/>
 			<property name="renovacionPoliza" column="secuencia_renovación" />
 		</component>
 		

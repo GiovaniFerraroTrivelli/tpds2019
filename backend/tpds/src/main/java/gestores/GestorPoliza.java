@@ -147,7 +147,7 @@ public class GestorPoliza {
 		return errores;
 	}
 
-	//TODO: Me parece que esto deberian hacerlo los dao
+	// TODO: Me parece que esto deberian hacerlo los dao
 	private static boolean existePolizaConPatente(String patente) {
 		Session session = HibernateUtil.getSession();
 		String hql = "FROM Poliza WHERE dominio=\'" + patente + "\'";
@@ -175,6 +175,9 @@ public class GestorPoliza {
 	public static Poliza generarPoliza(PolizaDTO p) {
 
 		Poliza poliza = new Poliza();
+		NumeroPoliza numeroPoliza = new NumeroPoliza(1, 1);
+		poliza.setNroPoliza(numeroPoliza);
+
 		poliza.setAnioFabricacion(p.getAnio());
 		poliza.setChasis(p.getChasis());
 		poliza.setMotor(p.getMotor());
