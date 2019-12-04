@@ -14,6 +14,7 @@ import { DatashareService } from '../datashare.service'
 import { PolizasRta } from './polizaRespuesta';
 import { respuestaBuscarPoliza } from './respuestaBuscarPoliza';
 import { ResumenPoliza } from '../poliza/resumen-poliza';
+import { GlobalScriptsService } from '../global-scripts.service';
 
 @Component({
 	selector: 'app-buscar-poliza',
@@ -29,7 +30,8 @@ export class BuscarPolizaComponent implements OnInit {
 		private modalService: NgbModal,
 		private router: Router,
 		private loadingService: LoadingService,
-		private data: DatashareService
+		private data: DatashareService,
+		private global: GlobalScriptsService
 	) {}
 
 	private busquedaPoliza: BusquedaPoliza;
