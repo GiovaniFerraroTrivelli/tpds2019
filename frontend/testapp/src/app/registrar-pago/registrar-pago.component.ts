@@ -47,5 +47,10 @@ export class RegistrarPagoComponent implements OnInit {
   openModal(content) {
     this.modal.open(content, {centered: true});
   }
-
+  hayCuotas(){
+    if(this.cuotas == null){
+      return false;
+    } 
+    else return true;
+  }
 }

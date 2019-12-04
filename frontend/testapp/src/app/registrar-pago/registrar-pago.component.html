@@ -149,7 +149,7 @@
                 <h3>Marzo 2019</h3>
             </div>
         </div>
-        <table class="table">
+        <table *ngIf='hayCuotas()' class="table">
             <thead>
                 <tr>
                 <th scope="col"></th>
@@ -171,6 +171,7 @@
                 </tr>                   
             </tbody>
         </table>
+        <span *ngIf='!hayCuotas()'><strong>El cliente no posee cuotas pendientes de pago.</strong></span><br>
         <label class="control-label pt-2">Importe total:</label>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
