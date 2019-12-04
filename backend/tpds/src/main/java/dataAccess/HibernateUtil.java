@@ -1,6 +1,7 @@
 package dataAccess;
 
-import java.sql.Connection;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -8,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
+	private static final Lock lock = new ReentrantLock();
 
 	private static final SessionFactory sessionFactory;
 	public static SessionFactory getSessionfactory() {
@@ -50,6 +52,10 @@ public class HibernateUtil {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public static Lock getLock() {
+		return lock;
 	}
 
 }

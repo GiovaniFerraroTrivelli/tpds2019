@@ -2,6 +2,7 @@ package dao;
 
 import java.util.ArrayList;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -10,6 +11,8 @@ import dataAccess.HibernateUtil;
 import dominio.Cliente;
 import dominio.NumeroPoliza;
 import dominio.Poliza;
+import dominio.TipoCobertura;
+import excepciones.DatoNoEncontradoException;
 
 public class DaoPoliza {
 	
@@ -67,5 +70,52 @@ public class DaoPoliza {
 		Transaction t = session.beginTransaction();
 		session.update(p);
 		t.commit();
+	}
+	
+	public static ArrayList<TipoCobertura> getCoberturas() {
+		
+		try {
+			
+			//TODO: Corregir esto con la arquitectura nueva
+			
+			String hql = "FROM TipoCobertura ORDER BY nombre ASC";
+			Query<TipoCobertura> query = session.createQuery(hql);
+			for (TipoCobertura c : query.list()) {
+				//c.setHistorialFactorCobertura(GestorCoberturas.getHistorialFactorCobertura(c.getIdCobertura()));
+			}
+			return new ArrayList<TipoCobertura>(query.list());
+		} catch (HibernateException e) {
+			return null;
+		}
+	}
+
+	/*
+	private static HistorialValor<Float> getHistorialFactorCobertura(Integer idCobertura) {
+		HistorialValor<Float> historial = new HistorialValor<>();
+		return historial;
+
+		// historial.setHistorial(historial);
+	}
+	 */
+
+	public static TipoCobertura getCoberturaContraTerceros() throws DatoNoEncontradoException {
+		Query<TipoCobertura> query;
+		TipoCobertura cobertura = null;
+		try {
+			String hql = "FROM TipoCobertura WHERE nombre='Responsabilidad Civil'";
+			query = session.createQuery(hql);
+			cobertura = query.getSingleResult();
+
+		} catch (HibernateException e) {
+	}
+		
+		return cobertura;
+		
+	}
+	
+	public static TipoCobertura getCobertura(Integer id) {
+
+		TipoCobertura tipoCobertura =  session.get(TipoCobertura.class, id);
+		return tipoCobertura;
 	}
 }
