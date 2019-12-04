@@ -37,6 +37,7 @@ import dominio.NumeroPoliza;
 import dominio.Poliza;
 import dominio.TipoCobertura;
 import enumeradores.EstadoPoliza;
+import enumeradores.FormaPago;
 import excepciones.DatoNoEncontradoException;
 import restControllers.Error;
 
@@ -236,7 +237,8 @@ public class GestorPoliza {
 		}
 
 		poliza.setCuotas(cuotas);
-		poliza.setFormaPago(p.getFormaPago());
+		poliza.setFormaPago(FormaPago.valueOf(p.getModalidadPago()));
+		poliza.setTipoCobertura(GestorCoberturas.getCobertura(p.getIdCobertura()));
 		return poliza;
 
 	}

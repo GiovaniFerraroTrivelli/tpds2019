@@ -67,7 +67,6 @@ public class Poliza {
 		private Integer kmAnio;
 		private String modalidadPago;
 		private FormaPago formaPago;
-		private TipoCobertura tipoCobertura;
 		private ArrayList<CuotaDTO> cuotas;
 
 		public Integer getIdPoliza() {
@@ -252,14 +251,6 @@ public class Poliza {
 
 		public void setFormaPago(FormaPago formaPago) {
 			this.formaPago = formaPago;
-		}
-
-		public TipoCobertura getTipoCobertura() {
-			return tipoCobertura;
-		}
-
-		public void setTipoCobertura(TipoCobertura tipoCobertura) {
-			this.tipoCobertura = tipoCobertura;
 		}
 
 	}
