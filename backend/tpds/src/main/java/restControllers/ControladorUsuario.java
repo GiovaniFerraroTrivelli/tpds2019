@@ -11,7 +11,7 @@ import usuarios.Usuario;
 
 @RestController
 @CrossOrigin(origins = "*", allowCredentials = "true")
-public class UserController {
+public class ControladorUsuario {
 
 	@PostMapping("/login")
 	public ResponseEntity<Object> login(@RequestBody UserLogin userLogin, HttpSession session) {
@@ -45,6 +45,13 @@ public class UserController {
 	public ResponseEntity<Object> logout(HttpSession session){
 		session.invalidate();
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/checkLogin")
+	public ResponseEntity<Object> chechLogin(HttpSession session){
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		if (usuario == null) return new ResponseEntity<>(new Error("No se encuentra autenticado en el sistema"), HttpStatus.I_AM_A_TEAPOT);
+		else return new ResponseEntity<>(usuario.getDTO(), HttpStatus.ACCEPTED);
 	}
 
 }
