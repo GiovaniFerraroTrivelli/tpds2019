@@ -34,12 +34,24 @@
 		<property name="chasis" column="chasis" />
 		<property name="motor" column="motor" />
 		<property name="anioFabricacion" column="anio_fabricacion" />
-
+		<property name="sumaAsegurada" column="suma_asegurada" />
+		<property name="prima" column="prima" />
+		<property name="premio" column="premio" />
+		<property name="descuentos" column="descuentos" />
+		<property name="derechoEmision" column="derecho_emision" />
 
 		<property name="estadoPoliza" column="estado_poliza"
 			length="15">
 			<type name="org.hibernate.type.EnumType">
 				<param name="enumClass">enumeradores.EstadoPoliza</param>
+				<param name="useNamed">true</param>
+			</type>
+		</property>
+
+		<property name="formaPago" column="forma_pago"
+			length="15">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">enumeradores.FormaPago</param>
 				<param name="useNamed">true</param>
 			</type>
 		</property>
@@ -65,6 +77,13 @@
 				<column name="id_poliza" not-null="true" />
 			</key>
 			<one-to-many class="dominio.Hijo" />
+		</set>
+
+		<set name="cuotas" table="cuotas_poliza" inverse="true" cascade="save-update" lazy="false" fetch="select">
+			<key>
+				<column name="id_poliza" not-null="true" />
+			</key>
+			<one-to-many class="dominio.Cuota" />
 		</set>
 
         <set name="pagos" table="pago_poliza" inverse="true" cascade="save-update" lazy="true" fetch="select">

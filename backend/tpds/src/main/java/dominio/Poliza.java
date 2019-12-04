@@ -12,6 +12,7 @@ import org.javamoney.moneta.Money;
 
 import dominio.Cuota.CuotaDTO;
 import enumeradores.EstadoPoliza;
+import enumeradores.FormaPago;
 import usuarios.Usuario;
 
 public class Poliza {
@@ -46,7 +47,7 @@ public class Poliza {
 	public class PolizaDTO {
 		private Integer idPoliza;
 		private NumeroPoliza nroPoliza;
-		private Integer idCliente;
+		private String nroCliente;
 		private Integer modelo;
 		private Integer anio;
 		private String dominio;
@@ -65,6 +66,7 @@ public class Poliza {
 		private String fechaVigencia;
 		private Integer kmAnio;
 		private String modalidadPago;
+		private FormaPago formaPago;
 		private ArrayList<CuotaDTO> cuotas;
 
 		public Integer getIdPoliza() {
@@ -91,12 +93,12 @@ public class Poliza {
 			this.cuotas = cuotas;
 		}
 
-		public Integer getIdCliente() {
-			return idCliente;
+		public String getNroCliente() {
+			return nroCliente;
 		}
 
-		public void setIdCliente(Integer idCliente) {
-			this.idCliente = idCliente;
+		public void setNroCliente(String idCliente) {
+			this.nroCliente = idCliente;
 		}
 
 		public Integer getModelo() {
@@ -243,6 +245,14 @@ public class Poliza {
 			this.derechoEmision = derechoEmision;
 		}
 
+		public FormaPago getFormaPago() {
+			return formaPago;
+		}
+
+		public void setFormaPago(FormaPago formaPago) {
+			this.formaPago = formaPago;
+		}
+
 	}
 
 	public static class ResumenPoliza {
@@ -261,7 +271,7 @@ public class Poliza {
 		private String descuentos;
 		private Date ultimoDiaPago;
 		private String montoTotal;
-		private String FormaPago;
+		private String formaPago;
 		private ArrayList<CuotaDTO> cuotas;
 
 		public ResumenPoliza() {
@@ -308,6 +318,7 @@ public class Poliza {
 				this.derechoEmision = (p.getDerechoEmision().toString());
 				// this.ultimoDiaPago = p.getUltimoDiaPago();
 				this.montoTotal = p.getMontoTotal().toString();
+				this.formaPago = p.getFormaPago().toString();
 
 				ArrayList<CuotaDTO> c = new ArrayList<CuotaDTO>();
 				for (Cuota cuota : p.getCuotas()) {
@@ -316,7 +327,6 @@ public class Poliza {
 				Collections.sort(c);
 				this.cuotas = c;
 			} catch (NullPointerException e) {
-				System.out.println("NPE: DEBEN HABER VALORES SIN MAPEAR");
 			}
 
 		}
@@ -442,11 +452,11 @@ public class Poliza {
 		}
 
 		public String getFormaPago() {
-			return FormaPago;
+			return formaPago;
 		}
 
 		public void setFormaPago(String formaPago) {
-			FormaPago = formaPago;
+			this.formaPago = formaPago;
 		}
 
 		public String getDerechoEmision() {

@@ -2,6 +2,8 @@ package restControllers;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import dataTransferObjects.MarcaDTO;
 import dataTransferObjects.ModeloDTO;
 import gestores.GestorModelos;
+import usuarios.Usuario;
 import dominio.Marca;
 import dominio.Modelo;
+import enumeradores.Rol;
 
 
 @RestController
@@ -22,7 +26,16 @@ public class ControladorModelos {
 	
 	
 	@GetMapping("/marcas")
-	public static ResponseEntity<Object> getMarcas(){
+	public static ResponseEntity<Object> getMarcas(HttpSession session){
+		
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		if (usuario == null)
+			return new ResponseEntity<>(new Error("No se encuentra autenticado en el sistema"), HttpStatus.FORBIDDEN);
+
+		if (!(usuario.getRol() == Rol.ProductorDeSeguros) && !(usuario.getRol() == Rol.Cobrador))
+			return new ResponseEntity<>(new Error("No tiene permisos suficientes para realizar esta operación"),
+					HttpStatus.FORBIDDEN);
+		
 		try {
 			ArrayList<Marca> marcas = GestorModelos.getMarcas();
 			ArrayList<MarcaDTO> result = new ArrayList<>();
@@ -34,7 +47,16 @@ public class ControladorModelos {
 	}
 	
 	@GetMapping("/modelos/{idMarca}")
-	public ResponseEntity<Object> getModelos(@PathVariable("idMarca") Integer idMarca){
+	public ResponseEntity<Object> getModelos(@PathVariable("idMarca") Integer idMarca, HttpSession session){
+		
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		if (usuario == null)
+			return new ResponseEntity<>(new Error("No se encuentra autenticado en el sistema"), HttpStatus.FORBIDDEN);
+
+		if (!(usuario.getRol() == Rol.ProductorDeSeguros) && !(usuario.getRol() == Rol.Cobrador))
+			return new ResponseEntity<>(new Error("No tiene permisos suficientes para realizar esta operación"),
+					HttpStatus.FORBIDDEN);
+		
 		try {
 			ArrayList<Modelo> modelos = GestorModelos.getModelosDeMarca(idMarca);
 			ArrayList<ModeloDTO> result = new ArrayList<>();
@@ -46,7 +68,16 @@ public class ControladorModelos {
 	}
 	
 	@GetMapping("/anios/{idModelo}")
-	public ResponseEntity<Object> getAnios(@PathVariable("idModelo") Integer idModelo){
+	public ResponseEntity<Object> getAnios(@PathVariable("idModelo") Integer idModelo, HttpSession session){
+		
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		if (usuario == null)
+			return new ResponseEntity<>(new Error("No se encuentra autenticado en el sistema"), HttpStatus.FORBIDDEN);
+
+		if (!(usuario.getRol() == Rol.ProductorDeSeguros) && !(usuario.getRol() == Rol.Cobrador))
+			return new ResponseEntity<>(new Error("No tiene permisos suficientes para realizar esta operación"),
+					HttpStatus.FORBIDDEN);
+		
 		try {
 			ArrayList<Integer> result = GestorModelos.getAnios(idModelo);
 			return new ResponseEntity<>(result, HttpStatus.OK);

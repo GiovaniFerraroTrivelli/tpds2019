@@ -25,7 +25,7 @@ import dao.DaoGeografico;
 import dao.DaoPoliza;
 import dao.DaoVehiculo;
 import dataAccess.HibernateUtil;
-import dataTransferObjects.PolizaDTO;
+import dominio.Poliza.PolizaDTO;
 import dominio.Cliente;
 import dominio.Cotizacion;
 import dominio.Cuota;
@@ -244,7 +244,7 @@ public class GestorPoliza {
 		}
 
 		poliza.setCuotas(cuotas);
-
+		poliza.setFormaPago(p.getFormaPago());
 		return poliza;
 
 	}
