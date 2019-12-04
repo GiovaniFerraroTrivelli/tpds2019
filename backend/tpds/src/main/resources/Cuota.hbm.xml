@@ -16,6 +16,14 @@
 		<property name="importe" column="importe"/>
 		<property name="fechaVencimiento" column="fecha_vencimiento"/>
 
+		<property name="estadoCuota" column="estado_cuota"
+			length="10">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">enumeradores.EstadoCuota</param>
+				<param name="useNamed">true</param>
+			</type>
+		</property>
+
 
     </class>
 </hibernate-mapping>

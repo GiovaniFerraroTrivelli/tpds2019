@@ -1,11 +1,16 @@
 package dominio;
 
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.Set;
 
 import dataTransferObjects.ClienteDTO;
 import enumeradores.CondicionCliente;
 import enumeradores.CondicionIva;
 import enumeradores.EstadoCivil;
+import enumeradores.EstadoCuota;
+import enumeradores.EstadoPoliza;
 import enumeradores.Sexo;
 import enumeradores.TipoDocumento;
 
@@ -25,6 +30,7 @@ public class Cliente {
 	private Direccion direccion;
 	private Pais pais;
 	private Integer cantidadPolizas;
+	private Set<Poliza> polizas;
 
 	public ClienteDTO getDTO() {
 		ClienteDTO result = new ClienteDTO(this.nroCliente(), this.nombre, this.apellido, this.documento, this.cuil,
@@ -145,6 +151,96 @@ public class Cliente {
 		this.pais = pais;
 	}
 
+	public void actualizarCondicionCliente() {
+		if (this.clienteNormal()) {
+			this.setCondicionCliente(CondicionCliente.Normal);
+		}
+
+		else if (this.clientePlata()) {
+			this.setCondicionCliente(CondicionCliente.Plata);
+		}
+	}
+
+	private Boolean clienteNormal() {
+		// Si la póliza es la primera que se le asocia al cliente, pasa a ser
+		// considerado un cliente “Normal”
+		if (this.polizas.size() == 1) {
+			return true;
+		}
+
+		for (Poliza p : this.polizas) {
+
+			// Si el cliente poseía otras pólizas asociadas pero ninguna de ellas se
+			// encuentra vigente el cliente debe considerarse “Normal”.
+			if (p.getEstadoPoliza() != EstadoPoliza.VIGENTE) {
+				return true;
+			}
+
+			// Si el cliente posee siniestros en el último año debe ser considerado un
+			// cliente “Normal”.
+			if (p.getSiniestros() != 0) {
+				return true;
+			}
+
+			// Si el cliente posee alguna cuota impaga debe ser considerado un cliente
+			// “Normal”.
+			for (Cuota c : p.getCuotas()) {
+				if (c.getEstadoCuota() != EstadoCuota.PAGA) {
+					return true;
+				}
+			}
+		}
+
+		return (!this.clienteActivo());
+	}
+
+	public Boolean clientePlata() {
+		if (this.clienteNormal()) {
+			return false;
+		}
+
+		for (Poliza p : this.polizas) {
+			if (p.getSiniestros() != 0) {
+				return false;
+			}
+
+			for (Cuota c : p.getCuotas()) {
+				if (c.getEstadoCuota() != EstadoCuota.PAGA) {
+					return false;
+				}
+			}
+		}
+
+		return this.clienteActivo();
+	}
+
+	private Boolean clienteActivo() {
+		int i = 0;
+		boolean flag = true;
+
+		while (flag && i < 24) {
+			boolean innerFlag = false;
+
+			Date date = Date.from(ZonedDateTime.now().minusMonths(i).toInstant());
+			for (Poliza p : this.polizas) {
+				if (p.getInicioVigencia().compareTo(date) * date.compareTo(p.getFinVigencia()) >= 0) {
+					innerFlag = true;
+				}
+			}
+
+			if (innerFlag) {
+				i++;
+			}
+
+			else {
+				flag = false;
+			}
+		}
+
+		return flag;
+
+	}
+
 	public String nroCliente() {
 		String idPais = Integer.toString(this.nroCliente.getIdPais());
 		String idCliente = Integer.toString(this.nroCliente.getIdCliente());
@@ -168,6 +264,14 @@ public class Cliente {
 
 	public void setCantidadPolizas(Integer cantidadPolizas) {
 		this.cantidadPolizas = cantidadPolizas;
+	}
+
+	public Set<Poliza> getPolizas() {
+		return polizas;
+	}
+
+	public void setPolizas(Set<Poliza> polizas) {
+		this.polizas = polizas;
 	}
 
 	public static class Documento {

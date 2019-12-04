@@ -1,5 +1,7 @@
 package restControllers;
 
+import java.util.Date;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -7,6 +9,8 @@ import dao.DaoCliente;
 import dataAccess.HibernateUtil;
 import dataTransferObjects.ParametrosDeBusqueda;
 import dominio.Cliente;
+import dominio.NumeroCliente;
+import dominio.Poliza;
 
 public class Test {
 
@@ -18,7 +22,7 @@ public class Test {
 
 
 		try { // Code here:
-
+			System.out.println(new Date());
 			
 			
 

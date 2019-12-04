@@ -5,9 +5,12 @@
 <hibernate-mapping>
 	<class name="dominio.Cliente" table="clientes">
 
-		<composite-id name="nroCliente" class="dominio.NumeroCliente">
-			<key-property name="idCliente" column="id_cliente" type="integer"/>
-			<key-property name="idPais" column="id_pais" type="integer"/>
+		<composite-id name="nroCliente"
+			class="dominio.NumeroCliente">
+			<key-property name="idCliente" column="id_cliente"
+				type="integer" />
+			<key-property name="idPais" column="id_pais"
+				type="integer" />
 		</composite-id>
 
 		<many-to-one name="pais" class="dominio.Pais"
@@ -72,6 +75,15 @@
 			fetch="select">
 			<column name="direccion" not-null="true" />
 		</many-to-one>
+
+		<set name="polizas" table="polizas" inverse="true"
+			cascade="save-update" lazy="true" fetch="select" order-by="idPoliza">
+			<key>
+				<column name="id_cliente" not-null="true"/>
+				<column name="id_pais" not-null="true"/>
+			</key>
+			<one-to-many class="dominio.Poliza" />
+		</set>
 
 	</class>
 </hibernate-mapping>

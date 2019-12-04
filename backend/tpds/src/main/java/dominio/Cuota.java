@@ -5,40 +5,41 @@ import java.util.Date;
 
 import org.javamoney.moneta.Money;
 
+import enumeradores.EstadoCuota;
 
-public class Cuota implements Comparable<Cuota>{
+public class Cuota implements Comparable<Cuota> {
 	private Integer idCuota;
 	private Poliza poliza;
 	private BigDecimal importe;
 	private Date fechaVencimiento;
-	
+	private EstadoCuota estadoCuota;
 
 	public class CuotaDTO implements Comparable<CuotaDTO> {
 		private String importe;
 		private Date fechaVencimiento;
-	
+
 		public String getImporte() {
 			return importe;
 		}
-	
+
 		public void setImporte(String importe) {
 			this.importe = importe;
 		}
-	
+
 		public Date getFechaVencimiento() {
 			return fechaVencimiento;
 		}
-	
+
 		public void setFechaVencimiento(Date fechaVencimiento) {
 			this.fechaVencimiento = fechaVencimiento;
 		}
-	
+
 		@Override
 		public int compareTo(CuotaDTO o) {
-	
+
 			return this.fechaVencimiento.compareTo(o.getFechaVencimiento());
 		}
-	
+
 	}
 
 	public Cuota() {
@@ -89,6 +90,14 @@ public class Cuota implements Comparable<Cuota>{
 	public int compareTo(Cuota arg0) {
 		this.fechaVencimiento.compareTo(arg0.getFechaVencimiento());
 		return 0;
+	}
+
+	public EstadoCuota getEstadoCuota() {
+		return estadoCuota;
+	}
+
+	public void setEstadoCuota(EstadoCuota estadoCuota) {
+		this.estadoCuota = estadoCuota;
 	}
 
 }
