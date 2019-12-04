@@ -37,6 +37,7 @@ import dominio.NumeroPoliza;
 import dominio.Poliza;
 import dominio.TipoCobertura;
 import enumeradores.EstadoPoliza;
+import enumeradores.FormaPago;
 import excepciones.DatoNoEncontradoException;
 import restControllers.Error;
 
@@ -210,9 +211,9 @@ public class GestorPoliza {
 		poliza.setDominio(p.getPatente());
 		poliza.setEstadoPoliza(EstadoPoliza.GENERADA);
 		poliza.setPremio(new BigDecimal(100));
-		poliza.setDescuentos(new BigDecimal(100));
-		poliza.setPrima(new BigDecimal(100));
-		poliza.setDerechoEmision(new BigDecimal(100));
+		poliza.setDescuentos(new BigDecimal(100.23));
+		poliza.setPrima(new BigDecimal(100.54));
+		poliza.setDerechoEmision(new BigDecimal(100.65));
 
 		Set<Cuota> cuotas = new HashSet<Cuota>();
 		if (p.getModalidadPago().equals("MENSUAL")) {
@@ -221,7 +222,7 @@ public class GestorPoliza {
 				cuota.setFechaVencimiento(java.sql.Date.valueOf(inicioVigencia.minusDays(1).plusMonths(i)));
 				// TODO: Cambiar el importe
 //				cuota.setImporte(Money.of(100, "ARS"));
-				cuota.setImporte(new BigDecimal(100));
+				cuota.setImporte(new BigDecimal(100.65));
 				cuota.setPoliza(poliza);
 
 				cuotas.add(cuota);
@@ -236,7 +237,8 @@ public class GestorPoliza {
 		}
 
 		poliza.setCuotas(cuotas);
-		poliza.setFormaPago(p.getFormaPago());
+		poliza.setFormaPago(FormaPago.valueOf(p.getModalidadPago()));
+		poliza.setTipoCobertura(GestorCoberturas.getCobertura(p.getIdCobertura()));
 		return poliza;
 
 	}
@@ -252,6 +254,7 @@ public class GestorPoliza {
 				s.save(cuota);
 			}
 			t.commit();
+			s.close();
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -272,7 +275,12 @@ public class GestorPoliza {
 	}
 	
 	public static Boolean altaPoliza(Poliza p) {
-		p.setNroPoliza(new NumeroPoliza(1,2351,1));
-		return GestorPoliza.savePoliza(p);
+		
+		
+		Boolean result = GestorPoliza.savePoliza(p);
+		p.setNroPoliza(new NumeroPoliza(1,p.getIdPoliza(),1));
+		DaoPoliza.update(p);
+		return result;
 	}
+
 }

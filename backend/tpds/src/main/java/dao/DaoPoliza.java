@@ -61,6 +61,11 @@ public class DaoPoliza {
 		Transaction t = session.beginTransaction();
 		session.save(p);
 		t.commit();
+	}
 
+	public static void update(Poliza p) {
+		Transaction t = session.beginTransaction();
+		session.update(p);
+		t.commit();
 	}
 }
