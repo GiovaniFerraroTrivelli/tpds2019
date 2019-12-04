@@ -23,13 +23,8 @@ public class ControladorUsuario {
 			Usuario usuario = GestorUsuarios.getUsuario(nombreUsuario);
 			if (usuario == null) throw new IllegalArgumentException();
 			if (GestorUsuarios.autenticarUsuario(usuario, password)) {
-				if (session.getAttribute("usuario") != null) {
-					return new ResponseEntity<>(new Error("Usted ya está autenticado en el sistema"),
-							HttpStatus.UNPROCESSABLE_ENTITY);
-				} else {
 					session.setAttribute("usuario", usuario);
 					return new ResponseEntity<>(usuario.getDTO(), HttpStatus.OK);
-				}
 			}
 			return new ResponseEntity<>(new Error("Usuario o contraseña inválidos"), HttpStatus.UNPROCESSABLE_ENTITY);
 		} catch (IllegalArgumentException e) {
