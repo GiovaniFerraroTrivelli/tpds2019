@@ -15,22 +15,40 @@ import { ResumenPoliza } from '../poliza/resumen-poliza';
 export class RegistrarPagoComponent implements OnInit {
   private index: number;
   private resumenPoliza: ResumenPoliza;
-  private cuotas: Cuota[];
+  /*private cuotas: Cuota[];*/
   private nroPoliza: string;
   private nroCliente: string;
-  
+  private vigencia: string;
+  cuotas = [{"Asd":"ASd"}, {"asd":"asda"}]
+  months = {
+    1: "Enero",
+    2: "Febrero",
+    3: "Marzo",
+    4: "Abril",
+    5: "Mayo",
+    6: "Junio",
+    7: "Julio",
+    8: "Agosto",
+    9: "Septiembre",
+    10: "Octubre",
+    11: "Noviembre",
+    12: "Diciembre"
+  };
   constructor(private modal: NgbModal, private data: DatashareService) { 
     this.index = 0;
-  }
-
-  ngOnInit() {
     this.data.poliza.subscribe(poliza => this.resumenPoliza = poliza);
     this.data.nroPoliza.subscribe(nroPoliza => this.nroPoliza = nroPoliza);
     this.data.nroCliente.subscribe(nroCliente => this.nroCliente = nroCliente);
-    this.cuotas = this.resumenPoliza.cuotas;
-    console.log(this.resumenPoliza);
-    console.log(this.nroPoliza);
-    console.log(this.nroCliente);
+    /*this.cuotas = this.resumenPoliza.cuotas;*/
+
+  }
+
+  ngOnInit() {
+  }
+
+  setVigencia(){
+    return this.months[parseInt(this.resumenPoliza.finVigencia[5]+this.resumenPoliza.finVigencia[6])] + ' '+
+           this.resumenPoliza.finVigencia.substr(0,4); 
   }
 
   disableCheckbox(index){

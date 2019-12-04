@@ -99,7 +99,6 @@ export class BuscarPolizaComponent implements OnInit {
 
 	submitSeleccionarPoliza() {
 		if(this.polizaSeleccionada != null) {
-			console.log(this.polizaSeleccionada);
 			this.BuscarpolizaService.getPolizaSeleccionada(this.polizaSeleccionada.idPoliza).subscribe(
 				data=>{
 					this.data.changePolizaMessage(data);
