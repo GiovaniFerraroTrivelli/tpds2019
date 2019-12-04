@@ -10,9 +10,11 @@ import javax.money.MonetaryAmount;
 
 import org.javamoney.moneta.Money;
 
+import dataTransferObjects.TipoCoberturaDTO;
 import dominio.Cuota.CuotaDTO;
 import enumeradores.EstadoPoliza;
 import enumeradores.FormaPago;
+import excepciones.NoHayValorException;
 import usuarios.Usuario;
 
 public class Poliza {
@@ -272,7 +274,7 @@ public class Poliza {
 		private Date ultimoDiaPago;
 		private String montoTotal;
 		private String formaPago;
-		private TipoCobertura tipoCobertura;
+		private TipoCoberturaDTO tipoCobertura;
 		private ArrayList<CuotaDTO> cuotas;
 
 		public ResumenPoliza() {
@@ -320,7 +322,11 @@ public class Poliza {
 				// this.ultimoDiaPago = p.getUltimoDiaPago();
 				this.montoTotal = p.getMontoTotal().toString();
 				this.formaPago = p.getFormaPago().toString();
-				this.tipoCobertura = p.getTipoCobertura();
+				try {
+					this.tipoCobertura = p.getTipoCobertura().getDTO();
+				} catch (NoHayValorException e) {
+
+				}
 				ArrayList<CuotaDTO> c = new ArrayList<CuotaDTO>();
 				for (Cuota cuota : p.getCuotas()) {
 					c.add(cuota.getDTO());
@@ -468,11 +474,11 @@ public class Poliza {
 			this.derechoEmision = derechoEmision;
 		}
 
-		public TipoCobertura getTipoCobertura() {
+		public TipoCoberturaDTO getTipoCobertura() {
 			return tipoCobertura;
 		}
 
-		public void setTipoCobertura(TipoCobertura tipoCobertura) {
+		public void setTipoCobertura(TipoCoberturaDTO tipoCobertura) {
 			this.tipoCobertura = tipoCobertura;
 		}
 
