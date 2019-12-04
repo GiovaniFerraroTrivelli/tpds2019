@@ -6,12 +6,15 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuscarPolizaComponent } from '../buscar-poliza/buscar-poliza.component';
 import { LoadingService } from '../loading/loading.service';
 import { GlobalScriptsService } from '../global-scripts.service';
+import { AuthenticationService } from '../authentication/authentication.service'
 
 import { Cliente } from '../cliente/cliente';
 import { Poliza } from '../poliza/poliza';
 import { Cuota } from '../poliza/cuota';
 import { Documento } from '../cliente/documento';
 import { ResumenPoliza } from '../poliza/resumen-poliza';
+import { Recibo } from './recibo';
+import { RegistrarPagoService } from './registrar-pago.service';
 
 @Component({
   selector: 'app-registrar-pago-poliza',
@@ -49,12 +52,15 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 	private vigencia: string;
 	private vencimientoCuota: string;
 	private importeTotal: number;
+	private recibo: Recibo;
 
 	constructor(
 		private titleService: Title,
 		private modalService: NgbModal,
       	private loadingService: LoadingService,
-		private global: GlobalScriptsService
+		private global: GlobalScriptsService,
+		private authentication: AuthenticationService,
+		private registrarPagoService: RegistrarPagoService
 	) { }
 	
 	ngOnInit() {
@@ -67,6 +73,12 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 		this.registrarPagoForm = new FormGroup({
 			'montoAbonado': new FormControl(null, [Validators.required])
 		});
+		this.inicializarRecibo();
+	}
+
+	inicializarRecibo(){
+		this.recibo = new Recibo();
+		this.recibo.cuotas = [];
 	}
 
 	catchSignal(event) {
@@ -95,6 +107,10 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 		return this.months[ parseInt(this.cuotas[i].fechaVencimiento[5] + this.cuotas[i].fechaVencimiento[6]) ];
 	}
 
+	anioCuota(i) {
+		return this.cuotas[i].fechaVencimiento.slice(0,4);
+	}
+
 	disableCheckbox(index) {
 		return (index > this.index || index < this.index - 1);
 	}
@@ -120,5 +136,21 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 	}
 	cancel(){
 		this.page = 1;
+	}
+	abonar(){
+		this.recibo.numeroPoliza = this.nroPoliza;
+		let now = new Date();
+		this.recibo.fecha = now.toISOString().toString();
+		for (let i = 0; i < this.index; i++){
+			this.recibo.cuotas.push(this.cuotas[i]);
+		}
+		this.recibo.operador = this.authentication.getUserName();
+		this.recibo.importeTotal = this.importeTotal;
+		console.log(this.recibo);
+		this.registrarPagoService.postRecibo(this.recibo).subscribe(
+			data=>{
+				console.log(data);
+			}
+		)
 	}
 }
