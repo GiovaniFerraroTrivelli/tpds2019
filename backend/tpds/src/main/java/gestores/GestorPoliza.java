@@ -210,10 +210,10 @@ public class GestorPoliza {
 		poliza.setKmsAnuales(p.getKmAnio());
 		poliza.setDominio(p.getPatente());
 		poliza.setEstadoPoliza(EstadoPoliza.GENERADA);
-		poliza.setPremio(new BigDecimal(100));
-		poliza.setDescuentos(new BigDecimal(100.23));
-		poliza.setPrima(new BigDecimal(100.54));
-		poliza.setDerechoEmision(new BigDecimal(100.65));
+		poliza.setPremio(new BigDecimal("100"));
+		poliza.setDescuentos(new BigDecimal("100.23"));
+		poliza.setPrima(new BigDecimal("100.54"));
+		poliza.setDerechoEmision(new BigDecimal("100.65"));
 
 		Set<Cuota> cuotas = new HashSet<Cuota>();
 		if (p.getModalidadPago().equals("MENSUAL")) {
@@ -222,7 +222,7 @@ public class GestorPoliza {
 				cuota.setFechaVencimiento(java.sql.Date.valueOf(inicioVigencia.minusDays(1).plusMonths(i)));
 				// TODO: Cambiar el importe
 //				cuota.setImporte(Money.of(100, "ARS"));
-				cuota.setImporte(new BigDecimal(100.65));
+				cuota.setImporte(new BigDecimal("100.65"));
 				cuota.setPoliza(poliza);
 
 				cuotas.add(cuota);
@@ -231,7 +231,7 @@ public class GestorPoliza {
 			Cuota cuota = new Cuota();
 			cuota.setFechaVencimiento(java.sql.Date.valueOf(inicioVigencia.minusDays(1)));
 //			cuota.setImporte(Money.of(100, "ARS"));
-			cuota.setImporte(new BigDecimal(100));
+			cuota.setImporte(new BigDecimal("100"));
 			cuota.setPoliza(poliza);
 			cuotas.add(cuota);
 		}

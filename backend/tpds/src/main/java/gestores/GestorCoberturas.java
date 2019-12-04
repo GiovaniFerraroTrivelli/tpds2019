@@ -12,21 +12,23 @@ import excepciones.DatoNoEncontradoException;
 
 public class GestorCoberturas {
 	
-	private static Session session = HibernateUtil.getSession();
 	
 	public static ArrayList<TipoCobertura> getCoberturas() throws DatoNoEncontradoException {
 		
-		 
+		Session session = HibernateUtil.getSession();
 		try {
 			
 			//TODO: Corregir esto con la arquitectura nueva
+			
 			String hql = "FROM TipoCobertura ORDER BY nombre ASC";
 			Query<TipoCobertura> query = session.createQuery(hql);
 			for (TipoCobertura c : query.list()) {
 				//c.setHistorialFactorCobertura(GestorCoberturas.getHistorialFactorCobertura(c.getIdCobertura()));
 			}
+			session.close();
 			return new ArrayList<TipoCobertura>(query.list());
 		} catch (HibernateException e) {
+			session.close();
 			throw new DatoNoEncontradoException();
 		}
 	}
@@ -41,7 +43,7 @@ public class GestorCoberturas {
 	 */
 
 	public static TipoCobertura getCoberturaContraTerceros() throws DatoNoEncontradoException {
-		//Session session = HibernateUtil.getSession();
+		Session session = HibernateUtil.getSession();
 		Query<TipoCobertura> query;
 		TipoCobertura cobertura = null;
 		try {
@@ -59,6 +61,9 @@ public class GestorCoberturas {
 	}
 	
 	public static TipoCobertura getCobertura(Integer id) {
-		return session.get(TipoCobertura.class, id);
+		Session session = HibernateUtil.getSession();
+		TipoCobertura tipoCobertura =  session.get(TipoCobertura.class, id);
+		session.close();
+		return tipoCobertura;
 	}
 }
