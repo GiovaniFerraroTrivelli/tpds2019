@@ -252,6 +252,7 @@ public class GestorPoliza {
 				s.save(cuota);
 			}
 			t.commit();
+			s.close();
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -272,7 +273,12 @@ public class GestorPoliza {
 	}
 	
 	public static Boolean altaPoliza(Poliza p) {
-		p.setNroPoliza(new NumeroPoliza(1,2351,1));
-		return GestorPoliza.savePoliza(p);
+		
+		
+		Boolean result = GestorPoliza.savePoliza(p);
+		p.setNroPoliza(new NumeroPoliza(1,p.getIdPoliza(),1));
+		DaoPoliza.update(p);
+		return result;
 	}
+
 }
