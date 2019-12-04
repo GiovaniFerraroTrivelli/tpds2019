@@ -16,11 +16,7 @@ public class Test {
 
 		try { // Code here:
 
-			Cuota c = s.get(Cuota.class, 1);
-
-			for (Descuento d : c.getDescuentos()) {
-				System.out.println("CONCEPTO: " + d.getConcepto());
-			}
+			
 
 		} catch (Exception e) {
 			tx.rollback();

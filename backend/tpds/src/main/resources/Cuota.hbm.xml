@@ -40,7 +40,7 @@
 			<key>
 				<column name="id_cuota" not-null="true" />
 			</key>
-			<many-to-many entity-name="dominio.Descuento">
+			<many-to-many entity-name="dominio.Recargo">
 				<column name="id_recargo" not-null="true" />
 			</many-to-many>
 		</set>
