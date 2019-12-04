@@ -165,9 +165,9 @@
                             <input class="form-check-input cuotaCheckbox" type="checkbox" value="" [disabled] = "disableCheckbox(row) ? 'disabled' : null" ngModel (ngModelChange)="onChecked($event)">
                         </div>
                     </td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
+                    <td>{{mesCuota(row)}}</td>
+                    <td>{{cuota.importe}}</td>
+                    <td>{{getVencimientoCuota(row)}}</td>
                 </tr>                   
             </tbody>
         </table>
