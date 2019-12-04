@@ -6,6 +6,7 @@ import { Poliza } from '../poliza/poliza';
 import { BusquedaPoliza } from './busquedapoliza';
 import { PolizasRta } from './polizaRespuesta';
 import { respuestaBuscarPoliza } from './respuestaBuscarPoliza';
+import { ResumenPoliza } from '../poliza/resumen-poliza';
 
 @Injectable({
 	providedIn: 'root'
@@ -24,7 +25,6 @@ export class BuscarpolizaService {
 		return this.http.post<respuestaBuscarPoliza>(this.url1, busquedaPoliza, { withCredentials: true });
 	}
 	public getPolizaSeleccionada(idPoliza: number){
-		console.log(this.url2+idPoliza);
-		return this.http.get(this.url2 + "/" + idPoliza, { withCredentials: true });
+		return this.http.get<ResumenPoliza>(this.url2 + "/" + idPoliza, { withCredentials: true });
 	}
 }

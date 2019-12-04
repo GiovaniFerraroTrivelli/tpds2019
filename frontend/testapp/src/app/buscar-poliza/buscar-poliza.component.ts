@@ -13,6 +13,7 @@ import { LoadingService } from '../loading/loading.service';
 import { DatashareService } from '../datashare.service'
 import { PolizasRta } from './polizaRespuesta';
 import { respuestaBuscarPoliza } from './respuestaBuscarPoliza';
+import { ResumenPoliza } from '../poliza/resumen-poliza';
 
 @Component({
 	selector: 'app-buscar-poliza',
@@ -35,7 +36,8 @@ export class BuscarPolizaComponent implements OnInit {
 	private polizaSeleccionada: PolizasRta;
 	private respuestaPolizas: respuestaBuscarPoliza;
 	private busquedaPolizaForm: FormGroup;
-  	private listaPolizas: PolizasRta[];
+	private listaPolizas: PolizasRta[];
+	private resumenPoliza: ResumenPoliza;
 
 	ngOnInit() {
 		this.polizaSeleccionada = null;
@@ -67,7 +69,6 @@ export class BuscarPolizaComponent implements OnInit {
 	      		this.modalService.open(content, { centered: true, size: 'lg' });
 	      		this.respuestaPolizas = data;
 	      		this.listaPolizas = this.respuestaPolizas.polizas;
-	      		console.log(this.respuestaPolizas);
 			},
 			err => {
 				this.loadingService.d();
@@ -101,6 +102,9 @@ export class BuscarPolizaComponent implements OnInit {
 			console.log(this.polizaSeleccionada);
 			this.BuscarpolizaService.getPolizaSeleccionada(this.polizaSeleccionada.idPoliza).subscribe(
 				data=>{
+					this.data.changePolizaMessage(data);
+					this.data.changeNroPoliza(this.polizaSeleccionada.numeroPoliza);
+					this.data.changeNroCliente(this.polizaSeleccionada.numeroCliente);
 				}
 			)
 			this.modalService.dismissAll();

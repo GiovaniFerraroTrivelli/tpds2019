@@ -41,9 +41,9 @@
         <div class="card-body">
             <input class="form-control" type="text" placeholder="Número de póliza" formControlName="numeroPoliza">
             <div class="d-flex flex-row-reverse">
-                <button id='searchBtn' [disabled]="!busquedaPolizaForm.valid" type="submit" class="btn btn-primary p-2">Buscar</button>
+                <button id='searchBtn' [disabled]="!busquedaPolizaForm.valid || !loadingService.isHidden()" type="submit" class="btn btn-primary p-2">Buscar</button>
             </div>
         </div>
-    </div>
+    </div> 
 </div>
   

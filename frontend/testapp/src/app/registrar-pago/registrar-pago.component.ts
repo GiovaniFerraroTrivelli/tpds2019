@@ -5,6 +5,7 @@ import { Cuota } from '../poliza/cuota';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Documento } from '../cliente/documento';
 import { DatashareService } from '../datashare.service'
+import { ResumenPoliza } from '../poliza/resumen-poliza';
 
 @Component({
   selector: 'app-registrar-pago',
@@ -12,24 +13,24 @@ import { DatashareService } from '../datashare.service'
   styleUrls: ['./registrar-pago.component.scss']
 })
 export class RegistrarPagoComponent implements OnInit {
-  private cliente: Cliente;
-  private poliza: Poliza;
   private index: number;
-  //private cuotas: Cuota[];
-  cuotas = [{'asd':'asd'},{'asd':'asd'},{'asd':'asd'}]
+  private resumenPoliza: ResumenPoliza;
+  private cuotas: Cuota[];
+  private nroPoliza: string;
+  private nroCliente: string;
   
   constructor(private modal: NgbModal, private data: DatashareService) { 
     this.index = 0;
-    this.poliza = new Poliza();
-    this.cliente = new Cliente();
-    this.cliente.documento = new Documento();
   }
 
   ngOnInit() {
-    /*this.data.poliza.subscribe( poliza => this.poliza = poliza);
-    this.data.cliente.subscribe( cliente => this.cliente = cliente);
-    console.log(this.poliza);
-    console.log(this.cliente);*/
+    this.data.poliza.subscribe(poliza => this.resumenPoliza = poliza);
+    this.data.nroPoliza.subscribe(nroPoliza => this.nroPoliza = nroPoliza);
+    this.data.nroCliente.subscribe(nroCliente => this.nroCliente = nroCliente);
+    this.cuotas = this.resumenPoliza.cuotas;
+    console.log(this.resumenPoliza);
+    console.log(this.nroPoliza);
+    console.log(this.nroCliente);
   }
 
   disableCheckbox(index){
