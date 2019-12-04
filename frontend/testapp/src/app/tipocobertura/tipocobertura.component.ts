@@ -140,22 +140,39 @@ export class TipocoberturaComponent implements OnInit {
 		this.loadingService.i();
 
 		this.tokenContainer.token = this.token;
-		this.altaPolizaService.postValidarDatos3(this.tokenContainer).subscribe(data => {
-		    this.loadingService.d();
-		    console.log(data);
+		this.altaPolizaService.postValidarDatos3(this.tokenContainer).subscribe(
+			data => {
+			    this.loadingService.d();
+			    console.log(data);
 
-		    if(data === true) {
-				this.dialogService.alert(
-		    		'Póliza agregada',
-		    		'La póliza fue agregada exitosamente al sistema.'
-		    	);
-		    } else {
-				this.dialogService.alert(
-		    		'Error de alta de póliza',
-		    		'Hubo un error al cargar la póliza.'
-		    	);
-		    }
-		});
+			    if(data === true) {
+					this.dialogService.alert(
+			    		'Póliza agregada',
+			    		'La póliza fue agregada exitosamente al sistema.'
+			    	);
+			    } else {
+					this.dialogService.alert(
+			    		'Error de alta de póliza',
+			    		'Hubo un error al cargar la póliza.'
+			    	);
+			    }
+			},
+			err => {
+			    this.loadingService.d();
+				
+				if(err.status == 500) {
+					this.dialogService.alert(
+			    		'Error de alta de póliza',
+			    		err.error.error
+			    	);
+				} else {
+					this.dialogService.alert(
+			    		'Error de alta de póliza',
+			    		err.error.mensaje
+			    	);
+				}
+			}
+		);
 	}
 
 	clearCobertura() {
