@@ -1,5 +1,5 @@
 import { NgForm, FormGroup, FormControl, Validators, AbstractControl, FormBuilder, ValidatorFn, ValidationErrors } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from "@angular/router";
 
@@ -33,11 +33,12 @@ export class BuscarPolizaComponent implements OnInit {
 	) {}
 
 	private busquedaPoliza: BusquedaPoliza;
-	private polizaSeleccionada: PolizasRta;
+	polizaSeleccionada: PolizasRta;
 	private respuestaPolizas: respuestaBuscarPoliza;
-	private busquedaPolizaForm: FormGroup;
+	busquedaPolizaForm: FormGroup;
 	private listaPolizas: PolizasRta[];
-	private resumenPoliza: ResumenPoliza;
+	resumenPoliza: ResumenPoliza;
+	@Output() signal = new EventEmitter<boolean>();
 
 	ngOnInit() {
 		this.polizaSeleccionada = null;
@@ -101,20 +102,12 @@ export class BuscarPolizaComponent implements OnInit {
 		if(this.polizaSeleccionada != null) {
 			this.BuscarpolizaService.getPolizaSeleccionada(this.polizaSeleccionada.idPoliza).subscribe(
 				data=>{
-					this.data.changePolizaMessage(data);
-					this.data.changeNroPoliza(this.polizaSeleccionada.numeroPoliza);
-					this.data.changeNroCliente(this.polizaSeleccionada.numeroCliente);
+					this.resumenPoliza = data;
+					this.signal.emit(true);
 				}
 			)
 			this.modalService.dismissAll();
-			this.router.navigate(['/registrar-pago']);
-			/*this.sendData();*/
 		};
     }
 
-  /*
-	sendData() {
-		this.data.changePolizaMessage(this.polizaSeleccionada);
-		this.data.changeClienteMessage(this.cliente);
-	}*/
 }

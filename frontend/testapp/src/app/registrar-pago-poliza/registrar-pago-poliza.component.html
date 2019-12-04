@@ -3,7 +3,7 @@
 </div>
 
 <div *ngIf="!isCollapsed" class="mt-4">
-	<app-buscar-poliza></app-buscar-poliza>
+	<app-buscar-poliza (signal)="catchSignal($event)"></app-buscar-poliza>
 </div>
 
 <div *ngIf="isCollapsed">
