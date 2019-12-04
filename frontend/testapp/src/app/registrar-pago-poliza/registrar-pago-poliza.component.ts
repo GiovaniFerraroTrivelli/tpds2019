@@ -38,7 +38,7 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 	};
 
 	public title = "Registrar pago de póliza";
-	public isCollapsed: boolean;
+	public page: number;
 	private registrarPagoForm: FormGroup;
 
 	private resumenPoliza: ResumenPoliza;
@@ -56,9 +56,9 @@ export class RegistrarPagoPolizaComponent implements OnInit {
       	private loadingService: LoadingService,
 		private global: GlobalScriptsService
 	) { }
-
+	
 	ngOnInit() {
-		this.isCollapsed = false;
+		this.page = 1;
 		this.titleService.setTitle(this.title);
 
 		this.index = 0;
@@ -75,8 +75,8 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 			this.nroPoliza = this.buscarPolizaComponent.polizaSeleccionada.numeroPoliza;
 			this.nroCliente = this.buscarPolizaComponent.polizaSeleccionada.numeroCliente;
 			this.cuotas = this.resumenPoliza.cuotas;
-
-			this.isCollapsed = true;
+			console.log(this.cuotas);
+			this.page = 2;
 		}
 	}
 
@@ -117,5 +117,8 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 		if(this.importeTotal > this.registrarPagoForm.controls['montoAbonado'].value) {
 			this.registrarPagoForm.controls.montoAbonado.setErrors({ 'incorrect': true });
 		}
+	}
+	cancel(){
+		this.page = 1;
 	}
 }
