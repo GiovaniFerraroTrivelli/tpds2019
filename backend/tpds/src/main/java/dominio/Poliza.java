@@ -44,7 +44,7 @@ public class Poliza {
 	private Usuario usuario;
 	private BigDecimal derechoEmision;
 
-	public class PolizaDTO {
+	public static class PolizaDTO {
 		private Integer idPoliza;
 		private NumeroPoliza nroPoliza;
 		private String nroCliente;

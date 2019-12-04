@@ -16,14 +16,17 @@ import dominio.Cliente;
 import dominio.NumeroCliente;
 
 public class DaoCliente {
+	
+	public static final Session session = HibernateUtil.getSession();
+	
 	public static Cliente getCliente(Integer idCliente) {
-		Session session = HibernateUtil.getSession();
+		//Session session = HibernateUtil.getSession();
 		Cliente cliente = session.get(Cliente.class, idCliente);
 		return cliente;
 	}
 
 	public static void guardarCliente(Cliente c) {
-		Session session = HibernateUtil.getSession();
+		//Session session = HibernateUtil.getSession();
 		Transaction t = session.beginTransaction();
 
 		try {
@@ -37,7 +40,7 @@ public class DaoCliente {
 	}
 
 	public static ArrayList<Cliente> buscarClientes(ParametrosDeBusqueda p) {
-		Session session = HibernateUtil.getSession();
+		//Session session = HibernateUtil.getSession();
 		QueryBuilder qb = new QueryBuilder();
 		Query query = qb.getQuery(p, session);
 
@@ -58,7 +61,7 @@ public class DaoCliente {
 		}
 	}
 	public static Cliente buscarCliente(NumeroCliente n) {
-		Session session = HibernateUtil.getSession();
+		//Session session = HibernateUtil.getSession();
 		/*
 		 * String hql =
 		 * "FROM Cliente C WHERE C.nroCliente.idCliente = :idCliente AND C.nroCliente.idPais = :idPais"
@@ -70,7 +73,7 @@ public class DaoCliente {
 	}
 
 	public static ArrayList<Cliente> consultarClientes(ParametrosDeConsulta p) {
-		Session session = HibernateUtil.getSession();
+		//Session session = HibernateUtil.getSession();
 		QueryBuilder qb = new QueryBuilder();
 		Query query = qb.getQuery(p, session);
 
@@ -91,7 +94,7 @@ public class DaoCliente {
 	}
 
 	public static Long resultados(ParametrosDeBusqueda parametros) {
-		Session session = HibernateUtil.getSession();
+		//Session session = HibernateUtil.getSession();
 		QueryBuilder qb = new QueryBuilder();
 		Query query = qb.getCountQuery(parametros, session);
 		return (Long) query.uniqueResult();

@@ -1,5 +1,7 @@
 package dataAccess;
 
+import java.sql.Connection;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,6 +10,10 @@ import org.hibernate.cfg.Configuration;
 public class HibernateUtil {
 
 	private static final SessionFactory sessionFactory;
+	public static SessionFactory getSessionfactory() {
+		return sessionFactory;
+	}
+
 	private static Session session;
 
 	static {
@@ -21,11 +27,7 @@ public class HibernateUtil {
 	
 	public static Session getSession() throws HibernateException {
 		try {
-			if (session.isOpen()) return session;
-			else {
-				session = sessionFactory.openSession();
-				return session;
-			}
+			return sessionFactory.openSession();
 			
 		} catch (Exception e) {
 			e.printStackTrace();

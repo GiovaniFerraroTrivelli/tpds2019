@@ -197,7 +197,6 @@ public class GestorPoliza {
 		poliza.setHijos(hijos);
 
 		poliza.setTipoCobertura(HibernateUtil.getSession().get(TipoCobertura.class, p.getIdCobertura()));
-		// TODO: Cambiar
 
 		LocalDate inicioVigencia = LocalDate.parse(p.getFechaVigencia());
 		poliza.setInicioVigencia(java.sql.Date.valueOf(inicioVigencia));
@@ -210,13 +209,6 @@ public class GestorPoliza {
 		poliza.setKmsAnuales(p.getKmAnio());
 		poliza.setDominio(p.getPatente());
 		poliza.setEstadoPoliza(EstadoPoliza.GENERADA);
-		
-		
-		//TODO: Revisar hardcode
-//		poliza.setPremio(Money.of(100, "ARS"));
-//		poliza.setDescuentos(Money.of(100, "ARS"));
-//		poliza.setPrima(Money.of(100, "ARS"));
-//		poliza.setDerechoEmision(Money.of(100, "ARS"));
 		poliza.setPremio(new BigDecimal(100));
 		poliza.setDescuentos(new BigDecimal(100));
 		poliza.setPrima(new BigDecimal(100));
