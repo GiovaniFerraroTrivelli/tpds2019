@@ -76,7 +76,6 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 			this.nroCliente = this.buscarPolizaComponent.polizaSeleccionada.numeroCliente;
 			this.cuotas = this.resumenPoliza.cuotas;
 
-			console.log(this.cuotas);
 			this.isCollapsed = true;
 		}
 	}
