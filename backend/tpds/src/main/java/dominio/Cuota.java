@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
-import org.javamoney.moneta.Money;
-
 import enumeradores.EstadoCuota;
 
 public class Cuota implements Comparable<Cuota> {

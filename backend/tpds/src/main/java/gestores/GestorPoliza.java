@@ -12,8 +12,6 @@ import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
-
 import dao.DaoCliente;
 import dao.DaoGeografico;
 import dao.DaoPoliza;

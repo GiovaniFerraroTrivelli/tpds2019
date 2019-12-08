@@ -90,7 +90,6 @@ public class Poliza {
 
 		public ResumenPoliza(Poliza p) {
 
-			try {
 				this.nombreTitular = p.getCliente().getNombre();
 				this.apellidoTitular = p.getCliente().getApellido();
 				this.marca = p.getModelo().getMarca().getNombre();
@@ -103,13 +102,17 @@ public class Poliza {
 				this.sumaAsegurada = p.getModelo().getSumaAsegurada(p.getAnioFabricacion()).toString();
 				this.premio = p.getPremio().toString();
 				this.derechoEmision = (p.getDerechoEmision().toString());
-				this.ultimoDiaPago = GestorPagos.getUltimoPago(p).getFechaHora();
+				try{
+					this.ultimoDiaPago = GestorPagos.getUltimoPago(p).getFechaHora();
+				} catch (NullPointerException e) {
+					
+				}
 				this.montoTotal = p.getMontoTotal().toString();
 				this.formaPago = p.getFormaPago().toString();
 				try {
 					this.tipoCobertura = p.getTipoCobertura().getDTO();
 				} catch (NoHayValorException e) {
-
+					
 				}
 				ArrayList<CuotaDTO> c = new ArrayList<CuotaDTO>();
 				for (Cuota cuota : p.getCuotas()) {
@@ -117,10 +120,153 @@ public class Poliza {
 				}
 				Collections.sort(c);
 				this.cuotas = c;
-			} catch (NullPointerException e) {
-			}
 
 		}
+
+		public String getNombreTitular() {
+			return nombreTitular;
+		}
+
+		public void setNombreTitular(String nombreTitular) {
+			this.nombreTitular = nombreTitular;
+		}
+
+		public String getApellidoTitular() {
+			return apellidoTitular;
+		}
+
+		public void setApellidoTitular(String apellidoTitular) {
+			this.apellidoTitular = apellidoTitular;
+		}
+
+		public String getMarca() {
+			return marca;
+		}
+
+		public void setMarca(String marca) {
+			this.marca = marca;
+		}
+
+		public String getModelo() {
+			return modelo;
+		}
+
+		public void setModelo(String modelo) {
+			this.modelo = modelo;
+		}
+
+		public String getMotor() {
+			return motor;
+		}
+
+		public void setMotor(String motor) {
+			this.motor = motor;
+		}
+
+		public String getChasis() {
+			return chasis;
+		}
+
+		public void setChasis(String chasis) {
+			this.chasis = chasis;
+		}
+
+		public String getPatente() {
+			return patente;
+		}
+
+		public void setPatente(String patente) {
+			this.patente = patente;
+		}
+
+		public Date getInicioVigencia() {
+			return inicioVigencia;
+		}
+
+		public void setInicioVigencia(Date inicioVigencia) {
+			this.inicioVigencia = inicioVigencia;
+		}
+
+		public Date getFinVigencia() {
+			return finVigencia;
+		}
+
+		public void setFinVigencia(Date finVigencia) {
+			this.finVigencia = finVigencia;
+		}
+
+		public String getSumaAsegurada() {
+			return sumaAsegurada;
+		}
+
+		public void setSumaAsegurada(String sumaAsegurada) {
+			this.sumaAsegurada = sumaAsegurada;
+		}
+
+		public String getPremio() {
+			return premio;
+		}
+
+		public void setPremio(String premio) {
+			this.premio = premio;
+		}
+
+		public String getDerechoEmision() {
+			return derechoEmision;
+		}
+
+		public void setDerechoEmision(String derechoEmision) {
+			this.derechoEmision = derechoEmision;
+		}
+
+		public String getDescuentos() {
+			return descuentos;
+		}
+
+		public void setDescuentos(String descuentos) {
+			this.descuentos = descuentos;
+		}
+
+		public Date getUltimoDiaPago() {
+			return ultimoDiaPago;
+		}
+
+		public void setUltimoDiaPago(Date ultimoDiaPago) {
+			this.ultimoDiaPago = ultimoDiaPago;
+		}
+
+		public String getMontoTotal() {
+			return montoTotal;
+		}
+
+		public void setMontoTotal(String montoTotal) {
+			this.montoTotal = montoTotal;
+		}
+
+		public String getFormaPago() {
+			return formaPago;
+		}
+
+		public void setFormaPago(String formaPago) {
+			this.formaPago = formaPago;
+		}
+
+		public TipoCoberturaDTO getTipoCobertura() {
+			return tipoCobertura;
+		}
+
+		public void setTipoCobertura(TipoCoberturaDTO tipoCobertura) {
+			this.tipoCobertura = tipoCobertura;
+		}
+
+		public ArrayList<CuotaDTO> getCuotas() {
+			return cuotas;
+		}
+
+		public void setCuotas(ArrayList<CuotaDTO> cuotas) {
+			this.cuotas = cuotas;
+		}
+		
 
 	}
 	
