@@ -43,7 +43,7 @@
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="basic-addon1">{{ cliente.documento.tipoDocumento }}</span>
 					</div>
-					<input type="text" formControlName="nroDocumento" class="form-control" name="nroDocumento" />
+					<input type="text" [value]="altaPolizaForm.get('nroDocumento').value | number: '' : 'es-AR'" formControlName="nroDocumento" class="form-control" name="nroDocumento" />
 				</div>
 			</div>
 
