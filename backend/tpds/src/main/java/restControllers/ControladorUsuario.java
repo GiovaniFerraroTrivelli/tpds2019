@@ -10,7 +10,7 @@ import gestores.GestorUsuarios;
 import usuarios.Usuario;
 
 @RestController
-@CrossOrigin(origins = "*", allowCredentials = "true")
+@CrossOrigin(origins = "*", allowCredentials = "true", exposedHeaders="Date")
 public class ControladorUsuario {
 
 	@PostMapping("/login")

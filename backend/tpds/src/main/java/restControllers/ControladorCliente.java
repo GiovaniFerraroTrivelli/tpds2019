@@ -25,7 +25,7 @@ import gestores.GestorClientes;
 import usuarios.Usuario;
 
 @RestController
-@CrossOrigin(origins = "*", allowCredentials = "true")
+@CrossOrigin(origins = "*", allowCredentials = "true", exposedHeaders="Date")
 public class ControladorCliente {
 	@PostMapping("/buscarCliente")
 	public ResponseEntity<Object> buscarCliente(@RequestBody ParametrosDeBusqueda parametros, HttpSession session) {

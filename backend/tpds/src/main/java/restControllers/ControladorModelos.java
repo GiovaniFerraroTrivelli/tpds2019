@@ -21,7 +21,7 @@ import enumeradores.Rol;
 
 
 @RestController
-@CrossOrigin(origins = "*", allowCredentials="true")
+@CrossOrigin(origins = "*", allowCredentials = "true", exposedHeaders="Date")
 public class ControladorModelos {
 	
 	

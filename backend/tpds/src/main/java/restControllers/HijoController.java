@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*", allowCredentials = "true", exposedHeaders="Date")
 public class HijoController {
 
 	@GetMapping("/hijos")

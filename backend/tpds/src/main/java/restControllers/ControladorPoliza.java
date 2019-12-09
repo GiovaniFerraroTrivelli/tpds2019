@@ -31,7 +31,7 @@ import gestores.GestorPoliza;
 import usuarios.Usuario;
 
 @RestController
-@CrossOrigin(origins = "*", allowCredentials = "true")
+@CrossOrigin(origins = "*", allowCredentials = "true", exposedHeaders="Date")
 public class ControladorPoliza {
 	@PostMapping("/altaPoliza/1")
 	public ResponseEntity<Object> validarDatos(@RequestBody PolizaDTO p, HttpSession session)

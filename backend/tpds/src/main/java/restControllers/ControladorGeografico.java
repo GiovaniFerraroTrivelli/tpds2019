@@ -18,7 +18,7 @@ import excepciones.DatoNoEncontradoException;
 import gestores.GestorGeografico;
 
 @RestController
-@CrossOrigin(origins = "*", allowCredentials="true")
+@CrossOrigin(origins = "*", allowCredentials = "true", exposedHeaders="Date")
 public class ControladorGeografico {
 
 	@GetMapping("/provincias/{idPais}")
