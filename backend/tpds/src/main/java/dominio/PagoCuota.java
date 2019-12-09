@@ -3,6 +3,8 @@ package dominio;
 import java.math.BigDecimal;
 import java.util.Set;
 
+import dominio.Cuota.CuotaDTO;
+
 public class PagoCuota implements Comparable<PagoCuota> {
 	private Integer idPagoCuota;
 	private Pago pago;
@@ -73,5 +75,12 @@ public class PagoCuota implements Comparable<PagoCuota> {
 		}
 
 		return importeOriginal.add(recargos).subtract(descuentos);
+	}
+	
+	public CuotaDTO getDTO() {
+		CuotaDTO result = this.cuota.getDTO();
+		result.setDescuentos(this.descuentos);
+		result.setRecargos(this.recargos);
+		return result;
 	}
 }

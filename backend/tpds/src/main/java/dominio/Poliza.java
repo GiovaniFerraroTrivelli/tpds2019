@@ -2,7 +2,6 @@ package dominio;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 import org.javamoney.moneta.Money;
@@ -113,12 +112,6 @@ public class Poliza {
 				} catch (NoHayValorException e) {
 					
 				}
-				ArrayList<CuotaDTO> c = new ArrayList<CuotaDTO>();
-				for (Cuota cuota : p.getCuotas()) {
-					c.add(GestorPagos.calcularDescuentosYRecargos(cuota));
-				}
-				Collections.sort(c);
-				this.cuotas = c;
 		}
 
 		public String getNombreTitular() {

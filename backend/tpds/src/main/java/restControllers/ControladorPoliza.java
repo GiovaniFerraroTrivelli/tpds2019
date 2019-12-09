@@ -1,6 +1,8 @@
 package restControllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,11 +17,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import dominio.Poliza.PolizaDTO;
+import dominio.Poliza.ResumenPoliza;
 import dataTransferObjects.TipoCoberturaDTO;
 import dominio.Cliente.Documento;
+import dominio.Cuota.CuotaDTO;
+import dominio.Cuota;
 import dominio.NumeroPoliza;
 import dominio.Pago;
 import dominio.Pago.PagoDTO;
+import dominio.PagoCuota;
 import dominio.Poliza;
 import dominio.TipoCobertura;
 import enumeradores.Rol;
@@ -31,14 +37,14 @@ import gestores.GestorPoliza;
 import usuarios.Usuario;
 
 @RestController
-@CrossOrigin(origins = "*", allowCredentials = "true", exposedHeaders="Date")
+@CrossOrigin(origins = "*", allowCredentials = "true", exposedHeaders = "Date")
 public class ControladorPoliza {
 	@PostMapping("/altaPoliza/1")
 	public ResponseEntity<Object> validarDatos(@RequestBody PolizaDTO p, HttpSession session)
 			throws NoHayValorException, DatoNoEncontradoException {
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
-		if (usuario==null) return new ResponseEntity<>(new Error("No está autenticado en el sistema"),
-				HttpStatus.FORBIDDEN);
+		if (usuario == null)
+			return new ResponseEntity<>(new Error("No está autenticado en el sistema"), HttpStatus.FORBIDDEN);
 		if (usuario.getRol() != Rol.ProductorDeSeguros)
 			return new ResponseEntity<>(new Error("No tiene permisos para realizar esta operación"),
 					HttpStatus.FORBIDDEN);
@@ -77,44 +83,38 @@ public class ControladorPoliza {
 
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
-	public static class Token{
-		public String token;
-		
-		public Token() {
-			this.token = RandomStringUtils.random(32, true, true);
-		}
-		public Token(String arg) {
-			token = arg;
-		}
-	}
+
+
+
 	@PostMapping("/altaPoliza/confirmar")
-	public ResponseEntity<Object> confirmarAltaPoliza(@RequestBody Token token, HttpSession session){
-		
+	public ResponseEntity<Object> confirmarAltaPoliza(@RequestBody Token token, HttpSession session) {
+
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		if (usuario.getRol() != Rol.ProductorDeSeguros)
 			return new ResponseEntity<>(new Error("No tiene permisos para realizar esta operación"),
 					HttpStatus.FORBIDDEN);
-		
+
 		Poliza poliza = (Poliza) session.getAttribute(token.token);
-		if (poliza == null) return new ResponseEntity<>(new Error("No existe una póliza a confirmar en el contexto"), HttpStatus.BAD_REQUEST);
+		if (poliza == null)
+			return new ResponseEntity<>(new Error("No existe una póliza a confirmar en el contexto"),
+					HttpStatus.BAD_REQUEST);
 		Boolean result = GestorPoliza.altaPoliza(poliza);
 		session.removeAttribute(token.token);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	public static class NroPoliza{
+	public static class NroPoliza {
 		public String numeroPoliza;
-		
+
 		public void setNumeroPoliza(String numero) {
 			this.numeroPoliza = numero;
 		}
 	}
-	
-	public static class RespuestaBuscarPoliza{
+
+	public static class RespuestaBuscarPoliza {
 		public ArrayList<EntradaListado> polizas;
 	}
-	
+
 	@PostMapping("/buscarPoliza")
 	public ResponseEntity<Object> buscarPolizas(@RequestBody NroPoliza nroPoliza, HttpSession session) {
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
@@ -124,15 +124,16 @@ public class ControladorPoliza {
 		if (!(usuario.getRol() == Rol.ProductorDeSeguros) && !(usuario.getRol() == Rol.Cobrador))
 			return new ResponseEntity<>(new Error("No tiene permisos suficientes para realizar esta operación"),
 					HttpStatus.FORBIDDEN);
-		if (nroPoliza.numeroPoliza.length() != 13) return new ResponseEntity<>(new Error("No se indicó un número de póliza válido (debe tener exactamente 13 dígitos"),
-				HttpStatus.BAD_REQUEST);
+		if (nroPoliza.numeroPoliza.length() != 13)
+			return new ResponseEntity<>(
+					new Error("No se indicó un número de póliza válido (debe tener exactamente 13 dígitos"),
+					HttpStatus.BAD_REQUEST);
 
 		ArrayList<Poliza> polizas = GestorPoliza.buscarPoliza(nroPoliza.numeroPoliza);
-		
-		
+
 		ArrayList<EntradaListado> lista = new ArrayList<>();
 		for (Poliza p : polizas) {
-			EntradaListado e =new EntradaListado();
+			EntradaListado e = new EntradaListado();
 			e.setApellidoCliente(p.getCliente().getApellido());
 			e.setNombreCliente(p.getCliente().getNombre());
 			e.setNumeroCliente(p.getCliente().nroCliente());
@@ -141,18 +142,19 @@ public class ControladorPoliza {
 			e.setDocumento(p.getCliente().getDocumento());
 			e.setIdPoliza(p.getIdPoliza());
 			Pago pago = GestorPagos.getUltimoPago(p);
-			if (pago != null) e.setUltimoPago(pago.getDTO());
+			if (pago != null)
+				e.setUltimoPago(pago.getDTO());
 			lista.add(e);
 		}
-		
+
 		RespuestaBuscarPoliza respuesta = new RespuestaBuscarPoliza();
 		respuesta.polizas = lista;
-		
+
 		return new ResponseEntity<>(respuesta, HttpStatus.OK);
 	}
-	
+
 	@SuppressWarnings("unused")
-	private class EntradaListado{
+	private class EntradaListado {
 		private Integer idPoliza;
 		private String numeroPoliza;
 		private String nombreCliente;
@@ -160,55 +162,67 @@ public class ControladorPoliza {
 		private String numeroCliente;
 		private Documento documento;
 		private PagoDTO ultimoPago;
-		
-		
+
 		public Integer getIdPoliza() {
 			return idPoliza;
 		}
+
 		public void setIdPoliza(Integer idPoliza) {
 			this.idPoliza = idPoliza;
 		}
+
 		public String getNumeroPoliza() {
 			return numeroPoliza;
 		}
+
 		public void setNumeroPoliza(NumeroPoliza numeroPoliza2) {
 			this.numeroPoliza = numeroPoliza2.toString();
 		}
+
 		public String getNombreCliente() {
 			return nombreCliente;
 		}
+
 		public void setNombreCliente(String nombreCliente) {
 			this.nombreCliente = nombreCliente;
 		}
+
 		public String getApellidoCliente() {
 			return apellidoCliente;
 		}
+
 		public void setApellidoCliente(String apellidoCliente) {
 			this.apellidoCliente = apellidoCliente;
 		}
+
 		public Documento getDocumento() {
 			return documento;
 		}
+
 		public void setDocumento(Documento documento) {
 			this.documento = documento;
 		}
+
 		public PagoDTO getUltimoPago() {
 			return ultimoPago;
 		}
+
 		public void setUltimoPago(PagoDTO ultimoPago) {
 			this.ultimoPago = ultimoPago;
 		}
+
 		public String getNumeroCliente() {
 			return numeroCliente;
 		}
+
 		public void setNumeroCliente(String numeroCliente) {
 			this.numeroCliente = numeroCliente;
 		}
-		
+
 	}
-	
+
 	@GetMapping("/poliza/{idPoliza}")
-	public ResponseEntity<Object> getPoliza(@PathVariable("idPoliza") Integer idPoliza, HttpSession session){
+	public ResponseEntity<Object> getPoliza(@PathVariable("idPoliza") Integer idPoliza, HttpSession session) {
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		if (usuario == null)
 			return new ResponseEntity<>(new Error("No se encuentra autenticado en el sistema"), HttpStatus.FORBIDDEN);
@@ -216,14 +230,29 @@ public class ControladorPoliza {
 		if (!(usuario.getRol() == Rol.ProductorDeSeguros) && !(usuario.getRol() == Rol.Cobrador))
 			return new ResponseEntity<>(new Error("No tiene permisos suficientes para realizar esta operación"),
 					HttpStatus.FORBIDDEN);
-		
+
 		Poliza poliza = GestorPoliza.getPoliza(idPoliza);
+		session.setAttribute("poliza", poliza);
+
+		Pago pago = new Pago();
 		
-		if (poliza == null) return new ResponseEntity<>(new Error("La poliza solicitada no existe"),
-				HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(poliza.getResumenPoliza(),
-				HttpStatus.OK);
+		ResumenPoliza resumen = poliza.getResumenPoliza();
+		ArrayList<CuotaDTO> cuotasDTO = new ArrayList<>();
+		
+		HashSet<PagoCuota> pagoCuota = new HashSet<>();
+		for (Cuota cuota : poliza.getCuotas()) {
+			PagoCuota pC = GestorPagos.calcularDescuentosYRecargos(cuota);
+			pagoCuota.add(pC);
+			cuotasDTO.add(pC.getDTO());
+		}
+		Collections.sort(cuotasDTO);
+		resumen.setCuotas(cuotasDTO);
+		pago.setCuotas(pagoCuota);
+		session.setAttribute("pago", pago);
+		
+		
+		if (poliza == null)
+			return new ResponseEntity<>(new Error("La poliza solicitada no existe"), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(resumen, HttpStatus.OK);
 	}
 }
-
-
