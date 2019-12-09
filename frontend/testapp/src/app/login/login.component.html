@@ -13,7 +13,7 @@
 			<input type="password" formControlName="password" class="form-control" placeholder="Contraseña" name="password" />
 		</div>
 		<div class="form-group">
-			<button type="submit" [disabled]="!this.loginForm.valid" class="btn btn-primary btn-block">Iniciar sesión</button>
+			<button type="submit" [disabled]="!loginForm.valid || !loadingService.isHidden()" class="btn btn-primary btn-block">Iniciar sesión</button>
 		</div>
 	</form>
 </div>

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
+import { LoadingService } from '../loading/loading.service';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { UserLogin } from './user-login';
 
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit {
 	constructor(
 		private router: Router,
 		private loginService: AuthenticationService,
+		private loadingService: LoadingService,
 		private titleService: Title
 	) { }
 
@@ -42,8 +44,11 @@ export class LoginComponent implements OnInit {
 	get password() { return this.loginForm.get('password'); }
 
 	onSubmit(f : NgForm) {
+		this.loadingService.i();
+
 		this.loginService.authenticate(f.value).subscribe(
 			result => {
+				this.loadingService.d();
 				sessionStorage.clear();
 				
 				sessionStorage.setItem('nombreUsuario', result.nombreUsuario);
@@ -52,14 +57,17 @@ export class LoginComponent implements OnInit {
 				sessionStorage.setItem('email', result.email);
 				sessionStorage.setItem('rol', result.rol);
 
-				console.log(result);
 				this.router.navigate(['']);
 				this.invalidLogin = false;
 			},
 		    err => {
+		    	this.loadingService.d();
 		    	console.log(err);
 				this.invalidLogin = true;
-		    	this.error = err.error.mensaje;
+
+		    	this.error = err.status ?
+		    		err.error.mensaje : 
+		    		"El sistema receptor de peticiones no se está ejecutando. Intente nuevamente en unos minutos.";
 		    }
 		);
 	}
