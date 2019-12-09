@@ -15,6 +15,8 @@ import { Documento } from '../cliente/documento';
 import { ResumenPoliza } from '../poliza/resumen-poliza';
 import { Recibo } from './recibo';
 import { RegistrarPagoService } from './registrar-pago.service';
+import { RequestMontoTotal } from './requestMontoTotal';
+import { RequestVuelto } from './requestVuelto';
 
 @Component({
   selector: 'app-registrar-pago-poliza',
@@ -53,6 +55,8 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 	private vencimientoCuota: string;
 	private importeTotal: number;
 	private recibo: Recibo;
+	private requestMontoTotal: RequestMontoTotal;
+	private requestVuelto: RequestVuelto;
 
 	constructor(
 		private titleService: Title,
@@ -66,7 +70,8 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 	ngOnInit() {
 		this.page = 1;
 		this.titleService.setTitle(this.title);
-
+		this.requestMontoTotal = new RequestMontoTotal();
+		this.requestMontoTotal.idsCuotasAPagar = [];
 		this.index = 0;
 		this.importeTotal = 0;
 
@@ -83,6 +88,7 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 
 	catchSignal(event) {
 		if(event) {
+			this.requestMontoTotal.idPoliza = this.buscarPolizaComponent.polizaSeleccionada.idPoliza;
 			this.resumenPoliza = this.buscarPolizaComponent.resumenPoliza;
 			this.nroPoliza = this.buscarPolizaComponent.polizaSeleccionada.numeroPoliza;
 			this.nroCliente = this.buscarPolizaComponent.polizaSeleccionada.numeroCliente;
@@ -138,7 +144,7 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 		this.page = 1;
 	}
 	abonar(){
-		this.recibo.numeroPoliza = this.nroPoliza;
+		/*this.recibo.idPoliza = this.buscarPolizaComponent.polizaSeleccionada.idPoliza;
 		let now = new Date();
 		this.recibo.fecha = now.toISOString().toString();
 		for (let i = 0; i < this.index; i++){
@@ -148,6 +154,16 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 		this.recibo.importeTotal = this.importeTotal;
 		console.log(this.recibo);
 		this.registrarPagoService.postRecibo(this.recibo).subscribe(
+			data=>{
+				console.log(data);
+			}
+		)*/
+		for (let i = 0; i < this.index; i++){
+			this.requestMontoTotal.idsCuotasAPagar.push(i);
+		}
+		console.log(this.requestMontoTotal.idPoliza)
+		console.log(this.requestMontoTotal.idsCuotasAPagar)
+		this.registrarPagoService.postCalcularImporte(this.requestMontoTotal).subscribe(
 			data=>{
 				console.log(data);
 			}

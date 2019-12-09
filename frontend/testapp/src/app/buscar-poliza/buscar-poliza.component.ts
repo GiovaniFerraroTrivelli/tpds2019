@@ -119,6 +119,7 @@ export class BuscarPolizaComponent implements OnInit {
 			)
 			this.modalService.dismissAll();
 		};
+		console.log(this.polizaSeleccionada.idPoliza)
     }
     cancelarBusqueda() {
 		this.dialogService.confirm(

@@ -1,7 +1,7 @@
 import { Cuota } from '../poliza/cuota';
 
 export class Recibo{
-    numeroPoliza: string;
+    idPoliza: number;
     fecha: string;
     cuotas: Cuota[];
     operador: string;
