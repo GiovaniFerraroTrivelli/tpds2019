@@ -77,25 +77,6 @@ public class ControladorPoliza {
 
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-
-//	@PostMapping("/altaPoliza/3")
-//	public ResponseEntity<Object> altaPoliza(@RequestBody PolizaDTO p, HttpSession session) {
-//		Usuario usuario = (Usuario) session.getAttribute("usuario");
-//		if (usuario.getRol() != Rol.ProductorDeSeguros)
-//			return new ResponseEntity<>(new Error("No tiene permisos para realizar esta operación"),
-//					HttpStatus.FORBIDDEN);
-//
-//		RespuestaResumenPoliza result = new RespuestaResumenPoliza();
-//		ArrayList<Error> errores = GestorPoliza.validarDatos(p);
-//		result.setErrores(errores);
-//		if (!errores.isEmpty())
-//			return new ResponseEntity<>(result, HttpStatus.OK);
-//
-//		Poliza polizaPreviaGenerada = (Poliza) session.getAttribute(p.getToken());
-//
-//		Boolean resultSave = GestorPoliza.savePoliza(polizaPreviaGenerada);
-//		return new ResponseEntity<>(resultSave, HttpStatus.OK);
-//	}
 	
 	public static class Token{
 		public String token;
@@ -138,7 +119,7 @@ public class ControladorPoliza {
 	public ResponseEntity<Object> buscarPolizas(@RequestBody NroPoliza nroPoliza, HttpSession session) {
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		if (usuario == null)
-			return new ResponseEntity(new Error("No se encuentra autenticado en el sistema"), HttpStatus.FORBIDDEN);
+			return new ResponseEntity<>(new Error("No se encuentra autenticado en el sistema"), HttpStatus.FORBIDDEN);
 
 		if (!(usuario.getRol() == Rol.ProductorDeSeguros) && !(usuario.getRol() == Rol.Cobrador))
 			return new ResponseEntity<>(new Error("No tiene permisos suficientes para realizar esta operación"),
@@ -170,6 +151,7 @@ public class ControladorPoliza {
 		return new ResponseEntity<>(respuesta, HttpStatus.OK);
 	}
 	
+	@SuppressWarnings("unused")
 	private class EntradaListado{
 		private Integer idPoliza;
 		private String numeroPoliza;

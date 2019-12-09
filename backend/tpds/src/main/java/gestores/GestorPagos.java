@@ -17,6 +17,7 @@ public class GestorPagos {
 	}
 	
 	public static Boolean altaPago(ArrayList<Cuota> cuotas) {
+		
 		return null;
 	}
 

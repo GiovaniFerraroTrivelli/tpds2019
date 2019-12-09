@@ -1,9 +1,11 @@
 package dominio;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
+import dominio.Cuota.CuotaDTO;
 import usuarios.Usuario;
 
 
@@ -70,12 +72,18 @@ public class Pago implements Comparable<Pago> {
 		PagoDTO pago = new PagoDTO();
 		pago.setFechaHora(this.fechaHora);
 		pago.setImporte(this.importe);
+		ArrayList<CuotaDTO> cuotasPagadas = new ArrayList<>();
+		for (PagoCuota pagoCuota : this.cuotas) {
+			cuotasPagadas.add(pagoCuota.getCuota().getDTO());
+		}
+		pago.setIdsCuotasPagadas(cuotasPagadas);
 		return pago;
 	}
 
 	public class PagoDTO {
 		private Date fechaHora;
 		private BigDecimal importe;
+		private ArrayList<CuotaDTO> idsCuotasPagadas;
 
 		public Date getFechaHora() {
 			return fechaHora;
@@ -91,6 +99,14 @@ public class Pago implements Comparable<Pago> {
 
 		public void setImporte(BigDecimal importe) {
 			this.importe = importe;
+		}
+
+		public ArrayList<CuotaDTO> getIdsCuotasPagadas() {
+			return idsCuotasPagadas;
+		}
+
+		public void setIdsCuotasPagadas(ArrayList<CuotaDTO> idsCuotasPagadas) {
+			this.idsCuotasPagadas = idsCuotasPagadas;
 		}
 		
 	}

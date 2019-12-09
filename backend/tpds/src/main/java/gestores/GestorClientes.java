@@ -90,7 +90,6 @@ public class GestorClientes {
 	public static Long resultados(ParametrosDeBusqueda parametros) {
 		return DaoCliente.resultados(parametros);
 	}
-	
 
 	public static void actualizarCondicionCliente(Cliente c) {
 		if (clienteNormal(c)) {
@@ -100,7 +99,7 @@ public class GestorClientes {
 		else if (clientePlata(c)) {
 			c.setCondicionCliente(CondicionCliente.Plata);
 		}
-		
+
 	}
 
 	private static Boolean clienteNormal(Cliente c) {
@@ -152,7 +151,6 @@ public class GestorClientes {
 				}
 			}
 		}
-
 		return clienteActivo(c);
 	}
 
@@ -169,16 +167,12 @@ public class GestorClientes {
 					innerFlag = true;
 				}
 			}
-
 			if (innerFlag) {
 				i++;
-			}
-
-			else {
+			} else {
 				flag = false;
 			}
 		}
-
 		return flag;
 
 	}

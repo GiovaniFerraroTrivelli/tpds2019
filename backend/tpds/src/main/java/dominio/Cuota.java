@@ -53,6 +53,7 @@ public class Cuota implements Comparable<Cuota> {
 		CuotaDTO cuotaDTO = new CuotaDTO();
 		cuotaDTO.setFechaVencimiento(this.fechaVencimiento);
 		cuotaDTO.setImporte(this.importe.toString());
+		cuotaDTO.setEstadoCuota(this.estadoCuota);
 		return cuotaDTO;
 	}
 
@@ -73,6 +74,7 @@ public class Cuota implements Comparable<Cuota> {
 	public class CuotaDTO implements Comparable<CuotaDTO> {
 		private String importe;
 		private Date fechaVencimiento;
+		private EstadoCuota estadoCuota;
 		private Set<Descuento> descuentos;
 		private Set<Recargo> recargos;
 
@@ -111,6 +113,14 @@ public class Cuota implements Comparable<Cuota> {
 		@Override
 		public int compareTo(CuotaDTO o) {
 			return this.fechaVencimiento.compareTo(o.getFechaVencimiento());
+		}
+
+		public EstadoCuota getEstadoCuota() {
+			return estadoCuota;
+		}
+
+		public void setEstadoCuota(EstadoCuota estadoCuota) {
+			this.estadoCuota = estadoCuota;
 		}
 
 	}

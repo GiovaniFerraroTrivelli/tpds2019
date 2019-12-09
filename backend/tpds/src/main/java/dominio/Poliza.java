@@ -645,7 +645,7 @@ public class Poliza {
 	}
 
 	public Set<Pago> getPagos() {
-		return pagos;
+		return this.pagos;
 	}
 
 	public void setPagos(Set<Pago> pagos) {
