@@ -12,8 +12,6 @@ public class Cuota implements Comparable<Cuota> {
 	private BigDecimal importe;
 	private Date fechaVencimiento;
 	private EstadoCuota estadoCuota;
-	private Set<Descuento> descuentos;
-	private Set<Recargo> recargos;
 
 	public Cuota() {
 
@@ -55,8 +53,6 @@ public class Cuota implements Comparable<Cuota> {
 		CuotaDTO cuotaDTO = new CuotaDTO();
 		cuotaDTO.setFechaVencimiento(this.fechaVencimiento);
 		cuotaDTO.setImporte(this.importe.toString());
-		cuotaDTO.setDescuentos(this.descuentos);
-		cuotaDTO.setRecargos(this.recargos);
 		return cuotaDTO;
 	}
 
@@ -72,22 +68,6 @@ public class Cuota implements Comparable<Cuota> {
 
 	public void setEstadoCuota(EstadoCuota estadoCuota) {
 		this.estadoCuota = estadoCuota;
-	}
-
-	public Set<Descuento> getDescuentos() {
-		return descuentos;
-	}
-
-	public void setDescuentos(Set<Descuento> descuentos) {
-		this.descuentos = descuentos;
-	}
-
-	public Set<Recargo> getRecargos() {
-		return recargos;
-	}
-
-	public void setRecargos(Set<Recargo> recargos) {
-		this.recargos = recargos;
 	}
 
 	public class CuotaDTO implements Comparable<CuotaDTO> {

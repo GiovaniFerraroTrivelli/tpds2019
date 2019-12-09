@@ -4,8 +4,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import dataAccess.HibernateUtil;
-import dominio.Cuota;
-import dominio.Descuento;
 
 public class Test {
 

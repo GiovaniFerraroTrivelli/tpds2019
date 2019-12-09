@@ -15,8 +15,28 @@
 			<column name="id_pago" not-null="true" />
 		</many-to-one>
 
-		<property name="recargoMora" column="recargo_mora" />
-		<property name="bonificacionPagoAdelentado" column="bonificacion_pago_adelentado" />
 		<one-to-one name="cuota" class="dominio.Cuota" cascade="save-update"></one-to-one>
+		
+		<set name="descuentos" table="descuentos_pago_cuota" inverse="false"
+			lazy="true" fetch="select" cascade="all">
+			<key>
+				<column name="id_pago_cuota" not-null="true" />
+			</key>
+			<many-to-many entity-name="dominio.Descuento">
+				<column name="id_descuento" not-null="true" />
+			</many-to-many>
+		</set>
+
+		<set name="recargos" table="recargos_pago_cuota" inverse="false"
+			lazy="true" fetch="select" cascade="all">
+			<key>
+				<column name="id_pago_cuota" not-null="true" />
+			</key>
+			<many-to-many entity-name="dominio.Recargo">
+				<column name="id_recargo" not-null="true" />
+			</many-to-many>
+		</set>
+		
+		
 	</class>
 </hibernate-mapping>

@@ -1,13 +1,14 @@
 package dominio;
 
-import org.javamoney.moneta.Money;
+import java.math.BigDecimal;
+import java.util.Set;
 
 public class PagoCuota implements Comparable<PagoCuota> {
 	private Integer idPagoCuota;
 	private Pago pago;
 	private Cuota cuota;
-	private Money recargoMora;
-	private Money bonificacionPagoAdelentado;
+	private Set<Descuento> descuentos;
+	private Set<Recargo> recargos;
 
 	@Override
 	public int compareTo(PagoCuota o) {
@@ -38,19 +39,39 @@ public class PagoCuota implements Comparable<PagoCuota> {
 		this.cuota = cuota;
 	}
 
-	public Money getRecargoMora() {
-		return recargoMora;
+	public Set<Descuento> getDescuentos() {
+		return descuentos;
 	}
 
-	public void setRecargoMora(Money recargoMora) {
-		this.recargoMora = recargoMora;
+	public void setDescuentos(Set<Descuento> descuentos) {
+		this.descuentos = descuentos;
 	}
 
-	public Money getBonificacionPagoAdelentado() {
-		return bonificacionPagoAdelentado;
+	public Set<Recargo> getRecargos() {
+		return recargos;
 	}
 
-	public void setBonificacionPagoAdelentado(Money bonificacionPagoAdelentado) {
-		this.bonificacionPagoAdelentado = bonificacionPagoAdelentado;
+	public void setRecargos(Set<Recargo> recargos) {
+		this.recargos = recargos;
+	}
+
+	public BigDecimal importeOrigina() {
+		return this.cuota.getImporte();
+	}
+
+	public BigDecimal importeFinal() {
+		BigDecimal importeOriginal = this.cuota.getImporte();
+		BigDecimal descuentos = new BigDecimal(0);
+		BigDecimal recargos = new BigDecimal(0);
+
+		for (Descuento d : this.descuentos) {
+			descuentos.add(importeOriginal.multiply(new BigDecimal(d.getFactor())));
+		}
+
+		for (Recargo r : this.recargos) {
+			recargos.add(importeOriginal.multiply(new BigDecimal(r.getFactor())));
+		}
+
+		return importeOriginal.add(recargos).subtract(descuentos);
 	}
 }

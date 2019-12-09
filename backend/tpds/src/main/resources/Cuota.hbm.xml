@@ -25,26 +25,6 @@
 			</type>
 		</property>
 
-		<set name="descuentos" table="descuentos_cuotas" inverse="false"
-			lazy="true" fetch="select" cascade="all">
-			<key>
-				<column name="id_cuota" not-null="true" />
-			</key>
-			<many-to-many entity-name="dominio.Descuento">
-				<column name="id_descuento" not-null="true" />
-			</many-to-many>
-		</set>
-
-		<set name="recargos" table="recargos_cuotas" inverse="false"
-			lazy="true" fetch="select" cascade="all">
-			<key>
-				<column name="id_cuota" not-null="true" />
-			</key>
-			<many-to-many entity-name="dominio.Recargo">
-				<column name="id_recargo" not-null="true" />
-			</many-to-many>
-		</set>
-
 
 	</class>
 </hibernate-mapping>
