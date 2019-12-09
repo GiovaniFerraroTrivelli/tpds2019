@@ -7,6 +7,7 @@ import java.util.Set;
 import org.javamoney.moneta.Money;
 import dataTransferObjects.TipoCoberturaDTO;
 import dominio.Cuota.CuotaDTO;
+import enumeradores.EstadoCuota;
 import enumeradores.EstadoPoliza;
 import enumeradores.FormaPago;
 import excepciones.NoHayValorException;
@@ -40,8 +41,6 @@ public class Poliza {
 	private BigDecimal premio;
 	private Usuario usuario;
 	private BigDecimal derechoEmision;
-
-	
 
 	public static class ResumenPoliza {
 		private String nombreTitular;
@@ -89,29 +88,29 @@ public class Poliza {
 
 		public ResumenPoliza(Poliza p) {
 
-				this.nombreTitular = p.getCliente().getNombre();
-				this.apellidoTitular = p.getCliente().getApellido();
-				this.marca = p.getModelo().getMarca().getNombre();
-				this.modelo = p.getModelo().getNombre();
-				this.motor = p.getMotor();
-				this.chasis = p.getChasis();
-				this.patente = p.getDominio();
-				this.inicioVigencia = p.getInicioVigencia();
-				this.finVigencia = p.getFinVigencia();
-				this.sumaAsegurada = p.getModelo().getSumaAsegurada(p.getAnioFabricacion()).toString();
-				this.premio = p.getPremio().toString();
-				this.derechoEmision = (p.getDerechoEmision().toString());
-				try{
-					this.ultimoDiaPago = GestorPagos.getUltimoPago(p).getFechaHora();
-				} catch (NullPointerException e) {
-				}
-				this.montoTotal = p.getMontoTotal().toString();
-				this.formaPago = p.getFormaPago().toString();
-				try {
-					this.tipoCobertura = p.getTipoCobertura().getDTO();
-				} catch (NoHayValorException e) {
-					
-				}
+			this.nombreTitular = p.getCliente().getNombre();
+			this.apellidoTitular = p.getCliente().getApellido();
+			this.marca = p.getModelo().getMarca().getNombre();
+			this.modelo = p.getModelo().getNombre();
+			this.motor = p.getMotor();
+			this.chasis = p.getChasis();
+			this.patente = p.getDominio();
+			this.inicioVigencia = p.getInicioVigencia();
+			this.finVigencia = p.getFinVigencia();
+			this.sumaAsegurada = p.getModelo().getSumaAsegurada(p.getAnioFabricacion()).toString();
+			this.premio = p.getPremio().toString();
+			this.derechoEmision = (p.getDerechoEmision().toString());
+			try {
+				this.ultimoDiaPago = GestorPagos.getUltimoPago(p).getFechaHora();
+			} catch (NullPointerException e) {
+			}
+			this.montoTotal = p.getMontoTotal().toString();
+			this.formaPago = p.getFormaPago().toString();
+			try {
+				this.tipoCobertura = p.getTipoCobertura().getDTO();
+			} catch (NoHayValorException e) {
+
+			}
 		}
 
 		public String getNombreTitular() {
@@ -257,10 +256,9 @@ public class Poliza {
 		public void setCuotas(ArrayList<CuotaDTO> cuotas) {
 			this.cuotas = cuotas;
 		}
-		
 
 	}
-	
+
 	public static class PolizaDTO {
 		private Integer idPoliza;
 		private NumeroPoliza nroPoliza;
@@ -681,6 +679,15 @@ public class Poliza {
 
 	public void setDerechoEmision(BigDecimal derechoEmision) {
 		this.derechoEmision = derechoEmision;
+	}
+
+	public Boolean moroso() {
+		for (Cuota c : this.cuotas) {
+			if (c.getEstadoCuota() == EstadoCuota.MORA) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

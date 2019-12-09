@@ -7,6 +7,7 @@ import java.time.Period;
 import java.time.Year;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -97,7 +98,7 @@ public class GestorPoliza {
 		ArrayList<Error> errores = new ArrayList<>();
 		if (nroCliente == null)
 			errores.add(new Error("Falta definir el cliente o el numero de cliente no es válido"));
-		else if (! nroCliente.matches("[0-9]{10}"))
+		else if (!nroCliente.matches("[0-9]{10}"))
 			errores.add(new Error("El numero de cliente no es válido"));
 		else if (DaoCliente.buscarCliente(new NumeroCliente(nroCliente)) == null)
 			errores.add(new Error("No existe el cliente especificado"));
@@ -160,7 +161,7 @@ public class GestorPoliza {
 	private static ArrayList<Error> validarPatente(String patente) {
 		ArrayList<Error> errores = new ArrayList<>();
 		if (patente != null) {
-			patente = patente.toUpperCase().replaceAll("\\s","");
+			patente = patente.toUpperCase().replaceAll("\\s", "");
 			if (!patente.matches("([A-Z]{2}[0-9]{3}[A-Z]{2})|([A-Z]{3}[0-9]{3})"))
 				errores.add(new Error("El dominio ingresado no se corresponde con formato válido"));
 			else if (existePolizaConPatente(patente))
@@ -327,6 +328,48 @@ public class GestorPoliza {
 		DaoPoliza.update(p);
 		GestorClientes.actualizarCondicionCliente(p.getCliente());
 		return result;
+	}
+
+	@SuppressWarnings("incomplete-switch")
+	public static void actualizarPolizas() {
+		ArrayList<Poliza> polizas = new ArrayList<Poliza>(DaoPoliza.getAllPolizas());
+
+		for (Poliza p : polizas) {
+			switch (p.getEstadoPoliza()) {
+			case GENERADA: {
+				Date today = new Date();
+				if (today.after(p.getInicioVigencia())) {
+					if (p.moroso()) {
+						p.setEstadoPoliza(EstadoPoliza.SUSPENDIDA);
+					} else {
+						p.setEstadoPoliza(EstadoPoliza.VIGENTE);
+					}
+				}
+				break;
+			}
+
+			case VIGENTE: {
+				if (p.moroso()) {
+					p.setEstadoPoliza(EstadoPoliza.SUSPENDIDA);
+				}
+				break;
+			}
+
+			case SUSPENDIDA: {
+				if (!p.moroso()) {
+					p.setEstadoPoliza(EstadoPoliza.VIGENTE);
+				}
+				break;
+			}
+			}
+
+			Date today = new Date();
+			if (today.after(p.getFinVigencia())) {
+				p.setEstadoPoliza(EstadoPoliza.FINALIZADA);
+			}
+		}
+
+		DaoPoliza.actualizarPolizas(polizas);
 	}
 
 }

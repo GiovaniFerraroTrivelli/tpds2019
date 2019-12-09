@@ -58,7 +58,18 @@ public class DaoPoliza {
 		} catch (Exception e) {
 		}
 		return polizas;
-		
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public static ArrayList<Poliza> getAllPolizas() {
+		ArrayList<Poliza> polizas = new ArrayList<>();
+		try {
+			Query<Poliza> query = session.createQuery("FROM Poliza");
+			polizas.addAll(query.list());
+		} catch (Exception e) {
+		}
+		return polizas;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -117,5 +128,19 @@ public class DaoPoliza {
 
 		TipoCobertura tipoCobertura = session.get(TipoCobertura.class, id);
 		return tipoCobertura;
+	}
+
+	public static void actualizarPolizas(ArrayList<Poliza> polizas) {
+		Transaction tx = session.beginTransaction();
+		Integer count = 0;
+		for (Poliza p : polizas) {
+			session.update(p);
+			count++;
+			if (count == 1000) {
+				count = 0;
+				tx.commit();
+			}
+		}
+		tx.commit();
 	}
 }
