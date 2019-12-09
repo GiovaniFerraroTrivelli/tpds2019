@@ -19,6 +19,19 @@ public class Pago implements Comparable<Pago> {
 	private Recibo recibo;
 	private Set<PagoCuota> cuotas;
 
+	public Pago() {
+		super();
+	}
+	public Pago(Pago pago) {
+		super();
+		this.fechaHora = pago.getFechaHora();
+		this.usuario = pago.getUsuario();
+		this.poliza = pago.getPoliza();
+		this.premio = pago.getPremio();
+		this.importe = pago.getImporte();
+		this.recibo = pago.getRecibo();
+	}
+
 	public Integer getIdPago() {
 		return idPago;
 	}

@@ -63,6 +63,7 @@ public class GestorPagos {
 	
 	public static Pago ActualizarCuotasAPagar(Pago p, ArrayList<Integer> cuotasAPagar) throws CuotaNoExistenteEnELContextoException {
 		ArrayList<PagoCuota> cuotas = new ArrayList<>();
+		Pago pago = new Pago(p);
 		for(Integer i : cuotasAPagar) {
 			Boolean flag = false;
 			for(PagoCuota c : p.getCuotas()) {
@@ -73,8 +74,8 @@ public class GestorPagos {
 			}
 			if (!flag) throw new CuotaNoExistenteEnELContextoException();
 		}
-		p.setCuotas(new HashSet<PagoCuota>(cuotas));
-		return p;
+		pago.setCuotas(new HashSet<PagoCuota>(cuotas));
+		return pago;
 	}
 
 	public static BigDecimal calcularImporteTotal(Pago pago) {

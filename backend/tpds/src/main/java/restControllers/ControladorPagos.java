@@ -35,17 +35,18 @@ public class ControladorPagos {
 		if (p.getIdsCuotasAPagar().isEmpty())
 			return new ResponseEntity<>(new Error("No se seleccionó ninguna cuota a pagar"), HttpStatus.BAD_REQUEST);
 		Pago pago = (Pago) session.getAttribute("pago");
+		Pago pagoCuotasSeleccionadas;
 		try {
-			pago = GestorPagos.ActualizarCuotasAPagar(pago, p.getIdsCuotasAPagar());
+			pagoCuotasSeleccionadas = GestorPagos.ActualizarCuotasAPagar(pago, p.getIdsCuotasAPagar());
 		} catch (CuotaNoExistenteEnELContextoException e) {
 			return new ResponseEntity<>(
 					new Error("Alguna/s de las cuotas a pagar no se corresponde con una cuota válida"),
 					HttpStatus.BAD_REQUEST);
 		}
 
-		BigDecimal importeTotal = GestorPagos.calcularImporteTotal(pago);
+		BigDecimal importeTotal = GestorPagos.calcularImporteTotal(pagoCuotasSeleccionadas);
 		ImporteAPagar result = new ImporteAPagar();
-
+		session.setAttribute("pagoCuotasSeleccionadas", pagoCuotasSeleccionadas);
 		result.setImporteTotal(importeTotal);
 		result.setToken(new Token().toString());
 		return new ResponseEntity<>(result, HttpStatus.OK);

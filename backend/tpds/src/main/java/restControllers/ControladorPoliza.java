@@ -232,6 +232,8 @@ public class ControladorPoliza {
 					HttpStatus.FORBIDDEN);
 
 		Poliza poliza = GestorPoliza.getPoliza(idPoliza);
+		if (poliza == null)
+			return new ResponseEntity<>(new Error("La poliza solicitada no existe"), HttpStatus.NOT_FOUND);
 		session.setAttribute("poliza", poliza);
 
 		Pago pago = new Pago();
@@ -248,11 +250,7 @@ public class ControladorPoliza {
 		Collections.sort(cuotasDTO);
 		resumen.setCuotas(cuotasDTO);
 		pago.setCuotas(pagoCuota);
-		session.setAttribute("pago", pago);
-		
-		
-		if (poliza == null)
-			return new ResponseEntity<>(new Error("La poliza solicitada no existe"), HttpStatus.NOT_FOUND);
+		session.setAttribute("pago", pago);		
 		return new ResponseEntity<>(resumen, HttpStatus.OK);
 	}
 }
