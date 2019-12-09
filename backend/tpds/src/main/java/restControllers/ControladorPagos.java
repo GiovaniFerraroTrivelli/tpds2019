@@ -19,7 +19,7 @@ public class ControladorPagos {
 
 
 
-	@PostMapping("/consultarCostoTotal")
+	@PostMapping("/consultarImporteTotal")
 	public ResponseEntity<Object> altaPago(@RequestBody CuotasAPagar p, HttpSession session) {
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		if (usuario == null)

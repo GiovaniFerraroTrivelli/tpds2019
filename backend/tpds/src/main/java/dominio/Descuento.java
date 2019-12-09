@@ -9,6 +9,13 @@ public class Descuento {
 
 	}
 
+	public Descuento(Integer idDescuento, String concepto, Double factor) {
+		super();
+		this.idDescuento = idDescuento;
+		this.concepto = concepto;
+		this.factor = factor;
+	}
+
 	public Integer getIdDescuento() {
 		return idDescuento;
 	}

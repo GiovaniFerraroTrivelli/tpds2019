@@ -9,6 +9,13 @@ public class Recargo {
 
 	}
 
+	public Recargo(Integer idRecargo, String concepto, Double factor) {
+		super();
+		this.idRecargo = idRecargo;
+		this.concepto = concepto;
+		this.factor = factor;
+	}
+
 	public Integer getIdRecargo() {
 		return idRecargo;
 	}

@@ -105,7 +105,6 @@ public class Poliza {
 				try{
 					this.ultimoDiaPago = GestorPagos.getUltimoPago(p).getFechaHora();
 				} catch (NullPointerException e) {
-					
 				}
 				this.montoTotal = p.getMontoTotal().toString();
 				this.formaPago = p.getFormaPago().toString();
@@ -116,11 +115,10 @@ public class Poliza {
 				}
 				ArrayList<CuotaDTO> c = new ArrayList<CuotaDTO>();
 				for (Cuota cuota : p.getCuotas()) {
-					c.add(cuota.getDTO());
+					c.add(GestorPagos.calcularDescuentosYRecargos(cuota));
 				}
 				Collections.sort(c);
 				this.cuotas = c;
-
 		}
 
 		public String getNombreTitular() {
