@@ -12,7 +12,6 @@
         </many-to-one>
 
         <property name="nombre" column="nombre" length="65"/>
-        <property name="CPA" column="cpa" length="10"/>
         
         <set name="historialValores" table="historial_valor_localidades" inverse="true" lazy="true" fetch="select">
             <key><column name="id_localidad" not-null="true"/></key>

@@ -6,7 +6,6 @@ import java.util.Set;
 
 import usuarios.Usuario;
 
-import org.javamoney.moneta.Money;
 
 public class Pago implements Comparable<Pago> {
 	private Integer idPago;

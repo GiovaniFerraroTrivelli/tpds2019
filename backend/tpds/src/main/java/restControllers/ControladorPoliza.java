@@ -1,13 +1,6 @@
 package restControllers;
 
-import java.time.LocalDate;
-
-import java.time.Period;
-import java.time.Year;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import javax.servlet.http.HttpSession;
 
@@ -23,22 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dominio.Poliza.PolizaDTO;
 import dataTransferObjects.TipoCoberturaDTO;
-import dominio.Cliente;
 import dominio.Cliente.Documento;
-import dominio.Cuota;
-import dominio.Modelo;
 import dominio.NumeroPoliza;
 import dominio.Pago;
 import dominio.Pago.PagoDTO;
 import dominio.Poliza;
-import dominio.Poliza.ResumenPoliza;
 import dominio.TipoCobertura;
 import enumeradores.Rol;
 import excepciones.DatoNoEncontradoException;
 import excepciones.NoExisteClienteException;
 import excepciones.NoHayValorException;
-import gestores.GestorClientes;
-import gestores.GestorModelos;
 import gestores.GestorPagos;
 import gestores.GestorPoliza;
 import usuarios.Usuario;

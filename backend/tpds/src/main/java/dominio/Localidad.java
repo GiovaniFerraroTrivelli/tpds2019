@@ -8,7 +8,6 @@ import historialValor.EntradaLocalidad;
 public class Localidad {
 	private Integer idLocalidad;
 	private String nombre;
-	private String CPA;
 	private Provincia provincia;
 	private Set<EntradaLocalidad> historialValores;
 
@@ -36,14 +35,6 @@ public class Localidad {
 		nombre = Nombre;
 	}
 
-	public String getCPA() {
-		return CPA;
-	}
-
-	public void setCPA(String cPA) {
-		CPA = cPA;
-	}
-
 	public Set<EntradaLocalidad> getHistorialValores() {
 		return historialValores;
 	}
@@ -54,7 +45,6 @@ public class Localidad {
 
 	public LocalidadDTO getDTO() {
 		LocalidadDTO result = new LocalidadDTO();
-		result.setCPA(this.CPA);
 		result.setNombre(this.nombre);
 		result.setProvinciaId(this.provincia.getIdProvincia());
 		result.setIdLocalidad(this.idLocalidad);

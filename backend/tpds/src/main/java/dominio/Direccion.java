@@ -1,7 +1,7 @@
 package dominio;
 
 import dataTransferObjects.DireccionDTO;
-import dataTransferObjects.LocalidadDTO;
+
 
 public class Direccion {
 	private Integer idDireccion;
@@ -10,17 +10,19 @@ public class Direccion {
 	private Integer piso;
 	private String departamento;
 	private Localidad localidad;
+	private String codigoPostal;
 
 	public Direccion() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Direccion(String calle2, Integer numero2, Integer piso2, String departamento2, Localidad localidad2) {
+	public Direccion(String calle2, Integer numero2, Integer piso2, String departamento2, Localidad localidad2, String cPA) {
 		calle = calle2;
 		numero = numero2;
 		piso = piso2;
 		departamento = departamento2;
 		localidad = localidad2;
+		codigoPostal = cPA;
 	}
 
 	public String getCalle() {
@@ -64,7 +66,7 @@ public class Direccion {
 	}
 
 	public DireccionDTO getDTO() {
-		return new DireccionDTO(this.calle, this.numero, this.piso, this.departamento, this.localidad.getDTO());
+		return new DireccionDTO(this.calle, this.numero, this.piso, this.departamento, this.localidad.getDTO(), this.codigoPostal);
 	}
 
 	public Integer getIdDireccion() {
@@ -73,5 +75,13 @@ public class Direccion {
 
 	public void setIdDireccion(Integer idDireccion) {
 		this.idDireccion = idDireccion;
+	}
+
+	public String getCodigoPostal() {
+		return codigoPostal;
+	}
+
+	public void setCodigoPostal(String codigoPostal) {
+		this.codigoPostal = codigoPostal;
 	}
 }

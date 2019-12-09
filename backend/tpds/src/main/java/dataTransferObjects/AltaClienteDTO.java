@@ -9,7 +9,7 @@ import enumeradores.Sexo;
 
 public class AltaClienteDTO {
 
-	public class AltaClienteDireccion {
+	public static class AltaClienteDireccion {
 		private String calle;
 		private Integer numero;
 		private Integer piso;

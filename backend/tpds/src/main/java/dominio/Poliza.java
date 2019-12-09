@@ -43,7 +43,7 @@ public class Poliza {
 	private BigDecimal derechoEmision;
 
 	
-@SuppressWarnings("unused")
+
 	public static class ResumenPoliza {
 		private String nombreTitular;
 		private String apellidoTitular;
@@ -276,7 +276,6 @@ public class Poliza {
 		private String nroCliente;
 		private Integer modelo;
 		private Integer anio;
-		private String dominio;
 		private String chasis;
 		private String motor;
 		private String patente;
@@ -341,14 +340,6 @@ public class Poliza {
 
 		public void setAnio(Integer anio) {
 			this.anio = anio;
-		}
-
-		public String getDominio() {
-			return dominio;
-		}
-
-		public void setDominio(String dominio) {
-			this.dominio = dominio;
 		}
 
 		public String getChasis() {

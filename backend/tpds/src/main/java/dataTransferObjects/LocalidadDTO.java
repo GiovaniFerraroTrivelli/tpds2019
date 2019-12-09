@@ -1,17 +1,11 @@
 package dataTransferObjects;
 
 public class LocalidadDTO {
-	private String CPA;
 	private String nombre;
 	private Integer provinciaId;
 	private Integer idLocalidad;
 	
-	public String getCPA() {
-		return CPA;
-	}
-	public void setCPA(String cPA) {
-		CPA = cPA;
-	}
+
 	public String getNombre() {
 		return nombre;
 	}

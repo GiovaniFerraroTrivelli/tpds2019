@@ -18,35 +18,39 @@ public class ControladorUsuario {
 		try {
 			String nombreUsuario = userLogin.getNombreUsuario();
 			String password = userLogin.getPassword();
-			if (nombreUsuario == null || nombreUsuario.isEmpty()) throw new NullPointerException();
-			if (password == null || password.isEmpty()) throw new NullPointerException();
+			if (nombreUsuario == null || nombreUsuario.isEmpty())
+				throw new NullPointerException();
+			if (password == null || password.isEmpty())
+				throw new NullPointerException();
 			Usuario usuario = GestorUsuarios.getUsuario(nombreUsuario);
-			if (usuario == null) throw new IllegalArgumentException();
+			if (usuario == null)
+				throw new IllegalArgumentException();
 			if (GestorUsuarios.autenticarUsuario(usuario, password)) {
-					session.setAttribute("usuario", usuario);
-					return new ResponseEntity<>(usuario.getDTO(), HttpStatus.OK);
+				session.setAttribute("usuario", usuario);
+				return new ResponseEntity<>(usuario.getDTO(), HttpStatus.OK);
 			}
 			return new ResponseEntity<>(new Error("Usuario o contraseña inválidos"), HttpStatus.UNPROCESSABLE_ENTITY);
 		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<>(new Error("Usuario o contraseña inválido"),
-					HttpStatus.UNPROCESSABLE_ENTITY);
+			return new ResponseEntity<>(new Error("Usuario o contraseña inválido"), HttpStatus.UNPROCESSABLE_ENTITY);
 		} catch (NullPointerException e) {
 			return new ResponseEntity<>(new Error("No se especificó el nombre de usuario o contraseña"),
 					HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	@PostMapping("/logout")
-	public ResponseEntity<Object> logout(HttpSession session){
+	public ResponseEntity<Object> logout(HttpSession session) {
 		session.invalidate();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
-	@GetMapping("/checkLogin")
-	public ResponseEntity<Object> chechLogin(HttpSession session){
-		Usuario usuario = (Usuario) session.getAttribute("usuario");
-		if (usuario == null) return new ResponseEntity<>(new Error("No se encuentra autenticado en el sistema"), HttpStatus.I_AM_A_TEAPOT);
-		else return new ResponseEntity<>(usuario.getDTO(), HttpStatus.ACCEPTED);
-	}
 
+	@GetMapping("/checkLogin")
+	public ResponseEntity<Object> chechLogin(HttpSession session) {
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		if (usuario == null)
+			return new ResponseEntity<>(new Error("No se encuentra autenticado en el sistema"),
+					HttpStatus.I_AM_A_TEAPOT);
+		else
+			return new ResponseEntity<>(usuario.getDTO(), HttpStatus.ACCEPTED);
+	}
 }

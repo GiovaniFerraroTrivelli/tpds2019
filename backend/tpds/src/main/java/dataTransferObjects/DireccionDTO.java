@@ -7,15 +7,17 @@ public class DireccionDTO {
 	private Integer piso;
 	private String departamento;
 	private LocalidadDTO localidad;
+	private String codigoPostal;
 	
-	public DireccionDTO(String calle2, Integer numero2, Integer piso2, String departamento2, LocalidadDTO localidad2) {
+	public DireccionDTO(String calle2, Integer numero2, Integer piso2, String departamento2, LocalidadDTO localidad2, String codigoPostal2) {
 		calle =calle2;
 		numero = numero2;
 		piso = piso2;
 		departamento = departamento2;
 		localidad =localidad2;
+		codigoPostal = codigoPostal2;
 	}
-
+	
 	public String getCalle() {
 		return calle;
 	}
@@ -54,5 +56,13 @@ public class DireccionDTO {
 
 	public void setLocalidad(LocalidadDTO localidad) {
 		this.localidad = localidad;
+	}
+
+	public String getCodigoPostal() {
+		return codigoPostal;
+	}
+
+	public void setCodigoPostal(String codigoPostal) {
+		this.codigoPostal = codigoPostal;
 	}
 }

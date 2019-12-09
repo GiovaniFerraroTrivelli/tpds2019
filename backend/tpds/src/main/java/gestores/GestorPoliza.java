@@ -52,55 +52,23 @@ public class GestorPoliza {
 	public static ArrayList<Error> validarDatos(PolizaDTO p) {
 		ArrayList<Error> errores = new ArrayList<>();
 
-		// Validar idUsuario
-		if (p.getNroCliente() == null)
-			errores.add(new Error("Falta definir el cliente"));
-		else if (p.getNroCliente().length() != 10
-				|| DaoCliente.buscarCliente(new NumeroCliente(p.getNroCliente())) == null)
-			errores.add(new Error("No existe el cliente especificado"));
+		// Validar numero de cliente
+		errores.addAll(validarNumeroDeCliente(p.getNroCliente()));
 
 		// Validar Domicilio de riesgo
-		if (p.getLocalidad() == null)
-			errores.add(new Error("No se definió una localidad de riesgo"));
-		else if (DaoGeografico.getLocalidad(p.getLocalidad()) == null)
-			errores.add(new Error("No existe el domicilio de riesgo especificado"));
+		errores.addAll(validarDomicilioDeRiesgo(p.getLocalidad()));
 
-		// Validar ModelP
-		if (p.getModelo() == null)
-			errores.add(new Error("No se definió el modelo del vehículo"));
-		else {
-			if (GestorModelos.getModelo(p.getModelo()) == null)
-				errores.add(new Error("No existe el modelo de vehículo especificado"));
-			else {
-				// Validar anio
-				Boolean existe = false;
-				for (Cotizacion m : GestorModelos.getModelo(p.getModelo()).getAnios()) {
-					if (m.getAnio() - p.getAnio() == 0)
-						existe = true;
-				}
-				if (!existe)
-					errores.add(new Error("El modelo seleccionado no se fabricó en el año indicado"));
-			}
-		}
-
-		// Validar existencia de anio de fabricación
-		if (p.getAnio() == null)
-			errores.add(new Error("No de definió un año de fabricación"));
+		// Validar Modelo
+		errores.addAll(validarModeloYAnioDeFabricacion(p.getModelo(), p.getAnio()));
 
 		// Validar Motor
-		if (p.getMotor() == null)
-			errores.add(new Error("No se ingresó el número de motor"));
-		else if (GestorPoliza.existePolizaConMotor(p.getMotor()))
-			errores.add(new Error("Ya existe una poliza con el número de motor indicado"));
+		errores.addAll(validarMotor(p.getMotor()));
 
-		if (p.getChasis() == null)
-			errores.add(new Error("No se ingresó el número de chasis"));
-		else if (existePolizaConChasis(p.getChasis()))
-			errores.add(new Error("Ya existe una póliza con el número de chasis indicado"));
+		// Validar Chasis
+		errores.addAll(validarChasis(p.getChasis()));
 
-		if (p.getPatente() != null)
-			if (existePolizaConPatente(p.getPatente()))
-				errores.add(new Error("Ya existe una póliza con el dominio ingresado"));
+		// Validar Patente
+		errores.addAll(validarPatente(p.getPatente()));
 
 		// Validar Medidas de Seguridad
 		if (p.getPoseeAlarma() == null || p.getPoseeRastreoVehicular() == null || p.getPoseeTuercasAntirrobo() == null
@@ -108,8 +76,103 @@ public class GestorPoliza {
 			errores.add(new Error("No se especificaron las medidas de seguridad"));
 
 		// Validar hijos
-		if (p.getHijos() != null)
-			for (Hijo h : p.getHijos()) {
+		errores.addAll(validarHijos(p.getHijos()));
+
+		// Validar siniestros
+		errores.addAll(validarNumeroDeSiniestros(p.getSiniestros()));
+
+		return errores;
+	}
+
+	private static ArrayList<Error> validarDomicilioDeRiesgo(Integer localidad) {
+		ArrayList<Error> errores = new ArrayList<>();
+		if (localidad == null)
+			errores.add(new Error("No se definió una localidad de riesgo"));
+		else if (DaoGeografico.getLocalidad(localidad) == null)
+			errores.add(new Error("No existe el domicilio de riesgo especificado"));
+		return errores;
+	}
+
+	private static ArrayList<Error> validarNumeroDeCliente(String nroCliente) {
+		ArrayList<Error> errores = new ArrayList<>();
+		if (nroCliente == null)
+			errores.add(new Error("Falta definir el cliente o el numero de cliente no es válido"));
+		else if (! nroCliente.matches("[0-9]{10}"))
+			errores.add(new Error("El numero de cliente no es válido"));
+		else if (DaoCliente.buscarCliente(new NumeroCliente(nroCliente)) == null)
+			errores.add(new Error("No existe el cliente especificado"));
+		return errores;
+	}
+
+	private static ArrayList<Error> validarModeloYAnioDeFabricacion(Integer modelo, Integer anio) {
+		ArrayList<Error> errores = new ArrayList<>();
+		if (modelo == null)
+			errores.add(new Error("No se definió el modelo del vehículo"));
+		else {
+			if (GestorModelos.getModelo(modelo) == null)
+				errores.add(new Error("No existe el modelo de vehículo especificado"));
+			else {
+				// Validar anio
+				Boolean existe = false;
+				// Validar existencia de anio de fabricación
+				if (anio == null)
+					errores.add(new Error("No de definió un año de fabricación"));
+
+				else {
+					for (Cotizacion m : GestorModelos.getModelo(modelo).getAnios()) {
+						if (m.getAnio() - anio == 0)
+							existe = true;
+					}
+					if (!existe)
+						errores.add(new Error("El modelo seleccionado no se fabricó en el año indicado"));
+				}
+			}
+		}
+		return errores;
+	}
+
+	private static ArrayList<Error> validarMotor(String motor) {
+		ArrayList<Error> errores = new ArrayList<>();
+		if (motor == null)
+			errores.add(new Error("No se ingresó el número de motor"));
+		else {
+			motor = motor.toUpperCase();
+			if (GestorPoliza.existePolizaConMotor(motor))
+				errores.add(new Error("Ya existe una poliza con el número de motor indicado"));
+		}
+		return errores;
+	}
+
+	private static ArrayList<Error> validarChasis(String chasis) {
+		ArrayList<Error> errores = new ArrayList<>();
+		if (chasis == null)
+			errores.add(new Error("No se ingresó el número de chasis"));
+		else {
+			chasis = chasis.toUpperCase();
+			if (!chasis.matches("[A-HJ-NPR-Z0-9]{17}"))
+				errores.add(new Error("El número de chasis no se corresponde con formato válido"));
+			else if (existePolizaConChasis(chasis))
+				errores.add(new Error("Ya existe una póliza con el número de chasis indicado"));
+		}
+		return errores;
+	}
+
+	private static ArrayList<Error> validarPatente(String patente) {
+		ArrayList<Error> errores = new ArrayList<>();
+		if (patente != null) {
+			patente = patente.toUpperCase().replaceAll("\\s","");
+			if (!patente.matches("([A-Z]{2}[0-9]{3}[A-Z]{2})|([A-Z]{3}[0-9]{3})"))
+				errores.add(new Error("El dominio ingresado no se corresponde con formato válido"));
+			else if (existePolizaConPatente(patente))
+				errores.add(new Error("Ya existe una póliza con el dominio ingresado"));
+		}
+		return errores;
+	}
+
+	private static ArrayList<Error> validarHijos(ArrayList<Hijo> hijos) {
+		ArrayList<Error> errores = new ArrayList<>();
+		if (hijos != null)
+			for (Hijo h : hijos) {
 				if (h.getSexo() == null)
 					errores.add(new Error("El sexo de al menos un hijo no fue especificado"));
 				if (h.getEstadoCivil() == null)
@@ -124,14 +187,16 @@ public class GestorPoliza {
 							"La edad de al menos un hijo no se encuentra dentro de los parámetros esperados"));
 				}
 			}
+		return errores;
+	}
 
-		// Validar siniestros
-		if (p.getSiniestros() == null)
+	private static ArrayList<Error> validarNumeroDeSiniestros(Integer siniestros) {
+		ArrayList<Error> errores = new ArrayList<>();
+		if (siniestros == null)
 			errores.add(new Error("No se especificó la cantidad de siniestros"));
-		else if (p.getSiniestros() < 0 || p.getSiniestros() > 3)
+		else if (siniestros < 0 || siniestros > 3)
 			errores.add(new Error(
 					"La cantidad de siniestros especficada no se encuentra dentro de los parametros esperadas"));
-
 		return errores;
 	}
 
@@ -203,8 +268,6 @@ public class GestorPoliza {
 				Cuota cuota = new Cuota();
 				cuota.setEstadoCuota(EstadoCuota.PENDIENTE);
 				cuota.setFechaVencimiento(java.sql.Date.valueOf(inicioVigencia.minusDays(1).plusMonths(i)));
-				// TODO: Cambiar el importe
-//				cuota.setImporte(Money.of(100, "ARS"));
 				cuota.setImporte(new BigDecimal("100.65"));
 				cuota.setPoliza(poliza);
 
@@ -213,7 +276,6 @@ public class GestorPoliza {
 		} else {
 			Cuota cuota = new Cuota();
 			cuota.setFechaVencimiento(java.sql.Date.valueOf(inicioVigencia.minusDays(1)));
-//			cuota.setImporte(Money.of(100, "ARS"));
 			cuota.setImporte(new BigDecimal("100"));
 			cuota.setEstadoCuota(EstadoCuota.PENDIENTE);
 			cuota.setPoliza(poliza);

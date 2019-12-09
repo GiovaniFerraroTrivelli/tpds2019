@@ -47,7 +47,7 @@ public class GestorClientes {
 		Direccion direccion = new Direccion();
 
 		direccion.setCalle(clienteDTO.getDireccion().getCalle());
-
+		direccion.setCodigoPostal(clienteDTO.getDireccion().getCodigoPostal());
 		if (clienteDTO.getDireccion().getDepartamento() != null) {
 			direccion.setDepartamento(clienteDTO.getDireccion().getDepartamento());
 		}
