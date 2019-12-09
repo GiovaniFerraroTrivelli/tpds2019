@@ -6,6 +6,7 @@ import { ConsultarpolizaComponent } from './consultarpoliza/consultarpoliza.comp
 import { BuscarclienteComponent } from './buscarcliente/buscarcliente.component';
 import { AltaclienteComponent } from './altacliente/altacliente.component';
 import { IndexComponent } from './index/index.component';
+import { ErrorComponent } from './error/error.component';
 import { TipoCobertura } from 'TipoCobertura';
 import { TipocoberturaComponent } from './tipocobertura/tipocobertura.component';
 import { BuscarPolizaComponent } from './buscar-poliza/buscar-poliza.component';
@@ -26,6 +27,7 @@ const routes: Routes = [
 	{ path: 'actualizar-factores', component: ActualizarFactoresComponent, canActivate: [ AuthenticationService ] },
 	{ path: 'generar-informe-mensual', component: GenerarInformeMensualComponent, canActivate: [ AuthenticationService ] },
 	{ path: 'registrar-pago-poliza', component: RegistrarPagoPolizaComponent, canActivate: [ AuthenticationService ] },
+	{ path: 'error', component: ErrorComponent },
 	{ path: '', component: IndexComponent },
 	{ path: '**', redirectTo: '/' }
 ];

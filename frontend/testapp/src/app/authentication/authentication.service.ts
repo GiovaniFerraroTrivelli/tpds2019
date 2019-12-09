@@ -41,7 +41,7 @@ export class AuthenticationService implements CanActivate {
 
 	canActivate(route : ActivatedRouteSnapshot): boolean {
 		if (!this.isUserLoggedIn()) {
-			this.router.navigate(['login']);
+			this.router.navigate(['error']);
 			return false;
 		}
 
@@ -50,7 +50,7 @@ export class AuthenticationService implements CanActivate {
 		if(this.routesRol[route.url.toString()] !== Rol[this.getRol()]) {
 			console.warn("Sin permisos para entrar a esta ruta");
 
-			this.router.navigate(['/']);
+			this.router.navigate(['error']);
 			return false;
 		}
 
@@ -59,10 +59,17 @@ export class AuthenticationService implements CanActivate {
 	}
 
 	checkLoginValid() {
-		this.http.get<UserLogin>(this.checkLoginUrl, { withCredentials: true }).subscribe(
-			res => {
-				if(res.nombreUsuario != this.getUserName())
-				{
+		this.http.get<HttpResponse<UserLogin>>(this.checkLoginUrl, { withCredentials: true, observe: 'response' }).subscribe(
+			(response: HttpResponse<any>) => {
+				let serverTime = new Date(response.headers.get('Date')).getTime() / 1000;
+				let userTime = new Date().getTime() / 1000;
+				let diffTime = Math.abs(serverTime - userTime);
+
+				if(diffTime >= 60) {
+					this.router.navigate(['error']);
+				}
+
+				if(response.body.nombreUsuario != this.getUserName()) {
 					sessionStorage.clear();
 
 					this.dialogService.confirm(
@@ -79,7 +86,7 @@ export class AuthenticationService implements CanActivate {
 					);
 				}
 			},
-			err => {
+			error => {
 				sessionStorage.clear();
 
 				this.dialogService.confirm(

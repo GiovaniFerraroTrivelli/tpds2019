@@ -69,9 +69,18 @@ export class BuscarPolizaComponent implements OnInit {
 		this.BuscarpolizaService.postBuscarPoliza(f.value).subscribe(
 			data => {
 	      		this.loadingService.d();
-	      		this.modalService.open(content, { centered: true, size: 'lg' });
-	      		this.respuestaPolizas = data;
-	      		this.listaPolizas = this.respuestaPolizas.polizas;
+
+	      		if(!data.polizas.length) {
+	      			this.dialogService.alert(
+						'Sin resultados',
+						'No se encontraron pólizas con el número de póliza consultado.'
+					);
+	      		} else {
+					this.respuestaPolizas = data;
+					this.listaPolizas = this.respuestaPolizas.polizas;
+
+	      			this.modalService.open(content, { centered: true, size: 'lg' });
+	      		}
 			},
 			err => {
 				this.loadingService.d();
@@ -111,5 +120,13 @@ export class BuscarPolizaComponent implements OnInit {
 			this.modalService.dismissAll();
 		};
     }
-
+    cancelarBusqueda() {
+		this.dialogService.confirm(
+			'Cancelar búsqueda de póliza',
+			'¿Está seguro que desea cancelar la búsqueda de la póliza?', true, 'Sí', 'No')
+			.then((confirmed) => {
+				if(confirmed)
+					this.router.navigate(['/']);
+		});
+    }
 }
