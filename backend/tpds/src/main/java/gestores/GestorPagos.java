@@ -26,7 +26,7 @@ public class GestorPagos {
 	
 	public static CuotaDTO calcularDescuentosYRecargos(Cuota c) {
 		Date fechaActual = new Date();
-		Date mesSiguiente = Date.from(ZonedDateTime.now().minusMonths(1).toInstant());
+		Date mesSiguiente = Date.from(ZonedDateTime.now().plusMonths(1).toInstant());
 		HashSet<Descuento> descuentos = new HashSet<>();
 		HashSet<Recargo> recargos = new HashSet<>();
 		if (c.getEstadoCuota() != EstadoCuota.PAGA) {
