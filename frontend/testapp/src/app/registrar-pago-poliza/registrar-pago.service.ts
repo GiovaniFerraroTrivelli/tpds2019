@@ -4,6 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { RequestMontoTotal } from './requestMontoTotal';
 import { RequestVuelto } from './requestVuelto';
+import { ResponseMontoTotal } from './responseMontoTotal';
+import { ResponseVuelto } from './responseVuelto';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +24,9 @@ export class RegistrarPagoService {
     return this.http.post<Recibo>(this.url1, recibo, { withCredentials: true });
   }
   public postCalcularImporte(montoTotal: RequestMontoTotal){
-    return this.http.post<RequestMontoTotal>(this.url2, montoTotal, { withCredentials: true });
+    return this.http.post<ResponseMontoTotal>(this.url2, montoTotal, { withCredentials: true });
   }
   public postVuelto(requestVuelto: RequestVuelto){
-    return this.http.post<RequestVuelto>(this.url3, requestVuelto, { withCredentials: true });
+    return this.http.post<ResponseVuelto>(this.url3, requestVuelto, { withCredentials: true });
   }
 }

@@ -17,6 +17,8 @@ import { Recibo } from './recibo';
 import { RegistrarPagoService } from './registrar-pago.service';
 import { RequestMontoTotal } from './requestMontoTotal';
 import { RequestVuelto } from './requestVuelto';
+import { ResponseVuelto } from './responseVuelto';
+import { ResponseMontoTotal } from './responseMontoTotal';
 
 @Component({
   selector: 'app-registrar-pago-poliza',
@@ -57,6 +59,8 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 	private recibo: Recibo;
 	private requestMontoTotal: RequestMontoTotal;
 	private requestVuelto: RequestVuelto;
+	private responseMonto: ResponseMontoTotal;
+	private responseVuelto: ResponseVuelto;
 
 	constructor(
 		private titleService: Title,
@@ -166,6 +170,19 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 		this.registrarPagoService.postCalcularImporte(this.requestMontoTotal).subscribe(
 			data=>{
 				console.log(data);
+				this.responseMonto.importeTotal = data.importeTotal;
+				this.responseMonto.token = data.token;
+			}
+		)
+	}
+	confirmarPago(){
+		this.requestVuelto.montoAbonado = this.registrarPagoForm.controls['montoAbonado'].value;
+		this.requestVuelto.token = this.responseMonto.token;
+		this.registrarPagoService.postVuelto(this.requestVuelto).subscribe(
+			data=>{
+				this.responseVuelto.idPago = data.idPago;
+				this.responseVuelto.nroRecibo = data.nroRecibo;
+				this.responseVuelto.vuelto = data.vuelto;
 			}
 		)
 	}
