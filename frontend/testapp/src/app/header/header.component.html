@@ -44,6 +44,8 @@
 					<span class="nav-link dropdown-toggle cursor-pointer" ngbDropdownToggle data-toggle="dropdown" id="download" aria-expanded="false"><i class="fa fa-user"></i> {{ getUserName() }} <span class="caret"></span></span>
 				
 					<div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu aria-labelledby="download">
+						<span *ngIf="!cssDark" ngbDropdownItem (click)="toggleTheme()" class="dropdown-item cursor-pointer"><i class="fa fa-moon-o"></i> Modo oscuro (beta)</span>
+						<span *ngIf="cssDark" ngbDropdownItem (click)="toggleTheme()" class="dropdown-item cursor-pointer"><i class="fa fa-sun-o"></i> Modo claro</span>
 						<span ngbDropdownItem (click)="userLogOut()" class="dropdown-item cursor-pointer"><i class="fa fa-sign-out"></i> Cerrar sesión</span>
 					</div>
 				</li>
