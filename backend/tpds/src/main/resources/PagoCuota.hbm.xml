@@ -14,8 +14,11 @@
 			fetch="select">
 			<column name="id_pago" not-null="true" />
 		</many-to-one>
-
-		<one-to-one name="cuota" class="dominio.Cuota" cascade="save-update"></one-to-one>
+		
+		<many-to-one name="cuota" class="dominio.Cuota"
+			fetch="select">
+			<column name="id_cuota" not-null="true" />
+		</many-to-one>
 		
 		<set name="descuentos" table="descuentos_pago_cuota" inverse="false"
 			lazy="true" fetch="select" cascade="all">

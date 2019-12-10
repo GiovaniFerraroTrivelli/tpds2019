@@ -66,14 +66,12 @@ public class GestorPagos {
 		for (PagoCuota pagoCuota : pago.getCuotas()) {
 			pagoCuota.setPago(pago);
 			pagoCuota.getCuota().setEstadoCuota(EstadoCuota.PAGA);
-			System.out.println(pagoCuota.getCuota().getIdCuota());
 		}
 		pago.setFechaHora(new Date());
 		pago.setUsuario(usuario);
 		pago.setPoliza(poliza);
 
-		System.out.println(pago.getImporte());
-
+		DaoPoliza.update(poliza);
 		DaoPago.guardarPago(pago);
 
 		Recibo recibo = new Recibo(pago, poliza, poliza.getCliente());
