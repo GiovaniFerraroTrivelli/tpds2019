@@ -23,6 +23,19 @@ public class DaoPago {
 		}
 	}
 	
+	public static void updatePago(Pago p) {
+		Transaction tx = session.beginTransaction();
+		
+		try {
+			session.update(p);
+			tx.commit();
+		} catch (ConstraintViolationException e) {
+			tx.rollback();
+			throw e;
+		}
+	}
+	
+	
 	public static Integer gaurdarRecibo(Recibo recibo) {
 		Transaction tx = session.beginTransaction();
 		
