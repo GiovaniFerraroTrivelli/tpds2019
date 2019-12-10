@@ -12,7 +12,7 @@
 	</div>
 
 	<div class="row mt-4">   
-		<div class="col-sm">
+		<div class="col-sm mb-3">
 			<h4>Datos del cliente</h4>
 
 			<div class="mb-1">
@@ -116,8 +116,8 @@
 			</div>
 
 			<div class="d-flex flex-row-reverse">
-				<button [disabled]="!importeTotal" (click)="[openModal(confirmar),abonar()]" type="button" class="btn btn-primary p-2" style="margin-left: 8px;">Abonar</button>
-				<button (click)="cancel()" type="button" class="btn btn-secondary p-2">Cancelar</button>
+				<button [disabled]="!importeTotal || !this.loadingService.isHidden()" (click)="abonar(confirmar)" type="button" class="btn btn-primary p-2" style="margin-left: 8px;">Abonar</button>
+				<button [disabled]="!this.loadingService.isHidden()" (click)="cancel()" type="button" class="btn btn-secondary p-2">Cancelar</button>
 			</div>
 		</div>
 	</div>
@@ -134,33 +134,29 @@
 
 	<div class="modal-body">
 		<form #rpForm='ngForm' [formGroup]="registrarPagoForm" (ngSubmit)="onSubmit(rpForm)">
-			<div class="row justify-content-center">
-				<div class="col-sm text-center"> 
-					<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
-						<label for="montoPagar">Monto a pagar</label>
-						<div id="montoPagar" class="input-group mb-3 medium-input">
-							<div class="input-group-prepend">
-								<span class="input-group-text" id="basic-addon1">$</span>
-							</div>
-							<input placeholder="{{responseMonto.importeTotal}}" name="montoPagar" readonly="readonly" class="form-control unclickable dis-arrows" type="number" aria-label="montoPagar" aria-describedby="basic-addon1">
-						</div>
+			<div class="form-group row">
+				<label for="montoPagar" class="col-sm-4 col-form-label text-right">Monto a pagar</label>
+				<div id="montoPagar" class="input-group mb-3 col-sm-8 medium-input">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">$</span>
 					</div>
-					<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
-						<label for="montoAbonado">Monto abonado</label>
-						<div id="montoAbonado" class="input-group mb-3 medium-input">
-							<div class="input-group-prepend">
-								<span class="input-group-text" id="basic-addon1">$</span>
-							</div>
-							<input (change)="checkMontoAbonado()" formControlName="montoAbonado" oninput="this.value = Math.abs(this.value)" min=0 name="montoAbonado" type="number" class="form-control" aria-label="montoAbonado" aria-describedby="basic-addon1">
-						</div>
+					<input name="montoPagar" readonly="readonly" class="form-control unclickable dis-arrows" type="text" aria-label="montoPagar" aria-describedby="basic-addon1" value="{{ this.responseMonto.importeTotal | number: '1.2-2' : 'es-AR' }}">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="montoAbonado" class="col-sm-4 col-form-label text-right">Monto abonado</label>
+				<div id="montoAbonado" class="input-group mb-3 col-sm-8 medium-input">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">$</span>
 					</div>
+					<input (change)="checkMontoAbonado()" formControlName="montoAbonado" oninput="this.value = Math.abs(this.value)" min=0 name="montoAbonado" type="number" class="form-control" aria-label="montoAbonado" aria-describedby="basic-addon1">
 				</div>
 			</div>
 		</form>
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancelar</button>
-		<button [disabled]="!registrarPagoForm.valid || (this.registrarPagoForm.controls['montoAbonado'].value < responseMonto.importeTotal)" type="button" class="btn btn-primary" (click)="[openModal(aceptar), confirmarPago()]">Confirmar</button>
+		<button [disabled]="!registrarPagoForm.valid || (this.registrarPagoForm.controls['montoAbonado'].value < responseMonto.importeTotal)" type="button" class="btn btn-primary" (click)="confirmarDialogo(aceptar)">Confirmar</button>
 	</div>
 </ng-template>
 
@@ -169,37 +165,35 @@
 		<h4 class="modal-title">Resumen de pago</h4>
 	</div>
 	<div class="modal-body">
-		<div class="row justify-content-center">
-			<div class="col-sm text-center"> 
-				<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
-					<label for="montoPagar2">Monto total</label>
-					<div id="montoPagar2" class="input-group mb-3 medium-input">
-						<div class="input-group-prepend">
-							<span class="input-group-text" id="basic-addon1">$</span>
-						</div>
-						<input placeholder="{{responseMonto.importeTotal}}" name="montoPagar2" readonly="readonly" class="form-control unclickable dis-arrows" type="number" aria-label="montoPagar" aria-describedby="basic-addon1">
+		<form>
+			<div class="form-group row">
+				<label for="montoPagar2" class="col-sm-4 col-form-label text-right">Monto total</label>
+				<div id="montoPagar2" class="input-group mb-3 col-sm-8 medium-input">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">$</span>
 					</div>
-				</div>
-				<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
-					<label for="montoAbonado2">Monto abonado</label>
-					<div id="montoAbonado2" class="input-group mb-3 medium-input">
-						<div class="input-group-prepend">
-							<span class="input-group-text" id="basic-addon1">$</span>
-						</div>
-						<input placeholder="{{this.registrarPagoForm.controls['montoAbonado'].value}}" name="montoAbonar2" readonly="readonly" class="form-control unclickable dis-arrows" type="number" aria-label="montoAbonado" aria-describedby="basic-addon1">
-					</div>
-				</div>
-				<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
-					<label for="vuelto">Vuelto</label>
-					<div id="vuelto" class="input-group mb-3 medium-input">
-						<div class="input-group-prepend">
-							<span class="input-group-text" id="basic-addon1">$</span>
-						</div>
-						<input placeholder="{{this.registrarPagoForm.controls['montoAbonado'].value - importeTotal}}" name="vuelto" readonly="readonly" class="form-control unclickable dis-arrows" type="number" aria-label="vuelto" aria-describedby="basic-addon1">
-					</div>
+					<input value="{{ responseMonto.importeTotal | number: '1.2-2' : 'es-AR' }}" name="montoPagar2" disabled="disabled" class="form-control dis-arrows" type="text" aria-label="montoPagar" aria-describedby="basic-addon1">
 				</div>
 			</div>
-		</div>
+			<div class="form-group row">
+				<label for="montoAbonado2" class="col-sm-4 col-form-label text-right">Monto abonado</label>
+				<div id="montoAbonado2" class="input-group mb-3 col-sm-8 medium-input">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">$</span>
+					</div>
+					<input value="{{ getMontoAbonado() | number: '1.2-2' : 'es-AR' }}" name="montoAbonar2" disabled="disabled" class="form-control dis-arrows" type="text" aria-label="montoAbonado" aria-describedby="basic-addon1">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="vuelto" class="col-sm-4 col-form-label text-right">Vuelto</label>
+				<div id="vuelto" class="input-group mb-3 col-sm-8 medium-input">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">$</span>
+					</div>
+					<input value="{{ getVuelto() | number: '1.2-2' : 'es-AR' }}" name="vuelto" disabled="disabled" class="form-control dis-arrows" type="text" aria-label="vuelto" aria-describedby="basic-addon1">
+				</div>
+			</div>
+		</form>
 	</div>
 
 	<div class="modal-footer">

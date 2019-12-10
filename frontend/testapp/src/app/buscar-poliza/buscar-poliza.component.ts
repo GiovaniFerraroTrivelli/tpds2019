@@ -110,17 +110,17 @@ export class BuscarPolizaComponent implements OnInit {
 	}
 
 	submitSeleccionarPoliza() {
-		if(this.polizaSeleccionada != null) {
-			this.BuscarpolizaService.getPolizaSeleccionada(this.polizaSeleccionada.idPoliza).subscribe(
-				data=>{
-					this.resumenPoliza = data;
-					this.signal.emit(true);
-				}
-			)
-			this.modalService.dismissAll();
-		};
-		console.log(this.polizaSeleccionada.idPoliza)
+		if(this.polizaSeleccionada == null) return;
+
+		this.BuscarpolizaService.getPolizaSeleccionada(this.polizaSeleccionada.idPoliza).subscribe(
+			data=>{
+				this.resumenPoliza = data;
+				this.signal.emit(true);
+			}
+		)
+		this.modalService.dismissAll();
     }
+
     cancelarBusqueda() {
 		this.dialogService.confirm(
 			'Cancelar búsqueda de póliza',

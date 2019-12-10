@@ -28,7 +28,6 @@ export class HeaderComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log(this.document.getElementById('stylesheet').getAttribute('href'));
 	}
 
 	toggleTheme() {
@@ -49,6 +48,7 @@ export class HeaderComponent implements OnInit {
 	}
 
 	userLogOut() {
+		if(this.cssDark) this.toggleTheme();
 		return this.loginService.logOut();
 	}
 

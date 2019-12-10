@@ -1,5 +1,5 @@
 import { NgForm, FormGroup, FormControl, Validators, AbstractControl, FormBuilder, ValidatorFn, ValidationErrors } from '@angular/forms';
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -84,8 +84,9 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 		this.importeTotal = 0;
 
 		this.registrarPagoForm = new FormGroup({
-			'montoAbonado': new FormControl(null, [Validators.required])
+			'montoAbonado': new FormControl(null, [ Validators.required ])
 		});
+
 		this.inicializarRecibo();
 	}
 
@@ -145,7 +146,8 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 			this.cuotasAPagar.splice(this.cuotasAPagar.indexOf(idCuota), 1)
 		}
 	}
-	openModal(content) {
+	
+	confirmarDialogo(content) {
 		this.modalService.open(content, { centered: true });
 	}
 
@@ -157,7 +159,8 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 	cancel(){
 		this.page = 1;
 	}
-	abonar(){
+	
+	abonar(confirmar) {
 		/*this.recibo.idPoliza = this.buscarPolizaComponent.polizaSeleccionada.idPoliza;
 		let now = new Date();
 		this.recibo.fecha = now.toISOString().toString();
@@ -174,40 +177,58 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 		)*/
 		this.requestMontoTotal.idsCuotasAPagar = this.cuotasAPagar;
 		this.requestMontoTotal.token = this.resumenPoliza.token;
+		
 		console.log(this.requestMontoTotal);
+		this.loadingService.i();
+		
 		this.registrarPagoService.postCalcularImporte(this.requestMontoTotal).subscribe(
-			data=>{
-				/*if(data.errores.length) {
-			    	this.dialogService.alert(
-			    		'Errores detectados',
-			    		data.errores.map(e => e.mensaje).join(". ")
-					);
-				} else {*/
+			data => {
+				if(data.errores === undefined) {
+					this.loadingService.d();
 					console.log(data)
 					this.responseMonto = data;
-				//}
-			}/*,
-			err => {
-				if(err.status == 400) {
-					this.dialogService.alert(
-						'Error al registrar pago',
-						err.error.mensaje
-					);
+					this.modalService.open(confirmar, { centered: true });
 				} else {
+					this.dialogService.alert(
+						'Errores detectados',
+						data.errores.map(e => e.mensaje).join(". ")
+					);
+				}
+			},
+			err => {
+				this.loadingService.d();
+
+				if(err.status == 500) {
 					this.dialogService.alert(
 						'Error al registrar pago',
 						err.error.error
 					);
+				} else {
+					this.dialogService.alert(
+						'Error al registrar pago',
+						err.error.mensaje
+					);
 				}
-			}*/
+			}
 		)
 	}
+
+	getMontoAbonado() {
+		return this.registrarPagoForm.controls['montoAbonado'].value;
+	}
+
+	getVuelto() {
+		return this.getMontoAbonado() - this.importeTotal;
+	}
+
 	confirmarPago(){
 		this.requestVuelto.montoAbonado = this.registrarPagoForm.controls['montoAbonado'].value.toString();
 		this.requestVuelto.token = this.resumenPoliza.token;
+
 		console.log(this.requestVuelto);
+
 		this.registrarPagoService.postVuelto(this.requestVuelto).subscribe(
-			data=>{
+			data=> {
 				this.responseVuelto = data;
 			}
 		)
