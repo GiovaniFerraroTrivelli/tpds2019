@@ -40,9 +40,9 @@ public class GestorPagos {
 
 		if (c.getEstadoCuota() != EstadoCuota.PAGA) {
 			if (c.getFechaVencimiento().compareTo(mesSiguiente) >= 0) {
-				descuentos.add(new Descuento(1, "descuento por pago adelantado", 0.10));
+				descuentos.add(DaoPago.getDescuentoPagoAdelantado());
 			} else if (c.getFechaVencimiento().compareTo(fechaActual) < 0) {
-				recargos.add(new Recargo(1, "recargo por pago atrasado", 0.10));
+				recargos.add(DaoPago.getRecargoMora());
 			}
 		}
 

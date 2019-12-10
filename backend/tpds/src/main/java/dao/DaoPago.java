@@ -5,11 +5,21 @@ import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 
 import dataAccess.HibernateUtil;
+import dominio.Descuento;
 import dominio.Pago;
+import dominio.Recargo;
 import dominio.Recibo;
 
 public class DaoPago {
 	public static Session session = HibernateUtil.getSession();
+
+	public static Descuento getDescuentoPagoAdelantado() {
+		return session.get(Descuento.class, 1);
+	}
+
+	public static Recargo getRecargoMora() {
+		return session.get(Recargo.class, 1);
+	}
 
 	public static void guardarPago(Pago p) {
 		Transaction tx = session.beginTransaction();
