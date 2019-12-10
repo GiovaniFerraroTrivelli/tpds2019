@@ -139,7 +139,7 @@ public class GestorPoliza {
 		else {
 			motor = motor.toUpperCase();
 			if (!motor.matches("^[A-Z0-9]{10}$"))
-				errores.add(new Error("El número de chasis no se corresponde con formato válido"));
+				errores.add(new Error("El número de mootor no se corresponde con formato válido"));
 			if (GestorPoliza.existePolizaConMotor(motor))
 				errores.add(new Error("Ya existe una poliza con el número de motor indicado"));
 		}
