@@ -25,14 +25,14 @@ public class GestorPagos {
 		Collections.sort(cuotas);
 		return cuotas;
 	}
-	
+
 	public static PagoCuota calcularDescuentosYRecargos(Cuota c) {
 		Date fechaActual = new Date();
 		Date mesSiguiente = Date.from(ZonedDateTime.now().plusMonths(1).toInstant());
 		HashSet<Descuento> descuentos = new HashSet<>();
 		HashSet<Recargo> recargos = new HashSet<>();
 		PagoCuota pagoCuota = new PagoCuota();
-		
+
 		if (c.getEstadoCuota() != EstadoCuota.PAGA) {
 			if (c.getFechaVencimiento().compareTo(mesSiguiente) >= 0) {
 				descuentos.add(new Descuento(1, "descuento por pago adelantado", 0.10));
@@ -40,16 +40,16 @@ public class GestorPagos {
 				recargos.add(new Recargo(1, "recargo por pago atrasado", 0.10));
 			}
 		}
-		
+
 		pagoCuota.setDescuentos(descuentos);
 		pagoCuota.setRecargos(recargos);
 		pagoCuota.setCuota(c);
-		
-		return pagoCuota;		
+
+		return pagoCuota;
 	}
 
 	public static Boolean altaPago(ArrayList<Cuota> cuotas) {
-		
+
 		return null;
 	}
 
@@ -57,30 +57,34 @@ public class GestorPagos {
 		ArrayList<Pago> pagos = new ArrayList<>();
 		pagos.addAll(poliza.getPagos());
 		Collections.sort(pagos);
-		if (pagos.size()!=0) return pagos.get(pagos.size()-1);
-		else return null;
+		if (pagos.size() != 0)
+			return pagos.get(pagos.size() - 1);
+		else
+			return null;
 	}
-	
-	public static Pago ActualizarCuotasAPagar(Pago p, ArrayList<Integer> cuotasAPagar) throws CuotaNoExistenteEnELContextoException {
-		ArrayList<PagoCuota> cuotas = new ArrayList<>();
+
+	public static Pago ActualizarCuotasAPagar(Pago p, ArrayList<Integer> cuotasAPagar)
+			throws CuotaNoExistenteEnELContextoException {
+		HashSet<PagoCuota> cuotas = new HashSet<>();
 		Pago pago = new Pago(p);
-		for(Integer i : cuotasAPagar) {
-			Boolean flag = false;
-			for(PagoCuota c : p.getCuotas()) {
-				if (c.getCuota().getIdCuota() == i) {
+		for (Integer i : cuotasAPagar) {
+			Boolean flag = true;
+			for (PagoCuota c : p.getCuotas()) {
+				if (c.getCuota().getIdCuota().compareTo(i) == 0) {
 					cuotas.add(c);
-					flag = true;
+					flag = false;
 				}
 			}
-			if (!flag) throw new CuotaNoExistenteEnELContextoException();
+			if (flag)
+				throw new CuotaNoExistenteEnELContextoException();
 		}
-		pago.setCuotas(new HashSet<PagoCuota>(cuotas));
+		pago.setCuotas(cuotas);
 		return pago;
 	}
 
 	public static BigDecimal calcularImporteTotal(Pago pago) {
 		BigDecimal importe = new BigDecimal("0");
-		for(PagoCuota p : pago.getCuotas()) {
+		for (PagoCuota p : pago.getCuotas()) {
 			importe = importe.add(p.importeFinal());
 		}
 		return importe;

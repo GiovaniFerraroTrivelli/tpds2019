@@ -2,7 +2,10 @@ package restControllers;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -234,11 +237,12 @@ public class ControladorPoliza {
 		Poliza poliza = GestorPoliza.getPoliza(idPoliza);
 		if (poliza == null)
 			return new ResponseEntity<>(new Error("La poliza solicitada no existe"), HttpStatus.NOT_FOUND);
-		session.setAttribute("poliza", poliza);
-
+		String token = new Token().toString();
+		Map<String, Object> transaccion = new HashMap<String, Object>();
 		Pago pago = new Pago();
 		
 		ResumenPoliza resumen = poliza.getResumenPoliza();
+		resumen.setToken(token);
 		ArrayList<CuotaDTO> cuotasDTO = new ArrayList<>();
 		
 		HashSet<PagoCuota> pagoCuota = new HashSet<>();
@@ -250,7 +254,10 @@ public class ControladorPoliza {
 		Collections.sort(cuotasDTO);
 		resumen.setCuotas(cuotasDTO);
 		pago.setCuotas(pagoCuota);
-		session.setAttribute("pago", pago);		
+		
+		transaccion.put("poliza", poliza);
+		transaccion.put("pago", pago);
+		session.setAttribute(token, transaccion);
 		return new ResponseEntity<>(resumen, HttpStatus.OK);
 	}
 }

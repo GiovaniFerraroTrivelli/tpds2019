@@ -61,6 +61,7 @@ public class Poliza {
 		private String formaPago;
 		private TipoCoberturaDTO tipoCobertura;
 		private ArrayList<CuotaDTO> cuotas;
+		private String token;
 
 		public ResumenPoliza() {
 
@@ -255,6 +256,14 @@ public class Poliza {
 
 		public void setCuotas(ArrayList<CuotaDTO> cuotas) {
 			this.cuotas = cuotas;
+		}
+
+		public String getToken() {
+			return token;
+		}
+
+		public void setToken(String token) {
+			this.token = token;
 		}
 
 	}
