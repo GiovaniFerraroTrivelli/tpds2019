@@ -76,6 +76,7 @@ public class Cuota implements Comparable<Cuota> {
 		private Integer idCuota;
 		private String importe;
 		private Date fechaVencimiento;
+		private String importeFinal;
 		private EstadoCuota estadoCuota;
 		private Set<Descuento> descuentos;
 		private Set<Recargo> recargos;
@@ -131,6 +132,14 @@ public class Cuota implements Comparable<Cuota> {
 
 		public void setIdCuota(Integer idCuota) {
 			this.idCuota = idCuota;
+		}
+
+		public String getImporteFinal() {
+			return importeFinal;
+		}
+
+		public void setImporteFinal(String importeFinal) {
+			this.importeFinal = importeFinal;
 		}
 
 	}

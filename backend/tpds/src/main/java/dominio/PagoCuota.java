@@ -81,6 +81,7 @@ public class PagoCuota implements Comparable<PagoCuota> {
 		CuotaDTO result = this.cuota.getDTO();
 		result.setDescuentos(this.descuentos);
 		result.setRecargos(this.recargos);
+		result.setImporteFinal(this.importeFinal().toString());
 		return result;
 	}
 }
