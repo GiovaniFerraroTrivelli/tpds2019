@@ -150,7 +150,7 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 	}
 
 	checkMontoAbonado() {
-		if(this.importeTotal > this.registrarPagoForm.controls['montoAbonado'].value) {
+		if(this.responseMonto.importeTotal > this.registrarPagoForm.controls['montoAbonado'].value) {
 			this.registrarPagoForm.controls.montoAbonado.setErrors({ 'incorrect': true });
 		}
 	}
@@ -165,7 +165,7 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 			this.recibo.cuotas.push(this.cuotas[i]);
 		}
 		this.recibo.operador = this.authentication.getUserName();
-		this.recibo.importeTotal = this.importeTotal;
+		this.recibo.importeTotal = this.responseMonto.importeTotal;
 		console.log(this.recibo);
 		this.registrarPagoService.postRecibo(this.recibo).subscribe(
 			data=>{

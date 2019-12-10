@@ -126,7 +126,7 @@
 
 <ng-template #confirmar let-modal>
 	<div class="modal-header">
-		<h4 class="modal-title">Resumen de pago</h4>
+		<h4 class="modal-title">Confirmar pago</h4>
 		<button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
 			<span aria-hidden="true">&times;</span>
 		</button>
@@ -160,16 +160,13 @@
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancelar</button>
-		<button [disabled]="!registrarPagoForm.valid || (this.registrarPagoForm.controls['montoAbonado'].value < importeTotal)" type="button" class="btn btn-primary" (click)="[openModal(aceptar), confirmarPago()]">Confirmar</button>
+		<button [disabled]="!registrarPagoForm.valid || (this.registrarPagoForm.controls['montoAbonado'].value < responseMonto.importeTotal)" type="button" class="btn btn-primary" (click)="[openModal(aceptar), confirmarPago()]">Confirmar</button>
 	</div>
 </ng-template>
 
 <ng-template #aceptar let-modal>
 	<div class="modal-header">
-		<h4 class="modal-title">Pago confirmado</h4>
-		<button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
-			<span aria-hidden="true">&times;</span>
-		</button>
+		<h4 class="modal-title">Resumen de pago</h4>
 	</div>
 	<div class="modal-body">
 		<div class="row justify-content-center">
@@ -206,7 +203,6 @@
 	</div>
 
 	<div class="modal-footer">
-		<button type="button" class="btn btn-secondary" (click)="[modal.close('Close click')]">Cancelar</button>
-		<button type="button" class="btn btn-primary" (click)="abonar()" >Aceptar</button>
+		<button type="button" class="btn btn-primary">Aceptar</button>
 	</div>
 </ng-template>
