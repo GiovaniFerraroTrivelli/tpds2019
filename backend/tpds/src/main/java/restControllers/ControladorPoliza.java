@@ -85,7 +85,9 @@ public class ControladorPoliza {
 		for(Cuota cuota : poliza.getCuotas()) {
 			cuotas.add(cuota.getDTO());
 		}
+		Collections.sort(cuotas);
 		resumenPoliza.setCuotas(cuotas);
+		resumenPoliza.setDescuentos("50.80");
 		result.setToken(token.token);
 		result.setDatosPoliza(resumenPoliza);
 
