@@ -68,11 +68,6 @@ deactivate ControladorPoliza
 Usuario <-- InterfazUsuario : lista de pólizas
 deactivate InterfazUsuario
 
-Usuario -> InterfazUsuario : seleccionar póliza
-activate InterfazUsuario
-Usuario <-- InterfazUsuario : datos de póliza seleccionada
-deactivate InterfazUsuario
-
 deactivate Usuario
 
 note right
