@@ -87,6 +87,7 @@ public class ControladorPoliza {
 		}
 		resumenPoliza.setCuotas(cuotas);
 		result.setToken(token.token);
+		result.setDatosPoliza(resumenPoliza);
 
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
