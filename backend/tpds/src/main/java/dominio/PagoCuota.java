@@ -63,20 +63,20 @@ public class PagoCuota implements Comparable<PagoCuota> {
 
 	public BigDecimal importeFinal() {
 		BigDecimal importeOriginal = this.cuota.getImporte();
-		BigDecimal descuentos = new BigDecimal(0);
-		BigDecimal recargos = new BigDecimal(0);
+		BigDecimal descuentos = new BigDecimal("0");
+		BigDecimal recargos = new BigDecimal("0");
 
 		for (Descuento d : this.descuentos) {
-			descuentos.add(importeOriginal.multiply(new BigDecimal(d.getFactor())));
+			descuentos.add(importeOriginal.multiply(new BigDecimal(d.getFactor().toString())));
 		}
 
 		for (Recargo r : this.recargos) {
-			recargos.add(importeOriginal.multiply(new BigDecimal(r.getFactor())));
+			recargos.add(importeOriginal.multiply(new BigDecimal(r.getFactor().toString())));
 		}
 
 		return importeOriginal.add(recargos).subtract(descuentos);
 	}
-	
+
 	public CuotaDTO getDTO() {
 		CuotaDTO result = this.cuota.getDTO();
 		result.setDescuentos(this.descuentos);
