@@ -98,7 +98,7 @@ public class GestorPoliza {
 		ArrayList<Error> errores = new ArrayList<>();
 		if (nroCliente == null)
 			errores.add(new Error("Falta definir el cliente o el numero de cliente no es válido"));
-		else if (!nroCliente.matches("[0-9]{10}"))
+		else if (!nroCliente.matches("^[0-9]{10}$"))
 			errores.add(new Error("El numero de cliente no es válido"));
 		else if (DaoCliente.buscarCliente(new NumeroCliente(nroCliente)) == null)
 			errores.add(new Error("No existe el cliente especificado"));
@@ -138,6 +138,8 @@ public class GestorPoliza {
 			errores.add(new Error("No se ingresó el número de motor"));
 		else {
 			motor = motor.toUpperCase();
+			if (!motor.matches("^[A-Z0-9]{10}$"))
+				errores.add(new Error("El número de chasis no se corresponde con formato válido"));
 			if (GestorPoliza.existePolizaConMotor(motor))
 				errores.add(new Error("Ya existe una poliza con el número de motor indicado"));
 		}
@@ -150,7 +152,7 @@ public class GestorPoliza {
 			errores.add(new Error("No se ingresó el número de chasis"));
 		else {
 			chasis = chasis.toUpperCase();
-			if (!chasis.matches("[A-HJ-NPR-Z0-9]{17}"))
+			if (!chasis.matches("^[A-HJ-NPR-Z0-9]{17}$"))
 				errores.add(new Error("El número de chasis no se corresponde con formato válido"));
 			else if (existePolizaConChasis(chasis))
 				errores.add(new Error("Ya existe una póliza con el número de chasis indicado"));

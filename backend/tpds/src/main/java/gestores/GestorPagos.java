@@ -82,7 +82,7 @@ public class GestorPagos {
 
 	public static Pago getUltimoPago(Poliza poliza) {
 		ArrayList<Pago> pagos = new ArrayList<>();
-		pagos.addAll(poliza.getPagos());
+		if (poliza.getPagos() != null) pagos.addAll(poliza.getPagos());
 		Collections.sort(pagos);
 		if (pagos.size() != 0)
 			return pagos.get(pagos.size() - 1);
