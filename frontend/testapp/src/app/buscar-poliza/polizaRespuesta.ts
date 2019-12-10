@@ -1,4 +1,5 @@
 import { Documento } from '../cliente/documento';
+import { UltimoPago } from '../poliza/ultimoPago';
 
 export class PolizasRta{
     idPoliza: number;
@@ -8,4 +9,5 @@ export class PolizasRta{
     documento: Documento;
     numeroPoliza: string;
     numeroCliente: string;
+	ultimoPago: UltimoPago;
 }

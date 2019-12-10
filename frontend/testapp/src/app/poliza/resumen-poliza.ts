@@ -1,5 +1,6 @@
 import { Cuota } from './cuota';
 import { ModalidadPago } from '../enums/modalidad-pago.enum';
+import { UltimoPago } from './ultimoPago';
 
 export class ResumenPoliza {
 	nombreTitular: string;
@@ -14,7 +15,6 @@ export class ResumenPoliza {
 	sumaAsegurada: number;
 	premio: number;
 	descuentos: number;
-	ultimoDiaPago: string;
 	montoTotal: number;
 	formaPago: ModalidadPago;
 	cuotas: Cuota[];

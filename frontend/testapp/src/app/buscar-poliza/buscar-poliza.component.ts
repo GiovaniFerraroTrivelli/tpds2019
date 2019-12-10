@@ -15,6 +15,7 @@ import { PolizasRta } from './polizaRespuesta';
 import { respuestaBuscarPoliza } from './respuestaBuscarPoliza';
 import { ResumenPoliza } from '../poliza/resumen-poliza';
 import { GlobalScriptsService } from '../global-scripts.service';
+import { UltimoPago } from '../poliza/ultimoPago';
 
 @Component({
 	selector: 'app-buscar-poliza',
@@ -99,6 +100,12 @@ export class BuscarPolizaComponent implements OnInit {
 				}
 			}
 		);
+	}
+
+	parseUltimoPago(i){
+		return this.respuestaPolizas.polizas[i].ultimoPago.fechaHora.slice(8,10) + '/'
+		+ this.respuestaPolizas.polizas[i].ultimoPago.fechaHora.slice(5,7) + '/' 
+		+ this.respuestaPolizas.polizas[i].ultimoPago.fechaHora.slice(0,4);
 	}
 
 	loadPolizaSeleccionada(poliza : PolizasRta) {

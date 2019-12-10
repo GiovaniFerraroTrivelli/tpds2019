@@ -14,15 +14,17 @@
                 <th scope="col">Apellido y Nombre</th>
                 <th scope="col">Documento</th>
                 <th scope="col">Último pago</th>
+                <th scope="col">Importe último pago</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor='let poliza of listaPolizas' [ngClass]="['cursor-pointer' , (poliza==polizaSeleccionada ? 'table-active' : '') ]" (click)='loadPolizaSeleccionada(poliza)'>
+            <tr *ngFor='let poliza of listaPolizas; let row = index' [ngClass]="['cursor-pointer' , (poliza==polizaSeleccionada ? 'table-active' : '') ]" (click)='loadPolizaSeleccionada(poliza)'>
                 <td>{{ global.nroClienteFormat(poliza.numeroCliente) }}</td>
                 <td>{{ poliza.numeroPoliza }}</td>
                 <td>{{ poliza.apellidoCliente }}, {{ poliza.nombreCliente }}</td>
                 <td>{{ poliza.documento.tipoDocumento }} {{ poliza.documento.nroDocumento | number: '' : 'es-AR' }}</td>
-                <td>{{ poliza.ultimoPago | date: 'dd/MM/yyyy'}}</td>
+                <td>{{ parseUltimoPago(row) }}</td>
+                <td>$ {{ poliza.ultimoPago.importe }}</td>
             </tr>
         </tbody>
         </table>
