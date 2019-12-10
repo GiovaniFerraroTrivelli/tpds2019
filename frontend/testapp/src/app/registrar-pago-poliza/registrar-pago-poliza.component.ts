@@ -8,6 +8,7 @@ import { LoadingService } from '../loading/loading.service';
 import { GlobalScriptsService } from '../global-scripts.service';
 import { AuthenticationService } from '../authentication/authentication.service'
 import { DialogService } from '../dialog/dialog.service';
+import { Router } from "@angular/router";
 
 import { Cliente } from '../cliente/cliente';
 import { Poliza } from '../poliza/poliza';
@@ -71,7 +72,8 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 		private global: GlobalScriptsService,
 		private authentication: AuthenticationService,
 		private registrarPagoService: RegistrarPagoService,
-		private dialogService: DialogService
+		private dialogService: DialogService,
+		private router: Router,
 	) { }
 	
 	ngOnInit() {
@@ -84,11 +86,13 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 		this.importeTotal = 0;
 
 		this.registrarPagoForm = new FormGroup({
-			'montoAbonado': new FormControl(null, [ Validators.required ])
+			'montoAbonado': new FormControl(null, [ (c) => this.validateMonto(c), Validators.required ])
 		});
-
+		
 		this.inicializarRecibo();
 	}
+
+	get montoAbonado() { return this.registrarPagoForm.get('montoAbonado'); }
 
 	inicializarRecibo(){
 		this.recibo = new Recibo();
@@ -151,11 +155,23 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 		this.modalService.open(content, { centered: true });
 	}
 
-	checkMontoAbonado() {
-		if(this.responseMonto.importeTotal > this.registrarPagoForm.controls['montoAbonado'].value) {
-			this.registrarPagoForm.controls.montoAbonado.setErrors({ 'incorrect': true });
+	validateMonto(c : AbstractControl){
+		if(c.value != null) {
+			return c.value >= this.responseMonto.importeTotal ? null : {
+				validateMonto:{
+					valid: false
+				}
+			}
+		} else {
+			return {
+				validateMonto:{
+					valid: false
+				}
+			}
 		}
+		
 	}
+
 	cancel(){
 		this.page = 1;
 	}
@@ -217,8 +233,17 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 		return this.registrarPagoForm.controls['montoAbonado'].value;
 	}
 
-	getVuelto() {
-		return this.getMontoAbonado() - this.importeTotal;
+	getImporteFinal(cuota) {
+		if(cuota.importeFinal > cuota.importe || cuota.importeFinal < cuota.importe){
+			return cuota.importeFinal;
+		}
+	}
+	getColor(cuota){
+		if(cuota.importeFinal > cuota.importe){
+			return true;
+		} else if (cuota.importeFinal < cuota.importe){
+			return false;
+		}
 	}
 
 	confirmarPago(){
@@ -232,5 +257,12 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 				this.responseVuelto = data;
 			}
 		)
+	}
+	openFinalDialog(){
+		this.dialogService.alert(
+			'El pago se ha registrado con éxito',
+			'Retornando a la pantalla inicial'
+		);
+		this.router.navigate(['/'])
 	}
 }

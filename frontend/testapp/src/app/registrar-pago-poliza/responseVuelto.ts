@@ -1,5 +1,5 @@
 export class ResponseVuelto{
-    idPago: number;
-    nroRecibo: number;
+    pagoConfirmado: boolean
+    numeroRecibo: number;
     vuelto: string;
 }
