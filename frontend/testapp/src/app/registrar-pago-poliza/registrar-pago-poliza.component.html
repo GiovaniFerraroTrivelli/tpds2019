@@ -86,7 +86,7 @@
 					<tr *ngFor='let cuota of cuotas; let row = index'>
 						<td>
 							<div class="form-check">
-								<input class="form-check-input cuotaCheckbox" type="checkbox" value="" [disabled] = "disableCheckbox(row) ? 'disabled' : null" ngModel (ngModelChange)="onChecked($event)">
+								<input class="form-check-input cuotaCheckbox" type="checkbox" value="" [disabled] = "disableCheckbox(row) ? 'disabled' : null" ngModel (ngModelChange)="[onChecked($event),updateCuotasAPagar($event,cuota.idCuota)]">
 							</div>
 						</td>
 						<td>{{ mesCuota(row) }}</td>
@@ -126,7 +126,7 @@
 
 <ng-template #confirmar let-modal>
 	<div class="modal-header">
-		<h4 class="modal-title">Confirmar pago</h4>
+		<h4 class="modal-title">Resumen de pago</h4>
 		<button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
 			<span aria-hidden="true">&times;</span>
 		</button>
@@ -142,7 +142,7 @@
 							<div class="input-group-prepend">
 								<span class="input-group-text" id="basic-addon1">$</span>
 							</div>
-							<input placeholder="{{importeTotal}}" name="montoPagar" readonly="readonly" class="form-control unclickable dis-arrows" type="number" aria-label="montoPagar" aria-describedby="basic-addon1">
+							<input placeholder="{{responseMonto.importeTotal}}" name="montoPagar" readonly="readonly" class="form-control unclickable dis-arrows" type="number" aria-label="montoPagar" aria-describedby="basic-addon1">
 						</div>
 					</div>
 					<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
@@ -160,7 +160,7 @@
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancelar</button>
-		<button [disabled]="!registrarPagoForm.valid || (this.registrarPagoForm.controls['montoAbonado'].value < importeTotal)" type="button" class="btn btn-primary" (click)="openModal(aceptar)">Confirmar</button>
+		<button [disabled]="!registrarPagoForm.valid || (this.registrarPagoForm.controls['montoAbonado'].value < importeTotal)" type="button" class="btn btn-primary" (click)="[openModal(aceptar), confirmarPago()]">Confirmar</button>
 	</div>
 </ng-template>
 
@@ -180,7 +180,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text" id="basic-addon1">$</span>
 						</div>
-						<input placeholder="{{importeTotal}}" name="montoPagar2" readonly="readonly" class="form-control unclickable dis-arrows" type="number" aria-label="montoPagar" aria-describedby="basic-addon1">
+						<input placeholder="{{responseMonto.importeTotal}}" name="montoPagar2" readonly="readonly" class="form-control unclickable dis-arrows" type="number" aria-label="montoPagar" aria-describedby="basic-addon1">
 					</div>
 				</div>
 				<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">

@@ -18,4 +18,5 @@ export class ResumenPoliza {
 	montoTotal: number;
 	formaPago: ModalidadPago;
 	cuotas: Cuota[];
+    token: string;
 }

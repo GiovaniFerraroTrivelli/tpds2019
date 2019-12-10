@@ -7,6 +7,7 @@ import { BuscarPolizaComponent } from '../buscar-poliza/buscar-poliza.component'
 import { LoadingService } from '../loading/loading.service';
 import { GlobalScriptsService } from '../global-scripts.service';
 import { AuthenticationService } from '../authentication/authentication.service'
+import { DialogService } from '../dialog/dialog.service';
 
 import { Cliente } from '../cliente/cliente';
 import { Poliza } from '../poliza/poliza';
@@ -61,6 +62,7 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 	private requestVuelto: RequestVuelto;
 	private responseMonto: ResponseMontoTotal;
 	private responseVuelto: ResponseVuelto;
+	private cuotasAPagar= [];
 
 	constructor(
 		private titleService: Title,
@@ -68,13 +70,15 @@ export class RegistrarPagoPolizaComponent implements OnInit {
       	private loadingService: LoadingService,
 		private global: GlobalScriptsService,
 		private authentication: AuthenticationService,
-		private registrarPagoService: RegistrarPagoService
+		private registrarPagoService: RegistrarPagoService,
+		private dialogService: DialogService
 	) { }
 	
 	ngOnInit() {
 		this.page = 1;
 		this.titleService.setTitle(this.title);
 		this.requestMontoTotal = new RequestMontoTotal();
+		this.requestVuelto = new RequestVuelto();
 		this.requestMontoTotal.idsCuotasAPagar = [];
 		this.index = 0;
 		this.importeTotal = 0;
@@ -96,7 +100,7 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 			this.resumenPoliza = this.buscarPolizaComponent.resumenPoliza;
 			this.nroPoliza = this.buscarPolizaComponent.polizaSeleccionada.numeroPoliza;
 			this.nroCliente = this.buscarPolizaComponent.polizaSeleccionada.numeroCliente;
-			this.cuotas = this.resumenPoliza.cuotas;
+			this.cuotas = this.resumenPoliza.cuotas.filter((a) => a.estadoCuota != 'PAGA');
 			console.log(this.cuotas);
 			this.page = 2;
 		}
@@ -134,7 +138,13 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 			this.importeTotal -= Number(this.cuotas[this.index].importe);
 		}
 	}
-
+	updateCuotasAPagar(isChecked: boolean, idCuota: number){
+		if(isChecked) {
+			this.cuotasAPagar.push(idCuota);
+		} else {
+			this.cuotasAPagar.splice(this.cuotasAPagar.indexOf(idCuota), 1)
+		}
+	}
 	openModal(content) {
 		this.modalService.open(content, { centered: true });
 	}
@@ -162,27 +172,43 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 				console.log(data);
 			}
 		)*/
-		for (let i = 0; i < this.index; i++){
-			this.requestMontoTotal.idsCuotasAPagar.push(i);
-		}
-		console.log(this.requestMontoTotal.idPoliza)
-		console.log(this.requestMontoTotal.idsCuotasAPagar)
+		this.requestMontoTotal.idsCuotasAPagar = this.cuotasAPagar;
+		this.requestMontoTotal.token = this.resumenPoliza.token;
+		console.log(this.requestMontoTotal);
 		this.registrarPagoService.postCalcularImporte(this.requestMontoTotal).subscribe(
 			data=>{
-				console.log(data);
-				this.responseMonto.importeTotal = data.importeTotal;
-				this.responseMonto.token = data.token;
-			}
+				/*if(data.errores.length) {
+			    	this.dialogService.alert(
+			    		'Errores detectados',
+			    		data.errores.map(e => e.mensaje).join(". ")
+					);
+				} else {*/
+					console.log(data)
+					this.responseMonto = data;
+				//}
+			}/*,
+			err => {
+				if(err.status == 400) {
+					this.dialogService.alert(
+						'Error al registrar pago',
+						err.error.mensaje
+					);
+				} else {
+					this.dialogService.alert(
+						'Error al registrar pago',
+						err.error.error
+					);
+				}
+			}*/
 		)
 	}
 	confirmarPago(){
-		this.requestVuelto.montoAbonado = this.registrarPagoForm.controls['montoAbonado'].value;
-		this.requestVuelto.token = this.responseMonto.token;
+		this.requestVuelto.montoAbonado = this.registrarPagoForm.controls['montoAbonado'].value.toString();
+		this.requestVuelto.token = this.resumenPoliza.token;
+		console.log(this.requestVuelto);
 		this.registrarPagoService.postVuelto(this.requestVuelto).subscribe(
 			data=>{
-				this.responseVuelto.idPago = data.idPago;
-				this.responseVuelto.nroRecibo = data.nroRecibo;
-				this.responseVuelto.vuelto = data.vuelto;
+				this.responseVuelto = data;
 			}
 		)
 	}

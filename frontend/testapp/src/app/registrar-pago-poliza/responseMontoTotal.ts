@@ -1,4 +1,6 @@
+import { Error } from '../error/error';
+
 export class ResponseMontoTotal{
-    importeTotal: string;
-    token: string;
+    importeTotal: number;
+	errores: Error[];
 }

@@ -23,8 +23,9 @@ export class RegistrarPagoService {
   public postRecibo(recibo: Recibo){
     return this.http.post<Recibo>(this.url1, recibo, { withCredentials: true });
   }
-  public postCalcularImporte(montoTotal: RequestMontoTotal){
-    return this.http.post<ResponseMontoTotal>(this.url2, montoTotal, { withCredentials: true });
+  public postCalcularImporte(requestMontoTotal: RequestMontoTotal){
+    console.log(this.http.post<ResponseMontoTotal>(this.url2, requestMontoTotal, { withCredentials: true }))
+    return this.http.post<ResponseMontoTotal>(this.url2, requestMontoTotal, { withCredentials: true });
   }
   public postVuelto(requestVuelto: RequestVuelto){
     return this.http.post<ResponseVuelto>(this.url3, requestVuelto, { withCredentials: true });
