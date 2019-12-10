@@ -79,11 +79,21 @@
 			<div class="input-group">
 				<input type="text" formControlName="nombre" name="nombre" id="nombre" class="form-control optional">
 			</div>
+			<div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="nombre.errors.pattern">
+					El nombre del cliente no debe superar los 50 caracteres.
+				</div>
+			</div>
 		</div>
 		<div class="form-group col-sm-12 col-lg-4">
 			<label class="pt-2" for="apellido">Apellido</label>
 			<div class="input-group">
 				<input type="text" formControlName="apellido" name="apellido" id="apellido" class="form-control optional">
+			</div>
+			<div *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="apellido.errors.pattern">
+					El apellido del cliente no debe superar los 50 caracteres.
+				</div>
 			</div>
 		</div>
 	</div>
@@ -97,6 +107,11 @@
 		<div class="form-group col-sm-12 col-lg-8">
 			<label class="pt-2" for="nroDocumento">Número de documento</label>
 			<input type="number" formControlName="nroDocumento" name="nroDocumento" id="nroDocumento" class="form-control optional dis-arrows">
+		</div>
+		<div *ngIf="nroDocumento.invalid && (nroDocumento.dirty || nroDocumento.touched)" class="invalid-feedback d-block mt-1 mb-0">
+			<div *ngIf="nroDocumento.errors.pattern">
+				El número de documento ingresado no es válido.
+			</div>
 		</div>
 	</div>
 	<div class="row">

@@ -44,11 +44,11 @@ export class BuscarclienteComponent implements OnInit {
 	ngOnInit() {
 		this.buscarClienteForm = new FormGroup({
 			'nroCliente': new FormControl(null, Validators.pattern('^([0-9]{10}|[0-9]{2}-[0-9]{8})$')),
-			'nombre': new FormControl(null),
-			'apellido': new FormControl(null),
+			'nombre': new FormControl(null, Validators.pattern('^.{0,50}$')),
+			'apellido': new FormControl(null, Validators.pattern('^.{0,50}$')),
 			'documento': new FormGroup({
 				'tipoDocumento': new FormControl(null),
-				'nroDocumento': new FormControl(null)
+				'nroDocumento': new FormControl(null, Validators.pattern('^[0-9]{5,10}$'))
 			}),
 			'resultadosPorPagina': new FormControl(25, [ Validators.required, Validators.min(1) , Validators.max(100), Validators.pattern('^[0-9]+$') ]),
 			'numeroPagina': new FormControl(1)
