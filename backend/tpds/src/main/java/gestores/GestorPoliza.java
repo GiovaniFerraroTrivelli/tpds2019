@@ -259,7 +259,7 @@ public class GestorPoliza {
 		poliza.setAnioFabricacion(p.getAnio());
 
 		poliza.setKmsAnuales(p.getKmAnio());
-		poliza.setDominio(p.getPatente().toUpperCase());
+		if (p.getPatente() != null) poliza.setDominio(p.getPatente().toUpperCase());
 		poliza.setEstadoPoliza(EstadoPoliza.GENERADA);
 		poliza.setPremio(new BigDecimal("100"));
 		poliza.setPrima(new BigDecimal("100.54"));
