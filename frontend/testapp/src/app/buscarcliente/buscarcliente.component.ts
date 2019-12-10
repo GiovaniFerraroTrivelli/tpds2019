@@ -114,7 +114,7 @@ export class BuscarclienteComponent implements OnInit {
 
 	onSubmit(f: NgForm, content, page) {
 		this.buscarClienteForm.controls['numeroPagina'].setValue(page);
-		if(f.valid) return;
+		if(!f.valid) return;
 
 		this.loadingService.i();
 
