@@ -5,7 +5,9 @@
 <hibernate-mapping>
 	<class name="dominio.Recibo" table="recibos">
 		<id name="numeroRecibo" type="java.lang.Integer"
-			column="nro_recibo" />
+			column="nro_recibo" >
+			<generator class="identity" />
+		</id>
 
         <many-to-one name="cliente" class="dominio.Cliente" fetch="select" lazy="false">
             <column name="id_cliente" not-null="true" />
