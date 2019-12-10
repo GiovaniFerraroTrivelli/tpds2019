@@ -21,12 +21,14 @@
 			</key>
 			<one-to-many class="dominio.PagoCuota" />
 		</set>
-
-		<property name="importe" column="importe" />
 		
 		<many-to-one name="usuario" class="usuarios.Usuario" fetch="select">
             <column name="nombre_usuario" not-null="true" />
         </many-to-one>
+        
+        <property name="fechaHora" column="fecha_hora" />
+        <property name="importe" column="importe" />
+        <property name="premio" column="premio" />
 
 	</class>
 </hibernate-mapping>

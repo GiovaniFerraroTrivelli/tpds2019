@@ -1,7 +1,5 @@
 package dao;
 
-import java.io.Serializable;
-
 import org.hibernate.Session;
 
 import dataAccess.HibernateUtil;

@@ -87,7 +87,7 @@
 
         <set name="pagos" table="pago_poliza" inverse="true" cascade="save-update" lazy="true" fetch="select">
             <key>
-                <column name="id_pago" not-null="true" />
+                <column name="id_poliza" not-null="true" />
             </key>
             <one-to-many class="dominio.Pago" />
         </set>

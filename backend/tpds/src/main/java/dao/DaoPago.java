@@ -13,7 +13,7 @@ public class DaoPago {
 
 	public static void guardarPago(Pago p) {
 		Transaction tx = session.beginTransaction();
-		
+
 		try {
 			session.save(p);
 			tx.commit();
@@ -22,10 +22,10 @@ public class DaoPago {
 			throw e;
 		}
 	}
-	
+
 	public static void updatePago(Pago p) {
 		Transaction tx = session.beginTransaction();
-		
+
 		try {
 			session.update(p);
 			tx.commit();
@@ -34,11 +34,10 @@ public class DaoPago {
 			throw e;
 		}
 	}
-	
-	
+
 	public static Integer guardarRecibo(Recibo recibo) {
 		Transaction tx = session.beginTransaction();
-		
+
 		try {
 			session.save(recibo);
 			tx.commit();

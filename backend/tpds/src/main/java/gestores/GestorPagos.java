@@ -7,8 +7,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 
-
 import dao.DaoPago;
+import dao.DaoPoliza;
+import dao.DaoUsuario;
 import dominio.Cuota;
 import dominio.Descuento;
 import dominio.Pago;
@@ -52,27 +53,30 @@ public class GestorPagos {
 		return pagoCuota;
 	}
 
-	public static Integer registrarPago(Pago pago, Poliza poliza, BigDecimal importe, Usuario usuario){
+	public static Integer registrarPago(Pago pago, Poliza poliza, BigDecimal importe, Usuario usuario) {
 		BigDecimal importeTotal = GestorPagos.calcularImporteTotal(pago);
 		pago.setImporte(importeTotal);
 		HashSet<Pago> pagos;
-		if(poliza.getPagos() == null) pagos = new HashSet<Pago>();
-		else pagos = new HashSet<>(poliza.getPagos());
+		if (poliza.getPagos() == null)
+			pagos = new HashSet<Pago>();
+		else
+			pagos = new HashSet<>(poliza.getPagos());
 		pagos.add(pago);
-		for (PagoCuota pagoCuota : pago.getCuotas()){
+
+		for (PagoCuota pagoCuota : pago.getCuotas()) {
+			pagoCuota.setPago(pago);
 			pagoCuota.getCuota().setEstadoCuota(EstadoCuota.PAGA);
+			System.out.println(pagoCuota.getCuota().getIdCuota());
 		}
 		pago.setFechaHora(new Date());
 		pago.setUsuario(usuario);
 		pago.setPoliza(poliza);
-		
-		System.out.println("here");
-		
+
+		System.out.println(pago.getImporte());
+
 		DaoPago.guardarPago(pago);
-		
-		
-		
-		Recibo recibo =new Recibo(pago, poliza, poliza.getCliente());
+
+		Recibo recibo = new Recibo(pago, poliza, poliza.getCliente());
 		pago.setRecibo(recibo);
 		Integer nroRecibo = DaoPago.guardarRecibo(recibo);
 		DaoPago.updatePago(pago);
@@ -82,7 +86,8 @@ public class GestorPagos {
 
 	public static Pago getUltimoPago(Poliza poliza) {
 		ArrayList<Pago> pagos = new ArrayList<>();
-		if (poliza.getPagos() != null) pagos.addAll(poliza.getPagos());
+		if (poliza.getPagos() != null)
+			pagos.addAll(poliza.getPagos());
 		Collections.sort(pagos);
 		if (pagos.size() != 0)
 			return pagos.get(pagos.size() - 1);
