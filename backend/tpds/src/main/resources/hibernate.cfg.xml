@@ -11,6 +11,7 @@
         <property name="hibernate.connection.username">tpds2019</property>
         <property name="hibernate.connection.password">t4b6FsszKvZFFWjaqc65HWREJDetFrUM!</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+        <property name="hibernate.c3p0.testConnectionOnCheckout">true</property>
 
 		<property name="connection.pool_size">10</property>
 
