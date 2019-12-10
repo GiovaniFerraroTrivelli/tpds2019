@@ -79,7 +79,13 @@ public class ControladorPoliza {
 		Token token = new Token();
 		poliza.setUsuario(usuario);
 		session.setAttribute(token.token, poliza);
-		result.setDatosPoliza(poliza.getResumenPoliza());
+		ResumenPoliza resumenPoliza = poliza.getResumenPoliza();
+		
+		ArrayList<CuotaDTO> cuotas = new ArrayList<>();
+		for(Cuota cuota : poliza.getCuotas()) {
+			cuotas.add(cuota.getDTO());
+		}
+		resumenPoliza.setCuotas(cuotas);
 		result.setToken(token.token);
 
 		return new ResponseEntity<>(result, HttpStatus.OK);
