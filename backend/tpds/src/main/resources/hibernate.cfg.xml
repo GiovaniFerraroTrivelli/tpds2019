@@ -42,8 +42,7 @@
         <mapping resource="PagoCuota.hbm.xml"/>
         <mapping resource="Descuento.hbm.xml"/>
         <mapping resource="Recargo.hbm.xml"/>
-
-        
+        <mapping resource="Recibo.hbm.xml"/>
 
         
     </session-factory>
