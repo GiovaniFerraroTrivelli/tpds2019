@@ -79,7 +79,8 @@ export class BuscarPolizaComponent implements OnInit {
 					this.respuestaPolizas = data;
 					this.listaPolizas = this.respuestaPolizas.polizas;
 
-	      			this.modalService.open(content, { centered: true, size: 'lg' });
+					  this.modalService.open(content, { centered: true, size: 'lg' });
+					  console.log(this.respuestaPolizas)
 	      		}
 			},
 			err => {

@@ -13,7 +13,7 @@
                 <th scope="col">Número de póliza</th>
                 <th scope="col">Apellido y Nombre</th>
                 <th scope="col">Documento</th>
-                <!--<th scope="col">Último pago</th>-->
+                <th scope="col">Último pago</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +22,7 @@
                 <td>{{ poliza.numeroPoliza }}</td>
                 <td>{{ poliza.apellidoCliente }}, {{ poliza.nombreCliente }}</td>
                 <td>{{ poliza.documento.tipoDocumento }} {{ poliza.documento.nroDocumento | number: '' : 'es-AR' }}</td>
+                <td>{{ poliza.ultimoPago | date: 'dd/MM/yyyy'}}</td>
             </tr>
         </tbody>
         </table>
