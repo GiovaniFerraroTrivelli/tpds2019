@@ -224,8 +224,8 @@ public class GestorPoliza {
 		poliza.setNroPoliza(numeroPoliza);
 
 		poliza.setAnioFabricacion(p.getAnio());
-		poliza.setChasis(p.getChasis());
-		poliza.setMotor(p.getMotor());
+		poliza.setChasis(p.getChasis().toUpperCase());
+		poliza.setMotor(p.getMotor().toUpperCase());
 
 		Cliente c = DaoCliente.buscarCliente(new NumeroCliente(p.getNroCliente()));
 		poliza.setCliente(c);
@@ -257,7 +257,7 @@ public class GestorPoliza {
 		poliza.setAnioFabricacion(p.getAnio());
 
 		poliza.setKmsAnuales(p.getKmAnio());
-		poliza.setDominio(p.getPatente());
+		poliza.setDominio(p.getPatente().toUpperCase());
 		poliza.setEstadoPoliza(EstadoPoliza.GENERADA);
 		poliza.setPremio(new BigDecimal("100"));
 		poliza.setPrima(new BigDecimal("100.54"));
