@@ -78,8 +78,8 @@ export class AltapolizaComponent implements OnInit {
 			'marca': new FormControl(null, Validators.required),
 			'modelo': new FormControl(null, Validators.required),
 			'anio': new FormControl(null, Validators.required),
-			'motor': new FormControl(null, [ Validators.required, Validators.pattern('^([A-Z0-9]*)$') ]),
-			'chasis': new FormControl(null, [ Validators.required, Validators.pattern('^([A-Z0-9]{17})$') ]),
+			'motor': new FormControl(null, [ Validators.required, Validators.pattern('^[A-Z0-9]{10}$') ]),
+			'chasis': new FormControl(null, [ Validators.required, Validators.pattern('^[A-HJ-NPR-Z0-9]{17}$') ]),
 			'patente': new FormControl(null, Validators.pattern('^(|[A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{3}[A-Z]{2})$')),
 			'provincia': new FormControl(null, Validators.required),
 			'localidad': new FormControl(null, Validators.required),
@@ -222,7 +222,7 @@ export class AltapolizaComponent implements OnInit {
 			.then((confirmed) => {
 				if(confirmed)
 					this.router.navigate(['/']);
-			});
+			}, () => {});
 	}
 
 	prevStep() {

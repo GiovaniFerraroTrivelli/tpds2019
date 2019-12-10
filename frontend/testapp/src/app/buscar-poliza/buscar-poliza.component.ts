@@ -128,6 +128,6 @@ export class BuscarPolizaComponent implements OnInit {
 			.then((confirmed) => {
 				if(confirmed)
 					this.router.navigate(['/']);
-		});
+		}, () => {});
     }
 }

@@ -82,7 +82,7 @@ export class AuthenticationService implements CanActivate {
 							} else {
 								this.router.navigate(['']);
 							}
-						}
+						}, () => {}
 					);
 				}
 			},
@@ -99,7 +99,7 @@ export class AuthenticationService implements CanActivate {
 						} else {
 							this.router.navigate(['']);
 						}
-					}
+					}, () => {}
 				);
 			}
 		);
@@ -139,6 +139,6 @@ export class AuthenticationService implements CanActivate {
 					this.http.post(this.logoutUrl, null, { withCredentials: true }).subscribe();
 					this.router.navigate(['/']);
 				}
-			});
+			}, () => {});
 	}
 }

@@ -11,8 +11,8 @@
 			<h5><strong>Criterios de búsqueda aplicados</strong></h5>
 			<div class="row font-weight-light">
 		  		<div class="col-4"><small>Nro. de cliente: {{ buscarClienteForm.value.nroCliente == '' || buscarClienteForm.value.nroCliente === null ? "sin filtros" : global.nroClienteFormat(buscarClienteForm.value.nroCliente) }}</small></div>
-		  		<div class="col-4"><small>Nombre: {{ buscarClienteForm.value.nombre === null ? "sin filtros" : buscarClienteForm.value.nombre }}</small></div>
-		  		<div class="col-4"><small>Apellido: {{ buscarClienteForm.value.apellido === null ? "sin filtros" : buscarClienteForm.value.apellido }}</small></div>
+		  		<div class="col-4"><small>Nombre: {{ buscarClienteForm.value.nombre === null || buscarClienteForm.value.nombre == '' ? "sin filtros" : buscarClienteForm.value.nombre }}</small></div>
+		  		<div class="col-4"><small>Apellido: {{ buscarClienteForm.value.apellido === null || buscarClienteForm.value.apellido == '' ? "sin filtros" : buscarClienteForm.value.apellido }}</small></div>
 		  		<div class="col-4"><small>Tipo de documento: {{ buscarClienteForm.value.documento.tipoDocumento === null ? "sin filtros" : buscarClienteForm.value.tipoDocumento }}</small></div>
 		  		<div class="col-4"><small>Nro. documento: {{ buscarClienteForm.value.documento.nroDocumento === null ? "sin filtros" : buscarClienteForm.value.nroDocumento }}</small></div>
 		  	</div>

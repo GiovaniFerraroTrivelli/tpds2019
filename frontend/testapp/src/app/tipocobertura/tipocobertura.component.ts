@@ -129,7 +129,7 @@ export class TipocoberturaComponent implements OnInit {
 			.then((confirmed) => {
 				if(confirmed)
 					this.router.navigate(['/']);
-			});
+			}, () => {});
 	}
 
 	endStepCambiarCobertura() {

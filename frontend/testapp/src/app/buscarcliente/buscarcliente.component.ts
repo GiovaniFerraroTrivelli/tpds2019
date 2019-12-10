@@ -138,7 +138,7 @@ export class BuscarclienteComponent implements OnInit {
 					).then((confirmed) => {
 						if(confirmed)
 							this.router.navigate(['/alta-cliente']);
-					});
+					}, () => {});
 			    }
 			    
 			    this.loadingService.d();
