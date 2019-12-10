@@ -16,6 +16,7 @@ public class HibernateUtil {
 		return sessionFactory;
 	}
 
+	@SuppressWarnings("unused")
 	private static Session session;
 
 	static {

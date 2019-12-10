@@ -4,7 +4,7 @@ import java.util.Set;
 
 import dataTransferObjects.ModeloDTO;
 import historialValor.EntradaModelo;
-import historialValor.EntradaTipoCobertura;
+
 
 public class Modelo {
 	private Integer idModelo;

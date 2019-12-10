@@ -3,7 +3,6 @@ package restControllers;
 import java.util.ArrayList;
 
 import dataTransferObjects.TipoCoberturaDTO;
-import dominio.TipoCobertura;
 
 public class RespuestaValidarDatosPoliza {
 	private ArrayList<Error> errores;

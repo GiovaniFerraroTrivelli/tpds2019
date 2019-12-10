@@ -24,7 +24,7 @@ import usuarios.Usuario;
 public class ControladorPagos {
 
 	@PostMapping("/calcularImporteTotal")
-	public ResponseEntity<Object> altaPago(@RequestBody CuotasAPagar p, HttpSession session) {
+	public ResponseEntity<Object> altaPago(@RequestBody PostBody p, HttpSession session) {
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		if (usuario == null)
 			return new ResponseEntity<>(new Error("No se encuentra autenticado en el sistema"), HttpStatus.FORBIDDEN);
@@ -43,7 +43,7 @@ public class ControladorPagos {
 			return new ResponseEntity<>(
 					new Error("No está definido el contexto, debe realizar la consulta a la póliza previamente."), HttpStatus.BAD_REQUEST);
 	
-		@SuppressWarnings("unchecked")
+		
 		Pago pago = (Pago) transaccion.getOrDefault("pago", null);
 		if (pago == null)
 			return new ResponseEntity<>(
@@ -64,10 +64,48 @@ public class ControladorPagos {
 		result.setImporteTotal(importeTotal);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
+	
+	@PostMapping("/registrarPago")
+	public ResponseEntity<Object> registrarPago(@RequestBody PostBody post, HttpSession session){
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		if (usuario == null)
+			return new ResponseEntity<>(new Error("No se encuentra autenticado en el sistema"), HttpStatus.FORBIDDEN);
 
-	public static class CuotasAPagar {
+		if (!(usuario.getRol() == Rol.Cobrador))
+			return new ResponseEntity<>(new Error("No tiene permisos suficientes para realizar esta operación"),
+					HttpStatus.FORBIDDEN);
+		
+		@SuppressWarnings("unchecked")
+		Map<String, Object> transaccion = (Map<String, Object>) session.getAttribute(post.getToken());
+		
+		if (transaccion == null)
+			return new ResponseEntity<>(
+					new Error("No está definido el contexto, debe realizar la consulta a la póliza previamente."), HttpStatus.BAD_REQUEST);
+	
+		
+		Pago pago = (Pago) transaccion.getOrDefault("pagoCuotasSeleccionadas", null);
+		if (pago == null)
+			return new ResponseEntity<>(
+					new Error("Se detecto un error procesando la petición."), HttpStatus.BAD_REQUEST);
+		
+		
+		BigDecimal importeTotal =GestorPagos.calcularImporteTotal(pago);
+		BigDecimal vuelto = post.getImporte().subtract(importeTotal);
+		Integer nroRecibo = GestorPagos.registrarPago(pago, post.getImporte(), usuario);
+		
+		Vuelto respuesta = new Vuelto();
+		respuesta.setNumeroRecibo(nroRecibo);
+		respuesta.setPagoConfirmado(nroRecibo != null);
+		respuesta.setVuelto(vuelto);
+		
+		
+		return new ResponseEntity<>(respuesta, HttpStatus.OK);
+	}
+
+	public static class PostBody {
 		private Integer idPoliza;
 		private ArrayList<Integer> idsCuotasAPagar;
+		private BigDecimal importe;
 		private String token;
 
 		public ArrayList<Integer> getIdsCuotasAPagar() {
@@ -93,6 +131,14 @@ public class ControladorPagos {
 		public void setToken(String token) {
 			this.token = token;
 		}
+
+		public BigDecimal getImporte() {
+			return importe;
+		}
+
+		public void setImporte(BigDecimal importe) {
+			this.importe = importe;
+		}
 	}
 
 	public static class ImporteAPagar {
@@ -105,6 +151,29 @@ public class ControladorPagos {
 		public void setImporteTotal(BigDecimal importeTotal) {
 			this.importeTotal = importeTotal;
 		}
-
+	}
+	
+	public static class Vuelto {
+		private BigDecimal vuelto;
+		private Boolean pagoConfirmado;
+		private Integer numeroRecibo;
+		public BigDecimal getVuelto() {
+			return vuelto;
+		}
+		public void setVuelto(BigDecimal vuelto) {
+			this.vuelto = vuelto;
+		}
+		public Boolean getPagoConfirmado() {
+			return pagoConfirmado;
+		}
+		public void setPagoConfirmado(Boolean pagoConfirmado) {
+			this.pagoConfirmado = pagoConfirmado;
+		}
+		public Integer getNumeroRecibo() {
+			return numeroRecibo;
+		}
+		public void setNumeroRecibo(Integer numeroRecibo) {
+			this.numeroRecibo = numeroRecibo;
+		}
 	}
 }

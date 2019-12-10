@@ -372,4 +372,8 @@ public class GestorPoliza {
 		DaoPoliza.actualizarPolizas(polizas);
 	}
 
+	public static void updatePoliza(Poliza poliza) {
+		DaoPoliza.update(poliza);		
+	}
+
 }

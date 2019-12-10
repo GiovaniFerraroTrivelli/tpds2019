@@ -1,6 +1,6 @@
 package dataTransferObjects;
 
-import dominio.Marca;
+
 
 public class ModeloDTO {
 	private Integer idModelo;

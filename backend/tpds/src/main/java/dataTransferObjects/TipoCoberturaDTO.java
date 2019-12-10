@@ -6,13 +6,11 @@ public class TipoCoberturaDTO {
 	private Integer idCobertura;
 	private String nombre;
 	private String descripcion;
-	private Float factorCoberturaActual;
 	
 	public TipoCoberturaDTO(Integer id, String nombre2, String descripcion2, Float factorCoberturaActual2) {
 		idCobertura = id;
 		nombre = nombre2;
 		descripcion = descripcion2;
-		factorCoberturaActual = factorCoberturaActual2;
 	}
 	
 	public TipoCoberturaDTO(Integer idCobertura, String nombre, String descripcion) {

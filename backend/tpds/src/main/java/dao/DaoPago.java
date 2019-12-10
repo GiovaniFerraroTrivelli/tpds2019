@@ -6,6 +6,7 @@ import org.hibernate.exception.ConstraintViolationException;
 
 import dataAccess.HibernateUtil;
 import dominio.Pago;
+import dominio.Recibo;
 
 public class DaoPago {
 	public static Session session = HibernateUtil.getSession();
@@ -20,5 +21,18 @@ public class DaoPago {
 			tx.rollback();
 			throw e;
 		}
+	}
+	
+	public static Integer gaurdarRecibo(Recibo recibo) {
+		Transaction tx = session.beginTransaction();
+		
+		try {
+			session.save(recibo);
+			tx.commit();
+		} catch (ConstraintViolationException e) {
+			tx.rollback();
+			throw e;
+		}
+		return recibo.getNumeroRecibo();
 	}
 }
