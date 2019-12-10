@@ -233,17 +233,10 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 		return this.registrarPagoForm.controls['montoAbonado'].value;
 	}
 
-	getImporteFinal(cuota) {
-		if(cuota.importeFinal > cuota.importe || cuota.importeFinal < cuota.importe){
-			return cuota.importeFinal;
-		}
-	}
-	getColor(cuota){
-		if(cuota.importeFinal > cuota.importe){
-			return true;
-		} else if (cuota.importeFinal < cuota.importe){
-			return false;
-		}
+	getImporteFinal(i) {
+		if(this.cuotas[i].importe > parseFloat(this.cuotas[i].importeFinal) || this.cuotas[i].importe < parseFloat(this.cuotas[i].importeFinal)){
+			return this.cuotas[i].importeFinal;
+		} else if (this.cuotas[i].importe - parseFloat(this.cuotas[i].importeFinal) == 0) return null;
 	}
 
 	confirmarPago(){

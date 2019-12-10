@@ -24,7 +24,7 @@
                 <td>{{ poliza.apellidoCliente }}, {{ poliza.nombreCliente }}</td>
                 <td>{{ poliza.documento.tipoDocumento }} {{ poliza.documento.nroDocumento | number: '' : 'es-AR' }}</td>
                 <td>{{ parseUltimoPago(row) }}</td>
-                <td>$ {{ poliza.ultimoPago.importe }}</td>
+                <td>$ {{ getImporteUltimoPago(row) }}</td>
             </tr>
         </tbody>
         </table>

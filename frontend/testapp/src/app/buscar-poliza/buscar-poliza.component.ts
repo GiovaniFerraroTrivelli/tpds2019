@@ -103,9 +103,17 @@ export class BuscarPolizaComponent implements OnInit {
 	}
 
 	parseUltimoPago(i){
-		return this.respuestaPolizas.polizas[i].ultimoPago.fechaHora.slice(8,10) + '/'
-		+ this.respuestaPolizas.polizas[i].ultimoPago.fechaHora.slice(5,7) + '/' 
-		+ this.respuestaPolizas.polizas[i].ultimoPago.fechaHora.slice(0,4);
+		if(this.respuestaPolizas.polizas[i].ultimoPago != null){
+			return this.respuestaPolizas.polizas[i].ultimoPago.fechaHora.slice(8,10) + '/'
+			+ this.respuestaPolizas.polizas[i].ultimoPago.fechaHora.slice(5,7) + '/' 
+			+ this.respuestaPolizas.polizas[i].ultimoPago.fechaHora.slice(0,4);
+		} else return null;
+	}
+
+	getImporteUltimoPago(i){
+		if(this.respuestaPolizas.polizas[i].ultimoPago != null){
+			this.respuestaPolizas.polizas[i].ultimoPago.importe;
+		} else return null;
 	}
 
 	loadPolizaSeleccionada(poliza : PolizasRta) {

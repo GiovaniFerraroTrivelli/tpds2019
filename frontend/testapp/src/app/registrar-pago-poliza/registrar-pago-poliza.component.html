@@ -90,7 +90,7 @@
 							</div>
 						</td>
 						<td>{{ mesCuota(row) }}</td>
-						<td>$ {{ cuota.importe | number: '1.2-2' : 'es-AR' }} <span [ngClass]="{'importeRed': getColor(row), 'importeGreen': !getColor(row)}">{{ getImporteFinal(row) | number: '1.2-2' : 'es-AR' }}</span></td>
+						<td>$ {{ cuota.importe }} <span>{{ getImporteFinal(row) }}</span></td>
 						<td>{{ getVencimientoCuota(row) }}</td>
 					</tr>				   
 				</tbody>
