@@ -114,10 +114,11 @@ export class BuscarclienteComponent implements OnInit {
 
 	onSubmit(f: NgForm, content, page) {
 		this.buscarClienteForm.controls['numeroPagina'].setValue(page);
+		if(f.valid) return;
+
 		this.loadingService.i();
 
 		f.value.nroCliente = this.global.removeHyphen(f.value.nroCliente);
-		console.log(f.value);
 
 		this.busquedaClienteService.postClienteBusqueda(f.value).subscribe(
 			data => {
