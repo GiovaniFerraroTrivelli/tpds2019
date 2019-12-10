@@ -3,10 +3,10 @@
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="dominio.Pago" table="pago_poliza">
+	<class name="dominio.Pago" table="pagos">
 
 		<id name="idPago" type="java.lang.Integer" column="id_pago">
-			<generator class="native" />
+			<generator class="identity" />
 		</id>
 
 		<many-to-one name="poliza" class="dominio.Poliza"

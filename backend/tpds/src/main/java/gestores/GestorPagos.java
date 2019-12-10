@@ -65,11 +65,16 @@ public class GestorPagos {
 		pago.setFechaHora(new Date());
 		pago.setUsuario(usuario);
 		pago.setPoliza(poliza);
+		
+		System.out.println("here");
+		
 		DaoPago.guardarPago(pago);
+		
+		
 		
 		Recibo recibo =new Recibo(pago, poliza, poliza.getCliente());
 		pago.setRecibo(recibo);
-		Integer nroRecibo = DaoPago.gaurdarRecibo(recibo);
+		Integer nroRecibo = DaoPago.guardarRecibo(recibo);
 		DaoPago.updatePago(pago);
 		GestorPoliza.updatePoliza(poliza);
 		return nroRecibo;

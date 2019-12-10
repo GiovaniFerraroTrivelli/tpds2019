@@ -36,7 +36,7 @@ public class DaoPago {
 	}
 	
 	
-	public static Integer gaurdarRecibo(Recibo recibo) {
+	public static Integer guardarRecibo(Recibo recibo) {
 		Transaction tx = session.beginTransaction();
 		
 		try {
