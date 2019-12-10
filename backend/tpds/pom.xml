@@ -38,34 +38,40 @@
 		</dependency>
 
 		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto -->
 		<dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-crypto</artifactId>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/javax.money/money-api -->
 		<dependency>
-		    <groupId>javax.money</groupId>
-		    <artifactId>money-api</artifactId>
-		    <version>1.0.3</version>
+			<groupId>javax.money</groupId>
+			<artifactId>money-api</artifactId>
+			<version>1.0.3</version>
 		</dependency>
 		<dependency>
-		<groupId>org.javamoney</groupId>
-		    <artifactId>moneta</artifactId>
-		    <version>1.1</version>
+			<groupId>org.javamoney</groupId>
+			<artifactId>moneta</artifactId>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
-		  <groupId>org.apache.commons</groupId>
-		  <artifactId>commons-lang3</artifactId>
-		  <version>3.9</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.9</version>
 		</dependency>
 	</dependencies>
-	
+
 
 	<build>
 		<plugins>
