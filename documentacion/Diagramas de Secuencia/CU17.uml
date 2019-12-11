@@ -8,7 +8,6 @@ boundary PantallaDeBusqueda
 control ControladorCliente
 control GestorCliente
 entity listaClientesDTO
-entity respuesta
 control DaoCliente
 
 entity "queryBuilder: Querybuilder" as QueryBuilder
@@ -44,7 +43,7 @@ alt
         
         DaoCliente <- QueryBuilder : Query q
         deactivate QueryBuilder
-        
+
         DaoCliente -> Query : setFirstResult(primerResultado)
         DaoCliente -> Query : setMaxResult(resultadosPorPagina)
         
@@ -58,31 +57,20 @@ alt
         deactivate Query
         ControladorCliente <- GestorCliente : listaClientes
         deactivate GestorCliente
-        ControladorCliente -> listaClientesDTO : new Collection<ClienteDTO>
+        ControladorCliente -> listaClientesDTO : new List<ClienteDTO>
+        listaClientesDTO --> ControladorCliente : clientes
         
         
         activate listaClientesDTO
             
         loop for Cliente in listaClientes
             ControladorCliente -> listaClientesDTO : add(Cliente.getDTO())
+            activate listaClientesDTO
             ControladorCliente <- listaClientesDTO
             deactivate listaClientesDTO
+            deactivate listaClientesDTO
         end loop
-        
-        ControladorCliente -> respuesta : new: Respuesta
-        activate respuesta
-        ControladorCliente <- respuesta
-            
-        ControladorCliente -> respuesta : add(listaClientesDTO)
-        ControladorCliente <- respuesta
-    
-        ControladorCliente -> respuesta : setResultadosPorPagina(p.getResultadosPorPagina)
-        ControladorCliente <- respuesta
-                
-        ControladorCliente -> respuesta : setNroPagina(p.getNroPagina)
-        ControladorCliente <- respuesta
-        
-        deactivate respuesta    
+
         PantallaDeBusqueda <- ControladorCliente : JSON = {\n\tInteger pagina\n\tInteger getResultadosPorPagina\n\tInteger cantidadPaginas\n\tList<ClienteDTO> clientes\n\t}
         deactivate ControladorCliente
 
