@@ -163,7 +163,7 @@ public class GestorPoliza {
 
 	private static ArrayList<Error> validarPatente(String patente) {
 		ArrayList<Error> errores = new ArrayList<>();
-		if (!patente.isEmpty()) {
+		if (patente != null) {
 			patente = patente.toUpperCase().replaceAll("\\s", "");
 			if (!patente.matches("([A-Z]{2}[0-9]{3}[A-Z]{2})|([A-Z]{3}[0-9]{3})"))
 				errores.add(new Error("El dominio ingresado no se corresponde con formato válido"));
