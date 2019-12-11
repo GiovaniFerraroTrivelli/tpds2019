@@ -145,11 +145,18 @@ export class BuscarclienteComponent implements OnInit {
 			    this.loadingService.d();
 		    },
 		    err => {
-        		this.dialogService.alert(
-		    		'Ha ocurrido un error',
-		    		'No se pudo realizar lo solicitado: ' + err.error.mensaje
-		    	);
-			    
+		    	if(err.status == 500) {
+	        		this.dialogService.alert(
+			    		'Ha ocurrido un error',
+			    		'No se pudo realizar lo solicitado: ' + err.error.error
+			    	);
+		    	} else {
+	        		this.dialogService.alert(
+			    		'Ha ocurrido un error',
+			    		'No se pudo realizar lo solicitado: ' + err.error.mensaje
+			    	);
+		    	}
+
 			    this.loadingService.d();
       		}
 	    );

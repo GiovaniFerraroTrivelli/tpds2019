@@ -62,7 +62,7 @@
 				</div>
 
 				<div class="col-12">
-					<label class="control-label pt-2" for="patente">Patente del vehículo</label>
+					<label class="control-label pt-2" for="patente">Patente del vehículo (si aplica)</label>
 					<div class="input-group">
 						<input value="{{ resumenPoliza.patente }}" type="text" readonly="readonly" class="form-control unclickable dis-arrows">
 					</div>
@@ -83,6 +83,9 @@
 					</tr>
 				</thead>
 				<tbody>
+					<tr *ngIf="!cuotas.length">
+						<td class="text-muted text-center" colspan="4"><small>No hay cuotas pendientes de pago.</small></td>
+					</tr>
 					<tr *ngFor='let cuota of cuotas; let row = index'>
 						<td>
 							<div class="form-check">
@@ -90,20 +93,18 @@
 							</div>
 						</td>
 						<td>{{ mesCuota(row) }}</td>
-						<td>$ {{ cuota.importe }} <span>{{ getImporteFinal(row) }}</span></td>
-						<td>{{ getVencimientoCuota(row) }}</td>
-					</tr>				   
+						<td>$ {{ cuota.importe }} <small *ngIf="getImporteFinal(row)">$ {{ getImporteFinal(row) }}</small></td>
+						<td>{{ cuotas[row].fechaVencimiento | date:'dd/MM/yyyy' }}</td>
+					</tr>		   
 				</tbody>
 			</table>
-
-			<!--<span><strong>El cliente no posee cuotas pendientes de pago.</strong></span><br>-->
 		</div>
 
 		<div class="col-sm">
 			<div id="vigenciaPoliza" class="card mb-3">
 				<div class="card-body">
 					<label class="control-label pt-2" for="vigenciaPoliza">Vigencia de la póliza:</label>
-					<h3>{{ setVigencia() }}</h3>
+					<h3>{{ getVigenciaPoliza() }}</h3>
 				</div>
 			</div>
 
@@ -116,7 +117,7 @@
 			</div>
 
 			<div class="d-flex flex-row-reverse">
-				<button [disabled]="!importeTotal || !this.loadingService.isHidden()" (click)="abonar(confirmar)" type="button" class="btn btn-primary p-2" style="margin-left: 8px;">Abonar</button>
+				<button [disabled]="!importeTotal || !this.loadingService.isHidden()" (click)="abonar(confirmar)" type="button" class="btn btn-primary p-2 ml-1">Abonar</button>
 				<button [disabled]="!this.loadingService.isHidden()" (click)="cancel()" type="button" class="btn btn-secondary p-2">Cancelar</button>
 			</div>
 		</div>
@@ -156,7 +157,7 @@
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancelar</button>
-		<button [disabled]="!registrarPagoForm.valid || (this.registrarPagoForm.controls['montoAbonado'].value < responseMonto.importeTotal)" type="button" class="btn btn-primary" (click)="[confirmarDialogo(aceptar),confirmarPago()]">Confirmar</button>
+		<button [disabled]="!registrarPagoForm.valid || (this.registrarPagoForm.controls['montoAbonado'].value < responseMonto.importeTotal)" type="button" class="btn btn-primary" (click)="confirmarPago(aceptar)">Confirmar</button>
 	</div>
 </ng-template>
 
@@ -165,6 +166,9 @@
 		<h4 class="modal-title">Resumen de pago</h4>
 	</div>
 	<div class="modal-body">
+		<div class="alert alert-success">
+			El pago se ha registrado con éxito.
+		</div>
 		<form>
 			<div class="form-group row">
 				<label for="montoPagar2" class="col-sm-4 col-form-label text-right">Monto total</label>
@@ -197,6 +201,6 @@
 	</div>
 
 	<div class="modal-footer">
-		<button type="button" class="btn btn-primary" (click)="openFinalDialog()">Aceptar</button>
+		<button type="button" class="btn btn-primary" (click)="goHome()">Volver al inicio</button>
 	</div>
 </ng-template>

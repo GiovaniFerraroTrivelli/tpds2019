@@ -36,10 +36,10 @@ export class BuscarPolizaComponent implements OnInit {
 	) {}
 
 	private busquedaPoliza: BusquedaPoliza;
-	polizaSeleccionada: PolizasRta;
 	private respuestaPolizas: respuestaBuscarPoliza;
-	busquedaPolizaForm: FormGroup;
 	private listaPolizas: PolizasRta[];
+	polizaSeleccionada: PolizasRta;
+	busquedaPolizaForm: FormGroup;
 	resumenPoliza: ResumenPoliza;
 	@Output() signal = new EventEmitter<boolean>();
 
@@ -48,22 +48,10 @@ export class BuscarPolizaComponent implements OnInit {
 		this.busquedaPolizaForm = new FormGroup({
 			'numeroPoliza': new FormControl(null, [ Validators.required, Validators.pattern('^([0-9]{13})$') ])
     	});
-    	
-    	this.onChanges();
   	}
   
   	get numeroPoliza() { return this.busquedaPolizaForm.get('numeroPoliza'); }
 
-	onChanges(): void {
-		this.busquedaPolizaForm.get('numeroPoliza').valueChanges.subscribe(
-			numeroPoliza => {
-				if(numeroPoliza.length > 13){
-					this.busquedaPolizaForm.controls['numeroPoliza'].setValue(numeroPoliza.substr(0,13));
-				}
-			}
-		);
-	}
-  
 	onSubmit(f: NgForm, content) {
 	    this.loadingService.i();
 
@@ -80,7 +68,7 @@ export class BuscarPolizaComponent implements OnInit {
 					this.respuestaPolizas = data;
 					this.listaPolizas = this.respuestaPolizas.polizas;
 
-					  this.modalService.open(content, { centered: true, size: 'lg' });
+					  this.modalService.open(content, { centered: true, size: 'xl' });
 					  console.log(this.respuestaPolizas)
 	      		}
 			},
@@ -102,20 +90,6 @@ export class BuscarPolizaComponent implements OnInit {
 		);
 	}
 
-	parseUltimoPago(i){
-		if(this.respuestaPolizas.polizas[i].ultimoPago != null){
-			return this.respuestaPolizas.polizas[i].ultimoPago.fechaHora.slice(8,10) + '/'
-			+ this.respuestaPolizas.polizas[i].ultimoPago.fechaHora.slice(5,7) + '/' 
-			+ this.respuestaPolizas.polizas[i].ultimoPago.fechaHora.slice(0,4);
-		} else return null;
-	}
-
-	getImporteUltimoPago(i){
-		if(this.respuestaPolizas.polizas[i].ultimoPago != null){
-			this.respuestaPolizas.polizas[i].ultimoPago.importe;
-		} else return null;
-	}
-
 	loadPolizaSeleccionada(poliza : PolizasRta) {
 		this.polizaSeleccionada = poliza;
 	}
@@ -128,10 +102,12 @@ export class BuscarPolizaComponent implements OnInit {
 	submitSeleccionarPoliza() {
 		if(this.polizaSeleccionada == null) return;
 
+		this.loadingService.i();
 		this.BuscarpolizaService.getPolizaSeleccionada(this.polizaSeleccionada.idPoliza).subscribe(
-			data=>{
+			data => {
 				this.resumenPoliza = data;
 				this.signal.emit(true);
+				this.loadingService.d();
 			}
 		)
 		this.modalService.dismissAll();
