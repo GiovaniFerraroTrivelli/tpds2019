@@ -103,6 +103,8 @@ public class DaoCliente {
 	public static void refresh(Object object) {
 		try {
 			session.refresh(object);
-		} catch (Exception e) {	}	}
+		} catch (Exception e) {
+		}
+	}
 
 }

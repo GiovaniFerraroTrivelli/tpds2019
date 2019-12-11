@@ -6,6 +6,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.StatelessSession;
 import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
@@ -31,6 +32,16 @@ public class HibernateUtil {
 	public static Session getSession() throws HibernateException {
 		try {
 			return sessionFactory.openSession();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static StatelessSession getStatelessSession() {
+		try {
+			return sessionFactory.openStatelessSession();
 			
 		} catch (Exception e) {
 			e.printStackTrace();

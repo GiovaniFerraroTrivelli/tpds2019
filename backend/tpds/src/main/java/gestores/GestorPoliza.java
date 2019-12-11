@@ -69,6 +69,7 @@ public class GestorPoliza {
 		errores.addAll(validarChasis(p.getChasis()));
 
 		// Validar Patente
+		if(p.getPatente()!= null && p.getPatente().isEmpty()) p.setPatente(null);
 		errores.addAll(validarPatente(p.getPatente()));
 
 		// Validar Medidas de Seguridad
@@ -382,8 +383,8 @@ public class GestorPoliza {
 		DaoPoliza.update(poliza);		
 	}
 	
-	public static void refresh(Object object) {
-		DaoPoliza.refresh(object);
+	public static void refresh(Poliza poliza) {
+		DaoPoliza.refresh(poliza);
 	}
 
 }
