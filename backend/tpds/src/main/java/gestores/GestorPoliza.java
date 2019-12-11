@@ -69,7 +69,8 @@ public class GestorPoliza {
 		errores.addAll(validarChasis(p.getChasis()));
 
 		// Validar Patente
-		if(p.getPatente()!= null && p.getPatente().isEmpty()) p.setPatente(null);
+		if (p.getPatente() != null && p.getPatente().isEmpty())
+			p.setPatente(null);
 		errores.addAll(validarPatente(p.getPatente()));
 
 		// Validar Medidas de Seguridad
@@ -83,6 +84,36 @@ public class GestorPoliza {
 		// Validar siniestros
 		errores.addAll(validarNumeroDeSiniestros(p.getSiniestros()));
 
+		return errores;
+	}
+
+	public static ArrayList<Error> validarDatosAltaPoliza(PolizaDTO p) {
+		ArrayList<Error> errores = new ArrayList<>();
+
+		// Validar Fecha de inicioVigencia
+		if (p.getFechaVigencia() == null)
+			errores.add(new Error("No se especificó una fecha de inicio de vigencia"));
+		else {
+			LocalDate inicio = LocalDate.parse(p.getFechaVigencia());
+			Date inicioVigencia = (java.sql.Date.valueOf(inicio));
+			if (inicioVigencia.compareTo(new Date()) <= 0)
+				errores.add(
+						new Error("La fecha de inicio de vigencia no puede ser anterior ni igual a la fecha actual"));
+		}
+
+		// Validar la forma de Pago
+
+		if (p.getModalidadPago() == null) {
+			errores.add(new Error("No se especificó la forma de pago"));
+		} else {
+			try {
+				FormaPago.valueOf(p.getModalidadPago());
+			} catch (java.lang.IllegalArgumentException e) {
+				errores.add(new Error("La forma de pago indicada no es una forma de pago válida"));
+			}
+		}
+
+		errores.addAll(validarDatos(p));
 		return errores;
 	}
 
@@ -119,7 +150,6 @@ public class GestorPoliza {
 				// Validar existencia de anio de fabricación
 				if (anio == null)
 					errores.add(new Error("No de definió un año de fabricación"));
-
 				else {
 					for (Cotizacion m : GestorModelos.getModelo(modelo).getAnios()) {
 						if (m.getAnio() - anio == 0)
@@ -225,7 +255,6 @@ public class GestorPoliza {
 		Poliza poliza = new Poliza();
 		NumeroPoliza numeroPoliza = new NumeroPoliza(1, 1);
 		poliza.setNroPoliza(numeroPoliza);
-
 		poliza.setAnioFabricacion(p.getAnio());
 		poliza.setChasis(p.getChasis().toUpperCase());
 		poliza.setMotor(p.getMotor().toUpperCase());
@@ -260,7 +289,8 @@ public class GestorPoliza {
 		poliza.setAnioFabricacion(p.getAnio());
 
 		poliza.setKmsAnuales(p.getKmAnio());
-		if (p.getPatente() != null) poliza.setDominio(p.getPatente().toUpperCase());
+		if (p.getPatente() != null)
+			poliza.setDominio(p.getPatente().toUpperCase());
 		poliza.setEstadoPoliza(EstadoPoliza.GENERADA);
 		poliza.setPremio(new BigDecimal("100"));
 		poliza.setPrima(new BigDecimal("100.54"));
@@ -294,21 +324,7 @@ public class GestorPoliza {
 	}
 
 	public static Boolean savePoliza(Poliza poliza) {
-		try {
-			Session s = HibernateUtil.getSession();
-			Transaction t = s.beginTransaction();
-			s.save(poliza);
-			Set<Cuota> cuotas = poliza.getCuotas();
-			// TODO: Revisar esto
-			for (Cuota cuota : cuotas) {
-				s.save(cuota);
-			}
-			t.commit();
-			s.close();
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+		return DaoPoliza.save(poliza);
 	}
 
 	public static Poliza getPoliza(Integer nroPoliza) {
@@ -324,7 +340,8 @@ public class GestorPoliza {
 
 	public static ArrayList<Poliza> buscarPoliza(String numeroPoliza) {
 		ArrayList<Poliza> polizas = DaoPoliza.buscarPoliza(numeroPoliza);
-		for (Poliza poliza : polizas) GestorPoliza.refresh(poliza);
+		for (Poliza poliza : polizas)
+			GestorPoliza.refresh(poliza);
 		return polizas;
 	}
 
@@ -380,9 +397,9 @@ public class GestorPoliza {
 	}
 
 	public static void updatePoliza(Poliza poliza) {
-		DaoPoliza.update(poliza);		
+		DaoPoliza.update(poliza);
 	}
-	
+
 	public static void refresh(Poliza poliza) {
 		DaoPoliza.refresh(poliza);
 	}

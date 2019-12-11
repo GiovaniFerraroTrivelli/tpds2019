@@ -19,6 +19,7 @@ import dominio.Poliza;
 import dominio.Recargo;
 import dominio.Recibo;
 import enumeradores.EstadoCuota;
+import excepciones.CuotaAnteriorNoPagaException;
 import excepciones.CuotaNoExistenteEnELContextoException;
 import excepciones.CuotaPagaException;
 import usuarios.Usuario;
@@ -97,20 +98,30 @@ public class GestorPagos {
 	}
 
 	public static Pago ActualizarCuotasAPagar(Pago p, ArrayList<Integer> cuotasAPagar)
-			throws CuotaNoExistenteEnELContextoException, CuotaPagaException {
+			throws CuotaNoExistenteEnELContextoException, CuotaPagaException, CuotaAnteriorNoPagaException {
 		HashSet<PagoCuota> cuotas = new HashSet<>();
 		Pago pago = new Pago(p);
 		for (Integer i : cuotasAPagar) {
 			Boolean flag = true;
 			for (PagoCuota c : p.getCuotas()) {
 				if (c.getCuota().getIdCuota().compareTo(i) == 0) {
-					if (c.getCuota().getEstadoCuota() == EstadoCuota.PAGA) throw new CuotaPagaException();
+					if (c.getCuota().getEstadoCuota() == EstadoCuota.PAGA)
+						throw new CuotaPagaException();
 					cuotas.add(c);
 					flag = false;
 				}
 			}
 			if (flag)
 				throw new CuotaNoExistenteEnELContextoException();
+		}
+		for (PagoCuota c1 : cuotas) {
+			for (PagoCuota c2 : p.getCuotas()) {
+				if (c1.getCuota().getFechaVencimiento().compareTo(c2.getCuota().getFechaVencimiento()) > 0
+						&& c1.getCuota().getEstadoCuota() != EstadoCuota.PAGA
+						&& !cuotas.contains(c2)) {
+					throw new CuotaAnteriorNoPagaException();
+				}
+			}
 		}
 		pago.setCuotas(cuotas);
 		return pago;
@@ -123,7 +134,7 @@ public class GestorPagos {
 		}
 		return importe;
 	}
-	
+
 	public static void refresh(Object object) {
 		DaoPago.refresh(object);
 	}

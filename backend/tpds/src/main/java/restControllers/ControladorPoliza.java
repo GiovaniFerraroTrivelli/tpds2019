@@ -71,7 +71,7 @@ public class ControladorPoliza {
 					HttpStatus.FORBIDDEN);
 
 		RespuestaResumenPoliza result = new RespuestaResumenPoliza();
-		ArrayList<Error> errores = GestorPoliza.validarDatos(p);
+		ArrayList<Error> errores = GestorPoliza.validarDatosAltaPoliza(p);
 		result.setErrores(errores);
 		if (!errores.isEmpty())
 			return new ResponseEntity<>(result, HttpStatus.OK);
