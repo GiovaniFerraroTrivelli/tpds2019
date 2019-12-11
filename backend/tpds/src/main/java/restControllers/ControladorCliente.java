@@ -71,15 +71,15 @@ public class ControladorCliente {
 	@PostMapping("/consultarCliente")
 	public ResponseEntity<Object> consultarCliente(@RequestBody ParametrosDeConsulta parametros) {
 		if (!parametros.nroClienteValido()) {
-			return new ResponseEntity<>(new Error("Número de cliente inválido"), HttpStatus.OK);
+			return new ResponseEntity<>(new Error("Número de cliente inválido"), HttpStatus.BAD_REQUEST);
 		}
 
 		if (!parametros.paginaValida()) {
-			return new ResponseEntity<>(new Error("Parámetros de paginación inválidos"), HttpStatus.OK);
+			return new ResponseEntity<>(new Error("Parámetros de paginación inválidos"), HttpStatus.BAD_REQUEST);
 		}
 
 		if (parametros.nulo()) {
-			return new ResponseEntity<>(new Error("Ningún campo de búsqueda fue completado"), HttpStatus.OK);
+			return new ResponseEntity<>(new Error("Ningún campo de búsqueda fue completado"), HttpStatus.BAD_REQUEST);
 		}
 
 		try {
