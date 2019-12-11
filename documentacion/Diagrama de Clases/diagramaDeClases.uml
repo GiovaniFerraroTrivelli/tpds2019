@@ -13,6 +13,98 @@ end note
 hide enum methods
 hide interface attributes
 
+
+package Logica{
+    class GestorCliente <<(S, #FF7700) Singleton>> {
+    +{static}Cliente getCliente(Integer idCliente)
+	+{static}void guardarCliente(Cliente c)
+	+{static}ArrayList<Cliente> buscarClientes(ParametrosDeBusqueda p)
+	+{static}ArrayList<Cliente> consultarClientes(ParametrosDeConsulta p)
+	+{static}void altaCliente(AltaClienteDTO clienteDTO)
+	+{static}Long resultados(ParametrosDeBusqueda parametros)
+	+{static}void actualizarCondicionCliente(Cliente c)
+	-{static}Boolean clienteNormal(Cliente c)
+	-{static}Boolean clientePlata(Cliente c)
+	-{static}Boolean clienteActivo(Cliente c)
+	+{static}void refresh(Object object)
+    }
+    
+    class GestorPoliza <<(S, #FF7700) Singleton>> {
+        +{static}ArrayList<TipoCobertura> getCoberturasDisponibles(PolizaDTO p)
+	+{static}ArrayList<Error> validarDatos(PolizaDTO p)
+	-{static}ArrayList<Error> validarDomicilioDeRiesgo(Integer localidad)
+	-{static}ArrayList<Error> validarNumeroDeCliente(String nroCliente)
+	-{static}ArrayList<Error> validarModeloYAnioDeFabricacion(Integer modelo, Integer anio)
+	-{static}ArrayList<Error> validarMotor(String motor)
+	-{static}ArrayList<Error> validarChasis(String chasis)
+	-{static}ArrayList<Error> validarPatente(String patente)
+	-{static}ArrayList<Error> validarHijos(ArrayList<Hijo> hijos)
+	-{static}ArrayList<Error> validarNumeroDeSiniestros(Integer siniestros)
+	-{static}boolean existePolizaConPatente(String dominio)
+	-{static}boolean existePolizaConMotor(String motor)
+	-{static}boolean existePolizaConChasis(String chasis)
+	+{static}Poliza generarPoliza(PolizaDTO p)
+	+{static}Boolean savePoliza(Poliza poliza)
+	+{static}Poliza getPoliza(Integer nroPoliza)
+	+{static}String getSumaAsegurada(Poliza p)
+	+{static}ArrayList<Poliza> buscarPoliza(String numeroPoliza)
+	+{static}Boolean altaPoliza(Poliza p)
+	+{static}void actualizarPolizas()
+	+{static}void updatePoliza(Poliza poliza)
+	+{static}void refresh(Poliza poliza)
+    }
+
+    class GestorUsuario <<(S, #FF7700) Singleton>> {
+    	+{static}Usuario getUsuario(String nombreUsuario)
+	    +{static}Boolean autenticarUsuario(Usuario usuario, String password)
+        -{static} singleton: GestorUsuario
+        -GestorUsuario()
+        +alta(String[]): Usuario
+        +modificar(Usuario, String[]): Void
+        +eliminar(Usuario): Void
+    }
+    
+    class GestorSubSistemaDeSiniestros <<(S, #FF7700) Singleton>> {
+        -{static} singleton: GestorSubSistemaDeSiniestros
+        -GestorSubSistemaDeSiniestros()
+        +{static} getInstance(): GestorSubSistemaDeSiniestros 
+    }
+
+	class GestorSistemaFinanciero <<(S, #FF7700) Singleton>> {
+        -{static} singleton: GestorSistemaFinanciero
+        +{static} getInstance(): GestorSistemaFinanciero
+    }
+    
+    class GestorPagos  <<(S, #FF7700) Singleton>> {
+    +{static}ArrayList<Cuota> getCuotas(Poliza poliza)
+	+{static}PagoCuota calcularDescuentosYRecargos(Cuota c)
+	+{static}Integer registrarPago(Pago pago, Poliza poliza, BigDecimal importe, Usuario usuario)
+	+{static}Pago getUltimoPago(Poliza poliza)
+	+{static}Pago ActualizarCuotasAPagar(Pago p, ArrayList<Integer> cuotasAPagar)
+	+{static}BigDecimal calcularImporteTotal(Pago pago)
+	+{static}void refresh(Object object)
+    }
+	class GestorGeografico <<(S, #FF7700) Singleton>>{
+			+{static}Provincia getProvincia(Integer idProvincia)
+	+{static}Pais getPais(Integer idPais)
+	+{static}Localidad getLocalidad(Integer idLocalidad)
+	+{static}ArrayList<Provincia> getProvinciasDePais(Integer idPais)
+	+{static}ArrayList<Localidad> getLocalidadesDeProvincia(Integer idProvincia)
+	+{static}ArrayList<Pais> getPaises()
+	}
+	class GestorPagos <<(S, #FF7700) Singleton>>{
+		-{static} singleton: GestorPagos
+		-GestorPagos()
+		+{static} getInstance(): GestorPagos
+	}
+    
+    class GestorCoberturas <<(S, #FF7700) Singleton>>{
+    +{static}ArrayList<TipoCobertura> getCoberturas()
+	+{static}TipoCobertura getCoberturaContraTerceros()
+	+{static}TipoCobertura getCobertura(Integer id)
+    }
+}
+
 package Dominio{
     class Poliza {
 		-idPoliza: Integer
@@ -352,64 +444,7 @@ package dao{
     
 }
 
-package Logica{
-    class GestorCliente <<(S, #FF7700) Singleton>> {
-        -{static} singleton: GestorCliente
-        -GestorCliente()
-        +{static} getInstance(): GestorCliente
-        +buscar(String[]): Cliente 
-        +modificar(Cliente, String[]): Void
-        +alta(String[]): Cliente
-        +calcularIdCliente(Cliente): Void
-    }
-    
-    class GestorPoliza <<(S, #FF7700) Singleton>> {
-        -{static} singleton: GestorPoliza
-        -GestorPoliza()
-        +{static} getInstance(): GestorPoliza
-        +alta(String[]): Poliza
-        +buscar(String[]): Poliza
-        +modificar(Poliza, String[]): Void
-        +registrarPago(Poliza): Void
-    }
 
-    class GestorUsuario <<(S, #FF7700) Singleton>> {
-        -{static} singleton: GestorUsuario
-        -GestorUsuario()
-        +{static} getInstance(): GestorUsuario
-        +alta(String[]): Usuario
-        +buscar(String[]): Usuario
-        +modificar(Usuario, String[]): Void
-        +eliminar(Usuario): Void
-    }
-    
-    class GestorSubSistemaDeSiniestros <<(S, #FF7700) Singleton>> {
-        -{static} singleton: GestorSubSistemaDeSiniestros
-        -GestorSubSistemaDeSiniestros()
-        +{static} getInstance(): GestorSubSistemaDeSiniestros 
-    }
-
-	class GestorSistemaFinanciero <<(S, #FF7700) Singleton>> {
-        -{static} singleton: GestorSistemaFinanciero
-        -GestorSistemaFinanciero()
-        +{static} getInstance(): GestorSistemaFinanciero
-    }
-	class GestorGeografico <<(S, #FF7700) Singleton>>{
-		-{static} singleton: GestorGeografico
-		-GestorGeografico()
-		+{static} getInstance(): GestorGeografico
-	}
-	class GestorPagos <<(S, #FF7700) Singleton>>{
-		-{static} singleton: GestorPagos
-		-GestorPagos()
-		+{static} getInstance(): GestorPagos
-	}
-	class GestorDocumentos <<(S, #FF7700) Singleton>>{
-		-{static} singleton: GestorDocumentos
-		-GestorDocumentos()
-		+{static} getInstance(): GestorDocumentos
-	}
-}
 
 package enumeradores {
     enum CondicionCliente {
@@ -482,7 +517,6 @@ package enumeradores {
 DaoCliente <.. GestorCliente
 DaoPoliza <.. GestorPoliza
 DaoGeografico <.. GestorGeografico
-DaoCuota <.. GestorPagos
 'Poliza -- ValorAutomovil'
 
 'Relaciones entre clases y gestores'
@@ -498,7 +532,6 @@ FactoresCalculos "1" <.. "1" GestorPoliza
 
 'Relaciones entredistintos gestores'
 
-GestorPagos "1" ..> "1" GestorDocumentos
 GestorPoliza "1" ..> "1" GestorPagos
 GestorPoliza "1" ..> "1" GestorSubSistemaDeSiniestros
 GestorCliente "1" ..> "1" GestorSubSistemaDeSiniestros
