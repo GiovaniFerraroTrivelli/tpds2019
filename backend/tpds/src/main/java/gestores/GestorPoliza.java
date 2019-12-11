@@ -94,11 +94,16 @@ public class GestorPoliza {
 		if (p.getFechaVigencia() == null)
 			errores.add(new Error("No se especificó una fecha de inicio de vigencia"));
 		else {
-			LocalDate inicio = LocalDate.parse(p.getFechaVigencia());
-			Date inicioVigencia = (java.sql.Date.valueOf(inicio));
-			if (inicioVigencia.compareTo(new Date()) <= 0)
+			LocalDate inicioVigencia = LocalDate.parse(p.getFechaVigencia());
+			LocalDate fechaMinima = LocalDate.now().plusDays(1);
+			LocalDate fechaMaxima = LocalDate.now().plusMonths(1);
+			if (! (inicioVigencia.isAfter(fechaMinima) || inicioVigencia.isEqual(fechaMinima)))
 				errores.add(
-						new Error("La fecha de inicio de vigencia no puede ser anterior ni igual a la fecha actual"));
+						new Error("La fecha de inicio de vigencia debe ser posterior a la fecha actual"));
+			if (! (inicioVigencia.isBefore(fechaMaxima) || inicioVigencia.isEqual(fechaMaxima))) {
+				errores.add(
+						new Error("La fecha de inicio de vigencia debe ser dentro del próximo mes"));
+			}
 		}
 
 		// Validar la forma de Pago
@@ -112,7 +117,6 @@ public class GestorPoliza {
 				errores.add(new Error("La forma de pago indicada no es una forma de pago válida"));
 			}
 		}
-
 		errores.addAll(validarDatos(p));
 		return errores;
 	}
