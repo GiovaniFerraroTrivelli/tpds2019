@@ -15,55 +15,44 @@ database MariaDB
 
 loop !existePoliza
 
-Usuario -> InterfazUsuario : buscar póliza por Id
+Usuario -> InterfazUsuario : buscar póliza por numero de Poliza
 activate Usuario
 activate InterfazUsuario
 
-InterfazUsuario -> ControladorPoliza : POST (JSON) IdPoliza
+InterfazUsuario -> ControladorPoliza : POST (JSON)  numero de Poliza, 
 
 activate ControladorPoliza
-ControladorPoliza -> GestorPoliza : buscarPoliza(idPoliza)
+ControladorPoliza -> GestorPoliza : buscarPoliza(numeroPoliza)
 
 activate GestorPoliza
 
-GestorPoliza -> DaoPoliza : buscarPoliza(idPoliza)
+GestorPoliza -> DaoPoliza : buscarPoliza(numeroPoliza)
 
 activate DaoPoliza
-DaoPoliza -> MariaDB : selectPoliza(idPoliza)
+DaoPoliza -> MariaDB : selectPoliza(numeroPoliza)
 activate MariaDB
-MariaDB --> DaoPoliza : polizaDTO
+MariaDB --> DaoPoliza : List<Poliza> polizas
 deactivate MariaDB
-loop while cantidadPolizas > 0
-	DaoPoliza -> poliza : new Poliza(polizaDTO)
+DaoPoliza --> GestorPoliza : List<Poliza> polizas
+deactivate DaoPoliza
+GestorPoliza --> ControladorPoliza: List<Poliza> polizas
+deactivate GestorPoliza
+loop for Poliza p : polizas
+	ControladorPoliza -> poliza : getParametros()
 	activate poliza
-	poliza --> DaoPoliza : p
+	poliza --> ControladorPoliza : parametros
 	deactivate poliza
-	DaoPoliza -> DaoPoliza : addPolizasEnMemoria()
-	activate DaoPoliza
+	ControladorPoliza -> ControladorPoliza : addResultadoBusqueda()
 end loop
-
-activate DaoPoliza
-
+ControladorPoliza --> InterfazUsuario : JSON listaPolizas
+deactivate ControladorPoliza
 
 deactivate DaoPoliza
-alt !existePoliza
-GestorPoliza <-- DaoPoliza : Error "no existe póliza"
-ControladorPoliza <-- GestorPoliza : Error "no existe póliza"
-InterfazUsuario <-- ControladorPoliza : JSON Error "no existe póliza"
+alt !lista.isEmpty()
 Usuario <-- InterfazUsuario : Mensaje de error "no existe póliza"
 
 end
-
 end
-
-GestorPoliza <-- DaoPoliza : List<Poliza> listaPolizas
-deactivate DaoPoliza
-
-ControladorPoliza <-- GestorPoliza : List<Poliza> listaPolizas
-deactivate GestorPoliza
-
-InterfazUsuario <-- ControladorPoliza : JSON listaPolizas
-deactivate ControladorPoliza
 
 Usuario <-- InterfazUsuario : lista de pólizas
 deactivate InterfazUsuario
