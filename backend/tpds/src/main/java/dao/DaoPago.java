@@ -7,6 +7,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import dataAccess.HibernateUtil;
 import dominio.Descuento;
 import dominio.Pago;
+import dominio.PagoCuota;
 import dominio.Recargo;
 import dominio.Recibo;
 
@@ -26,6 +27,9 @@ public class DaoPago {
 
 		try {
 			session.save(p);
+			for (PagoCuota pc : p.getCuotas()) {
+				session.save(pc);
+			}
 			tx.commit();
 		} catch (ConstraintViolationException e) {
 			tx.rollback();
