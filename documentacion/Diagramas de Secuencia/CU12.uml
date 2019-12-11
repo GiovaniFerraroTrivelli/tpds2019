@@ -5,56 +5,83 @@ center footer Grupo 4A: Matías Bode, Francisco Busso, Giovani Ferraro Trivelli,
 
 actor Usuario
 boundary InterfazUsuario
-entity ControladorPoliza
-entity GestorPoliza
+control ControladorPagos
+control GestorPagos
+control DaoPago
+entity "Pago p" as pago
 
-ref over Usuario, InterfazUsuario, ControladorPoliza, GestorPoliza
+ref over Usuario, InterfazUsuario
     CU-18: Buscar Póliza
 end ref
 
-loop !polizaCorrecta
-activate Usuario
-Usuario -> InterfazUsuario : Seleccionar póliza
-activate InterfazUsuario
-InterfazUsuario -> ControladorPoliza : POST número de póliza seleccionada
-activate ControladorPoliza
-ControladorPoliza -> GestorPoliza : obtenerPoliza(numeroPoliza)
-activate GestorPoliza
-alt polizaCorrecta
-ControladorPoliza <-- GestorPoliza : Poliza p
-InterfazUsuario <-- ControladorPoliza : JSON datos de Poliza p
-Usuario <-- InterfazUsuario : Datos de la póliza seleccionada
-else !polizaCorrecta
-ControladorPoliza <-- GestorPoliza : Error "No existe póliza o no está vigente"
-InterfazUsuario <-- ControladorPoliza : JSON Error "No existe póliza o no está vigente"
-Usuario <-- InterfazUsuario : Error "No existe póliza o no está vigente" 
-end
-end
-loop !confirmado
-Usuario -> InterfazUsuario : Seleccionar cuotas a abonar
-InterfazUsuario -> ControladorPoliza : POST cuotas a abonar
-ControladorPoliza -> GestorPoliza : calcularImportes()
-ControladorPoliza <-- GestorPoliza : List<Float> importes
-InterfazUsuario <-- ControladorPoliza : JSON Importes
-Usuario <-- InterfazUsuario : Importes parciales y totales
-alt la cuota seleccionada no es la primera pendiente de pago
-Usuario <-- InterfazUsuario : Error "No puede cancelar una cuota posterior a la primera pendiente de pago"
-end
-alt el usuario confirma el pago
-Usuario -> InterfazUsuario : Confirmar pago
-else cancelar
-Usuario -> InterfazUsuario : Cancelar
-end
-end
-Usuario -> InterfazUsuario : Ingresar monto abonado
-InterfazUsuario -> ControladorPoliza : POST monto abonado
-ControladorPoliza -> GestorPoliza : calcularVuelto()
-ControladorPoliza <-- GestorPoliza : Float vuelto
-InterfazUsuario <-- ControladorPoliza : JSON vuelto
-Usuario <-- InterfazUsuario : Monto vuelto
-GestorPoliza -> GestorPoliza : registrarPago()
+activate ControladorPagos
 
-ref over Usuario, InterfazUsuario, ControladorPoliza, GestorPoliza
+ControladorPagos -> GestorPagos : importeTotal := calcularImporteTotal(pago)
+ControladorPagos <- GestorPagos : importeTotal
+
+ControladorPagos -> GestorPagos : nroRecibo := registrarPago(pago, poliza, importe, usuario)
+activate GestorPagos
+
+
+GestorPagos -> GestorPagos : importeTotal := calcularImporteTotal(pago)
+
+GestorPagos -> pago : setImporte(importeTotal)
+activate pago
+GestorPagos <- pago
+
+GestorPagos -> pago: setFechaHora(new Date)
+GestorPagos <- pago
+
+GestorPagos -> pago: setUsuario(usuario)
+GestorPagos <- pago
+deactivate pago
+
+GestorPagos -> DaoPago : guardarPago(p)
+activate DaoPago
+GestorPagos <- DaoPago
+deactivate DaoPago
+
+GestorPagos -> Recibo : new: Recibo(pago, poliza, cliente)
+activate Recibo
+GestorPagos <- Recibo :  r
+deactivate Recibo
+
+
+GestorPagos -> pago : setRecibo(r)
+activate pago
+GestorPagos <- pago
+deactivate pago
+
+GestorPagos -> DaoPago : guardarRecibo(r)
+activate DaoPago
+GestorPagos <- DaoPago
+
+GestorPagos -> DaoPago : update(pago)
+GestorPagos <- DaoPago
+deactivate DaoPago
+
+ControladorPagos <- GestorPagos : nroRecibo
+deactivate GestorPagos
+
+ControladorPagos -> Respuesta : new: Respuesta
+activate Respuesta
+ControladorPagos <- Respuesta : Respuesta respuesta
+
+ControladorPagos -> Respuesta : setNumeroRecibo(nroRecibo)
+ControladorPagos <- Respuesta
+
+ControladorPagos -> Respuesta : setPagoConfirmado(nroRecibo != NULL)
+ControladorPagos <- Respuesta
+
+ControladorPagos -> Respuesta : setVuelto(vuelto)
+ControladorPagos <- Respuesta
+deactivate Respuesta
+
+InterfazUsuario <- ControladorPagos : respuesta
+deactivate ControladorPagos
+
+
+ref over Usuario, InterfazUsuario
     CU-13: Emitir recibo de pago
 end ref
 
