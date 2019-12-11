@@ -145,6 +145,9 @@ public class DaoPoliza {
 	}
 	
 	public static void refresh(Object object) {
-		session.refresh(object);
+		try {
+			session.refresh(object);
+		} catch (Exception e) {
+		}
 	}
 }
