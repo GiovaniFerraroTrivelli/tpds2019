@@ -102,11 +102,18 @@ public class GestorPoliza {
 		}
 
 		// Validar la forma de Pago
-		if (p.getFormaPago() == null)
-			errores.add(new Error("No se especificó la forma de pago, o bien la misma no es una forma de pago válida"));
+
+		if (p.getModalidadPago() == null) {
+			errores.add(new Error("No se especificó la forma de pago"));
+		} else {
+			try {
+				FormaPago.valueOf(p.getModalidadPago());
+			} catch (java.lang.IllegalArgumentException e) {
+				errores.add(new Error("La forma de pago indicada no es una forma de pago válida"));
+			}
+		}
 
 		errores.addAll(validarDatos(p));
-
 		return errores;
 	}
 
@@ -248,7 +255,6 @@ public class GestorPoliza {
 		Poliza poliza = new Poliza();
 		NumeroPoliza numeroPoliza = new NumeroPoliza(1, 1);
 		poliza.setNroPoliza(numeroPoliza);
-
 		poliza.setAnioFabricacion(p.getAnio());
 		poliza.setChasis(p.getChasis().toUpperCase());
 		poliza.setMotor(p.getMotor().toUpperCase());
@@ -318,21 +324,7 @@ public class GestorPoliza {
 	}
 
 	public static Boolean savePoliza(Poliza poliza) {
-		try {
-			Session s = HibernateUtil.getSession();
-			Transaction t = s.beginTransaction();
-			s.save(poliza);
-			Set<Cuota> cuotas = poliza.getCuotas();
-			// TODO: Revisar esto
-			for (Cuota cuota : cuotas) {
-				s.save(cuota);
-			}
-			t.commit();
-			s.close();
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+		return DaoPoliza.save(poliza);
 	}
 
 	public static Poliza getPoliza(Integer nroPoliza) {

@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -9,6 +10,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import dataAccess.HibernateUtil;
+import dominio.Cuota;
 import dominio.NumeroPoliza;
 import dominio.Poliza;
 import dominio.TipoCobertura;
@@ -88,11 +90,20 @@ public class DaoPoliza {
 		return polizas;
 	}
 
-	public static void save(Poliza p) {
-		// Session session = HibernateUtil.getSession();
+	public static Boolean save(Poliza p) {
 		Transaction t = session.beginTransaction();
-		session.save(p);
-		t.commit();
+		try {
+			session.save(p);
+			Set<Cuota> cuotas = p.getCuotas();
+			for (Cuota cuota : cuotas) {
+				session.save(cuota);
+			}
+			t.commit();
+			return true;
+		} catch (Exception e) {
+			t.rollback();
+			return false;
+		}
 	}
 
 	public static void update(Poliza p) {
