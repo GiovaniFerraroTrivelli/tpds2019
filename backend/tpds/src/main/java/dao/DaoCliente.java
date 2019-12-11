@@ -99,5 +99,9 @@ public class DaoCliente {
 		Query query = qb.getCountQuery(parametros, session);
 		return (Long) query.uniqueResult();
 	}
+	
+	public static void refresh(Object object) {
+		session.refresh(object);
+	}
 
 }

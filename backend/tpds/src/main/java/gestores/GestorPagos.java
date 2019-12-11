@@ -9,7 +9,6 @@ import java.util.HashSet;
 
 import dao.DaoPago;
 import dao.DaoPoliza;
-import dao.DaoUsuario;
 import dominio.Cuota;
 import dominio.Descuento;
 import dominio.Pago;
@@ -19,6 +18,7 @@ import dominio.Recargo;
 import dominio.Recibo;
 import enumeradores.EstadoCuota;
 import excepciones.CuotaNoExistenteEnELContextoException;
+import excepciones.CuotaPagaException;
 import usuarios.Usuario;
 
 public class GestorPagos {
@@ -83,6 +83,7 @@ public class GestorPagos {
 	}
 
 	public static Pago getUltimoPago(Poliza poliza) {
+		GestorPoliza.refresh(poliza);
 		ArrayList<Pago> pagos = new ArrayList<>();
 		if (poliza.getPagos() != null)
 			pagos.addAll(poliza.getPagos());
@@ -94,13 +95,14 @@ public class GestorPagos {
 	}
 
 	public static Pago ActualizarCuotasAPagar(Pago p, ArrayList<Integer> cuotasAPagar)
-			throws CuotaNoExistenteEnELContextoException {
+			throws CuotaNoExistenteEnELContextoException, CuotaPagaException {
 		HashSet<PagoCuota> cuotas = new HashSet<>();
 		Pago pago = new Pago(p);
 		for (Integer i : cuotasAPagar) {
 			Boolean flag = true;
 			for (PagoCuota c : p.getCuotas()) {
 				if (c.getCuota().getIdCuota().compareTo(i) == 0) {
+					if (c.getCuota().getEstadoCuota() == EstadoCuota.PAGA) throw new CuotaPagaException();
 					cuotas.add(c);
 					flag = false;
 				}
@@ -118,5 +120,9 @@ public class GestorPagos {
 			importe = importe.add(p.importeFinal());
 		}
 		return importe;
+	}
+	
+	public static void refresh(Object object) {
+		DaoPago.refresh(object);
 	}
 }

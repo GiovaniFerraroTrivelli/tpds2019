@@ -14,4 +14,8 @@ public class DaoUsuario {
 		Usuario usuario = session.get(Usuario.class, nombreUsuario);
 		return usuario;
 	}
+	
+	public static void refresh(Object object) {
+		session.refresh(object);
+	}
 }

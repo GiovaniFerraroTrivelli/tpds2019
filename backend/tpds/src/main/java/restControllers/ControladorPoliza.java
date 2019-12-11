@@ -29,6 +29,7 @@ import dominio.Pago.PagoDTO;
 import dominio.PagoCuota;
 import dominio.Poliza;
 import dominio.TipoCobertura;
+import enumeradores.EstadoCuota;
 import enumeradores.Rol;
 import excepciones.DatoNoEncontradoException;
 import excepciones.NoExisteClienteException;
@@ -244,6 +245,7 @@ public class ControladorPoliza {
 		Poliza poliza = GestorPoliza.getPoliza(idPoliza);
 		if (poliza == null)
 			return new ResponseEntity<>(new Error("La poliza solicitada no existe"), HttpStatus.NOT_FOUND);
+		
 		String token = new Token().toString();
 		Map<String, Object> transaccion = new HashMap<String, Object>();
 		Pago pago = new Pago();
@@ -254,9 +256,11 @@ public class ControladorPoliza {
 		
 		HashSet<PagoCuota> pagoCuota = new HashSet<>();
 		for (Cuota cuota : poliza.getCuotas()) {
-			PagoCuota pC = GestorPagos.calcularDescuentosYRecargos(cuota);
-			pagoCuota.add(pC);
-			cuotasDTO.add(pC.getDTO());
+			if(cuota.getEstadoCuota() != EstadoCuota.PAGA) {
+				PagoCuota pC = GestorPagos.calcularDescuentosYRecargos(cuota);
+				pagoCuota.add(pC);
+				cuotasDTO.add(pC.getDTO());
+			}
 		}
 		Collections.sort(cuotasDTO);
 		resumen.setCuotas(cuotasDTO);

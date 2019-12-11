@@ -311,7 +311,9 @@ public class GestorPoliza {
 	}
 
 	public static Poliza getPoliza(Integer nroPoliza) {
-		return DaoPoliza.getPoliza(nroPoliza);
+		Poliza poliza = DaoPoliza.getPoliza(nroPoliza);
+		GestorPoliza.refresh(poliza);
+		return poliza;
 	}
 
 	public static String getSumaAsegurada(Poliza p) {
@@ -320,7 +322,9 @@ public class GestorPoliza {
 	}
 
 	public static ArrayList<Poliza> buscarPoliza(String numeroPoliza) {
-		return DaoPoliza.buscarPoliza(numeroPoliza);
+		ArrayList<Poliza> polizas = DaoPoliza.buscarPoliza(numeroPoliza);
+		for (Poliza poliza : polizas) GestorPoliza.refresh(poliza);
+		return polizas;
 	}
 
 	public static Boolean altaPoliza(Poliza p) {
@@ -376,6 +380,10 @@ public class GestorPoliza {
 
 	public static void updatePoliza(Poliza poliza) {
 		DaoPoliza.update(poliza);		
+	}
+	
+	public static void refresh(Object object) {
+		DaoPoliza.refresh(object);
 	}
 
 }

@@ -102,10 +102,11 @@ public class Poliza {
 			this.premio = p.getPremio().toString();
 			this.derechoEmision = (p.getDerechoEmision().toString());
 			try {
-				this.ultimoDiaPago = GestorPagos.getUltimoPago(p).getFechaHora();
+				Pago ultimoPago =  GestorPagos.getUltimoPago(p);
+				this.ultimoDiaPago = ultimoPago.getFechaHora();
+				this.montoTotal = ultimoPago.getImporte().toString();
 			} catch (NullPointerException e) {
 			}
-			this.montoTotal = p.getMontoTotal().toString();
 			this.formaPago = p.getFormaPago().toString();
 			try {
 				this.tipoCobertura = p.getTipoCobertura().getDTO();

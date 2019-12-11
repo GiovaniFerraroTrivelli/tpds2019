@@ -23,5 +23,8 @@ public class DaoGeografico {
 		session.save(l);
 		t.commit();
 	}
-
+	
+	public static void refresh(Object object) {
+		session.refresh(object);
+	}
 }

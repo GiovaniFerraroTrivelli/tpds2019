@@ -23,4 +23,8 @@ public class DaoVehiculo {
 		session.save(m);
 		t.commit();
 	}
+	
+	public static void refresh(Object object) {
+		session.refresh(object);
+	}
 }

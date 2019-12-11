@@ -17,6 +17,7 @@ import dominio.Pago;
 import dominio.Poliza;
 import enumeradores.Rol;
 import excepciones.CuotaNoExistenteEnELContextoException;
+import excepciones.CuotaPagaException;
 import gestores.GestorPagos;
 import usuarios.Usuario;
 
@@ -57,6 +58,8 @@ public class ControladorPagos {
 			return new ResponseEntity<>(
 					new Error("Alguna/s de las cuotas a pagar no se corresponde con una cuota válida"),
 					HttpStatus.BAD_REQUEST);
+		} catch (CuotaPagaException e) {
+			return new ResponseEntity<>(new Error("No se puede seleccionar una cuota paga"), HttpStatus.BAD_REQUEST);
 		}
 
 		BigDecimal importeTotal = GestorPagos.calcularImporteTotal(pagoCuotasSeleccionadas);
@@ -94,7 +97,6 @@ public class ControladorPagos {
 			return new ResponseEntity<>(new Error(
 					"Se produjo un error interno y no se pudo recuperar la poliza a pagar, cierre sesión y vuelvalo a intentar"),
 					HttpStatus.I_AM_A_TEAPOT);
-
 
 		BigDecimal importeTotal = GestorPagos.calcularImporteTotal(pago);
 		BigDecimal importe = new BigDecimal(post.getMontoAbonado());

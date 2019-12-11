@@ -143,4 +143,8 @@ public class DaoPoliza {
 		}
 		tx.commit();
 	}
+	
+	public static void refresh(Object object) {
+		session.refresh(object);
+	}
 }

@@ -176,4 +176,8 @@ public class GestorClientes {
 		return flag;
 
 	}
+	
+	public static void refresh(Object object) {
+		DaoCliente.refresh(object);
+	}
 }
