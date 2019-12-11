@@ -297,91 +297,92 @@ package Dominio{
     Usuario "1" <-- "0 .. n" Poliza
 }
 
-package "Acceso a Datos"{
-    interface "DAO<T>" {
-        +guardar(<T>): Void
-        +modificar(<T>, String[]): Void
-        +eliminar(<T>): Void
-        +getAll(): ArrayList<T>
-    }
-    
+package dao{
     class DaoCliente{
-        +guardar(Cliente): Void //<<Override>>//
-        +modificar(Cliente, String[]): Void //<<Override>>//
-        +eliminar(Cliente): Void //<<Override>>//
-        +getAll(): ArrayList<Cliente> //<<Override>>//
+        +{static} session: Session
+        +{static} buscarCliente(NumeroCliente): Cliente
+        +{static} buscarClientes(ParametrosDeBusqueda): List<Cliente>
+        +{static} consultarClientes(ParametrosDeConsulta): List<Cliente>
+        +{static} getCliente(Integer): Cliente
+        +{static} guardarCliente(): Void
+        +{static} refresh(Object): Void
     }
     
-    class DaoPoliza{
-        +guardar(Poliza): Void //<<Override>>//
-        +modificar(Poliza, String[]): Void //<<Override>>//
-        +eliminar(Poliza): Void //<<Override>>//
-        +getAll(): ArrayList<Poliza> //<<Override>>//
+   class DaoPoliza {
+    	+{static} session: Session
+    	+{static} getPoliza(Integer): Poliza 
+    	+{static} buscarPoliza(String): ArrayList<Poliza> 
+    	+{static} getPolizasVigentesOGeneradasConMotor(String): ArrayList<Poliza> 
+    	+{static} getPolizasVigentesOGeneradasConChasis(String): ArrayList<Poliza> 
+    	+{static} getAllPolizas(): ArrayList<Poliza> 
+    	+{static} getPolizasVigentesOGeneradasConDominio(String): ArrayList<Poliza> 
+    	+{static} save(Poliza): Void
+    	+{static} update(Poliza): Void
+    	+{static} getCoberturas(): ArrayList<TipoCobertura> 
+    	+{static} getCoberturaContraTerceros(): TipoCobertura 
+    	+{static} getCobertura(Integer): TipoCobertura 
+    	+{static} actualizarPolizas(ArrayList<Poliza>): Void
+    	+{static} refresh(Object): Void
     }
     
-    class DaoUsuario{
-        +guardar(Usuario): Void //<<Override>>//
-        +modificar(Usuario, String[]): Void //<<Override>>//
-        +eliminar(Usuario): Void //<<Override>>//
-        +getAll(): ArrayList<Usuario> //<<Override>>//
+    class DaoUsuario {
+    	+{static} session: Session 
+    	+{static} getUsuario(String): Usuario 
+    	+{static} refresh(Object): Void 
     }
 
-    class DaoLocalidad{
-        +guardar(Localidad): Void //<<Override>>//
-        +modificar(Localidad, String[]): Void //<<Override>>//
-        +eliminar(Localidad): Void //<<Override>>//
-        +getAll(): ArrayList<Localidad> //<<Override>>//
+    class DaoGeografico  {
+    	+{static} session: Session 
+    	+{static} getLocalidad(Integer): Localidad 
+    	+{static} guardarLocalidad(Localidad): Void
+    	+{static} refresh(Object): Void
+    }
+
+    
+    class DaoPago {
+    	+{static} session: Session 
+    	+{static} getDescuentoPagoAdelantado(): Descuento 
+    	+{static} getRecargoMora(): Recargo 
+    	+{static} guardarPago(Pago): Void
+    	+{static} updatePago(Pago): Void 
+    	+{static} guardarRecibo(Recibo): Integer 
+    	+{static} refresh(Object): Void
+    }
+
+    class QueryBuilder  {
+    	+QueryBuilder()
+    	+getQuery(ParametrosDeBusqueda, Session): Query
+    	+getQuery(ParametrosDeConsulta, Session): Query
+    	+getQuery(NumeroPoliza, Session): Query
+    	+getCountQuery(ParametrosDeBusqueda, Session): Query
     }
     
-    class DaoProvincia{
-        +guardar(Provincia): Void //<<Override>>//
-        +modificar(Provincia, String[]): Void //<<Override>>//
-        +eliminar(Provincia): Void //<<Override>>//
-        +getAll(): ArrayList<Provincia> //<<Override>>//
+    class HibernateUtil {
+    	-{static} Lock: Lock
+    	-{static} sessionFactory: SessionFactory 
+    	-{static} session: Session 
+    	+{static} getSessionfactory(): SessionFactory 
+    	+{static} getSession(): Session 
+    	+{static} shutdown(): Void
+    	+{static} buildSessionFactory(): SessionFactory 
+    	+{static} getCurrentSession(): Session 
+    	+{static} getLock(): Lock 
     }
     
-    class DaoPais{
-        +guardar(Pais): Void //<<Override>>//
-        +modificar(Pais, String[]): Void //<<Override>>//
-        +eliminar(Pais): Void //<<Override>>//
-        +getAll(): ArrayList<Pais> //<<Override>>//
+    class DaoVehiculo {
+    	+{static} session: Session 
+    	+{static} getModelo(Integer): Modelo 
+    	+{static} save(Modelo): Void
+    	+{static} refresh(Object): Void
     }
     
-    class DaoCuota
-    {
-        +guardar(Cuota): Void //<<Override>>//
-        +modificar(Cuota, String[]): Void //<<Override>>//
-        +eliminar(Cuota): Void //<<Override>>//
-        +getAll(): ArrayList<Cuota> //<<Override>>//
-    }
+    HibernateUtil "1" <..>"1" DaoCliente
+    HibernateUtil "1" <..>"1" DaoGeografico
+    HibernateUtil "1" <..>"1" DaoPago
+    HibernateUtil "1" <..>"1" DaoPoliza
+    HibernateUtil "1" <..>"1" DaoUsuario
+    HibernateUtil "1" <..>"1" DaoVehiculo
     
-    /'class ReciboDTO {
-		-nroCliente: Integer
-		-nombreCliente: String
-		-apellidoCliente: String
-		-domicilioRiesgo: String
-		-marca: String
-		-modelo: String
-		-anioFabricacion: Integer
-		-patente: String
-		-nroPoliza: Integer
-		-inicioVigencia: Date
-		-finVigencia: Date
-		-tipoCobertura: String
-		-sumaAsegurada: MonetaryAmount
-		-fechaPago: Date
-		-premio: MonetaryAmount
-		-recargosMora: MonetaryAmount
-		-bonificacionPagoAdelantado: MonetaryAmount
-	}'/
-	
-    "DAO<T>" <|.. DaoPoliza: <<implements>>
-    "DAO<T>" <|.. DaoCliente: <<implements>>
-    "DAO<T>" <|.. DaoUsuario: <<implements>>
-    "DAO<T>" <|.. DaoLocalidad: <<implements>>
-    "DAO<T>" <|.. DaoProvincia: <<implements>>
-    "DAO<T>" <|.. DaoPais: <<implements>>
-    "DAO<T>" <|.. DaoCuota: <<implements>>
 }
 
 package Logica{
@@ -443,79 +444,12 @@ package Logica{
 	}
 }
 
-package Enumeradores
-{
-    enum CondicionIva {
-        ResponsableInscripto
-        ResponsableNoInscripto
-        NoResponsable
-        SujetoExento
-        ConsumidorFinal
-        ResponsableMonotributo
-        NoCategorizado
-        ProveedorExterior
-        ClienteExterior
-        Liberado
-        ResponsableInscriptoPercepcion
-        PeqContribuyente
-        MonotributistaSocial
-        PeqContribuyenteSocial
-    }
-    
-    enum EstadoPoliza {
-        Generada
-        Vigente
-        Suspendida
-        Finalizada
-    }
 
-    enum TipoDocumento {
-        DNI
-        LU
-        LC
-        LE
-    }
-    
-    enum TipoCliente {
-        Normal
-        Activo
-        Plata
-    }
-
-    enum EstadoCivil{
-        Soltero
-        Casado
-        Viudo
-    }
-
-    enum Sexo {
-        Masculino
-        Femenino
-    }
-    
-    enum Mes {
-        Enero,
-        Febrero,
-        Marzo,
-        Abril,
-        Mayo,
-        Junio,
-        Julio,
-        Agosto,
-        Septiembre,
-        Octubre,
-        Noviembre,
-        Diciembre
-    }
-}
 
 
 DaoCliente <.. GestorCliente
 DaoPoliza <.. GestorPoliza
-DaoUsuario <.. GestorUsuario
-DaoLocalidad <.. GestorGeografico
-DaoProvincia <.. GestorGeografico
-DaoPais <.. GestorGeografico
+DaoGeografico <.. GestorGeografico
 DaoCuota <.. GestorPagos
 'Poliza -- ValorAutomovil'
 
