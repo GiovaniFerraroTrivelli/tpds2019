@@ -69,6 +69,7 @@ public class GestorPoliza {
 		errores.addAll(validarChasis(p.getChasis()));
 
 		// Validar Patente
+		if(p.getPatente()!= null && p.getPatente().isEmpty()) p.setPatente(null);
 		errores.addAll(validarPatente(p.getPatente()));
 
 		// Validar Medidas de Seguridad
@@ -162,14 +163,12 @@ public class GestorPoliza {
 
 	private static ArrayList<Error> validarPatente(String patente) {
 		ArrayList<Error> errores = new ArrayList<>();
-		if (patente != null) {
-			if (!patente.isEmpty()) {
-				patente = patente.toUpperCase().replaceAll("\\s", "");
-				if (!patente.matches("([A-Z]{2}[0-9]{3}[A-Z]{2})|([A-Z]{3}[0-9]{3})"))
-					errores.add(new Error("El dominio ingresado no se corresponde con formato válido"));
-				else if (existePolizaConPatente(patente))
-					errores.add(new Error("Ya existe una póliza con el dominio ingresado"));
-			}
+		if (!patente.isEmpty()) {
+			patente = patente.toUpperCase().replaceAll("\\s", "");
+			if (!patente.matches("([A-Z]{2}[0-9]{3}[A-Z]{2})|([A-Z]{3}[0-9]{3})"))
+				errores.add(new Error("El dominio ingresado no se corresponde con formato válido"));
+			else if (existePolizaConPatente(patente))
+				errores.add(new Error("Ya existe una póliza con el dominio ingresado"));
 		}
 		return errores;
 	}
