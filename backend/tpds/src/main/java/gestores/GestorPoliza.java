@@ -143,7 +143,6 @@ public class GestorPoliza {
 				// Validar existencia de anio de fabricación
 				if (anio == null)
 					errores.add(new Error("No de definió un año de fabricación"));
-
 				else {
 					for (Cotizacion m : GestorModelos.getModelo(modelo).getAnios()) {
 						if (m.getAnio() - anio == 0)

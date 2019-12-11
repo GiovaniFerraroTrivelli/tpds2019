@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dominio.Pago;
 import dominio.Poliza;
 import enumeradores.Rol;
+import excepciones.CuotaAnteriorNoPagaException;
 import excepciones.CuotaNoExistenteEnELContextoException;
 import excepciones.CuotaPagaException;
 import gestores.GestorPagos;
@@ -60,6 +61,9 @@ public class ControladorPagos {
 					HttpStatus.BAD_REQUEST);
 		} catch (CuotaPagaException e) {
 			return new ResponseEntity<>(new Error("No se puede seleccionar una cuota paga"), HttpStatus.BAD_REQUEST);
+		} catch (CuotaAnteriorNoPagaException e) {
+			return new ResponseEntity<>(new Error("No se puede pagar una cuota sin antes haber pagado las anteriores"),
+					HttpStatus.BAD_REQUEST);
 		}
 
 		BigDecimal importeTotal = GestorPagos.calcularImporteTotal(pagoCuotasSeleccionadas);
