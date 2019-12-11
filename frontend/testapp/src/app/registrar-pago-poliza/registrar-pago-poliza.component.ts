@@ -131,11 +131,11 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 
 	onChecked(isChecked: boolean) {
 		if(isChecked) {
-			this.importeTotal += Number(this.cuotas[this.index].importe);
+			this.importeTotal += Number(this.cuotas[this.index].importeFinal);
 			this.index++;
 		} else {
 			this.index--;
-			this.importeTotal -= Number(this.cuotas[this.index].importe);
+			this.importeTotal -= Number(this.cuotas[this.index].importeFinal);
 		}
 	}
 	updateCuotasAPagar(isChecked: boolean, idCuota: number){
@@ -254,10 +254,10 @@ export class RegistrarPagoPolizaComponent implements OnInit {
 	}
 
 	getImporteFinal(i) {
-		if(this.cuotas[i].importe > parseFloat(this.cuotas[i].importeFinal)
-			|| this.cuotas[i].importe < parseFloat(this.cuotas[i].importeFinal)) {
+		if(this.cuotas[i].importe > this.cuotas[i].importeFinal
+			|| this.cuotas[i].importe < this.cuotas[i].importeFinal) {
 			return this.cuotas[i].importeFinal;
-		} else if (this.cuotas[i].importe - parseFloat(this.cuotas[i].importeFinal) == 0) return 0;
+		} else if (this.cuotas[i].importe == this.cuotas[i].importeFinal) return 0;
 	}
 
 	goHome() {

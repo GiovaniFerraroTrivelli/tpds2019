@@ -93,7 +93,8 @@
 							</div>
 						</td>
 						<td>{{ mesCuota(row) }}</td>
-						<td>$ {{ cuota.importe }} <small *ngIf="getImporteFinal(row)">$ {{ getImporteFinal(row) }}</small></td>
+						<td *ngIf="getImporteFinal(row) == 0">$ {{ cuota.importe | number: '1.2-2' : 'es-AR' }}</td>
+						<td *ngIf="getImporteFinal(row) != 0"><s>$ {{ cuota.importe | number: '1.2-2' : 'es-AR' }}</s><br />$ {{ getImporteFinal(row) }}</td>
 						<td>{{ cuotas[row].fechaVencimiento | date:'dd/MM/yyyy' }}</td>
 					</tr>		   
 				</tbody>

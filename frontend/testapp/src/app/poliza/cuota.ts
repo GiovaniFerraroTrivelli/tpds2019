@@ -5,6 +5,6 @@ export class Cuota {
 	importe: number;
 	estadoCuota: string;
 	fechaVencimiento: string;
-	importeFinal: string;
+	importeFinal: number;
 	ultimoPago: UltimoPago;
 }
