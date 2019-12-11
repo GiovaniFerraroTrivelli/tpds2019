@@ -1,54 +1,63 @@
 @startuml
 
-title Diagrama de Secuencia - CU17
+title CU17: Buscar Cliete
 center footer Grupo 4A: Matías Bode, Francisco Busso, Giovani Ferraro Trivelli, Miguel Storani
 
 actor Usuario
-boundary Resultados
 boundary PantallaDeBusqueda
 control ControladorCliente
 control GestorCliente
-entity "listaClientes: Collection<Cliente>" as resultado
 entity listaClientesDTO
 entity respuesta
 control DaoCliente
-activate GestorPoliza
-GestorPoliza -> GestorCliente : buscarCliente()
-activate GestorCliente
+
+entity "queryBuilder: Querybuilder" as QueryBuilder
+entity "query: Query" as Query
 
 
+
+activate Usuario
+Usuario -> PantallaDeBusqueda : El usuario accede al formulario
 alt
     loop while no existen resultados de busqueda
-    
-        GestorCliente -> PantallaDeBusqueda : mostrarPantallaDeBusqueda()
         activate PantallaDeBusqueda
         loop while datos incorrectos
             PantallaDeBusqueda -> Usuario : Solicitar criterios de búsqueda
-            activate Usuario
             Usuario -> PantallaDeBusqueda : Criterios de búsqueda
-            deactivate Usuario
         end loop
-        PantallaDeBusqueda -> ControladorCliente : buscarCliente(ParametrosDeBusqueda p)
+        PantallaDeBusqueda -> ControladorCliente : POST /buscarCliente JSON={\n\tParametrosDeBusqueda p\n\t}
         activate ControladorCliente    
-        
-                ControladorCliente -> GestorCliente : buscarCliente(ParametrosDeBusqueda p)
-        GestorCliente -> QueryBuilder : new: QueryBuilder
+        ControladorCliente -> GestorCliente : buscarCliente(ParametrosDeBusqueda p)
+        activate GestorCliente
+        GestorCliente -> DaoCliente : buscarCliente(ParametrosDeBusqueda p)
+        activate DaoCliente
+        DaoCliente -> QueryBuilder : new: QueryBuilder
         activate QueryBuilder
-        GestorCliente <- QueryBuilder
-        GestorCliente -> QueryBuilder : Query q := getQuery(ParametrosDeBusqueda p)
+        DaoCliente <- QueryBuilder
+        DaoCliente -> QueryBuilder : Query q := getQuery(ParametrosDeBusqueda p)
             
         loop for Parametro in p
             QueryBuilder -> Query : setParametro(Parametro)
+            activate Query
             QueryBuilder <- Query
         end loop
         
-        GestorCliente <- QueryBuilder : Query q
+        DaoCliente <- QueryBuilder : Query q
         deactivate QueryBuilder
-            
-        GestorCliente -> DaoCliente : buscarClientes(q)
-        GestorCliente <- DaoCliente : listaClientes := new Collection<Cliente>
-        ControladorCliente <- GestorCliente : listaClientes
         
+        DaoCliente -> Query : setFirstResult(primerResultado)
+        DaoCliente -> Query : setMaxResult(resultadosPorPagina)
+        
+            
+        DaoCliente -> Query : getList()
+        activate Query
+        DaoCliente <- Query : listaClientes := new Collection<Cliente>
+        deactivate Query
+        DaoCliente  --> GestorCliente : listaClientes
+        deactivate DaoCliente
+        deactivate Query
+        ControladorCliente <- GestorCliente : listaClientes
+        deactivate GestorCliente
         ControladorCliente -> listaClientesDTO : new Collection<ClienteDTO>
         
         
@@ -74,25 +83,22 @@ alt
         ControladorCliente <- respuesta
         
         deactivate respuesta    
-        PantallaDeBusqueda <- ControladorCliente : respuesta.JSON
+        PantallaDeBusqueda <- ControladorCliente : JSON = {\n\tInteger pagina\n\tInteger getResultadosPorPagina\n\tInteger cantidadPaginas\n\tList<ClienteDTO> clientes\n\t}
         deactivate ControladorCliente
 
         Usuario <- PantallaDeBusqueda : lista de clientes
-        activate Usuario
-        Usuario -> PantallaDeBusqueda : seleccionar cliente
-        Usuario <- PantallaDeBusqueda : datos del cliente
-        deactivate Usuario
-        
-        
+        note right
+            El caso de uso termina
+        end note
     end loop
     
 else cancelar busqueda
     activate PantallaDeBusqueda
     Usuario -> PantallaDeBusqueda : Cancelar búsqueda
-    PantallaDeBusqueda -> GestorCliente : cancelar()
     deactivate PantallaDeBusqueda
-    GestorCliente --> GestorPoliza : throw exception: "Búsqueda cancelada"
-
+    note right
+        El caso de uso termina
+    end note
 end
 
 @enduml
