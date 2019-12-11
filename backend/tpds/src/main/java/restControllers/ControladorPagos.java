@@ -114,7 +114,7 @@ public class ControladorPagos {
 		respuesta.setNumeroRecibo(nroRecibo);
 		respuesta.setPagoConfirmado(nroRecibo != null);
 		respuesta.setVuelto(vuelto);
-
+		session.removeAttribute(post.getToken());
 		return new ResponseEntity<>(respuesta, HttpStatus.OK);
 	}
 
