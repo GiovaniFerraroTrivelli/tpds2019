@@ -91,10 +91,38 @@ public class GestorPoliza {
 		ArrayList<Error> errores = new ArrayList<>();
 
 		// Validar Fecha de inicioVigencia
-		if (p.getFechaVigencia() == null)
+		errores.addAll(validarFechaInicioVigencia(p.getFechaVigencia()));
+
+		// Validar la forma de Pago
+		errores.addAll(validarFormaPago(p.getModalidadPago()));
+		
+		// Validar el resto de Parámetros
+		errores.addAll(validarDatos(p));
+		return errores;
+	}
+	
+	private static ArrayList<Error> validarFormaPago(String formaPago){
+		ArrayList<Error> errores = new ArrayList<>();
+		
+		if (formaPago == null) {
+			errores.add(new Error("No se especificó la forma de pago"));
+		} else {
+			try {
+				FormaPago.valueOf(formaPago);
+			} catch (java.lang.IllegalArgumentException e) {
+				errores.add(new Error("La forma de pago indicada no es una forma de pago válida"));
+			}
+		}
+		return errores;
+	}
+	
+	private static ArrayList<Error> validarFechaInicioVigencia(String fechaInicioVigencia){
+		ArrayList<Error> errores = new ArrayList<>();
+		
+		if (fechaInicioVigencia == null)
 			errores.add(new Error("No se especificó una fecha de inicio de vigencia"));
 		else {
-			LocalDate inicioVigencia = LocalDate.parse(p.getFechaVigencia());
+			LocalDate inicioVigencia = LocalDate.parse(fechaInicioVigencia);
 			LocalDate fechaMinima = LocalDate.now().plusDays(1);
 			LocalDate fechaMaxima = LocalDate.now().plusMonths(1);
 			if (! (inicioVigencia.isAfter(fechaMinima) || inicioVigencia.isEqual(fechaMinima)))
@@ -105,19 +133,7 @@ public class GestorPoliza {
 						new Error("La fecha de inicio de vigencia debe ser dentro del próximo mes"));
 			}
 		}
-
-		// Validar la forma de Pago
-
-		if (p.getModalidadPago() == null) {
-			errores.add(new Error("No se especificó la forma de pago"));
-		} else {
-			try {
-				FormaPago.valueOf(p.getModalidadPago());
-			} catch (java.lang.IllegalArgumentException e) {
-				errores.add(new Error("La forma de pago indicada no es una forma de pago válida"));
-			}
-		}
-		errores.addAll(validarDatos(p));
+		
 		return errores;
 	}
 
