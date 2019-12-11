@@ -37,7 +37,7 @@ public class ControladorCliente {
 			return new ResponseEntity<>(new Error("No tiene permisos para realizar esta operación"),
 					HttpStatus.FORBIDDEN);
 		if (!parametros.nroClienteValido()) {
-			return new ResponseEntity<>(new Error("Número de cliente inválido"), HttpStatus.OK);
+			return new ResponseEntity<>(new Error("Número de cliente inválido"), HttpStatus.BAD_REQUEST);
 		}
 
 		if (!parametros.paginaValida()) {
@@ -45,7 +45,7 @@ public class ControladorCliente {
 		}
 
 		if (parametros.nulo()) {
-			return new ResponseEntity<>(new Error("Ningún campo de búsqueda fue completado"), HttpStatus.OK);
+			return new ResponseEntity<>(new Error("Ningún campo de búsqueda fue completado"), HttpStatus.BAD_REQUEST);
 		}
 
 		ArrayList<Cliente> listaClientes = GestorClientes.buscarClientes(parametros);
