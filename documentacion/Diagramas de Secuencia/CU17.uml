@@ -6,55 +6,85 @@ center footer Grupo 4A: Matías Bode, Francisco Busso, Giovani Ferraro Trivelli,
 actor Usuario
 boundary Resultados
 boundary PantallaDeBusqueda
-control GestorPoliza
+control ControladorCliente
 control GestorCliente
-entity "ResultadoBusqueda: Collection" as resultado
-control DAOCliente
+entity "listaClientes: Collection<Cliente>" as resultado
+entity listaClientesDTO
+entity respuesta
+control DaoCliente
 activate GestorPoliza
 GestorPoliza -> GestorCliente : buscarCliente()
 activate GestorCliente
-alt
-    
-     
-    loop while no existen resultados de busqueda
 
+
+alt
+    loop while no existen resultados de busqueda
+    
         GestorCliente -> PantallaDeBusqueda : mostrarPantallaDeBusqueda()
         activate PantallaDeBusqueda
         loop while datos incorrectos
             PantallaDeBusqueda -> Usuario : Solicitar criterios de búsqueda
             activate Usuario
-            Usuario --> PantallaDeBusqueda : Criterios de búsqueda
+            Usuario -> PantallaDeBusqueda : Criterios de búsqueda
             deactivate Usuario
         end loop
-        PantallaDeBusqueda --> GestorCliente : criteriosDeBusqueda.JSON
-        deactivate PantallaDeBusqueda
+        PantallaDeBusqueda -> ControladorCliente : buscarCliente(ParametrosDeBusqueda p)
+        activate ControladorCliente    
+        
+                ControladorCliente -> GestorCliente : buscarCliente(ParametrosDeBusqueda p)
+        GestorCliente -> QueryBuilder : new: QueryBuilder
+        activate QueryBuilder
+        GestorCliente <- QueryBuilder
+        GestorCliente -> QueryBuilder : Query q := getQuery(ParametrosDeBusqueda p)
+            
+        loop for Parametro in p
+            QueryBuilder -> Query : setParametro(Parametro)
+            QueryBuilder <- Query
+        end loop
+        
+        GestorCliente <- QueryBuilder : Query q
+        deactivate QueryBuilder
+            
+        GestorCliente -> DaoCliente : buscarClientes(q)
+        GestorCliente <- DaoCliente : listaClientes := new Collection<Cliente>
+        ControladorCliente <- GestorCliente : listaClientes
+        
+        ControladorCliente -> listaClientesDTO : new Collection<ClienteDTO>
+        
+        
+        activate listaClientesDTO
+            
+        loop for Cliente in listaClientes
+            ControladorCliente -> listaClientesDTO : add(Cliente.getDTO())
+            ControladorCliente <- listaClientesDTO
+            deactivate listaClientesDTO
+        end loop
+        
+        ControladorCliente -> respuesta : new: Respuesta
+        activate respuesta
+        ControladorCliente <- respuesta
+            
+        ControladorCliente -> respuesta : add(listaClientesDTO)
+        ControladorCliente <- respuesta
     
-    GestorCliente -> DAOCliente : getClientes(criteriosDeBusqueda[0])
-    activate DAOCliente
-    DAOCliente -> resultado : new: Collection<<Cliente>>
-    activate resultado
-    loop for Cliente in resultadoBusqueda
-        DAOCliente -> resultado : add(Cliente)
-    end loop
-    DAOCliente -> GestorCliente : r: ResultadoBusqueda
-    loop for criterio in criteriosDeBusqueda
-        GestorCliente ->resultado : aplicarFiltro(criterio)
-    end loop
-    end loop
+        ControladorCliente -> respuesta : setResultadosPorPagina(p.getResultadosPorPagina)
+        ControladorCliente <- respuesta
+                
+        ControladorCliente -> respuesta : setNroPagina(p.getNroPagina)
+        ControladorCliente <- respuesta
+        
+        deactivate respuesta    
+        PantallaDeBusqueda <- ControladorCliente : respuesta.JSON
+        deactivate ControladorCliente
 
-    loop Paginación
-        GestorCliente -> resultado : obtenerResultadoJSON(numeroDeResultadosPorPagina, numeroDePagina)
-        resultado -> GestorCliente : resultados = resultado.JSON
-        GestorCliente -> Resultados : mostrarResultados(resultados)
-        activate Resultados
+        Usuario <- PantallaDeBusqueda : lista de clientes
+        activate Usuario
+        Usuario -> PantallaDeBusqueda : seleccionar cliente
+        Usuario <- PantallaDeBusqueda : datos del cliente
+        deactivate Usuario
+        
+        
     end loop
-    Usuario -> Resultados : Selecciona cliente
-    Resultados --> GestorCliente : c = clienteSeleccionado
-    deactivate Resultados
-    GestorCliente -> GestorPoliza : clienteSeleccionado
-    deactivate GestorCliente
-    deactivate resultado
-    deactivate DAOCliente
     
 else cancelar busqueda
     activate PantallaDeBusqueda
