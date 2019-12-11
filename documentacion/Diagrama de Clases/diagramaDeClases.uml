@@ -444,7 +444,72 @@ package Logica{
 	}
 }
 
+package enumeradores {
+    enum CondicionCliente {
+    	Normal
+    	Activo
+    	Plata
+    }
+    
+    enum CondicionIva {
+    	ResponsableInscripto
+    	ResponsableNoInscripto
+    	NoResponsable
+    	SujetoExento
+    	ConsumidorFinal
+    	ResponsableMonotributo
+    	NoCategorizado
+    	ProveedorExterior
+    	ClienteExterior
+    	Liberado
+    	ResponsableInscriptoPercepcion
+    	PeqContribuyente
+    	MonotributistaSocial
+    	PeqContribuyenteSocial
+    }
+    
+    enum EstadoCivil{
+        Soltero
+        Casado
+        Viudo
+    }
+    
+    enum EstadoCuota {
+    	PENDIENTE
+    	MORA
+    	PAGA
+    }    
+    
+    enum EstadoPoliza {
+        Generada
+        Vigente
+        Suspendida
+        Finalizada
+    }
+    
+    enum FormaPago {
+    	MENSUAL
+    	SEMESTRAL
+    }
 
+    enum Rol {
+    	Cobrador
+    	Gerente
+    	ProductorDeSeguros
+    }
+
+    enum Sexo {
+        Masculino
+        Femenino
+    }
+
+    enum TipoDocumento {
+        DNI
+        LU
+        LC
+        LE
+    }
+}
 
 
 DaoCliente <.. GestorCliente
