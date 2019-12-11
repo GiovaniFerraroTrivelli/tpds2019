@@ -58,6 +58,7 @@ public class Poliza {
 		private String descuentos;
 		private Date ultimoDiaPago;
 		private String montoTotal;
+		private String montoTotalAlta;
 		private String formaPago;
 		private TipoCoberturaDTO tipoCobertura;
 		private ArrayList<CuotaDTO> cuotas;
@@ -107,6 +108,7 @@ public class Poliza {
 				this.montoTotal = ultimoPago.getImporte().toString();
 			} catch (NullPointerException e) {
 			}
+			this.montoTotalAlta = p.getMontoTotal().toString();
 			this.formaPago = p.getFormaPago().toString();
 			try {
 				this.tipoCobertura = p.getTipoCobertura().getDTO();
@@ -265,6 +267,14 @@ public class Poliza {
 
 		public void setToken(String token) {
 			this.token = token;
+		}
+
+		public String getMontoTotalAlta() {
+			return montoTotalAlta;
+		}
+
+		public void setMontoTotalAlta(String montoTotalAlta) {
+			this.montoTotalAlta = montoTotalAlta;
 		}
 
 	}
