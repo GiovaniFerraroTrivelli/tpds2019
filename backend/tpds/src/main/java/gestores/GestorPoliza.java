@@ -163,11 +163,13 @@ public class GestorPoliza {
 	private static ArrayList<Error> validarPatente(String patente) {
 		ArrayList<Error> errores = new ArrayList<>();
 		if (patente != null) {
-			patente = patente.toUpperCase().replaceAll("\\s", "");
-			if (!patente.matches("([A-Z]{2}[0-9]{3}[A-Z]{2})|([A-Z]{3}[0-9]{3})"))
-				errores.add(new Error("El dominio ingresado no se corresponde con formato válido"));
-			else if (existePolizaConPatente(patente))
-				errores.add(new Error("Ya existe una póliza con el dominio ingresado"));
+			if (!patente.isEmpty()) {
+				patente = patente.toUpperCase().replaceAll("\\s", "");
+				if (!patente.matches("([A-Z]{2}[0-9]{3}[A-Z]{2})|([A-Z]{3}[0-9]{3})"))
+					errores.add(new Error("El dominio ingresado no se corresponde con formato válido"));
+				else if (existePolizaConPatente(patente))
+					errores.add(new Error("Ya existe una póliza con el dominio ingresado"));
+			}
 		}
 		return errores;
 	}
@@ -382,8 +384,8 @@ public class GestorPoliza {
 		DaoPoliza.update(poliza);		
 	}
 	
-	public static void refresh(Object object) {
-		DaoPoliza.refresh(object);
+	public static void refresh(Poliza poliza) {
+		DaoPoliza.refresh(poliza);
 	}
 
 }

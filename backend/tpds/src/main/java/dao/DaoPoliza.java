@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
@@ -15,6 +16,7 @@ import dominio.TipoCobertura;
 public class DaoPoliza {
 
 	public static Session session = HibernateUtil.getSession();
+	public static StatelessSession statelessSession = HibernateUtil.getStatelessSession();
 
 	public static Poliza getPoliza(Integer nroPoliza) {
 		// Session session = HibernateUtil.getSession();
@@ -37,7 +39,7 @@ public class DaoPoliza {
 		String hql = "FROM Poliza WHERE motor= :motor AND (estado_poliza='VIGENTE' OR estado_poliza='GENERADA')";
 		ArrayList<Poliza> polizas = new ArrayList<>();
 		try {
-			Query<Poliza> query = session.createQuery(hql);
+			Query<Poliza> query = statelessSession.createQuery(hql);
 			query.setParameter("motor", motor);
 			polizas.addAll(query.list());
 		} catch (Exception e) {
@@ -51,7 +53,7 @@ public class DaoPoliza {
 		String hql = "FROM Poliza WHERE chasis= :chasis AND (estado_poliza='VIGENTE' OR estado_poliza='GENERADA')";
 		ArrayList<Poliza> polizas = new ArrayList<>();
 		try {
-			Query<Poliza> query = session.createQuery(hql);
+			Query<Poliza> query = statelessSession.createQuery(hql);
 			query.setParameter("chasis", chasis);
 			polizas.addAll(query.list());
 			return polizas;
@@ -65,7 +67,7 @@ public class DaoPoliza {
 	public static ArrayList<Poliza> getAllPolizas() {
 		ArrayList<Poliza> polizas = new ArrayList<>();
 		try {
-			Query<Poliza> query = session.createQuery("FROM Poliza");
+			Query<Poliza> query = statelessSession.createQuery("FROM Poliza");
 			polizas.addAll(query.list());
 		} catch (Exception e) {
 		}
@@ -78,7 +80,7 @@ public class DaoPoliza {
 		String hql = "FROM Poliza WHERE dominio= :dominio AND (estado_poliza='VIGENTE' OR estado_poliza='GENERADA')";
 		ArrayList<Poliza> polizas = new ArrayList<>();
 		try {
-			Query<Poliza> query = session.createQuery(hql);
+			Query<Poliza> query = statelessSession.createQuery(hql);
 			query.setParameter("dominio", dominio);
 			polizas.addAll(query.list());
 		} catch (Exception e) {
@@ -118,7 +120,6 @@ public class DaoPoliza {
 			String hql = "FROM TipoCobertura WHERE nombre='Responsabilidad Civil'";
 			query = session.createQuery(hql);
 			cobertura = query.getSingleResult();
-
 		} catch (HibernateException e) {
 		}
 		return cobertura;
@@ -144,10 +145,11 @@ public class DaoPoliza {
 		tx.commit();
 	}
 	
-	public static void refresh(Object object) {
+	public static void refresh(Poliza poliza) {
 		try {
-			session.refresh(object);
-		} catch (Exception e) {
+			if (poliza.getIdPoliza() != null) session.refresh(poliza);
+		}catch (Exception e) {
+			
 		}
 	}
 }
