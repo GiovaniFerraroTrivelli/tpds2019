@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
+
 import org.javamoney.moneta.Money;
+
 import dataTransferObjects.TipoCoberturaDTO;
 import dominio.Cuota.CuotaDTO;
 import enumeradores.EstadoCuota;
@@ -41,6 +43,7 @@ public class Poliza {
 	private BigDecimal premio;
 	private Usuario usuario;
 	private BigDecimal derechoEmision;
+	private Set<ModificacionPoliza> modificacionesPoliza;
 
 	public static class ResumenPoliza {
 		private String nombreTitular;
@@ -102,7 +105,7 @@ public class Poliza {
 			this.premio = p.getPremio().toString();
 			this.derechoEmision = (p.getDerechoEmision().toString());
 			try {
-				Pago ultimoPago =  GestorPagos.getUltimoPago(p);
+				Pago ultimoPago = GestorPagos.getUltimoPago(p);
 				this.ultimoDiaPago = ultimoPago.getFechaHora();
 				this.montoTotal = ultimoPago.getImporte().toString();
 			} catch (NullPointerException e) {
@@ -698,6 +701,14 @@ public class Poliza {
 			}
 		}
 		return false;
+	}
+
+	public Set<ModificacionPoliza> getModificacionesPoliza() {
+		return modificacionesPoliza;
+	}
+
+	public void setModificacionesPoliza(Set<ModificacionPoliza> modificacionesPoliza) {
+		this.modificacionesPoliza = modificacionesPoliza;
 	}
 
 }
