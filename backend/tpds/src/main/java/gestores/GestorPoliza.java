@@ -69,7 +69,8 @@ public class GestorPoliza {
 		errores.addAll(validarChasis(p.getChasis()));
 
 		// Validar Patente
-		if(p.getPatente()!= null && p.getPatente().isEmpty()) p.setPatente(null);
+		if (p.getPatente() != null && p.getPatente().isEmpty())
+			p.setPatente(null);
 		errores.addAll(validarPatente(p.getPatente()));
 
 		// Validar Medidas de Seguridad
@@ -82,6 +83,29 @@ public class GestorPoliza {
 
 		// Validar siniestros
 		errores.addAll(validarNumeroDeSiniestros(p.getSiniestros()));
+
+		return errores;
+	}
+
+	public static ArrayList<Error> validarDatosAltaPoliza(PolizaDTO p) {
+		ArrayList<Error> errores = new ArrayList<>();
+
+		// Validar Fecha de inicioVigencia
+		if (p.getFechaVigencia() == null)
+			errores.add(new Error("No se especificó una fecha de inicio de vigencia"));
+		else {
+			LocalDate inicio = LocalDate.parse(p.getFechaVigencia());
+			Date inicioVigencia = (java.sql.Date.valueOf(inicio));
+			if (inicioVigencia.compareTo(new Date()) <= 0)
+				errores.add(
+						new Error("La fecha de inicio de vigencia no puede ser anterior ni igual a la fecha actual"));
+		}
+
+		// Validar la forma de Pago
+		if (p.getFormaPago() == null)
+			errores.add(new Error("No se especificó la forma de pago, o bien la misma no es una forma de pago válida"));
+
+		errores.addAll(validarDatos(p));
 
 		return errores;
 	}
@@ -260,7 +284,8 @@ public class GestorPoliza {
 		poliza.setAnioFabricacion(p.getAnio());
 
 		poliza.setKmsAnuales(p.getKmAnio());
-		if (p.getPatente() != null) poliza.setDominio(p.getPatente().toUpperCase());
+		if (p.getPatente() != null)
+			poliza.setDominio(p.getPatente().toUpperCase());
 		poliza.setEstadoPoliza(EstadoPoliza.GENERADA);
 		poliza.setPremio(new BigDecimal("100"));
 		poliza.setPrima(new BigDecimal("100.54"));
@@ -324,7 +349,8 @@ public class GestorPoliza {
 
 	public static ArrayList<Poliza> buscarPoliza(String numeroPoliza) {
 		ArrayList<Poliza> polizas = DaoPoliza.buscarPoliza(numeroPoliza);
-		for (Poliza poliza : polizas) GestorPoliza.refresh(poliza);
+		for (Poliza poliza : polizas)
+			GestorPoliza.refresh(poliza);
 		return polizas;
 	}
 
@@ -380,9 +406,9 @@ public class GestorPoliza {
 	}
 
 	public static void updatePoliza(Poliza poliza) {
-		DaoPoliza.update(poliza);		
+		DaoPoliza.update(poliza);
 	}
-	
+
 	public static void refresh(Poliza poliza) {
 		DaoPoliza.refresh(poliza);
 	}
