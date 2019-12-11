@@ -106,7 +106,15 @@ alt errores.isEmpty()
         GP -> Poliza: setMedidasDeSeguridas(medidasDeSeguridad)
         GP -> Poliza: setTipoCObertura(tipoCObertura)
         GP -> Poliza: setModelo(modelo)
-        GP -> Poliza: setAnioFabricacion(aniFabricacion)
+        GP -> Poliza: setAnioFabricacion(anioFabricacion)
+        GP -> Poliza: setKmsAnuales(kmsAnuales)
+        GP -> Poliza: setDomino(dominioVehiculo)
+        ref over GP, Poliza
+            CU-16: Calcular Premio, Derecho de Emisión y Descuentos
+        end ref
+        GP -> Poliza: setPremio(premio)
+        GP -> Poliza: setPrima(prima)
+        GP -> Poliza: setDerechoEmision(derechoEmision)
 
 
         GP -> GC : getCliente(numeroCliente)
@@ -119,19 +127,18 @@ alt errores.isEmpty()
                 GP -> GP : calcularImporte()
                 GP -> GP : new Cuota(fechaVencimiento. importe)
             end loop
-            GP -> Poliza : setCuotas(cuotas)
+            
         else FormaDePago = Semestral
             GP -> GP : calcularFechaVencimiento()
             GP -> GP : calcularImporte()
             GP -> GP : new Cuota(fechaVencimiento. importe)
-            GP -> Poliza : setCuotas(cuotas)
         end alt
+
+        GP -> Poliza : setCuotas(cuotas)
 
         GP -> Poliza : setEstadoPoliza(EstadoPoliza.Generada)
         
-        ref over GP, Poliza
-            CU-16: Calcular Premio, Derecho de Emisión y Descuentos
-        end ref
+        
     GP --> CP : Poliza p
     deactivate GP
     CP -> CP : new Token()
