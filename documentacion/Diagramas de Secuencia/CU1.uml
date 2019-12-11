@@ -8,15 +8,17 @@ boundary "Interfaz de Usuario" as GUI
 control ControladorCliente as CC
 control ControladorPoliza as CP
 
-entity GestorCliente as GC
-entity GestorPoliza as GP
+
+Control GestorCliente as GC
+Control GestorPoliza as GP
+entity "session: HttpSession" as session
 control GestorCobertura as GCobertura
 entity "p: Poliza" as Poliza
-entity DAOPoliza as DP
+Control DAOPoliza as DP
 
 
 activate Usuario
-
+activate session
 
 Usuario -> GUI: Buscar cliente
 activate GUI
@@ -82,55 +84,34 @@ Usuario -> GUI : Selecciona tipo de póliza,\n\tinicio vigencia,\n\tmodalidad de
 
 GUI -> CP : POST /altaPoliza/2 JSON={PolizaDTO}
 activate CP
-CP -> GP : validarDatos(PolizaDTO)
+CP -> GP : validarDatosAltaPoliza(PolizaDTO)
 activate GP
 GP --> CP : List<Error> errores
 deactivate GP
 alt errores.isEmpty()
-    CP -> GP : getResumenPoliza(PolizaDTO)
-    activate GP
-    ref over CP, GP
-        CU-16: Calcular Premio, Derecho de Emisión y Descuentos
-    end ref
-    GP --> CP : ResumenPoliza resumenPoliza
-    deactivate GP
-end alt
-
-
-CP -->GUI : JSON={\n\tList<Error> errores,\n\tResumenPoliza resumenPoliza\n\t}
-deactivate CP
-
-Usuario <-- GUI : Resumen Póliza
-
-alt El usuario confirma la generación de la póliza
-    Usuario -> GUI : Confirmar generación de la póliza
-    GUI -> CP : POST /altaPoliza/3 JSON={PolizaDTO}
-    activate CP
-    CP -> GP : validarDatos(PolizaDTO)
-    activate GP
-    GP -->CP: List<Error> errores
-    deactivate GP
-    alt errores.isEmpty()
-        CP -> GP : generarPoliza(PolizaDTO)
+    CP -> GP : generarPoliza(PolizaDTO)
         activate GP
         GP -> "Poliza p" as Poliza : new Poliza()
         activate Poliza
         GP <-- Poliza : Poliza p
-        
-        GP -> GP : calcularNroPoliza(PolizaDTO)
-        activate GP
-        GP --> GP : nroPoliza
-        deactivate GP
-        
-        GP -> Poliza : setNroPoliza(nroPoliza)
 
         loop while hijos > 0
             GP -> GP : crearHijo(echaNacimiento, sexo, estadoCivil)
             GP --> GP : Hijo h
             GP -> Poliza : agregarHijo(h)
-            GP <-- Poliza
         end
         GP -> GP : calcularFechaFinVigencia()
+        GP -> Poliza: setFechaFinVigencia(fechaFinVigencia)
+        GP -> Poliza: setFechaInicioVigencia(fechaInicioVigencia)
+        GP -> Poliza: setMedidasDeSeguridas(medidasDeSeguridad)
+        GP -> Poliza: setTipoCObertura(tipoCObertura)
+        GP -> Poliza: setModelo(modelo)
+        GP -> Poliza: setAnioFabricacion(aniFabricacion)
+
+
+        GP -> GC : getCliente(numeroCliente)
+        GC --> GP : Cliente c
+        GP -> Poliza : setCliente(c)
 
         alt FormaDePago = Mensual
             loop for(x=1, x<=6, x++)
@@ -147,7 +128,47 @@ alt El usuario confirma la generación de la póliza
         end alt
 
         GP -> Poliza : setEstadoPoliza(EstadoPoliza.Generada)
-        GP <-- Poliza
+        
+        ref over GP, Poliza
+            CU-16: Calcular Premio, Derecho de Emisión y Descuentos
+        end ref
+    GP --> CP : Poliza p
+    deactivate GP
+    CP -> CP : new Token()
+    activate CP
+    CP --> CP : token
+    deactivate CP
+    CP -> session : setAttribute(token, p)
+    activate session
+    deactivate session
+    CP -> Poliza : getResumenPoliza()
+    activate Poliza
+    Poliza --> CP : ResumenPoliza resumenPoliza
+    deactivate Poliza
+    deactivate GP
+
+end alt
+
+
+CP -->GUI : JSON={\n\tList<Error> errores,\n\tResumenPoliza resumenPoliza\n\tString token\n\t}
+deactivate CP
+
+Usuario <-- GUI : Resumen Póliza
+
+alt El usuario confirma la generación de la póliza
+    Usuario -> GUI : Confirmar generación de la póliza
+    GUI -> CP : POST /altaPoliza/confirmar JSON={\n\tString token\n\t}
+    activate CP
+
+    CP -> session : getAttribute(token)
+    activate session
+    session --> CP : Poliza p 
+    deactivate session
+
+    CP -> GP : altaPoliza(p)
+    activate GP
+    GP -> Poliza : setNumeroPoliza(nroPoliza)
+
         
         GP -> GP : savePoliza(p)
         activate GP
@@ -167,14 +188,16 @@ alt El usuario confirma la generación de la póliza
         end ref
         GP --> CP :Bool polizaGenerada
         deactivate GP
-        CP -->GUI : JSON={\n\tList<Error> errores,\n\tBool polizaGenerada\n\t}
+        CP -> session : removeAttribute(token)
+        activate session
+        deactivate session
+        CP -->GUI : Bool polizaGenerada
         deactivate CP
         alt polizaGenerada
             GUI -->Usuario :La poliza fue generada con éxito.
         else
             GUI --> Usuario :No se pudo generar la poliza, mensajes de error.
         end alt
-    end alt
 
 else Cambiar tipo de cobertura
     Usuario -> GUI : Seleccionar cobertura distinta
@@ -183,6 +206,9 @@ else Cambiar tipo de cobertura
     end note
 else cancelar
     Usuario -> GUI : cancelar
+    note right
+        El caso de uso termina
+    end note
     deactivate Usuario
     deactivate GUI
     deactivate CC
