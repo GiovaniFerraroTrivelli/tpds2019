@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import dao.DaoPago;
 import dao.DaoPoliza;
 import dominio.Cuota;
@@ -39,9 +41,9 @@ public class GestorPagos {
 		PagoCuota pagoCuota = new PagoCuota();
 
 		if (c.getEstadoCuota() != EstadoCuota.PAGA) {
-			if (c.getFechaVencimiento().compareTo(mesSiguiente) >= 0) {
+			if (c.getFechaVencimiento().compareTo(mesSiguiente) >= 0 || DateUtils.isSameDay(mesSiguiente, c.getFechaVencimiento())) {
 				descuentos.add(DaoPago.getDescuentoPagoAdelantado());
-			} else if (c.getFechaVencimiento().compareTo(fechaActual) < 0) {
+			} else if (c.getFechaVencimiento().compareTo(fechaActual) < 0 && !DateUtils.isSameDay(fechaActual, c.getFechaVencimiento())) {
 				recargos.add(DaoPago.getRecargoMora());
 			}
 		}
