@@ -230,7 +230,7 @@ public class GestorPoliza {
 		poliza.setChasis(p.getChasis().toUpperCase());
 		poliza.setMotor(p.getMotor().toUpperCase());
 
-		Cliente c = DaoCliente.buscarCliente(new NumeroCliente(p.getNroCliente()));
+		Cliente c = GestorClientes.buscarCliente(new NumeroCliente(p.getNroCliente()));
 		poliza.setCliente(c);
 
 		MedidasSeguridad m = new MedidasSeguridad();

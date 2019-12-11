@@ -16,6 +16,7 @@ import enumeradores.CondicionCliente;
 import enumeradores.EstadoCuota;
 import enumeradores.EstadoPoliza;
 import dominio.Direccion;
+import dominio.NumeroCliente;
 import dominio.Poliza;
 import excepciones.DatoNoEncontradoException;
 import excepciones.NoExisteClienteException;
@@ -27,6 +28,10 @@ public class GestorClientes {
 		if (c == null)
 			throw new NoExisteClienteException();
 		return c;
+	}
+	
+	public static Cliente buscarCliente(NumeroCliente n) {
+		return DaoCliente.buscarCliente(n);
 	}
 
 	public static void guardarCliente(Cliente c) throws ConstraintViolationException {
