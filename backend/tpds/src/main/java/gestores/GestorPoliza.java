@@ -298,8 +298,6 @@ public class GestorPoliza {
 		Set<Hijo> hijos = new HashSet<Hijo>(p.getHijos());
 		poliza.setHijos(hijos);
 
-		poliza.setTipoCobertura(HibernateUtil.getSession().get(TipoCobertura.class, p.getIdCobertura()));
-
 		LocalDate inicioVigencia = LocalDate.parse(p.getFechaVigencia());
 		poliza.setInicioVigencia(java.sql.Date.valueOf(inicioVigencia));
 		poliza.setFinVigencia(java.sql.Date.valueOf(inicioVigencia.plusMonths(6)));
@@ -309,8 +307,10 @@ public class GestorPoliza {
 		poliza.setAnioFabricacion(p.getAnio());
 
 		poliza.setKmsAnuales(p.getKmAnio());
+		
 		if (p.getPatente() != null)
 			poliza.setDominio(p.getPatente().toUpperCase());
+		
 		poliza.setEstadoPoliza(EstadoPoliza.GENERADA);
 		poliza.setPremio(new BigDecimal("100"));
 		poliza.setPrima(new BigDecimal("100.54"));
