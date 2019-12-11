@@ -23,7 +23,7 @@ import { Cliente } from '../cliente/cliente';
 import { Documento } from '../cliente/documento';
 import { Direccion } from '../cliente/direccion';
 import { Poliza } from '../poliza/poliza';
-import { TipoCobertura } from 'TipoCobertura';
+import { TipoCobertura } from '../tipocobertura/tipo-cobertura';
 
 @Component({
 	selector: 'app-altapoliza',
@@ -80,7 +80,7 @@ export class AltapolizaComponent implements OnInit {
 			'anio': new FormControl(null, Validators.required),
 			'motor': new FormControl(null, [ Validators.required, Validators.pattern('^[A-Z0-9]{10}$') ]),
 			'chasis': new FormControl(null, [ Validators.required, Validators.pattern('^[A-HJ-NPR-Z0-9]{17}$') ]),
-			'patente': new FormControl(null, Validators.pattern('^(|[A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{3}[A-Z]{2})$')),
+			'patente': new FormControl('', Validators.pattern('^(|[A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{3}[A-Z]{2})$')),
 			'provincia': new FormControl(null, Validators.required),
 			'localidad': new FormControl(null, Validators.required),
 			'seGuardaEnGarage': new FormControl(null),

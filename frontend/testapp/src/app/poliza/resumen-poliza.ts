@@ -15,7 +15,7 @@ export class ResumenPoliza {
 	sumaAsegurada: number;
 	premio: number;
 	descuentos: number;
-	montoTotal: number;
+	montoTotalAlta: number;
 	formaPago: ModalidadPago;
 	cuotas: Cuota[];
     token: string;

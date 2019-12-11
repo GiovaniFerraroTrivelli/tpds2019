@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 
-import { TipoCobertura } from 'TipoCobertura';
+import { TipoCobertura } from '../tipocobertura/tipo-cobertura';
 import { AltaPolizaService } from '../altapoliza/altapoliza.service';
 import { LoadingService } from '../loading/loading.service';
 import { DialogService } from '../dialog/dialog.service';

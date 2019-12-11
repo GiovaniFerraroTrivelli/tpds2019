@@ -7,8 +7,6 @@ import { BuscarclienteComponent } from './buscarcliente/buscarcliente.component'
 import { AltaclienteComponent } from './altacliente/altacliente.component';
 import { IndexComponent } from './index/index.component';
 import { ErrorComponent } from './error/error.component';
-import { TipoCobertura } from 'TipoCobertura';
-import { TipocoberturaComponent } from './tipocobertura/tipocobertura.component';
 import { BuscarPolizaComponent } from './buscar-poliza/buscar-poliza.component';
 import { ConsultarclientesComponent } from './consultarclientes/consultarclientes.component';
 import { ActualizarFactoresComponent } from './actualizar-factores/actualizar-factores.component';

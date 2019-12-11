@@ -22,8 +22,8 @@ export class HeaderComponent implements OnInit {
 		private router: Router,
 		@Inject(DOCUMENT) private document
 	) {
-		this.cssLightUrl = 'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.3.1/flatly/bootstrap.min.css';
-		this.cssDarkUrl = 'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.3.1/slate/bootstrap.min.css';
+		this.cssLightUrl = 'https://mirror.ngamers.com.ar/uploads/flatly.css';
+		this.cssDarkUrl = 'https://mirror.ngamers.com.ar/uploads/flatly-dark.2.css';
 		this.cssDark = false;
 	}
 
