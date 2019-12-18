@@ -1,0 +1,143 @@
+<ng-template #content let-modal>
+	<div class="modal-header">
+	  <h4 class="modal-title">Seleccione el cliente</h4>
+	  <button type="button" class="close" aria-label="Close" (click)="cancelarBusquedaCliente(modal)">
+		<span aria-hidden="true">&times;</span>
+	  </button>
+	</div>
+
+	<div class="modal-body">
+		<div class="alert alert-light">
+			<h5><strong>Criterios de búsqueda aplicados</strong></h5>
+			<div class="row font-weight-light">
+		  		<div class="col-4"><small>Nro. de cliente: {{ buscarClienteForm.value.nroCliente == '' || buscarClienteForm.value.nroCliente === null ? "sin filtros" : global.nroClienteFormat(buscarClienteForm.value.nroCliente) }}</small></div>
+		  		<div class="col-4"><small>Nombre: {{ buscarClienteForm.value.nombre === null || buscarClienteForm.value.nombre == '' ? "sin filtros" : buscarClienteForm.value.nombre }}</small></div>
+		  		<div class="col-4"><small>Apellido: {{ buscarClienteForm.value.apellido === null || buscarClienteForm.value.apellido == '' ? "sin filtros" : buscarClienteForm.value.apellido }}</small></div>
+		  		<div class="col-4"><small>Tipo de documento: {{ buscarClienteForm.value.documento.tipoDocumento === null ? "sin filtros" : buscarClienteForm.value.tipoDocumento }}</small></div>
+		  		<div class="col-4"><small>Nro. documento: {{ buscarClienteForm.value.documento.nroDocumento === null ? "sin filtros" : buscarClienteForm.value.nroDocumento }}</small></div>
+		  	</div>
+		</div>
+
+		<table class="table table-hover">
+			<thead>
+			  <tr>
+				<th width="25%" scope="col">Número de Cliente</th>
+				<th width="45%" scope="col">Apellido y Nombre</th>
+				<th width="30%" scope="col">Documento</th>
+			  </tr>
+			</thead>
+			<tbody>
+			  <tr *ngFor='let resultado of resultados' [ngClass]="['cursor-pointer' , (getSelectedClient() == resultado ? 'table-active' : '') ]" (click)='loadSelectedClient(resultado)'>
+				<th scope="row">{{ global.nroClienteFormat(resultado.nroCliente) }}</th>
+				<td>{{resultado.apellido}}, {{resultado.nombre}}</td>
+				<td>{{resultado.documento.tipoDocumento}} {{resultado.documento.nroDocumento | number: '' : 'es-AR' }}</td>
+			  </tr>			  
+			</tbody>
+		</table>
+
+		<nav>
+			<ul class="pagination justify-content-center">
+				<li class="page-item" *ngIf="paginaActual > 1">
+					<span class="page-link cursor-pointer" (click)="[ modal.close(), onSubmit(bcForm, content, paginaActual - 1) ]" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</span>
+				</li>
+				<li [ngClass]="['page-item', x + 1 == paginaActual ? 'active' : '' ]"
+					*ngFor="let dummy of ' '.repeat(cantidadPaginas).split(''), let x = index"><span class="page-link cursor-pointer" (click)="[ modal.close(), onSubmit(bcForm, content, x + 1) ]">{{ x + 1 }}</span></li>
+				<li class="page-item" *ngIf="paginaActual < cantidadPaginas">
+					<span class="page-link cursor-pointer" (click)="[ modal.close(), onSubmit(bcForm, content, paginaActual + 1) ]" aria-label="Previous">
+						<span aria-hidden="true">&raquo;</span>
+					</span>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<div class="modal-footer">
+	  <button type="button" class="btn btn-light" (click)="cancelarBusquedaCliente(modal)">Cancelar</button>
+	  <button type="button" class="btn btn-primary" (click)="seleccionarCliente(modal)">Seleccionar</button>
+	</div>
+</ng-template>
+
+<form #bcForm="ngForm" [formGroup]="buscarClienteForm" (ngSubmit)="onSubmit(bcForm, content, 1)">
+	<div class="row">      
+		<div class="form-group col-sm-12 col-lg-4">
+			<label class="pt-2" for="nroCliente">Nro. de cliente</label>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<div class="input-group-text">#</div>
+				</div>
+				<input type="text" (blur)="onBlurNroCliente($event.target.value)" (focus)="onFocusNroCliente($event.target.value)" formControlName="nroCliente" name="nroCliente" id="nroCliente" class="form-control optional">
+			</div>
+			<div *ngIf="nroCliente.invalid && (nroCliente.dirty || nroCliente.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="nroCliente.errors.pattern">
+					El formato de número de cliente ingresado no es válido.
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-sm-12 col-lg-4">
+			<label class="pt-2" for="nombre">Nombre</label>
+			<div class="input-group">
+				<input type="text" formControlName="nombre" name="nombre" id="nombre" class="form-control optional">
+			</div>
+			<div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="nombre.errors.pattern">
+					El nombre del cliente no debe superar los 50 caracteres.
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-sm-12 col-lg-4">
+			<label class="pt-2" for="apellido">Apellido</label>
+			<div class="input-group">
+				<input type="text" formControlName="apellido" name="apellido" id="apellido" class="form-control optional">
+			</div>
+			<div *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="invalid-feedback d-block mt-1 mb-0">
+				<div *ngIf="apellido.errors.pattern">
+					El apellido del cliente no debe superar los 50 caracteres.
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" formGroupName="documento">
+		<div class="form-group col-sm-12 col-lg-4">
+			<label class="pt-2" for="tipoDocumento">Tipo de documento</label>
+			<select formControlName="tipoDocumento" name="tipoDocumento" class="form-control optional" id="tipoDocumento">
+				<option value="{{ enum.key }}" *ngFor="let enum of TipoDNI | keyvalue">{{ enum.key }}</option>
+			</select>
+		</div>
+		<div class="form-group col-sm-12 col-lg-8">
+			<label class="pt-2" for="nroDocumento">Número de documento</label>
+			<input type="number" formControlName="nroDocumento" name="nroDocumento" id="nroDocumento" class="form-control optional dis-arrows">
+		</div>
+		<div *ngIf="nroDocumento.invalid && (nroDocumento.dirty || nroDocumento.touched)" class="invalid-feedback d-block mt-1 mb-0">
+			<div *ngIf="nroDocumento.errors.pattern">
+				El número de documento ingresado no es válido.
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-8"></div>
+		
+		<div class="col-sm-9 col-lg-3 text-right">
+			<div class="form-group">
+				<div class="input-group mb-3 text-center">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Mostrar</span>
+					</div>
+					
+					<input class="form-control optional" type="number" id="resultadosPorPagina" name="resultadosPorPagina" formControlName="resultadosPorPagina">
+
+					<div class="input-group-append">
+						<span class="input-group-text">resultados</span>
+					</div>
+
+					<input type="hidden" name="numeroPagina" formControlName="numeroPagina" />
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-9 col-lg-1 text-center">
+			<button name="search" [disabled]="!buscarClienteForm.valid || !loadingService.isHidden()" type="submit" class="btn btn-primary ml-auto pull-right" id="buscarCliente">Buscar</button>
+		</div>
+	</div>
+</form>
+<hr />
