@@ -1,0 +1,541 @@
+@startUML
+
+title Diagrama de Clases Grupo 4A
+
+note as N1
+Grupo 4A:
+Matías Bode,
+Francisco Busso,
+Giovani Ferraro Trivelli,
+Miguel Storani
+end note
+
+hide enum methods
+hide interface attributes
+
+
+package Logica{
+    class GestorCliente <<(S, #FF7700) Singleton>> {
+    +{static}Cliente getCliente(Integer idCliente)
+	+{static}void guardarCliente(Cliente c)
+	+{static}ArrayList<Cliente> buscarClientes(ParametrosDeBusqueda p)
+	+{static}ArrayList<Cliente> consultarClientes(ParametrosDeConsulta p)
+	+{static}void altaCliente(AltaClienteDTO clienteDTO)
+	+{static}Long resultados(ParametrosDeBusqueda parametros)
+	+{static}void actualizarCondicionCliente(Cliente c)
+	-{static}Boolean clienteNormal(Cliente c)
+	-{static}Boolean clientePlata(Cliente c)
+	-{static}Boolean clienteActivo(Cliente c)
+	+{static}void refresh(Object object)
+    }
+    
+    class GestorPoliza <<(S, #FF7700) Singleton>> {
+        +{static}ArrayList<TipoCobertura> getCoberturasDisponibles(PolizaDTO p)
+	+{static}ArrayList<Error> validarDatos(PolizaDTO p)
+	-{static}ArrayList<Error> validarDomicilioDeRiesgo(Integer localidad)
+	-{static}ArrayList<Error> validarNumeroDeCliente(String nroCliente)
+	-{static}ArrayList<Error> validarModeloYAnioDeFabricacion(Integer modelo, Integer anio)
+	-{static}ArrayList<Error> validarMotor(String motor)
+	-{static}ArrayList<Error> validarChasis(String chasis)
+	-{static}ArrayList<Error> validarPatente(String patente)
+	-{static}ArrayList<Error> validarHijos(ArrayList<Hijo> hijos)
+	-{static}ArrayList<Error> validarNumeroDeSiniestros(Integer siniestros)
+	-{static}boolean existePolizaConPatente(String dominio)
+	-{static}boolean existePolizaConMotor(String motor)
+	-{static}boolean existePolizaConChasis(String chasis)
+	+{static}Poliza generarPoliza(PolizaDTO p)
+	+{static}Boolean savePoliza(Poliza poliza)
+	+{static}Poliza getPoliza(Integer nroPoliza)
+	+{static}String getSumaAsegurada(Poliza p)
+	+{static}ArrayList<Poliza> buscarPoliza(String numeroPoliza)
+	+{static}Boolean altaPoliza(Poliza p)
+	+{static}void actualizarPolizas()
+	+{static}void updatePoliza(Poliza poliza)
+	+{static}void refresh(Poliza poliza)
+    }
+
+    class GestorUsuario <<(S, #FF7700) Singleton>> {
+    	+{static}Usuario getUsuario(String nombreUsuario)
+	    +{static}Boolean autenticarUsuario(Usuario usuario, String password)
+        -{static} singleton: GestorUsuario
+        -GestorUsuario()
+        +alta(String[]): Usuario
+        +modificar(Usuario, String[]): Void
+        +eliminar(Usuario): Void
+    }
+    
+    class GestorSubSistemaDeSiniestros <<(S, #FF7700) Singleton>> {
+        -{static} singleton: GestorSubSistemaDeSiniestros
+        -GestorSubSistemaDeSiniestros()
+        +{static} getInstance(): GestorSubSistemaDeSiniestros 
+    }
+
+	class GestorSistemaFinanciero <<(S, #FF7700) Singleton>> {
+        -{static} singleton: GestorSistemaFinanciero
+        +{static} getInstance(): GestorSistemaFinanciero
+    }
+    
+    class GestorPagos  <<(S, #FF7700) Singleton>> {
+    +{static}ArrayList<Cuota> getCuotas(Poliza poliza)
+	+{static}PagoCuota calcularDescuentosYRecargos(Cuota c)
+	+{static}Integer registrarPago(Pago pago, Poliza poliza, BigDecimal importe, Usuario usuario)
+	+{static}Pago getUltimoPago(Poliza poliza)
+	+{static}Pago ActualizarCuotasAPagar(Pago p, ArrayList<Integer> cuotasAPagar)
+	+{static}BigDecimal calcularImporteTotal(Pago pago)
+	+{static}void refresh(Object object)
+    }
+	class GestorGeografico <<(S, #FF7700) Singleton>>{
+			+{static}Provincia getProvincia(Integer idProvincia)
+	+{static}Pais getPais(Integer idPais)
+	+{static}Localidad getLocalidad(Integer idLocalidad)
+	+{static}ArrayList<Provincia> getProvinciasDePais(Integer idPais)
+	+{static}ArrayList<Localidad> getLocalidadesDeProvincia(Integer idProvincia)
+	+{static}ArrayList<Pais> getPaises()
+	}
+	class GestorPagos <<(S, #FF7700) Singleton>>{
+		-{static} singleton: GestorPagos
+		-GestorPagos()
+		+{static} getInstance(): GestorPagos
+	}
+    
+    class GestorCoberturas <<(S, #FF7700) Singleton>>{
+    +{static}ArrayList<TipoCobertura> getCoberturas()
+	+{static}TipoCobertura getCoberturaContraTerceros()
+	+{static}TipoCobertura getCobertura(Integer id)
+    }
+}
+
+package Dominio{
+    class Poliza {
+		-idPoliza: Integer
+		-nroPoliza: NumeroPoliza
+		-tipoCobertura: TipoCobertura
+		-inicioVigencia: Date
+		-finVigencia: Date
+		-kmsAnuales: Integer
+		-estadoPoliza: EstadoPoliza
+		-siniestros: Integer
+		-dominio: String
+		-chasis: String
+		-motor: String
+		-anioFabricacion: Integer
+		-modelo: Modelo
+		-cliente: Cliente
+		-localidad: Localidad
+		-medidasSeguridad: MedidasSeguridad
+		-hijos: Set<Hijo>
+		-formaPago: FormaPago
+		-cuotas: Set<Cuota>
+		-pagos: Set<Pago>
+		-pais: Pais
+		-sumaAsegurada: BigDecimal
+		-prima: BigDecimal
+		-premio: BigDecimal
+		-usuario: Usuario
+		-derechoEmision: BigDecimal
+    }
+
+    class ModificacionPoliza {
+        -cobertura: TipoCobertura
+        -kmsAnuales: Integer
+        -siniestros: Integer
+        -dominio: String
+        -chasis: String
+        -motor: String
+        -fabricacion: Integer
+	    -seGuardaEnGarage: Boolean
+	    -poseeAlarma: Boolean
+	    -poseeRastreoVehicular: Boolean
+	    -poseeTuercasAntirrobo: Boolean
+    }
+
+
+    
+    class Modelo {
+    	-nombre: String
+        -anio: List<Integer>
+    	-factorRiesgoRobo: HistorialValor
+    }
+    
+    class Cotizacion{
+        -idCotizacion: Integer
+        -modelo: Modelo
+        -anio: Integer
+        -cotizacion: Integer
+    }
+    
+    Modelo "1" -- "n" Cotizacion
+
+    class Cliente {
+        -nroCliente: NumeroCliente
+        -nombre: String
+        -apellido: String
+        -documento: Documento
+        -cuil: String
+        -sexo: Sexo
+        -fechaNacimiento: Date
+        -profesion: String
+        -estadoCivil: EstadoCivil
+        -email: String
+        -condicionCliente: CondicionCliente
+        -condicionIva: CondicionIva
+        -direccion: Direccion
+        -pais: Pais
+        -cantidadPolizas: Integer
+
+    }
+    
+    Cliente "1" --> "1" NumeroCliente
+    
+    class NumeroCliente {
+        -idCliente: Integer
+        -idPais: Integer
+    }
+    
+    class Documento {        
+	    -tipoDocumento: TipoDocumento
+        -numeroDocumento: Integer
+    }
+
+    class MedidasSeguridad {
+	-seGuardaEnGarage: Boolean
+	-poseeAlarma: Boolean
+	-poseeRastreoVehicular: Boolean
+	-poseeTuercasAntirrobo: Boolean
+    }
+    
+    class HijoDeclarado {
+        -fechaNacimiento: Date
+        -estadoCivil: EstadoCivil
+        -sexo: Sexo
+        +edad(): Integer
+    }
+
+    class Direccion {
+       -idDireccion: Integer
+        -calle: String
+        -numero: Integer
+        -piso: Integer
+        -departamento: String
+        -localidad: Localidad
+        -codigoPostal: String
+    }
+
+    
+    class Cuota {
+        -idCuota: Integer
+        -poliza: Poliza
+        -importe: BigDecimal
+        -fechaVencimiento: Date
+        -estadoCuota: EstadoCuota
+
+    }
+    
+	class Localidad {
+        -idLocalidad: Integer
+        -nombre: String
+        -historialValores: Set<EntradaLocalidad>
+	}
+	
+	class Provincia {
+		-idProvincia: Integer
+        -nombre: String
+	}
+	class Pais {
+	    -idPais: Integer
+		-nombre: String
+	}
+
+    class Usuario {
+		-nombreUsuario: String
+		-hashedPassword: String
+		-nombre: String
+		-apellido: String
+		-email: String
+		-rol: Rol
+    }
+	
+	class TipoCobertura{
+		-idCobertura: Integer
+		-nombre: String
+		-descripcion: String
+		-historialValores: Set<EntradaTipoCobertura>
+	}
+	
+	class FactoresCalculos<<(S, #FF7700) Singleton>> {
+		-factorGuardaGarage: HistorialValor
+		-factorAlarma: HistorialValor
+		-factorRastreoVehicular: HistorialValor
+		-factorTuercasAntirrobo: HistorialValor
+		-factorKmRealizados: HistorialValor
+		-factorSiniestros: List<HistorialValor>
+		-factorCantidadHijos: HistorialValor
+		-factorDerechosEmision: HistorialValor
+		-factorDescuentoUnidadAdicional: HistorialValor
+	}
+
+	class Pago{
+		-idPago: Integer
+		-fechaHora: Date
+		-usuario: Usuario
+		-poliza: Poliza
+		-premio: BigDecimal
+		-importe: BigDecimal
+		-recibo: Recibo
+		-cuotas: Set<PagoCuota>
+		+importe(): BigDecimal
+	}
+	
+	class PagoCuota {
+		-idPagoCuota: Integer
+		-pago: Pago
+		-cuota: Cuota
+		-descuentos: Set<Descuento>
+		-recargos: Set<Recargo>
+		+importeOrigina(): BigDecimal
+	    +importeFinal(): BigDecimal
+	}
+	
+	class Descuento{
+	    -idDescuento: Integer
+		-concepto: String
+		-factor: Double
+
+	}
+	
+	class Recargo{
+		-idRecargo: Integer
+		-concepto: String
+		-factor: Double
+	}
+
+	Pago "1" --> "1..n" Cuota
+	(Pago, Cuota) . PagoCuota
+
+	class Recibo{
+		-numeroRecibo: Integer
+		+emitir(): ReciboDTO
+	}
+	
+    class Marca{
+        -idMarca: Integer
+        -nombre: String
+    }
+
+    Cliente "1" -up- "0..n" Poliza
+    Cliente "1..n" --> "1" Direccion
+    Cliente "1" --> "1" Documento    
+
+    /'Usuario <-- Cobrador: <<is role of>>
+    Usuario <-- ProductorSeguros: <<is role of>>
+    Usuario <-- Gerente: <<is role of>>
+	'/
+   
+    Poliza "0..n" o-- "1" Localidad
+    Poliza "1" --> "1" MedidasSeguridad
+    Poliza "1" -- "n" ModificacionPoliza
+    ModificacionPoliza "0..n" o-- "1" Localidad
+    Poliza "0..n" o-- "0..n" HijoDeclarado
+	Poliza "n" --> "1" TipoCobertura
+    ModificacionPoliza "n" --> "1" TipoCobertura
+    Usuario "1" <-- "n" ModificacionPoliza
+    ModificacionPoliza "0..1" -- "0..n" HijoDeclarado
+	Poliza "n" --> "1" Modelo
+    Marca "1" -- "1..n" Modelo
+
+    Direccion "1..n" --> "1" Localidad
+	Localidad "1..n" --> "1" Provincia
+	Provincia "1..n" --> "1" Pais
+	
+	Poliza "1" -- "1..n" Cuota
+	Pago "1" -- "1" Recibo
+	Poliza "1" -- "0..6" Pago
+	Usuario "1" <-- "0 .. n" Pago
+    Usuario "1" <-- "0 .. n" Poliza
+    PagoCuota "n" --> "n" Descuento
+    PagoCuota "n" --> "n" Recargo
+}
+
+package dao{
+    class DaoCliente{
+        +{static} session: Session
+        +{static} buscarCliente(NumeroCliente): Cliente
+        +{static} buscarClientes(ParametrosDeBusqueda): List<Cliente>
+        +{static} consultarClientes(ParametrosDeConsulta): List<Cliente>
+        +{static} getCliente(Integer): Cliente
+        +{static} guardarCliente(): Void
+        +{static} refresh(Object): Void
+    }
+    
+   class DaoPoliza {
+    	+{static} session: Session
+    	+{static} getPoliza(Integer): Poliza 
+    	+{static} buscarPoliza(String): ArrayList<Poliza> 
+    	+{static} getPolizasVigentesOGeneradasConMotor(String): ArrayList<Poliza> 
+    	+{static} getPolizasVigentesOGeneradasConChasis(String): ArrayList<Poliza> 
+    	+{static} getAllPolizas(): ArrayList<Poliza> 
+    	+{static} getPolizasVigentesOGeneradasConDominio(String): ArrayList<Poliza> 
+    	+{static} save(Poliza): Void
+    	+{static} update(Poliza): Void
+    	+{static} getCoberturas(): ArrayList<TipoCobertura> 
+    	+{static} getCoberturaContraTerceros(): TipoCobertura 
+    	+{static} getCobertura(Integer): TipoCobertura 
+    	+{static} actualizarPolizas(ArrayList<Poliza>): Void
+    	+{static} refresh(Object): Void
+    }
+    
+    class DaoUsuario {
+    	+{static} session: Session 
+    	+{static} getUsuario(String): Usuario 
+    	+{static} refresh(Object): Void 
+    }
+
+    class DaoGeografico  {
+    	+{static} session: Session 
+    	+{static} getLocalidad(Integer): Localidad 
+    	+{static} guardarLocalidad(Localidad): Void
+    	+{static} refresh(Object): Void
+    }
+
+    
+    class DaoPago {
+    	+{static} session: Session 
+    	+{static} getDescuentoPagoAdelantado(): Descuento 
+    	+{static} getRecargoMora(): Recargo 
+    	+{static} guardarPago(Pago): Void
+    	+{static} updatePago(Pago): Void 
+    	+{static} guardarRecibo(Recibo): Integer 
+    	+{static} refresh(Object): Void
+    }
+
+    class QueryBuilder  {
+    	+QueryBuilder()
+    	+getQuery(ParametrosDeBusqueda, Session): Query
+    	+getQuery(ParametrosDeConsulta, Session): Query
+    	+getQuery(NumeroPoliza, Session): Query
+    	+getCountQuery(ParametrosDeBusqueda, Session): Query
+    }
+    
+    class HibernateUtil {
+    	-{static} Lock: Lock
+    	-{static} sessionFactory: SessionFactory 
+    	-{static} session: Session 
+    	+{static} getSessionfactory(): SessionFactory 
+    	+{static} getSession(): Session 
+    	+{static} shutdown(): Void
+    	+{static} buildSessionFactory(): SessionFactory 
+    	+{static} getCurrentSession(): Session 
+    	+{static} getLock(): Lock 
+    }
+    
+    class DaoVehiculo {
+    	+{static} session: Session 
+    	+{static} getModelo(Integer): Modelo 
+    	+{static} save(Modelo): Void
+    	+{static} refresh(Object): Void
+    }
+    
+    HibernateUtil "1" <..>"1" DaoCliente
+    HibernateUtil "1" <..>"1" DaoGeografico
+    HibernateUtil "1" <..>"1" DaoPago
+    HibernateUtil "1" <..>"1" DaoPoliza
+    HibernateUtil "1" <..>"1" DaoUsuario
+    HibernateUtil "1" <..>"1" DaoVehiculo
+    
+}
+
+
+
+package enumeradores {
+    enum CondicionCliente {
+    	Normal
+    	Activo
+    	Plata
+    }
+    
+    enum CondicionIva {
+    	ResponsableInscripto
+    	ResponsableNoInscripto
+    	NoResponsable
+    	SujetoExento
+    	ConsumidorFinal
+    	ResponsableMonotributo
+    	NoCategorizado
+    	ProveedorExterior
+    	ClienteExterior
+    	Liberado
+    	ResponsableInscriptoPercepcion
+    	PeqContribuyente
+    	MonotributistaSocial
+    	PeqContribuyenteSocial
+    }
+    
+    enum EstadoCivil{
+        Soltero
+        Casado
+        Viudo
+    }
+    
+    enum EstadoCuota {
+    	PENDIENTE
+    	MORA
+    	PAGA
+    }    
+    
+    enum EstadoPoliza {
+        Generada
+        Vigente
+        Suspendida
+        Finalizada
+    }
+    
+    enum FormaPago {
+    	MENSUAL
+    	SEMESTRAL
+    }
+
+    enum Rol {
+    	Cobrador
+    	Gerente
+    	ProductorDeSeguros
+    }
+
+    enum Sexo {
+        Masculino
+        Femenino
+    }
+
+    enum TipoDocumento {
+        DNI
+        LU
+        LC
+        LE
+    }
+}
+
+
+DaoCliente <.. GestorCliente
+DaoPoliza <.. GestorPoliza
+DaoGeografico <.. GestorGeografico
+'Poliza -- ValorAutomovil'
+
+'Relaciones entre clases y gestores'
+
+Cliente "n" ..> "1" GestorCliente
+Localidad "n" ..> "1" GestorGeografico
+Provincia "n" ..> "1" GestorGeografico
+Pais "n" ..> "1" GestorGeografico
+Pago "n" ..> "1" GestorPagos
+Recibo "n" ..> "1" GestorDocumentos
+Poliza "n" ..> "1" GestorPoliza
+FactoresCalculos "1" <.. "1" GestorPoliza
+
+'Relaciones entredistintos gestores'
+
+GestorPoliza "1" ..> "1" GestorPagos
+GestorPoliza "1" ..> "1" GestorSubSistemaDeSiniestros
+GestorCliente "1" ..> "1" GestorSubSistemaDeSiniestros
+GestorPagos "1" ..> "1" GestorSistemaFinanciero
+
+
+@endUML

@@ -1,0 +1,232 @@
+@startuml CU-12
+
+title CU-12: Registrar pago de póliza
+center footer Grupo 4A: Matías Bode, Francisco Busso, Giovani Ferraro Trivelli, Miguel Storani
+
+actor Usuario
+boundary InterfazUsuario
+control ControladorPagos
+control GestorPagos
+entity "pago: Pago" as Pago
+control DaoPago
+entity "Pago p" as pago
+entity "session: HttpSession" as session
+entity "p: Poliza" as Poliza
+entity "pagos: Collection<Pago>" as pagos
+entity ":PagoCuota" as pc
+entity Recibo
+control ControladorPoliza
+control GestorPoliza
+
+entity "resumen: Resumen" as resumen
+entity "diccionario: HashMap" as diccionario
+
+
+activate Usuario
+activate session
+alt El cliente desea pagar una o más cuotas
+ref over Usuario, InterfazUsuario
+    CU-18: Buscar Póliza
+end ref
+
+Usuario -> InterfazUsuario : Selecciona una póliza
+activate InterfazUsuario
+InterfazUsuario -> ControladorPoliza : GET /poliza/{idPOliza}
+activate ControladorPoliza
+ControladorPoliza -> GestorPoliza : getPoliza(idPoliza)
+activate GestorPoliza
+GestorPoliza --> ControladorPoliza : Poliza p
+deactivate GestorPoliza
+
+ControladorPoliza -> Poliza : getResumenPoliza()
+activate Poliza
+Poliza --> ControladorPoliza : ResumenPoliza ResumenPoliza
+activate resumen
+deactivate Poliza
+
+ControladorPoliza -> ControladorPoliza : new Token()
+ControladorPoliza --> ControladorPoliza : token
+ControladorPoliza -> resumen : setToken(token)
+
+ControladorPoliza -> ControladorPoliza : ArrayList<CuotaDTO> cuotasDTO
+ControladorPoliza -> ControladorPoliza : HashSet<PagoCuota> pagosCuotas
+ loop Cuota c :poliza.getCuotas()
+    alt c.getEstadoCuota() != PAGA
+        ControladorPoliza -> GestorPagos : calcularDescuentosYRecargos(c)
+        activate GestorPagos
+        GestorPagos --> ControladorPoliza : PagoCuota pagoCuota
+        deactivate GestorPagos
+        ControladorPoliza -> ControladorPoliza : pagosCuotas.add(pagoCuota)
+        ControladorPoliza -> ControladorPoliza : cuotasDTO.add(c.getDTO())
+    end alt
+ end loop
+ControladorPoliza -> pago : new Pago ();
+activate pago
+ControladorPoliza -> pago : setCuotas(cuotas)
+
+ControladorPoliza -> resumen : setCuotas(cuotasDTO)
+ControladorPoliza -> diccionario : new HashMap<String, Object>
+activate diccionario
+activate diccionario
+diccionario -->ControladorPoliza : diccionario
+deactivate diccionario
+ControladorPoliza -> diccionario : put("poliza", poliza)
+ControladorPoliza -> diccionario : put("pago", pago)
+
+ControladorPoliza -> session : setAttribute(token, diccionario)
+activate session
+deactivate session
+
+ControladorPoliza --> InterfazUsuario : JSON = {\n\tresumen\n\t}
+deactivate resumen
+
+InterfazUsuario --> Usuario : Información de la póliza y\n las cuotas pendientes de pago
+
+
+
+Usuario -> InterfazUsuario : Selecciona las cuotas a pagar
+
+InterfazUsuario -> ControladorPagos : POST /calcularImporteTotal JSON ={\n\tInteger idPoliza\n\tList<Integer> idsCuotasAPagar\n\tString montoAbonado\n\tString token\n\t}
+activate ControladorPagos
+
+ControladorPagos -> session : getAttribuete(token)
+session --> ControladorPagos : HashMap diccionario
+
+ControladorPagos -> diccionario : get("poliza")
+activate diccionario
+diccionario --> ControladorPagos : Pago pago
+deactivate diccionario
+
+ControladorPagos -> GestorPagos : actualizarCuotasAPagar(pago, idsCuotasAPagar)
+activate GestorPagos
+GestorPagos --> ControladorPagos : Pago pagoCuotasSeleccionadas
+deactivate GestorPagos
+
+ControladorPagos -> GestorPagos : calcularImporteTotal(pagoCuotasSeleccionadas)
+activate GestorPagos
+GestorPagos -->ControladorPagos : BigDecimal importeTotal
+deactivate GestorPagos
+
+
+ControladorPagos -> diccionario : put("pagoCuotasSeleccionadas", pagoCuotasSeleccionadas)
+
+ControladorPagos --> InterfazUsuario : JSON={\n\tString importeTotal\n\t}
+deactivate ControladorPagos
+
+InterfazUsuario --> Usuario : Informa el monto importeTotal
+
+
+
+
+
+
+
+
+
+
+
+alt El cliente confirma el pago
+
+Usuario -> InterfazUsuario : El usuario confirma la\ndesición del cliente
+
+InterfazUsuario -> ControladorPagos : POST /registrarPago JSON={\n\tString montoAbonado\n\tString token\n\t}
+activate ControladorPagos
+
+ControladorPagos -> session :getAttribuete(token)
+activate session
+session --> ControladorPagos : diccionario
+deactivate session
+
+ControladorPagos -> diccionario : get("poliza")
+activate diccionario
+diccionario --> ControladorPagos : Poliza poliza
+deactivate diccionario
+
+ControladorPagos -> diccionario : get("pagoCuotasSeleccionadas")
+activate diccionario
+diccionario --> ControladorPagos : Pago pago
+deactivate diccionario
+
+ControladorPagos -> GestorPagos : importeTotal := calcularImporteTotal(pago)
+ControladorPagos <- GestorPagos : importeTotal
+
+ControladorPagos -> GestorPagos : nroRecibo := registrarPago(pago, poliza, importe, usuario)
+activate GestorPagos
+
+
+GestorPagos -> GestorPagos : importeTotal := calcularImporteTotal(pago)
+
+GestorPagos -> pago : setImporte(importeTotal)
+activate pago
+GestorPagos <- pago
+
+GestorPagos -> pago: setFechaHora(new Date)
+GestorPagos <- pago
+
+GestorPagos -> pago: setUsuario(usuario)
+GestorPagos <- pago
+deactivate pago
+GestorPagos -> Poliza : Collection<Pago> pagos := p.getPagos()
+GestorPagos <- Poliza
+
+GestorPagos -> pagos : add(pago)
+GestorPagos <- pagos
+
+loop PagoCuota pagoCuota : pago.getCuotas()
+    GestorPagos -> pc : setPago(pago)
+    activate pc
+    GestorPagos <- pc
+    GestorPagos -> pc : getCuota().setEstadoCuota(EstadoCuota.PAGA)
+    GestorPagos <- pc
+    deactivate pc
+end loop
+
+GestorPagos -> DaoPago : guardarPago(p)
+activate DaoPago
+GestorPagos <- DaoPago
+deactivate DaoPago
+
+GestorPagos -> Recibo : new: Recibo(pago, poliza, cliente)
+activate Recibo
+GestorPagos <- Recibo :  r
+deactivate Recibo
+
+
+GestorPagos -> pago : setRecibo(r)
+activate pago
+GestorPagos <- pago
+deactivate pago
+
+GestorPagos -> DaoPago : guardarRecibo(r)
+activate DaoPago
+GestorPagos <- DaoPago
+
+GestorPagos -> DaoPago : update(pago)
+GestorPagos <- DaoPago
+deactivate DaoPago
+
+ControladorPagos <- GestorPagos : nroRecibo
+deactivate GestorPagos
+
+ControladorPagos ->session : 
+
+InterfazUsuario <- ControladorPagos : JSON={\n\tBigDecimal vuelto\n\tBoolean pagoConfirmado\n\tInteger numeroRecibo\n\t}
+deactivate ControladorPagos
+
+InterfazUsuario --> Usuario : El sistema le confirma al usuario\nque el pago fue registrado con éxito
+
+
+ref over Usuario, InterfazUsuario
+    CU-13: Emitir recibo de pago
+end ref
+
+end alt
+else El cliente no desea pagar
+
+Usuario -> InterfazUsuario: Cancelar
+note right
+    El caso de uso termina
+end note
+
+end alt
+@enduml

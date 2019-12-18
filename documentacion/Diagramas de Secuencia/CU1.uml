@@ -1,0 +1,231 @@
+@startuml
+
+title CU-01: Alta Póliza
+center footer Grupo 4A: Matías Bode, Francisco Busso, Giovani Ferraro Trivelli, Miguel Storani
+
+actor Usuario
+boundary "Interfaz de Usuario" as GUI
+control ControladorCliente as CC
+control ControladorPoliza as CP
+
+
+Control GestorCliente as GC
+Control GestorPoliza as GP
+entity "session: HttpSession" as session
+control GestorCobertura as GCobertura
+entity "p: Poliza" as Poliza
+Control DAOPoliza as DP
+
+
+activate Usuario
+activate session
+
+Usuario -> GUI: Buscar cliente
+activate GUI
+
+
+ref over CC, GC, GUI, Usuario
+    CU-17: Buscar Cliente
+end ref
+
+activate GC
+
+alt no existe cliente
+    GUI <-- CC : JSON Error "no existe cliente"
+    ref over Usuario, GC
+        CU-04: Alta Cliente
+    end ref
+end alt
+
+
+CC <-- GC : List<Cliente> resultadoBusqueda
+deactivate GC
+GUI <-- CC : JSON clientes[]
+deactivate CC
+Usuario <-- GUI : Resultado de Búsqueda
+
+Usuario --> GUI : Seleccionar Cliente
+GUI --> Usuario : Informacion Cliente Seleccionado
+
+loop while datos incorrectos
+    Usuario <-- GUI : Solicitar Datos
+    Usuario -> GUI : Datos de la póliza
+end loop
+
+GUI -> CP : POST /altaPoliza/1 JSON={PolizaDTO}
+activate CP
+CP -> GP : validarDatos(PolizaDTO)
+activate GP
+GP --> CP : List<Error> errores
+deactivate GP
+alt errores.isEmpty()
+    CP -> GP : getCoberturaDisponibles(PolizaDTO)
+    activate GP
+    alt antigüedad del vehiculo > 10 años
+        GP -> GCobertura : getCoberturaContraTerceros()
+        activate GCobertura
+        GCobertura --> GP : List<TiposCobertura> coberturasDisponibles
+        deactivate GCobertura
+    else
+        GP -> GCobertura : getCoberturas()
+        activate GCobertura
+        GCobertura --> GP : List<TipoCobertura> coberturasDisponibles
+        deactivate GCobertura
+    end alt
+    GP --> CP : List<TipoCobertura> coberturasDisponibles
+    deactivate GP
+end alt
+
+CP -->GUI : JSON={\n\tList<Error> errores,\n\tList<TipoCoberturaDTO> coberturasDisponibles\n\t}
+deactivate CP
+
+GUI --> Usuario : Tipos de pólizas disponibles
+Usuario -> GUI : Selecciona tipo de póliza,\n\tinicio vigencia,\n\tmodalidad de pago
+
+GUI -> CP : POST /altaPoliza/2 JSON={PolizaDTO}
+activate CP
+CP -> GP : validarDatosAltaPoliza(PolizaDTO)
+activate GP
+GP --> CP : List<Error> errores
+deactivate GP
+alt errores.isEmpty()
+    CP -> GP : generarPoliza(PolizaDTO)
+        activate GP
+        GP -> "Poliza p" as Poliza : new Poliza()
+        activate Poliza
+        GP <-- Poliza : Poliza p
+
+        loop while hijos > 0
+            GP -> GP : crearHijo(echaNacimiento, sexo, estadoCivil)
+            GP --> GP : Hijo h
+            GP -> Poliza : agregarHijo(h)
+        end
+        GP -> GP : calcularFechaFinVigencia()
+        GP -> Poliza: setFechaFinVigencia(fechaFinVigencia)
+        GP -> Poliza: setFechaInicioVigencia(fechaInicioVigencia)
+        GP -> Poliza: setMedidasDeSeguridas(medidasDeSeguridad)
+        GP -> Poliza: setTipoCObertura(tipoCObertura)
+        GP -> Poliza: setModelo(modelo)
+        GP -> Poliza: setAnioFabricacion(anioFabricacion)
+        GP -> Poliza: setKmsAnuales(kmsAnuales)
+        GP -> Poliza: setDomino(dominioVehiculo)
+        ref over GP, Poliza
+            CU-16: Calcular Premio, Derecho de Emisión y Descuentos
+        end ref
+        GP -> Poliza: setPremio(premio)
+        GP -> Poliza: setPrima(prima)
+        GP -> Poliza: setDerechoEmision(derechoEmision)
+
+
+        GP -> GC : getCliente(numeroCliente)
+        GC --> GP : Cliente c
+        GP -> Poliza : setCliente(c)
+
+        alt FormaDePago = Mensual
+            loop for(x=1, x<=6, x++)
+                GP -> GP : calcularFechaVencimiento()
+                GP -> GP : calcularImporte()
+                GP -> GP : new Cuota(fechaVencimiento. importe)
+            end loop
+            
+        else FormaDePago = Semestral
+            GP -> GP : calcularFechaVencimiento()
+            GP -> GP : calcularImporte()
+            GP -> GP : new Cuota(fechaVencimiento. importe)
+        end alt
+
+        GP -> Poliza : setCuotas(cuotas)
+
+        GP -> Poliza : setEstadoPoliza(EstadoPoliza.Generada)
+        
+        
+    GP --> CP : Poliza p
+    deactivate GP
+    CP -> CP : new Token()
+    activate CP
+    CP --> CP : token
+    deactivate CP
+    CP -> session : setAttribute(token, p)
+    activate session
+    deactivate session
+    CP -> Poliza : getResumenPoliza()
+    activate Poliza
+    Poliza --> CP : ResumenPoliza resumenPoliza
+    deactivate Poliza
+    deactivate GP
+
+end alt
+
+
+CP -->GUI : JSON={\n\tList<Error> errores,\n\tResumenPoliza resumenPoliza\n\tString token\n\t}
+deactivate CP
+
+Usuario <-- GUI : Resumen Póliza
+
+alt El usuario confirma la generación de la póliza
+    Usuario -> GUI : Confirmar generación de la póliza
+    GUI -> CP : POST /altaPoliza/confirmar JSON={\n\tString token\n\t}
+    activate CP
+
+    CP -> session : getAttribute(token)
+    activate session
+    session --> CP : Poliza p 
+    deactivate session
+
+    CP -> GP : altaPoliza(p)
+    activate GP
+    GP -> Poliza : setNumeroPoliza(nroPoliza)
+
+        
+        GP -> GP : savePoliza(p)
+        activate GP
+        GP -> DP : savePoliza(p)
+        activate DP
+        DP --> GP
+        deactivate DP
+        deactivate GP
+        
+        GP -> GC : actualizarCondicionCliente(c)
+        activate GC
+        GP <-- GC
+        deactivate GC
+        
+        ref over GP
+            CU-11: Realizar Emisión de Póliza
+        end ref
+        GP --> CP :Bool polizaGenerada
+        deactivate GP
+        CP -> session : removeAttribute(token)
+        activate session
+        deactivate session
+        CP -->GUI : Bool polizaGenerada
+        deactivate CP
+        alt polizaGenerada
+            GUI -->Usuario :La poliza fue generada con éxito.
+        else
+            GUI --> Usuario :No se pudo generar la poliza, mensajes de error.
+        end alt
+
+else Cambiar tipo de cobertura
+    Usuario -> GUI : Seleccionar cobertura distinta
+    note right
+        Se vuelve a la pantalla de selección de póliza
+    end note
+else cancelar
+    Usuario -> GUI : cancelar
+    note right
+        El caso de uso termina
+    end note
+    deactivate Usuario
+    deactivate GUI
+    deactivate CC
+    deactivate CP
+    deactivate GC
+    deactivate GP
+    deactivate DP
+    deactivate Poliza
+
+end alt
+    
+
+@enduml

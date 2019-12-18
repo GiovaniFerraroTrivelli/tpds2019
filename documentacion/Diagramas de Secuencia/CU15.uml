@@ -1,0 +1,43 @@
+@startuml
+
+title CU-15: Generar informe de resultado mensual
+center footer Grupo 4A: Matías Bode, Francisco Busso, Giovani Ferraro Trivelli, Miguel Storani
+
+actor Usuario
+boundary InterfazUsuario
+entity ControladorPagos
+entity GestorPagos
+entity GestorCliente
+
+activate Usuario
+Usuario -> InterfazUsuario : Imprimir resultados mensuales
+activate InterfazUsuario
+Usuario <-- InterfazUsuario : Mostrar pantalla selección mes y año
+
+Usuario -> InterfazUsuario : Selección de mes y año
+InterfazUsuario -> ControladorPagos : POST (JSON) mes y año
+activate ControladorPagos
+ControladorPagos -> GestorPagos : obtenerResultadosMensuales(mes, anio)
+activate GestorPagos
+GestorPagos -> GestorCliente : totalClientesEnMora(mes, anio)
+activate GestorCliente
+GestorPagos <-- GestorCliente : Integer clientesEnMora
+deactivate GestorCliente
+GestorPagos -> GestorCliente : cantidadTotalClientes(mes, anio)
+activate GestorCliente
+GestorPagos <-- GestorCliente : Integer totalClientes
+deactivate GestorCliente
+ControladorPagos <-- GestorPagos : ResultadosMensualesDTO datos
+deactivate GestorPagos
+InterfazUsuario <-- ControladorPagos : JSON datos de resultados mensuales
+deactivate ControladorPagos
+Usuario <-- InterfazUsuario : Datos de resultados mensuales y confirmación para imprimir
+deactivate InterfazUsuario
+alt imprimir
+Usuario -> InterfazUsuario : Selección de confirmación de impresión
+activate InterfazUsuario
+Usuario <-- InterfazUsuario : PDF de resultados mensuales
+deactivate InterfazUsuario
+end
+deactivate Usuario
+@enduml

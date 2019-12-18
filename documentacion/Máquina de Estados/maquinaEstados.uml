@@ -1,0 +1,39 @@
+Generada:
+Vigente:
+Suspendida:
+NoVigente:
+
+note as N1
+    Las transiciones sin eventos son 
+    controladas diariamente por un 
+    proceso batch 
+end note
+
+note as N2
+Grupo 4A:
+Matías Bode,
+Francisco Busso,
+Giovani Ferraro Trivelli,
+Miguel Storani
+end note
+
+[*] --> Generada
+
+
+Generada --> Generada: realizarPago()[fechaActual() < inicioCobertura()]
+Generada --> Vigente: [tipoPago == PagoSemestral && \n polizaPaga() && \n fechaActual == inicioCobertura()]
+Generada --> Vigente: [tipoPago == PagoMensual && \n cuotas[0].cuotaPaga() && \n fechaActual == inicioCobertura()]
+Generada --> Suspendida: [tipoPago == PagoSemestral && \n !polizaPaga() && \n fechaActual == inicioCobertura()]
+Generada --> Suspendida: [tipoPago == PagoMensual && \n !cuotas[0].cuotaPaga() && \n fechaActual == inicioCobertura()]
+Generada --> NoVigente: cancelarPoliza()
+
+Vigente --> Vigente: registrarPago()
+
+Vigente --> NoVigente: [fechaActual > finCobertura()]
+Suspendida --> Vigente: registrarPago()[polizaPaga()]
+Suspendida --> Suspendida: registrarPago()[!polizaPaga()]
+Vigente --> Suspendida: [!polizaPaga()]
+Suspendida --> NoVigente: [fechaActual > finCobertura()]
+NoVigente --> [*]
+
+@enduml

@@ -1,0 +1,66 @@
+@startuml
+
+title CU-18: Buscar Póliza
+center footer Grupo 4A: Matías Bode, Francisco Busso, Giovani Ferraro Trivelli, Miguel Storani
+
+actor Usuario
+boundary InterfazUsuario
+control ControladorPoliza
+control GestorPoliza
+control DaoPoliza
+entity "p: Poliza" as poliza
+database MariaDB
+
+-> Usuario : El CU es invocado
+
+loop !existePoliza
+
+Usuario -> InterfazUsuario : buscar póliza por numero de Poliza
+activate Usuario
+activate InterfazUsuario
+
+InterfazUsuario -> ControladorPoliza : POST (JSON)  numero de Poliza, 
+
+activate ControladorPoliza
+ControladorPoliza -> GestorPoliza : buscarPoliza(numeroPoliza)
+
+activate GestorPoliza
+
+GestorPoliza -> DaoPoliza : buscarPoliza(numeroPoliza)
+
+activate DaoPoliza
+DaoPoliza -> MariaDB : selectPoliza(numeroPoliza)
+activate MariaDB
+MariaDB --> DaoPoliza : List<Poliza> polizas
+deactivate MariaDB
+DaoPoliza --> GestorPoliza : List<Poliza> polizas
+deactivate DaoPoliza
+GestorPoliza --> ControladorPoliza: List<Poliza> polizas
+deactivate GestorPoliza
+loop for Poliza p : polizas
+	ControladorPoliza -> poliza : getParametros()
+	activate poliza
+	poliza --> ControladorPoliza : parametros
+	deactivate poliza
+	ControladorPoliza -> ControladorPoliza : addResultadoBusqueda()
+end loop
+ControladorPoliza --> InterfazUsuario : JSON listaPolizas
+deactivate ControladorPoliza
+
+deactivate DaoPoliza
+alt !lista.isEmpty()
+Usuario <-- InterfazUsuario : Mensaje de error "no existe póliza"
+
+end
+end
+
+Usuario <-- InterfazUsuario : lista de pólizas
+deactivate InterfazUsuario
+
+deactivate Usuario
+
+note right
+	El usuario puede cancelar el proceso. El caso de uso termina.
+end note
+
+@enduml
