@@ -1,8 +1,11 @@
+import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../service/authentication.service';
-import { UserLogin } from '../user-login';
 import { Title } from '@angular/platform-browser';
+
+import { LoadingService } from '../loading/loading.service';
+import { AuthenticationService } from '../authentication/authentication.service';
+import { UserLogin } from './user-login';
 
 @Component({
 	selector: 'app-login',
@@ -11,37 +14,62 @@ import { Title } from '@angular/platform-browser';
 })
 export class LoginComponent implements OnInit {
 
-	username = ''
-	password = ''
 	invalidLogin = false
+	loginForm: FormGroup;
+	error = "";
 
-	userLogin = new UserLogin();
+	public title = "Iniciar sesión";
 
-	constructor(private router: Router,
-	private loginservice: AuthenticationService,
-	private titleService: Title) { }
+	constructor(
+		private router: Router,
+		private loginService: AuthenticationService,
+		private loadingService: LoadingService,
+		private titleService: Title
+	) { }
 
 	ngOnInit() {
-		this.titleService.setTitle("Iniciar sesión");
+		if(this.loginService.isUserLoggedIn()) {
+			this.router.navigate(['']);
+		}
+
+		this.titleService.setTitle(this.title);
+
+		this.loginForm = new FormGroup({
+			'nombreUsuario': new FormControl(null, Validators.required),
+			'password': new FormControl(null, Validators.required),
+		});
 	}
 
-	checkLogin() {
-		let pepito = this.loginservice.authenticate(this.userLogin);
+	get nombreUsuario() { return this.loginForm.get('nombreUsuario'); }
+	get password() { return this.loginForm.get('password'); }
 
-		pepito.subscribe(result => {
-				if(result)
-				{
-					sessionStorage.setItem('username', this.userLogin.username)
-					this.router.navigate([''])
-					this.invalidLogin = false
-				}
-				else
-				{
-					this.invalidLogin = true
-				}
-			}
+	onSubmit(f : NgForm) {
+		this.loadingService.i();
+
+		this.loginService.authenticate(f.value).subscribe(
+			result => {
+				this.loadingService.d();
+				sessionStorage.clear();
+				
+				sessionStorage.setItem('nombreUsuario', result.nombreUsuario);
+				sessionStorage.setItem('nombre', result.nombre);
+				sessionStorage.setItem('apellido', result.apellido);
+				sessionStorage.setItem('email', result.email);
+				sessionStorage.setItem('rol', result.rol);
+
+				this.router.navigate(['']);
+				this.invalidLogin = false;
+			},
+		    err => {
+		    	this.loadingService.d();
+		    	console.log(err);
+				this.invalidLogin = true;
+
+		    	this.error = err.status ?
+		    		err.error.mensaje : 
+		    		"El sistema receptor de peticiones no se está ejecutando. Intente nuevamente en unos minutos.";
+		    }
 		);
-
-		return false;
 	}
+
 }

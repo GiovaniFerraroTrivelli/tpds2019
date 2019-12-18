@@ -1,0 +1,207 @@
+<div class="pb-2 mt-4 mb-2 border-bottom">
+	<h2>{{ title }}</h2>
+</div>
+
+<div *ngIf="page == 1" class="mt-4">
+	<app-buscar-poliza (signal)="catchSignal($event)"></app-buscar-poliza>
+</div>
+
+<div *ngIf="page == 2">
+	<div class="row d-flex justify-content-center">
+		<h4 class="mt-4">Registrar pago de póliza Nro: <strong>{{nroPoliza}}</strong></h4>
+	</div>
+
+	<div class="row mt-4">   
+		<div class="col-sm mb-3">
+			<h4>Datos del cliente</h4>
+
+			<div class="mb-1">
+				<label class="control-label pt-2" for="idCliente">Número de cliente</label>
+				
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text">#</div>
+					</div>
+					
+					<input value="{{ global.nroClienteFormat(nroCliente) }}" type="text" readonly="readonly" name="idCliente" id="idCliente" class="form-control unclickable dis-arrows">
+				</div>
+			</div>
+
+			<div class="form-row">
+				<div class="col mb-1">
+					<label class="control-label pt-2" for="nombre">Nombre(s)</label>
+					
+					<div class="input-group">
+						<input value="{{ resumenPoliza.nombreTitular }}" type="text" readonly="readonly" name="nombre" id="nombre" class="form-control unclickable dis-arrows">
+					</div>
+				</div>
+
+				<div class="col mb-1">
+					<label class="control-label pt-2" for="apellido">Apellido(s)</label>
+					<div class="input-group">
+						<input value="{{ resumenPoliza.apellidoTitular }}" type="text" readonly="readonly" name="apellido" id="apellido" class="form-control unclickable dis-arrows">
+					</div>
+				</div>
+			</div>
+
+			<h4 class="mt-3">Datos del vehículo</h4>
+
+			<div class="form-row">
+				<div class="col-12">
+					<label class="control-label pt-2" for="marca">Marca</label>
+					<div class="input-group">
+						<input value="{{ resumenPoliza.marca }}" type="text" readonly="readonly" class="form-control unclickable dis-arrows">
+					</div>
+				</div>
+
+				<div class="col-12">
+					<label class="control-label pt-2" for="modelo">Modelo</label>
+					<div class="input-group">
+						<input value="{{ resumenPoliza.modelo }}" type="text" readonly="readonly" class="form-control unclickable dis-arrows">
+					</div>
+				</div>
+
+				<div class="col-12">
+					<label class="control-label pt-2" for="patente">Patente del vehículo (si aplica)</label>
+					<div class="input-group">
+						<input value="{{ resumenPoliza.patente }}" type="text" readonly="readonly" class="form-control unclickable dis-arrows">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm">
+			<h4 class="mb-4">Cuotas pendientes</h4>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col"></th>
+						<th scope="col">Mes</th>
+						<th scope="col">Valor</th>
+						<th scope="col">Vencimiento</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngIf="!cuotas.length">
+						<td class="text-muted text-center" colspan="4"><small>No hay cuotas pendientes de pago.</small></td>
+					</tr>
+					<tr *ngFor='let cuota of cuotas; let row = index'>
+						<td>
+							<div class="form-check">
+								<input class="form-check-input cuotaCheckbox" type="checkbox" value="" [disabled] = "disableCheckbox(row) ? 'disabled' : null" ngModel (ngModelChange)="[onChecked($event),updateCuotasAPagar($event,cuota.idCuota)]">
+							</div>
+						</td>
+						<td>{{ mesCuota(row) }}</td>
+						<td *ngIf="getImporteFinal(row) == 0">$ {{ cuota.importe | number: '1.2-2' : 'es-AR' }}</td>
+						<td *ngIf="getImporteFinal(row) != 0"><s>$ {{ cuota.importe | number: '1.2-2' : 'es-AR' }}</s><br />$ {{ getImporteFinal(row) | number: '1.2-2' : 'es-AR' }}</td>
+						<td>{{ cuotas[row].fechaVencimiento | date:'dd/MM/yyyy' }}</td>
+					</tr>		   
+				</tbody>
+			</table>
+		</div>
+
+		<div class="col-sm">
+			<div id="vigenciaPoliza" class="card mb-3">
+				<div class="card-body">
+					<label class="control-label pt-2" for="vigenciaPoliza">Vigencia de la póliza:</label>
+					<h3>{{ getVigenciaPoliza() }}</h3>
+				</div>
+			</div>
+
+			<label class="control-label pt-2">Importe total:</label>
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="importe">$</span>
+				</div>
+				<input value="{{ importeTotal | number: '1.2-2' : 'es-AR' }}" id="importe" readonly="readonly" class="form-control unclickable dis-arrows" aria-label="importe" aria-describedby="importe">
+			</div>
+
+			<div class="d-flex flex-row-reverse">
+				<button [disabled]="!importeTotal || !this.loadingService.isHidden()" (click)="abonar(confirmar)" type="button" class="btn btn-primary p-2 ml-1">Abonar</button>
+				<button [disabled]="!this.loadingService.isHidden()" (click)="cancel()" type="button" class="btn btn-secondary p-2">Cancelar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<ng-template #confirmar let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Confirmar pago</h4>
+		<button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
+	<div class="modal-body">
+		<form #rpForm='ngForm' [formGroup]="registrarPagoForm" (ngSubmit)="onSubmit(rpForm)">
+			<div class="form-group row">
+				<label for="montoPagar" class="col-sm-4 col-form-label text-right">Monto a pagar</label>
+				<div id="montoPagar" class="input-group mb-3 col-sm-8 medium-input">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">$</span>
+					</div>
+					<input name="montoPagar" readonly="readonly" class="form-control unclickable dis-arrows" type="text" aria-label="montoPagar" aria-describedby="basic-addon1" value="{{ this.responseMonto.importeTotal | number: '1.2-2' : 'es-AR' }}">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="montoAbonado" class="col-sm-4 col-form-label text-right">Monto abonado</label>
+				<div id="montoAbonado" class="input-group mb-3 col-sm-8 medium-input">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">$</span>
+					</div>
+					<input formControlName="montoAbonado" oninput="this.value = Math.abs(this.value)" min=0 name="montoAbonado" type="number" class="form-control" aria-label="montoAbonado" aria-describedby="basic-addon1">
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancelar</button>
+		<button [disabled]="!registrarPagoForm.valid || (this.registrarPagoForm.controls['montoAbonado'].value < responseMonto.importeTotal)" type="button" class="btn btn-primary" (click)="confirmarPago(aceptar)">Confirmar</button>
+	</div>
+</ng-template>
+
+<ng-template #aceptar let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Resumen de pago</h4>
+	</div>
+	<div class="modal-body">
+		<div class="alert alert-success">
+			El pago se ha registrado con éxito.
+		</div>
+		<form>
+			<div class="form-group row">
+				<label for="montoPagar2" class="col-sm-4 col-form-label text-right">Monto total</label>
+				<div id="montoPagar2" class="input-group mb-3 col-sm-8 medium-input">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">$</span>
+					</div>
+					<input value="{{ responseMonto.importeTotal | number: '1.2-2' : 'es-AR' }}" name="montoPagar2" disabled="disabled" class="form-control dis-arrows" type="text" aria-label="montoPagar" aria-describedby="basic-addon1">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="montoAbonado2" class="col-sm-4 col-form-label text-right">Monto abonado</label>
+				<div id="montoAbonado2" class="input-group mb-3 col-sm-8 medium-input">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">$</span>
+					</div>
+					<input value="{{ getMontoAbonado() | number: '1.2-2' : 'es-AR' }}" name="montoAbonar2" disabled="disabled" class="form-control dis-arrows" type="text" aria-label="montoAbonado" aria-describedby="basic-addon1">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="vuelto" class="col-sm-4 col-form-label text-right">Vuelto</label>
+				<div id="vuelto" class="input-group mb-3 col-sm-8 medium-input">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">$</span>
+					</div>
+					<input value="{{ responseVuelto.vuelto | number: '1.2-2' : 'es-AR' }}" name="vuelto" disabled="disabled" class="form-control dis-arrows" type="text" aria-label="vuelto" aria-describedby="basic-addon1">
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div class="modal-footer">
+		<button type="button" class="btn btn-primary" (click)="goHome()">Volver al inicio</button>
+	</div>
+</ng-template>

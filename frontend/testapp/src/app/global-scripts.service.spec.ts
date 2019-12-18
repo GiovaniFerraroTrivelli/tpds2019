@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UserServiceService } from './user-service.service';
+import { GlobalScriptsService } from './global-scripts.service';
 
-describe('UserServiceService', () => {
+describe('GlobalScriptsService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: UserServiceService = TestBed.get(UserServiceService);
+    const service: GlobalScriptsService = TestBed.get(GlobalScriptsService);
     expect(service).toBeTruthy();
   });
 });

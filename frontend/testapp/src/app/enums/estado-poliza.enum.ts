@@ -1,6 +1,6 @@
 export enum EstadoPoliza {
-	Generada = "Generada",
-	Vigente = "Vigente",
-	Suspendida = "Suspendida",
-	Finalizada = "Finalizada"
+	GENERADA = "Generada",
+	VIGENTE = "Vigente",
+	SUSPENDIDA = "Suspendida",
+	FINALIZADA = "Finalizada"
 }

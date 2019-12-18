@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Pais } from './pais';
 import { Provincia } from './provincia';
 import { Localidad } from './localidad';
 import { Observable } from 'rxjs/Observable';
@@ -12,9 +13,13 @@ export class GeografiaService {
 	private localidadesUrl: string;
 
 	constructor(private http: HttpClient) {
-		this.paisesUrl = 'http://localhost:8080/paises';
-		this.provinciasUrl = 'http://localhost:8080/provincias';
-		this.localidadesUrl = 'http://localhost:8080/localidades';
+		this.paisesUrl = window.location.protocol + '//' + window.location.hostname + ':8080/paises';
+		this.provinciasUrl = window.location.protocol + '//' + window.location.hostname + ':8080/provincias';
+		this.localidadesUrl = window.location.protocol + '//' + window.location.hostname + ':8080/localidades';
+	}
+
+	public getPaises(): Observable<Pais[]> {
+		return this.http.get<Pais[]>(this.paisesUrl);
 	}
 
 	public getProvinciasByPais(idPais : number): Observable<Provincia[]> {
