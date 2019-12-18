@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="dominio.Poliza" table="polizas">
+
+		<id name="idPoliza" type="java.lang.Integer" column="id_poliza">
+			<generator class="identity" />
+		</id>
+		
+		<component name="nroPoliza">
+			<property name="idSucursal" column="id_sucursal" />
+			<property name="autoCliente" column="auto_cliente"/>
+			<property name="renovacionPoliza" column="secuencia_renovación" />
+		</component>
+		
+		<!-- relacion entre la poliza y el cliente -->
+        <many-to-one name="cliente" class="dominio.Cliente" fetch="select" lazy="false">
+            <column name="id_cliente" not-null="true" />
+			<column name="id_pais" not-null="true" />
+        </many-to-one>
+
+		<!-- relacion entre la poliza y el tipo de cobertura -->
+      	<many-to-one name = "tipoCobertura" class="dominio.TipoCobertura" lazy="false">
+      		<column name = "id_cobertura" not-null="true"/>
+        </many-to-one>
+
+		<property name="inicioVigencia" column="inicio_vigencia" />
+		<property name="finVigencia" column="fin_vigencia" />
+		<property name="kmsAnuales" column="kms_anuales" />
+		<property name="siniestros" column="siniestros" />
+		<property name="dominio" column="dominio" />
+		<property name="chasis" column="chasis" />
+		<property name="motor" column="motor" />
+		<property name="anioFabricacion" column="anio_fabricacion" />
+		<property name="sumaAsegurada" column="suma_asegurada" />
+		<property name="prima" column="prima" />
+		<property name="premio" column="premio" />
+		<property name="derechoEmision" column="derecho_emision" />
+
+		<property name="estadoPoliza" column="estado_poliza"
+			length="15">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">enumeradores.EstadoPoliza</param>
+				<param name="useNamed">true</param>
+			</type>
+		</property>
+
+		<property name="formaPago" column="forma_pago"
+			length="15">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">enumeradores.FormaPago</param>
+				<param name="useNamed">true</param>
+			</type>
+		</property>
+
+		<component name="medidasSeguridad">
+			<property name="seGuardaEnGarage" column="se_guarda_en_garage" />
+			<property name="poseeAlarma" column="posee_alarma" />
+			<property name="poseeRastreoVehicular" column="posee_rastreo_vehicular" />
+			<property name="poseeTuercasAntirrobo" column="posee_tuercas_antirrobo" />
+		</component>
+
+		<many-to-one name="modelo" class="dominio.Modelo" fetch="select" lazy="false">
+            <column name="id_modelo" not-null="true" />
+        </many-to-one>
+        
+        <many-to-one name="usuario" class="usuarios.Usuario" fetch="select" lazy="false">
+            <column name="nombre_usuario" not-null="true" />
+        </many-to-one>
+
+		<!-- relacion entre la poliza y los hijos -->
+		<set name="hijos" table="hijos_poliza" inverse="true" cascade="save-update" lazy="true" fetch="select">
+			<key>
+				<column name="id_poliza" not-null="true" />
+			</key>
+			<one-to-many class="dominio.Hijo" />
+		</set>
+
+		<set name="cuotas" table="cuotas_poliza" inverse="true" cascade="save-update" lazy="true" fetch="select">
+			<key>
+				<column name="id_poliza" not-null="true" />
+			</key>
+			<one-to-many class="dominio.Cuota" />
+		</set>
+
+        <set name="pagos" table="pago_poliza" inverse="true" cascade="save-update" lazy="true" fetch="select">
+            <key>
+                <column name="id_poliza" not-null="true" />
+            </key>
+            <one-to-many class="dominio.Pago" />
+        </set>
+
+
+	</class>
+</hibernate-mapping>

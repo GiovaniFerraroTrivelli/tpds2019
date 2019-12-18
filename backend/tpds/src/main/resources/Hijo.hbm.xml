@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="dominio.Hijo" table="hijos_poliza">
+
+        <id name="idHijo" type="java.lang.Integer" column="id_hijo">
+            <generator class="native" />
+        </id>
+
+        <many-to-one name="poliza" class="dominio.Poliza" fetch="select">
+            <column name="id_poliza" not-null="true" />
+        </many-to-one>
+
+		<property name="fechaNacimiento" column="fecha_nacimiento"/>
+
+        <property name="estadoCivil" column="estado_civil" length="10">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">enumeradores.EstadoCivil</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        
+        <property name="sexo" column="sexo" length="10">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">enumeradores.Sexo</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
