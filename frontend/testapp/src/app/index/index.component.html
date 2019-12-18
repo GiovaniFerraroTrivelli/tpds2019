@@ -1,9 +1,0 @@
-<div class="jumbotron">
-	<h1 class="display-3">El Asegurado</h1>
-	<p class="lead" style='font-weight:inherit' *ngIf="isUserLoggedIn()">Bienvenido, <strong>{{ getFullUserName() }}</strong>. Su rol es <strong>{{ getRol() }}</strong>.</p>
-	<p class="lead" *ngIf="!isUserLoggedIn()">Por favor inicie sesión para acceder a todas las características.</p>
-	<hr class="my-4">
-	<p class="lead">
-		<a class="btn btn-primary btn-lg" href="#" #boton (click)="boton.text='Consulte a administración';" role="button">AYUDA</a>
-	</p>
-</div>
